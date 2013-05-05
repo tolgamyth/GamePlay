@@ -19,6 +19,8 @@ void luaRegister_lua_Global()
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "Node");
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "RadioButton");
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "Slider");
+    gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "Sprite");
+    gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "SpriteGroup");
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "TextBox");
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "Transform");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Button", "CheckBox");
@@ -100,6 +102,8 @@ void luaRegister_lua_Global()
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "RenderTarget");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Scene");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Slider");
+    gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Sprite");
+    gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "SpriteGroup");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Technique");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Terrain");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "TextBox");
@@ -107,6 +111,7 @@ void luaRegister_lua_Global()
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Texture::Sampler");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Theme");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Theme::ThemeImage");
+    gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "TileSheet");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "VertexAttributeBinding");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "VerticalLayout");
     gameplay::ScriptUtil::setGlobalHierarchyPair("RenderState", "Material");
@@ -129,6 +134,7 @@ void luaRegister_lua_Global()
     gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "Slider");
     gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "TextBox");
     gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "Transform");
+    gameplay::ScriptUtil::setGlobalHierarchyPair("Sprite", "SpriteGroup");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Transform", "Joint");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Transform", "Node");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Transform::Listener", "AudioListener");

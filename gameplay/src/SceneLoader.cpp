@@ -5,6 +5,7 @@
 #include "SceneLoader.h"
 #include "Terrain.h"
 #include "Light.h"
+#include "SpriteGroup.h"
 
 namespace gameplay
 {
@@ -84,6 +85,7 @@ Scene* SceneLoader::loadInternal(const char* url)
         SceneNodeProperty::MATERIAL | 
         SceneNodeProperty::PARTICLE |
         SceneNodeProperty::TERRAIN |
+        SceneNodeProperty::SPRITE |
         SceneNodeProperty::LIGHT |
         SceneNodeProperty::CAMERA |
         SceneNodeProperty::ROTATE |
@@ -215,6 +217,7 @@ void SceneLoader::applyNodeProperty(SceneNode& sceneNode, Node* node, const Prop
         snp._type == SceneNodeProperty::MATERIAL ||
         snp._type == SceneNodeProperty::PARTICLE ||
         snp._type == SceneNodeProperty::TERRAIN ||
+        snp._type == SceneNodeProperty::SPRITE ||
         snp._type == SceneNodeProperty::LIGHT ||
         snp._type == SceneNodeProperty::CAMERA ||
         snp._type == SceneNodeProperty::COLLISION_OBJECT)
@@ -265,6 +268,21 @@ void SceneLoader::applyNodeProperty(SceneNode& sceneNode, Node* node, const Prop
             Terrain* terrain = Terrain::create(p);
             node->setTerrain(terrain);
             SAFE_RELEASE(terrain);
+            break;
+        }
+        case SceneNodeProperty::SPRITE:
+        {
+			Sprite* sprite;
+			if (strcmp(p->getNamespace(), "spritegroup") == 0)
+			{
+				sprite = static_cast<Sprite*>(SpriteGroup::create(p));
+			}
+			else
+			{
+				sprite = Sprite::create(p);
+			}
+			node->setSprite(sprite);
+            SAFE_RELEASE(sprite);
             break;
         }
         case SceneNodeProperty::LIGHT:
@@ -588,6 +606,12 @@ void SceneLoader::buildReferenceTables(Properties* sceneProperties)
                     addSceneNodeProperty(sceneNode, SceneNodeProperty::TERRAIN, propertyUrl.c_str());
                     _properties[propertyUrl] = subns;
                 }
+                else if (strcmp(subns->getNamespace(), "sprite") == 0)
+                {
+                    propertyUrl += "sprite/" + std::string(subns->getId());
+					addSceneNodeProperty(sceneNode, SceneNodeProperty::SPRITE, propertyUrl.c_str());
+                    _properties[propertyUrl] = subns;
+                }
                 else if (strcmp(subns->getNamespace(), "light") == 0)
                 {
                     propertyUrl += "light/" + std::string(subns->getId());
@@ -649,6 +673,10 @@ void SceneLoader::buildReferenceTables(Properties* sceneProperties)
                 else if (strcmp(name, "terrain") == 0)
                 {
                     addSceneNodeProperty(sceneNode, SceneNodeProperty::TERRAIN, ns->getString());
+                }
+                else if (strcmp(name, "sprite") == 0)
+                {
+					addSceneNodeProperty(sceneNode, SceneNodeProperty::SPRITE, ns->getString());
                 }
                 else if (strcmp(name, "light") == 0)
                 {

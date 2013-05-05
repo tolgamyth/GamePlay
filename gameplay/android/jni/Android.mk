@@ -91,7 +91,9 @@ LOCAL_SRC_FILES := \
     ScriptController.cpp \
     ScriptTarget.cpp \
     Slider.cpp \
+    Sprite.cpp \
     SpriteBatch.cpp \
+    SpriteGroup.cpp \
     Technique.cpp \
     Terrain.cpp \
     TerrainPatch.cpp \
@@ -99,6 +101,7 @@ LOCAL_SRC_FILES := \
     Texture.cpp \
     Theme.cpp \
     ThemeStyle.cpp \
+    TileSheet.cpp \
     Transform.cpp \
     Vector2.cpp \
     Vector3.cpp \
@@ -247,7 +250,9 @@ LOCAL_SRC_FILES := \
     lua/lua_ScriptController.cpp \
     lua/lua_ScriptTarget.cpp \
     lua/lua_Slider.cpp \
+    lua/lua_Sprite.cpp \
     lua/lua_SpriteBatch.cpp \
+    lua/lua_SpriteGroup.cpp \
     lua/lua_Technique.cpp \
     lua/lua_Terrain.cpp \
     lua/lua_TerrainFlags.cpp \
@@ -263,6 +268,7 @@ LOCAL_SRC_FILES := \
     lua/lua_ThemeStyle.cpp \
     lua/lua_ThemeThemeImage.cpp \
     lua/lua_ThemeUVs.cpp \
+    lua/lua_TileSheet.cpp \
     lua/lua_Touch.cpp \
     lua/lua_TouchTouchEvent.cpp \
     lua/lua_Transform.cpp \
