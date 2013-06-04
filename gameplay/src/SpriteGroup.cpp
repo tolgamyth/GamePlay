@@ -973,3 +973,4 @@ void SpriteGroup::cloneInto(SpriteGroup* group, NodeCloneContext &context) const
 }
 
 }
+
