@@ -612,6 +612,12 @@ void SceneLoader::buildReferenceTables(Properties* sceneProperties)
 					addSceneNodeProperty(sceneNode, SceneNodeProperty::SPRITE, propertyUrl.c_str());
                     _properties[propertyUrl] = subns;
                 }
+				else if (strcmp(subns->getNamespace(), "spritegroup") == 0)
+                {
+                    propertyUrl += "spritegroup/" + std::string(subns->getId());
+					addSceneNodeProperty(sceneNode, SceneNodeProperty::SPRITE, propertyUrl.c_str());
+                    _properties[propertyUrl] = subns;
+                }
                 else if (strcmp(subns->getNamespace(), "light") == 0)
                 {
                     propertyUrl += "light/" + std::string(subns->getId());
