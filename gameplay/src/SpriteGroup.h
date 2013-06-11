@@ -298,4 +298,3 @@ protected:
 }
 
 #endif
-

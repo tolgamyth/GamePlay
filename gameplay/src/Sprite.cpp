@@ -182,7 +182,20 @@ bool Sprite::loadSpriteProperties(Sprite* sprite, Properties* spriteProperties, 
 	if (spriteProperties->exists("tint"))
 	{
 		Vector4 tint;
-		spriteProperties->getColor("tint", &tint);
+		switch (spriteProperties->getType("tint"))
+		{
+			case Properties::VECTOR3:
+				tint.w = 1.0f;
+				spriteProperties->getVector3("tint", (Vector3*)&tint);
+				break;
+			case Properties::VECTOR4:
+				spriteProperties->getVector4("tint", &tint);
+				break;
+			case Properties::STRING:
+			default:
+				spriteProperties->getColor("tint", &tint);
+				break;
+		}
 		sprite->setTint(tint);
 	}
 

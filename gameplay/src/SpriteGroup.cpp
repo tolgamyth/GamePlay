@@ -8,13 +8,6 @@ namespace gameplay
 
 // Global list of active groups
 static std::vector<SpriteGroup*> _spriteGroups;
-const int SpriteGroup::TYPE_TRANSPARENT;
-const int SpriteGroup::TYPE_DEFAULT;
-const int SpriteGroup::TYPE_CHILD;
-const int SpriteGroup::ANIMATE_GAP;
-const int SpriteGroup::ANIMATE_GAP_HORZ;
-const int SpriteGroup::ANIMATE_GAP_VERT;
-
 
 SpriteGroup::SpriteGroup(const char* id)
 	: Sprite(id), _groupWidth(1), _groupHeight(1), _children(), _horzGap(0), _vertGap(0), _frustumCull(true)
