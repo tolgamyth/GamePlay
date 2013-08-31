@@ -341,13 +341,6 @@ Animation* AnimationTarget::getAnimation(const char* id) const
     return NULL;
 }
 
-int AnimationTarget::getPropertyId(const char* propertyIdStr)
-{
-	GP_ASSERT(propertyIdStr);
-
-	return -1;
-}
-
 int AnimationTarget::getPropertyId(TargetType type, const char* propertyIdStr)
 {
     GP_ASSERT(propertyIdStr);
