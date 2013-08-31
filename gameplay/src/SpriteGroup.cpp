@@ -835,11 +835,11 @@ unsigned int SpriteGroup::getAnimationPropertyComponentCount(int propertyId) con
 	}
 }
 
-int SpriteGroup::getPropertyId(const char* propertyIdStr)
+int SpriteGroup::getPropertyId(TargetType type, const char* propertyIdStr)
 {
 	GP_ASSERT(propertyIdStr);
 
-	if (_targetType == AnimationTarget::TRANSFORM)
+	if (type == AnimationTarget::TRANSFORM)
     {
         if (strcmp(propertyIdStr, "ANIMATE_GAP") == 0)
         {
@@ -855,7 +855,7 @@ int SpriteGroup::getPropertyId(const char* propertyIdStr)
         }
 	}
 
-	return Sprite::getPropertyId(propertyIdStr);
+	return Sprite::getPropertyId(type, propertyIdStr);
 }
 
 void SpriteGroup::getAnimationPropertyValue(int propertyId, AnimationValue* value)

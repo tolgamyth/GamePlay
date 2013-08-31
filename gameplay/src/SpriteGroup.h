@@ -248,7 +248,7 @@ protected:
 	/**
      * @see AnimationTarget::getPropertyId
      */
-	virtual int getPropertyId(const char* propertyIdStr);
+	virtual int getPropertyId(TargetType type, const char* propertyIdStr);
 
 	/**
      * @see Sprite::clone

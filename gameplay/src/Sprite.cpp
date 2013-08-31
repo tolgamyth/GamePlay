@@ -550,11 +550,11 @@ unsigned int Sprite::getAnimationPropertyComponentCount(int propertyId) const
 	}
 }
 
-int Sprite::getPropertyId(const char* propertyIdStr)
+int Sprite::getPropertyId(TargetType type, const char* propertyIdStr)
 {
 	GP_ASSERT(propertyIdStr);
 
-	if (_targetType == AnimationTarget::TRANSFORM)
+	if (type == AnimationTarget::TRANSFORM)
     {
         if (strcmp(propertyIdStr, "ANIMATE_SIZE") == 0)
         {
@@ -594,7 +594,7 @@ int Sprite::getPropertyId(const char* propertyIdStr)
         }
 	}
 
-	return AnimationTarget::getPropertyId(propertyIdStr);
+	return AnimationTarget::getPropertyId(type, propertyIdStr);
 }
 
 void Sprite::getAnimationPropertyValue(int propertyId, AnimationValue* value)
