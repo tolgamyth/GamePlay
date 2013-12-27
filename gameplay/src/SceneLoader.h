@@ -61,10 +61,11 @@ private:
             SPRITE = 2048
         };
 
-        SceneNodeProperty(Type type, const std::string& url, int index);
+        SceneNodeProperty(Type type, const std::string& value, int index, bool isUrl);
 
         Type _type;
-        std::string _url;
+        std::string _value;
+        bool _isUrl;
         int _index;
     };
 
@@ -89,7 +90,7 @@ private:
 
     void addSceneAnimation(const char* animationID, const char* targetID, const char* url);
 
-    void addSceneNodeProperty(SceneNode& sceneNode, SceneNodeProperty::Type type, const char* url = NULL, int index = 0);
+    void addSceneNodeProperty(SceneNode& sceneNode, SceneNodeProperty::Type type, const char* value = NULL, bool supportsUrl = false, int index = 0);
 
     void applyNodeProperties(const Properties* sceneProperties, unsigned int typeFlags);
 
