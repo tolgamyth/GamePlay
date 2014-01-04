@@ -8,7 +8,10 @@
     #define realpath(A,B)    _fullpath(B,A,PATH_MAX)
 #endif
 
-#define MAX_HEIGHTMAP_SIZE 2049
+// The encoder version number should be incremented when a feature is added to the encoder.
+// The encoder version is not the same as the GPB version.
+#define ENCODER_VERSION "2.0.0"
+#define HEIGHTMAP_SIZE_MAX 2049
 
 namespace gameplay
 {
@@ -18,10 +21,10 @@ static EncoderArguments* __instance;
 extern int __logVerbosity = 1;
 
 EncoderArguments::EncoderArguments(size_t argc, const char** argv) :
-    _fontSize(0),
     _normalMap(false),
     _parseError(false),
     _fontPreview(false),
+    _fontFormat(Font::BITMAP),
     _textOutput(false),
     _optimizeAnimations(false),
     _animationGrouping(ANIMATIONGROUP_PROMPT),
@@ -284,8 +287,11 @@ void EncoderArguments::printUsage() const
         "  terrain generation tools.\n" \
     "\n" \
     "TTF file options:\n" \
-    "  -s <size>\tSize of the font.\n" \
+    "  -s <sizes>\tComma-separated list of font sizes (in pixels).\n" \
     "  -p\t\tOutput font preview.\n" \
+    "  -f Format of font. -f:b (BITMAP), -f:d (DISTANCE_FIELD).\n" \
+    "\n" \
+    "Encoder version: " ENCODER_VERSION "\n" \
     "\n");
     exit(8);
 }
@@ -293,6 +299,11 @@ void EncoderArguments::printUsage() const
 bool EncoderArguments::fontPreviewEnabled() const
 {
     return _fontPreview;
+}
+
+Font::FontFormat EncoderArguments::getFontFormat() const
+{
+    return _fontFormat;
 }
 
 bool EncoderArguments::textOutputEnabled() const
@@ -319,9 +330,9 @@ const char* EncoderArguments::getNodeId() const
     return _nodeId.c_str();
 }
 
-unsigned int EncoderArguments::getFontSize() const
+std::vector<unsigned int> EncoderArguments::getFontSizes() const
 {
-    return _fontSize;
+    return _fontSizes;
 }
 
 EncoderArguments::FileFormat EncoderArguments::getFileFormat() const
@@ -378,6 +389,16 @@ void EncoderArguments::readOption(const std::vector<std::string>& options, size_
     }
     switch (str[1])
     {
+    case 'f':
+        if (str.compare("-f:b") == 0)
+        {
+            _fontFormat = Font::BITMAP;
+        }
+       else  if (str.compare("-f:d") == 0)
+        {
+            _fontFormat = Font::DISTANCE_FIELD;
+        }
+        break;
     case 'g':
         if (str.compare("-groupAnimations:auto") == 0 || str.compare("-g:auto") == 0)
         {
@@ -450,9 +471,9 @@ void EncoderArguments::readOption(const std::vector<std::string>& options, size_
                     heightmap.height = atoi(parts[1].c_str());
 
                     // Put some artificial bounds on heightmap dimensions
-                    if (heightmap.width <= 0 || heightmap.height <= 0 || heightmap.width > MAX_HEIGHTMAP_SIZE || heightmap.height > MAX_HEIGHTMAP_SIZE)
+                    if (heightmap.width <= 0 || heightmap.height <= 0 || heightmap.width > HEIGHTMAP_SIZE_MAX || heightmap.height > HEIGHTMAP_SIZE_MAX)
                     {
-                        LOG(1, "Error: size argument for -h|-heightmap must be between (1,1) and (%d,%d).\n", (int)MAX_HEIGHTMAP_SIZE, (int)MAX_HEIGHTMAP_SIZE);
+                        LOG(1, "Error: size argument for -h|-heightmap must be between (1,1) and (%d,%d).\n", (int)HEIGHTMAP_SIZE_MAX, (int)HEIGHTMAP_SIZE_MAX);
                         _parseError = true;
                         return;
                     }
@@ -556,30 +577,60 @@ void EncoderArguments::readOption(const std::vector<std::string>& options, size_
         }
         else
         {
-            // Font Size
-
+            // Font Sizes
             // old format was -s##
+            const char* sizes = NULL;
             if (str.length() > 2)
             {
                 char n = str[2];
                 if (n > '0' && n <= '9')
                 {
-                    const char* number = str.c_str() + 2;
-                    _fontSize = atoi(number);
-                    break;
+                    sizes = str.c_str() + 2;
                 }
-            }
-
-            (*index)++;
-            if (*index < options.size())
-            {
-                _fontSize = atoi(options[*index].c_str());
             }
             else
             {
-                LOG(1, "Error: missing arguemnt for -%c.\n", str[1]);
+                (*index)++;
+                if (*index < options.size())
+                {
+                    sizes = options[*index].c_str();
+                }
+            }
+
+            if (sizes == NULL)
+            {
+                LOG(1, "Error: invalid format for argument: -s");
                 _parseError = true;
                 return;
+            }
+
+            // Parse comma-separated list of font sizes
+            char* ptr = const_cast<char*>(sizes);
+            std::string sizeStr;
+            while (ptr)
+            {
+                char* end = strchr(ptr, ',');
+                if (end)
+                {
+                    sizeStr = std::string(ptr, end - ptr);
+                    ptr = end + 1;
+                }
+                else
+                {
+                    sizeStr = ptr;
+                    ptr = NULL;
+                }
+                if (sizeStr.length() > 0)
+                {
+                    int size = atoi(sizeStr.c_str());
+                    if (size <= 0)
+                    {
+                        LOG(1, "Error: invalid font size provided: %s", sizeStr.c_str());
+                        _parseError = true;
+                        return;
+                    }
+                    _fontSizes.push_back((unsigned int)size);
+                }
             }
         }
         break;
@@ -684,7 +735,6 @@ std::string concat(const std::string& a, const char* b)
     str.append(b);
     return str;
 }
-
 
 void unittestsEncoderArguments()
 {

@@ -7,6 +7,7 @@
 #include "Font.h"
 #include "Game.h"
 #include "Ref.h"
+#include "lua_FontFormat.h"
 #include "lua_FontJustify.h"
 
 namespace gameplay
@@ -21,11 +22,14 @@ void luaRegister_Font()
         {"drawText", lua_Font_drawText},
         {"finish", lua_Font_finish},
         {"getCharacterSpacing", lua_Font_getCharacterSpacing},
+        {"getFormat", lua_Font_getFormat},
         {"getIndexAtLocation", lua_Font_getIndexAtLocation},
         {"getLocationAtIndex", lua_Font_getLocationAtIndex},
         {"getRefCount", lua_Font_getRefCount},
         {"getSize", lua_Font_getSize},
+        {"getSizeCount", lua_Font_getSizeCount},
         {"getSpriteBatch", lua_Font_getSpriteBatch},
+        {"isCharacterSupported", lua_Font_isCharacterSupported},
         {"measureText", lua_Font_measureText},
         {"release", lua_Font_release},
         {"setCharacterSpacing", lua_Font_setCharacterSpacing},
@@ -1123,6 +1127,41 @@ int lua_Font_getCharacterSpacing(lua_State* state)
     return 0;
 }
 
+int lua_Font_getFormat(lua_State* state)
+{
+    // Get the number of parameters.
+    int paramCount = lua_gettop(state);
+
+    // Attempt to match the parameters to a valid binding.
+    switch (paramCount)
+    {
+        case 1:
+        {
+            if ((lua_type(state, 1) == LUA_TUSERDATA))
+            {
+                Font* instance = getInstance(state);
+                Font::Format result = instance->getFormat();
+
+                // Push the return value onto the stack.
+                lua_pushstring(state, lua_stringFromEnum_FontFormat(result));
+
+                return 1;
+            }
+
+            lua_pushstring(state, "lua_Font_getFormat - Failed to match the given parameters to a valid function signature.");
+            lua_error(state);
+            break;
+        }
+        default:
+        {
+            lua_pushstring(state, "Invalid number of parameters (expected 1).");
+            lua_error(state);
+            break;
+        }
+    }
+    return 0;
+}
+
 int lua_Font_getIndexAtLocation(lua_State* state)
 {
     // Get the number of parameters.
@@ -1671,6 +1710,62 @@ int lua_Font_getSize(lua_State* state)
             lua_error(state);
             break;
         }
+        case 2:
+        {
+            if ((lua_type(state, 1) == LUA_TUSERDATA) &&
+                lua_type(state, 2) == LUA_TNUMBER)
+            {
+                // Get parameter 1 off the stack.
+                unsigned int param1 = (unsigned int)luaL_checkunsigned(state, 2);
+
+                Font* instance = getInstance(state);
+                unsigned int result = instance->getSize(param1);
+
+                // Push the return value onto the stack.
+                lua_pushunsigned(state, result);
+
+                return 1;
+            }
+
+            lua_pushstring(state, "lua_Font_getSize - Failed to match the given parameters to a valid function signature.");
+            lua_error(state);
+            break;
+        }
+        default:
+        {
+            lua_pushstring(state, "Invalid number of parameters (expected 1 or 2).");
+            lua_error(state);
+            break;
+        }
+    }
+    return 0;
+}
+
+int lua_Font_getSizeCount(lua_State* state)
+{
+    // Get the number of parameters.
+    int paramCount = lua_gettop(state);
+
+    // Attempt to match the parameters to a valid binding.
+    switch (paramCount)
+    {
+        case 1:
+        {
+            if ((lua_type(state, 1) == LUA_TUSERDATA))
+            {
+                Font* instance = getInstance(state);
+                unsigned int result = instance->getSizeCount();
+
+                // Push the return value onto the stack.
+                lua_pushunsigned(state, result);
+
+                return 1;
+            }
+
+            lua_pushstring(state, "lua_Font_getSizeCount - Failed to match the given parameters to a valid function signature.");
+            lua_error(state);
+            break;
+        }
         default:
         {
             lua_pushstring(state, "Invalid number of parameters (expected 1).");
@@ -1689,12 +1784,16 @@ int lua_Font_getSpriteBatch(lua_State* state)
     // Attempt to match the parameters to a valid binding.
     switch (paramCount)
     {
-        case 1:
+        case 2:
         {
-            if ((lua_type(state, 1) == LUA_TUSERDATA))
+            if ((lua_type(state, 1) == LUA_TUSERDATA) &&
+                lua_type(state, 2) == LUA_TNUMBER)
             {
+                // Get parameter 1 off the stack.
+                unsigned int param1 = (unsigned int)luaL_checkunsigned(state, 2);
+
                 Font* instance = getInstance(state);
-                void* returnPtr = (void*)instance->getSpriteBatch();
+                void* returnPtr = (void*)instance->getSpriteBatch(param1);
                 if (returnPtr)
                 {
                     gameplay::ScriptUtil::LuaObject* object = (gameplay::ScriptUtil::LuaObject*)lua_newuserdata(state, sizeof(gameplay::ScriptUtil::LuaObject));
@@ -1717,7 +1816,46 @@ int lua_Font_getSpriteBatch(lua_State* state)
         }
         default:
         {
-            lua_pushstring(state, "Invalid number of parameters (expected 1).");
+            lua_pushstring(state, "Invalid number of parameters (expected 2).");
+            lua_error(state);
+            break;
+        }
+    }
+    return 0;
+}
+
+int lua_Font_isCharacterSupported(lua_State* state)
+{
+    // Get the number of parameters.
+    int paramCount = lua_gettop(state);
+
+    // Attempt to match the parameters to a valid binding.
+    switch (paramCount)
+    {
+        case 2:
+        {
+            if ((lua_type(state, 1) == LUA_TUSERDATA) &&
+                lua_type(state, 2) == LUA_TNUMBER)
+            {
+                // Get parameter 1 off the stack.
+                int param1 = (int)luaL_checkint(state, 2);
+
+                Font* instance = getInstance(state);
+                bool result = instance->isCharacterSupported(param1);
+
+                // Push the return value onto the stack.
+                lua_pushboolean(state, result);
+
+                return 1;
+            }
+
+            lua_pushstring(state, "lua_Font_isCharacterSupported - Failed to match the given parameters to a valid function signature.");
+            lua_error(state);
+            break;
+        }
+        default:
+        {
+            lua_pushstring(state, "Invalid number of parameters (expected 2).");
             lua_error(state);
             break;
         }
