@@ -14,7 +14,7 @@ void luaRegister_lua_Global()
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "Form");
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "ImageControl");
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "Joint");
-    gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "Joystick");
+    gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "JoystickControl");
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "Label");
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "MaterialParameter");
     gameplay::ScriptUtil::setGlobalHierarchyPair("AnimationTarget", "Node");
@@ -34,7 +34,7 @@ void luaRegister_lua_Global()
     gameplay::ScriptUtil::setGlobalHierarchyPair("Control", "Container");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Control", "Form");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Control", "ImageControl");
-    gameplay::ScriptUtil::setGlobalHierarchyPair("Control", "Joystick");
+    gameplay::ScriptUtil::setGlobalHierarchyPair("Control", "JoystickControl");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Control", "Label");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Control", "RadioButton");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Control", "Slider");
@@ -85,7 +85,7 @@ void luaRegister_lua_Global()
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Image");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "ImageControl");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Joint");
-    gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Joystick");
+    gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "JoystickControl");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Label");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Layout");
     gameplay::ScriptUtil::setGlobalHierarchyPair("Ref", "Light");
@@ -127,7 +127,7 @@ void luaRegister_lua_Global()
     gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "Form");
     gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "ImageControl");
     gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "Joint");
-    gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "Joystick");
+    gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "JoystickControl");
     gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "Label");
     gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "Node");
     gameplay::ScriptUtil::setGlobalHierarchyPair("ScriptTarget", "PhysicsController");
@@ -224,8 +224,9 @@ void luaRegister_lua_Global()
         std::vector<std::string> scopePath;
         scopePath.push_back("Control");
         gameplay::ScriptUtil::registerConstantString("AUTO_SIZE_NONE", "AUTO_SIZE_NONE", scopePath);
-        gameplay::ScriptUtil::registerConstantString("AUTO_SIZE_STRETCH", "AUTO_SIZE_STRETCH", scopePath);
-        gameplay::ScriptUtil::registerConstantString("AUTO_SIZE_FIT", "AUTO_SIZE_FIT", scopePath);
+        gameplay::ScriptUtil::registerConstantString("AUTO_SIZE_WIDTH", "AUTO_SIZE_WIDTH", scopePath);
+        gameplay::ScriptUtil::registerConstantString("AUTO_SIZE_HEIGHT", "AUTO_SIZE_HEIGHT", scopePath);
+        gameplay::ScriptUtil::registerConstantString("AUTO_SIZE_BOTH", "AUTO_SIZE_BOTH", scopePath);
     }
 
     // Register enumeration Control::Listener::EventType.
@@ -240,8 +241,6 @@ void luaRegister_lua_Global()
         gameplay::ScriptUtil::registerConstantString("TEXT_CHANGED", "TEXT_CHANGED", scopePath);
         gameplay::ScriptUtil::registerConstantString("MIDDLE_CLICK", "MIDDLE_CLICK", scopePath);
         gameplay::ScriptUtil::registerConstantString("RIGHT_CLICK", "RIGHT_CLICK", scopePath);
-        gameplay::ScriptUtil::registerConstantString("ENTER", "ENTER", scopePath);
-        gameplay::ScriptUtil::registerConstantString("LEAVE", "LEAVE", scopePath);
         gameplay::ScriptUtil::registerConstantString("FOCUS_GAINED", "FOCUS_GAINED", scopePath);
         gameplay::ScriptUtil::registerConstantString("FOCUS_LOST", "FOCUS_LOST", scopePath);
     }
