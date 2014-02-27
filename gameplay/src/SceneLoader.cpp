@@ -780,7 +780,7 @@ void SceneLoader::parseNode(Properties* ns, SceneNode* parent, const std::string
         }
 		else if (strcmp(name, "sprite") == 0)
         {
-			addSceneNodeProperty(sceneNode, SceneNodeProperty::SPRITE, ns->getString());
+			addSceneNodeProperty(sceneNode, SceneNodeProperty::SPRITE, ns->getString(), true);
         }
         else if (strcmp(name, "light") == 0)
         {
