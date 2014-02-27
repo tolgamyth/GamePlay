@@ -168,7 +168,7 @@ TileSheet* TileSheet::create(Properties* tileProperties)
     const char* defines = tileProperties->getString("defines");
 
     // Both vertex and fragment shaders need to be specified (xor check)
-    if ((vsh != NULL && strlen(vsh) != 0) ^ (fsh != NULL && strlen(fsh) != 0))
+    if ((vsh && strlen(vsh) != 0) ^ (fsh && strlen(fsh) != 0))
     {
         GP_ERROR("Both fragment and vertex shaders need to be specified if one of them is.");
         return NULL;

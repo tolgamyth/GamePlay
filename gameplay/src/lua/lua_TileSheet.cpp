@@ -1281,7 +1281,7 @@ int lua_TileSheet_static_create(lua_State* state)
         }
         default:
         {
-            lua_pushstring(state, "Invalid number of parameters (expected 1, 2 or 3).");
+            lua_pushstring(state, "Invalid number of parameters (expected 1, 2, 3 or 4).");
             lua_error(state);
             break;
         }
