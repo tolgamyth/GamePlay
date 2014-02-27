@@ -184,6 +184,7 @@ TileSheet* TileSheet::create(Properties* tileProperties)
 	Texture* texture = Texture::create(path, mipmap);
 	TileSheet* tileSheet = TileSheet::create(id, texture, 0, effect);
 	SAFE_RELEASE(texture);
+    SAFE_RELEASE(effect);
 
 	//Modify texture settings
 	Texture::Sampler* samp = tileSheet->_batch->getSampler();
