@@ -680,9 +680,12 @@ bool Bundle::skipNode()
     }
 
     // Skip over the node's camera, light, and model attachments.
-    Camera* camera = readCamera(); SAFE_RELEASE(camera);
-    Light* light = readLight(); SAFE_RELEASE(light);
-    Model* model = readModel(id); SAFE_RELEASE(model);
+    Camera* camera = readCamera();
+    SAFE_RELEASE(camera);
+    Light* light = readLight();
+    SAFE_RELEASE(light);
+    Model* model = readModel(id);
+    SAFE_RELEASE(model);
 
     return true;
 }
@@ -820,10 +823,9 @@ Node* Bundle::readNode(Scene* sceneContext, Node* nodeContext)
     Model* model = readModel(node->getId());
     if (model)
     {
-        node->setModel(model);
+        node->setDrawable(model);
         SAFE_RELEASE(model);
     }
-
     return node;
 }
 
@@ -1869,7 +1871,7 @@ Bundle::Reference::~Reference()
 }
 
 Bundle::MeshPartData::MeshPartData() :
-    indexCount(0), indexData(NULL)
+		primitiveType(Mesh::TRIANGLES), indexFormat(Mesh::INDEX32), indexCount(0), indexData(NULL)
 {
 }
 
@@ -1879,7 +1881,7 @@ Bundle::MeshPartData::~MeshPartData()
 }
 
 Bundle::MeshData::MeshData(const VertexFormat& vertexFormat)
-    : vertexFormat(vertexFormat), vertexCount(0), vertexData(NULL)
+    : vertexFormat(vertexFormat), vertexCount(0), vertexData(NULL), primitiveType(Mesh::TRIANGLES)
 {
 }
 

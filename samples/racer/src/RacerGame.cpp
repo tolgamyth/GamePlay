@@ -31,7 +31,9 @@ RacerGame game;
 #define STEERING_RESPONSE (7.0f)
 
 RacerGame::RacerGame()
-    : _scene(NULL), _keyFlags(0), _mouseFlags(0), _steering(0), _gamepad(NULL), _carVehicle(NULL), _upsetTimer(0),
+    : _scene(NULL), _font(NULL), _menu(NULL), _overlay(NULL), _keyFlags(0), _mouseFlags(0), _steering(0),
+    _gamepad(NULL), _physicalGamepad(NULL), _virtualGamepad(NULL), _virtualGamepadClip(NULL),
+    _carVehicle(NULL), _upsetTimer(0),
     _backgroundMusic(NULL), _engineSound(NULL), _brakingSound(NULL)
 {
 }
@@ -110,7 +112,7 @@ bool RacerGame::initializeScene(Node* node)
 {
     static Node* lightNode = _scene->findNode("directionalLight1");
 
-    Model* model = node->getModel();
+    Model* model = dynamic_cast<Model*>(node->getDrawable());
     if (model)
     {
         Material* material = model->getMaterial();
@@ -215,7 +217,7 @@ void RacerGame::update(float elapsedTime)
                     _engineSound->setGain(0.8f + (driving * 0.2f));
                 }
                 
-                if (!driving && (_keyFlags & ACCELERATOR || _keyFlags & ACCELERATOR_MOUSE || _gamepad->isButtonDown(Gamepad::BUTTON_A)))
+                if (!driving && ((_keyFlags & ACCELERATOR) || (_keyFlags & ACCELERATOR_MOUSE) || _gamepad->isButtonDown(Gamepad::BUTTON_A)))
                 {
                     driving = 1;
                     _engineSound->setGain(1.0f);
@@ -235,8 +237,7 @@ void RacerGame::update(float elapsedTime)
                 {
                     driving = -0.6f;
                 }
-
-                if ( (_keyFlags & BRAKE) || (_keyFlags & BRAKE_MOUSE) || _gamepad->isButtonDown(Gamepad::BUTTON_B))
+                if ((_keyFlags & BRAKE) || (_keyFlags & BRAKE_MOUSE) || _gamepad->isButtonDown(Gamepad::BUTTON_B) || (_gamepad->getTriggerCount() > 0 && _gamepad->getTriggerValue(0) > 0.5f))
                 {
                     braking = 1;
                     if (_brakingSound && (_brakingSound->getState() != AudioSource::PLAYING) && (v > 30.0f))
@@ -316,7 +317,7 @@ void RacerGame::render(float elapsedTime)
 
     // Draw the gamepad
     if (_gamepad && _gamepad->isVirtual())
-    	_gamepad->draw();
+        _gamepad->draw();
 
     // Draw the menu
     if (__showMenu)
@@ -340,7 +341,7 @@ void RacerGame::render(float elapsedTime)
 
 bool RacerGame::buildRenderQueues(Node* node)
 {
-    Model* model = node->getModel(); 
+    Model* model = dynamic_cast<Model*>(node->getDrawable());
     if (model)
     {
         // Perform view-frustum culling for this node
@@ -368,7 +369,7 @@ void RacerGame::drawScene()
 
         for (size_t j = 0, ncount = queue.size(); j < ncount; ++j)
         {
-            queue[j]->getModel()->draw();
+            queue[j]->getDrawable()->draw();
         }
     }
 }
@@ -529,22 +530,22 @@ void RacerGame::gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad)
 
         if (_physicalGamepad)
         {
-        	if (_virtualGamepadClip && _gamepad == _virtualGamepad)
+            if (_virtualGamepadClip && _gamepad == _virtualGamepad)
             {
-        		_virtualGamepadClip->setSpeed(1.0f);
+                _virtualGamepadClip->setSpeed(1.0f);
                 _virtualGamepadClip->play();
             }
             _gamepad = _physicalGamepad;
-			if (_virtualGamepad)
-			{
-				_virtualGamepad->getForm()->setEnabled(false);
-			}
+            if (_virtualGamepad)
+            {
+                _virtualGamepad->getForm()->setEnabled(false);
+            }
         }
         else if (_virtualGamepad)
         {
             if (_gamepad == _physicalGamepad)
             {
-        	    _virtualGamepadClip->setSpeed(-1.0f);
+                _virtualGamepadClip->setSpeed(-1.0f);
                 _virtualGamepadClip->play();
             }
             _gamepad = _virtualGamepad;

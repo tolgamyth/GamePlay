@@ -4,7 +4,7 @@
 namespace gameplay
 {
 
-TextBox::TextBox() : _caretLocation(0), _lastKeypress(0), _fontSize(0), _caretImage(NULL), _passwordChar('*'), _inputMode(TEXT), _ctrlPressed(false)
+TextBox::TextBox() : _caretLocation(0), _lastKeypress(0), _fontSize(0), _caretImage(NULL), _passwordChar('*'), _inputMode(TEXT), _ctrlPressed(false), _shiftPressed(false)
 {
     _canFocus = true;
 }
@@ -28,16 +28,6 @@ Control* TextBox::create(Theme::Style* style, Properties* properties)
     return textBox;
 }
 
-void TextBox::addListener(Control::Listener* listener, int eventFlags)
-{
-    if ((eventFlags & Control::Listener::VALUE_CHANGED) == Control::Listener::VALUE_CHANGED)
-    {
-        GP_ERROR("VALUE_CHANGED event is not applicable to this control.");
-    }
-
-    Control::addListener(listener, eventFlags);
-}
-
 void TextBox::initialize(const char* typeName, Theme::Style* style, Properties* properties)
 {
     Label::initialize(typeName, style, properties);
@@ -46,6 +36,21 @@ void TextBox::initialize(const char* typeName, Theme::Style* style, Properties* 
 	{
 		_inputMode = getInputMode(properties->getString("inputMode"));
 	}
+}
+
+const char* TextBox::getTypeName() const
+{
+    return "TextBox";
+}
+
+void TextBox::addListener(Control::Listener* listener, int eventFlags)
+{
+    if ((eventFlags & Control::Listener::VALUE_CHANGED) == Control::Listener::VALUE_CHANGED)
+    {
+        GP_ERROR("VALUE_CHANGED event is not applicable to this control.");
+    }
+
+    Control::addListener(listener, eventFlags);
 }
 
 int TextBox::getLastKeypress()
@@ -140,6 +145,11 @@ bool TextBox::keyEvent(Keyboard::KeyEvent evt, int key)
         {
             switch (key)
             {
+            	case Keyboard::KEY_SHIFT:
+            	{
+                    _shiftPressed = true;
+                    break;
+            	}
                 case Keyboard::KEY_CTRL:
                 {
                     _ctrlPressed = true;
@@ -258,6 +268,11 @@ bool TextBox::keyEvent(Keyboard::KeyEvent evt, int key)
                 default:
                 {
                     // Insert character into string, only if our font supports this character
+                    if (_shiftPressed && islower(key))
+                    {
+                        key = toupper(key);
+                    }
+                    // Insert character into string, only if our font supports this character
                     if (_font && _font->isCharacterSupported(key))
                     {
                         if (_caretLocation <= _text.length())
@@ -278,6 +293,11 @@ bool TextBox::keyEvent(Keyboard::KeyEvent evt, int key)
         case Keyboard::KEY_RELEASE:
             switch (key)
             {
+            	case Keyboard::KEY_SHIFT:
+            	{
+                    _shiftPressed = false;
+                    break;
+             	 }
                 case Keyboard::KEY_CTRL:
                 {
                     _ctrlPressed = false;
@@ -365,7 +385,7 @@ unsigned int TextBox::drawText(Form* form, const Rectangle& clip)
 
         SpriteBatch* batch = _font->getSpriteBatch(fontSize);
         startBatch(form, batch);
-        _font->drawText(displayedText.c_str(), _textBounds, _textColor, fontSize, getTextAlignment(state), true, getTextRightToLeft(state), &_viewportClipBounds);
+        _font->drawText(displayedText.c_str(), _textBounds, _textColor, fontSize, getTextAlignment(state), true, getTextRightToLeft(state), _viewportClipBounds);
         finishBatch(form, batch);
 
         return 1;
@@ -439,11 +459,6 @@ void TextBox::getCaretLocation(Vector2* p)
 
     State state = getState();
     getFont(state)->getLocationAtIndex(getDisplayedText().c_str(), _textBounds, getFontSize(state), p, _caretLocation, getTextAlignment(state), true, getTextRightToLeft(state));
-}
-
-const char* TextBox::getType() const
-{
-    return "textBox";
 }
 
 void TextBox::setPasswordChar(char character)

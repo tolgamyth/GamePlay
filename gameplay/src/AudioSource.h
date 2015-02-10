@@ -3,7 +3,7 @@
 
 #include "Vector3.h"
 #include "Ref.h"
-#include "Node.h"
+#include "Transform.h"
 
 namespace gameplay
 {
@@ -17,7 +17,7 @@ class NodeCloneContext;
  *
  * This can be attached to a Node for applying its 3D transformation.
  *
- * @see http://blackberry.github.io/GamePlay/docs/file-formats.html#wiki-Audio
+ * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Audio
  */
 class AudioSource : public Ref, public Transform::Listener
 {
@@ -200,10 +200,9 @@ private:
      * Clones the audio source and returns a new audio source.
      * 
      * @param context The clone context.
-     * 
      * @return The newly created audio source.
      */
-    AudioSource* clone(NodeCloneContext &context) const;
+    AudioSource* clone(NodeCloneContext& context);
 
     bool streamDataIfNeeded();
 

@@ -2,7 +2,6 @@
 #define TEXTBOX_H_
 
 #include <string>
-
 #include "Label.h"
 
 namespace gameplay
@@ -16,7 +15,7 @@ namespace gameplay
  * On mobile device you can tap or click within the text box to
  * bring up the virtual keyboard.
  *
- * @see http://blackberry.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+ * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
  */
 class TextBox : public Label
 {
@@ -53,6 +52,16 @@ public:
     static TextBox* create(const char* id, Theme::Style* style = NULL);
 
     /**
+     * Extends ScriptTarget::getTypeName() to return the type name of this class.
+     *
+     * Child controls should override this function to return the correct type name.
+     *
+     * @return The type name of this class: "TextBox"
+     * @see ScriptTarget::getTypeName()
+     */
+    const char* getTypeName() const;
+
+    /**
      * Returns the current location of the caret with the text of this TextBox.
      *
      * @return The current caret location.
@@ -72,11 +81,6 @@ public:
      * @return The last key pressed within this text box.
      */
     int getLastKeypress();
-
-    /**
-     * @see Control::getType
-     */
-    const char* getType() const;
 
     /**
      * Set the character displayed in password mode.
@@ -236,6 +240,11 @@ protected:
      * Indicate if the CTRL key is currently pressed.
      */
     bool _ctrlPressed;
+
+    /**
+     * Indicate if the SHIFT key is currently pressed.
+     */
+    bool _shiftPressed = false;
 
 private:
 
