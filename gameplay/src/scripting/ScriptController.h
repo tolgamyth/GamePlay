@@ -542,6 +542,16 @@ public:
      */
     static void print(const char* str1, const char* str2);
 
+    /**
+     * Constructor.
+     */
+    ScriptController();
+
+    /**
+     * Destructor.
+     */
+    ~ScriptController();
+
 private:
 
     /**
@@ -571,19 +581,9 @@ private:
     };
 
     /**
-     * Constructor.
-     */
-    ScriptController();
-
-    /**
      * Copy constructor.
      */
     ScriptController(const ScriptController& copy);
-
-    /**
-     * Destructor.
-     */
-    ~ScriptController();
 
     /**
      * Called to initialize the script controller.

@@ -1,6 +1,8 @@
 #ifndef GAME_H_
 #define GAME_H_
 
+#include <memory>
+
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
 #include "input/Touch.h"
@@ -758,14 +760,15 @@ private:
     float _clearDepth;                          // The clear depth value last used for clearing the depth buffer.
     int _clearStencil;                          // The clear stencil value last used for clearing the stencil buffer.
     Properties* _properties;                    // Game configuration properties object.
-    AnimationController* _animationController;  // Controls the scheduling and running of animations.
-    AudioController* _audioController;          // Controls audio sources that are playing in the game.
-    PhysicsController* _physicsController;      // Controls the simulation of a physics scene and entities.
-    AIController* _aiController;                // Controls AI simulation.
-    AudioListener* _audioListener;              // The audio listener in 3D space.
+
+    std::unique_ptr<AnimationController> _animationController;  // Controls the scheduling and running of animations.
+    std::unique_ptr<AudioController> _audioController;          // Controls audio sources that are playing in the game.
+    std::unique_ptr<PhysicsController> _physicsController;      // Controls the simulation of a physics scene and entities.
+    std::unique_ptr<AIController> _aiController;                // Controls AI simulation.
+    std::unique_ptr<AudioListener> _audioListener;              // The audio listener in 3D space.
     std::priority_queue<TimeEvent, std::vector<TimeEvent>, std::less<TimeEvent> >* _timeEvents;     // Contains the scheduled time events.
-    ScriptController* _scriptController;            // Controls the scripting engine.
-    ScriptTarget* _scriptTarget;                // Script target for the game
+    std::unique_ptr<ScriptController> _scriptController;            // Controls the scripting engine.
+    std::unique_ptr<ScriptTarget> _scriptTarget;                // Script target for the game
 
     // Note: Do not add STL object member variables on the stack; this will cause false memory leaks to be reported.
 

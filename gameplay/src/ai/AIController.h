@@ -43,8 +43,6 @@ public:
      */
     AIAgent* findAgent(const char* id) const;
 
-private:
-
     /**
      * Constructor.
      */
@@ -54,6 +52,8 @@ private:
      * Destructor.
      */
     ~AIController();
+
+private:
 
     /**
      * Hidden copy constructor.

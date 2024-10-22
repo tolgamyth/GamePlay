@@ -62,10 +62,7 @@ public:
 Game::Game()
     : _initialized(false), _state(UNINITIALIZED), _pausedCount(0),
       _frameLastFPS(0), _frameCount(0), _frameRate(0), _width(0), _height(0),
-      _clearDepth(1.0f), _clearStencil(0), _properties(NULL),
-      _animationController(NULL), _audioController(NULL),
-      _physicsController(NULL), _aiController(NULL), _audioListener(NULL),
-      _timeEvents(NULL), _scriptController(NULL), _scriptTarget(NULL)
+      _clearDepth(1.0f), _clearStencil(0), _timeEvents(NULL)
 {
     GP_ASSERT(__gameInstance == NULL);
 
@@ -75,9 +72,6 @@ Game::Game()
 
 Game::~Game()
 {
-    SAFE_DELETE(_scriptTarget);
-	SAFE_DELETE(_scriptController);
-
     // Do not call any virtual functions from the destructor.
     // Finalization is done from outside this class.
     SAFE_DELETE(_timeEvents);
@@ -164,19 +158,19 @@ bool Game::startup()
     RenderState::initialize();
     FrameBuffer::initialize();
 
-    _animationController = new AnimationController();
+    _animationController = std::make_unique<AnimationController>();
     _animationController->initialize();
 
-    _audioController = new AudioController();
+    _audioController = std::make_unique<AudioController>();
     _audioController->initialize();
 
-    _physicsController = new PhysicsController();
+    _physicsController = std::make_unique<PhysicsController>();
     _physicsController->initialize();
 
-    _aiController = new AIController();
+    _aiController = std::make_unique<AIController>();
     _aiController->initialize();
 
-    _scriptController = new ScriptController();
+    _scriptController = std::make_unique<ScriptController>();
     _scriptController->initialize();
 
     // Load any gamepads, ui or physical.
@@ -185,10 +179,10 @@ bool Game::startup()
     // Set script handler
     if (_properties)
     {
+        _scriptTarget = std::make_unique<GameScriptTarget>();
         const char* scriptPath = _properties->getString("script");
         if (scriptPath)
         {
-            _scriptTarget = new GameScriptTarget();
             _scriptTarget->addScript(scriptPath);
         }
         else
@@ -197,8 +191,6 @@ bool Game::startup()
             Properties* sns = _properties->getNamespace("scripts", true);
             if (sns)
             {
-                _scriptTarget = new GameScriptTarget();
-
                 // Define a macro to simplify defining the following script callback registrations
                 #define GP_REG_GAME_SCRIPT_CB(e) if (sns->exists(#e)) _scriptTarget->addScriptCallback(GP_GET_SCRIPT_EVENT(GameScriptTarget, e), sns->getString(#e))
 
@@ -247,10 +239,10 @@ void Game::shutdown()
             _scriptTarget->fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(GameScriptTarget, finalize));
 
         // Destroy script target so no more script events are fired
-        SAFE_DELETE(_scriptTarget);
+        _scriptTarget.reset();
 
-		// Shutdown scripting system first so that any objects allocated in script are released before our subsystems are released
-		_scriptController->finalize();
+		    // Shutdown scripting system first so that any objects allocated in script are released before our subsystems are released
+		    _scriptController->finalize();
 
         unsigned int gamepadCount = Gamepad::getGamepadCount();
         for (unsigned int i = 0; i < gamepadCount; i++)
@@ -260,15 +252,12 @@ void Game::shutdown()
         }
 
         _animationController->finalize();
-        SAFE_DELETE(_animationController);
 
         _audioController->finalize();
-        SAFE_DELETE(_audioController);
 
         _physicsController->finalize();
-        SAFE_DELETE(_physicsController);
+
         _aiController->finalize();
-        SAFE_DELETE(_aiController);
         
         ControlFactory::finalize();
 
@@ -277,12 +266,8 @@ void Game::shutdown()
         // Note: we do not clean up the script controller here
         // because users can call Game::exit() from a script.
 
-        SAFE_DELETE(_audioListener);
-
         FrameBuffer::finalize();
         RenderState::finalize();
-
-        SAFE_DELETE(_properties);
 
 		_state = UNINITIALIZED;
     }
@@ -534,11 +519,11 @@ void Game::clear(ClearFlags flags, float red, float green, float blue, float alp
 
 AudioListener* Game::getAudioListener()
 {
-    if (_audioListener == NULL)
+    if (_audioListener)
     {
-        _audioListener = new AudioListener();
+        _audioListener = std::make_unique<AudioListener>();
     }
-    return _audioListener;
+    return _audioListener.get();
 }
 
 void Game::keyEvent(Keyboard::KeyEvent evt, int key)

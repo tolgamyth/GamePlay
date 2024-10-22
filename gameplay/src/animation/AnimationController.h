@@ -21,6 +21,16 @@ class AnimationController
 
 public:
 
+  /**
+   * Constructor.
+   */
+  AnimationController();
+
+  /**
+   * Destructor.
+   */
+  ~AnimationController();
+
     /** 
      * Stops all AnimationClips currently playing on the AnimationController.
      */
@@ -42,17 +52,7 @@ private:
     /**
      * Constructor.
      */
-    AnimationController();
-
-    /**
-     * Constructor.
-     */
     AnimationController(const AnimationController& copy);
-
-    /**
-     * Destructor.
-     */
-    ~AnimationController();
 
     /**
      * Gets the controller's state.

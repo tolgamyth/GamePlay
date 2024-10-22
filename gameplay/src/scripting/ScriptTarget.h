@@ -112,6 +112,16 @@ class ScriptTarget
 
 public:
 
+  /**
+   * Constructor.
+   */
+  ScriptTarget();
+
+  /**
+    * Destructor.
+    */
+  virtual ~ScriptTarget();
+
     /**
      * Defines a single script event.
      */
@@ -367,16 +377,6 @@ protected:
          */
         CallbackFunction(Script* script, const char* function) : script(script), function(function) { }
     };
-
-    /**
-     * Constructor.
-     */
-    ScriptTarget();
-
-    /**
-     * Destructor.
-     */
-    virtual ~ScriptTarget();
 
     /**
      * Removes the specified script.

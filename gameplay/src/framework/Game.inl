@@ -41,26 +41,26 @@ inline const Rectangle& Game::getViewport() const
 
 inline AnimationController* Game::getAnimationController() const
 {
-    return _animationController;
+    return _animationController.get();
 }
 
 inline AudioController* Game::getAudioController() const
 {
-    return _audioController;
+    return _audioController.get();
 }
 
 inline PhysicsController* Game::getPhysicsController() const
 {
-    return _physicsController;
+    return _physicsController.get();
 }
 
 inline ScriptController* Game::getScriptController() const
 {
-    return _scriptController;
+    return _scriptController.get();
 }
 inline AIController* Game::getAIController() const
 {
-    return _aiController;
+    return _aiController.get();
 }
 
 template <class T>

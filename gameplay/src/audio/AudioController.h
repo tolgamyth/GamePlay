@@ -16,18 +16,18 @@ class AudioController
     friend class AudioSource;
 
 public:
+
+  /**
+   * Constructor.
+   */
+  AudioController();
     
-    /**
-     * Destructor.
-     */
-    virtual ~AudioController();
+  /**
+    * Destructor.
+    */
+  virtual ~AudioController();
 
 private:
-    
-    /**
-     * Constructor.
-     */
-    AudioController();
 
     /**
      * Controller initialize.

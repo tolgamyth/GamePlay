@@ -341,6 +341,16 @@ public:
      */
     bool sweepTest(PhysicsCollisionObject* object, const Vector3& endPosition, PhysicsController::HitResult* result = NULL, PhysicsController::HitFilter* filter = NULL);
 
+    /**
+     * Destructor.
+     */
+    ~PhysicsController();
+
+    /**
+     * Constructor.
+     */
+    PhysicsController();
+
 private:
 
     /**
@@ -380,16 +390,6 @@ private:
         std::vector<PhysicsCollisionObject::CollisionListener*> _listeners;
         int _status;
     };
-
-    /**
-     * Constructor.
-     */
-    PhysicsController();
-
-    /**
-     * Destructor.
-     */
-    ~PhysicsController();
 
     /**
      * Controller initialize.

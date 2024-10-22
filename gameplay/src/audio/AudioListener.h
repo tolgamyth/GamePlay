@@ -147,8 +147,6 @@ public:
      */
     void setCamera(Camera* camera);
 
-private:
-
     /**
     * Constructor.
     */
@@ -158,6 +156,8 @@ private:
     * Destructor.
     */
     ~AudioListener();
+
+private:
 
     /**
     * @see Camera::Listener::cameraChanged
