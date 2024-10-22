@@ -45,48 +45,13 @@ bool BoundingSphere::intersects(const BoundingBox& box) const
 {
     // Determine what point is closest; if the distance to that
     // point is less than the radius, then this sphere intersects.
-    float cpX = center.x;
-    float cpY = center.y;
-    float cpZ = center.z;
-
-    const Vector3& boxMin = box.min;
-    const Vector3& boxMax = box.max;
-    // Closest x value.
-    if (center.x < boxMin.x)
-    {
-        cpX = boxMin.x;
-    }
-    else if (center.x > boxMax.x)
-    {
-        cpX = boxMax.x;
-    }
-
-    // Closest y value.
-    if (center.y < boxMin.y)
-    {
-        cpY = boxMin.y;
-    }
-    else if (center.y > boxMax.y)
-    {
-        cpY = boxMax.y;
-    }
-
-    // Closest z value.
-    if (center.z < boxMin.z)
-    {
-        cpZ = boxMin.z;
-    }
-    else if (center.z > boxMax.z)
-    {
-        cpZ = boxMax.z;
-    }
 
     // Find the distance to the closest point and see if it is less than or equal to the radius.
-    cpX -= center.x;
-    cpY -= center.y;
-    cpZ -= center.z;
+    float distX = std::clamp(center.x, box.min.x, box.max.x) - center.x;
+    float distY = std::clamp(center.y, box.min.y, box.max.y) - center.y;
+    float distZ = std::clamp(center.z, box.min.z, box.max.z) - center.z;
 
-    return sqrt(cpX * cpX + cpY * cpY + cpZ * cpZ) <= radius;
+    return sqrt(distX * distX + distY * distY + distZ * distZ) <= radius;
 }
 
 bool BoundingSphere::intersects(const Frustum& frustum) const
