@@ -33,18 +33,18 @@ unsigned int Technique::getPassCount() const
 
 Pass* Technique::getPassByIndex(unsigned int index) const
 {
-    GP_ASSERT(index < _passes.size());
+    assert(index < _passes.size());
     return _passes[index];
 }
 
 Pass* Technique::getPass(const char* id) const
 {
-    GP_ASSERT(id);
+    assert(id);
 
     for (size_t i = 0, count = _passes.size(); i < count; ++i)
     {
         Pass* pass = _passes[i];
-        GP_ASSERT(pass);
+        assert(pass);
         if (strcmp(pass->getId(), id) == 0)
         {
             return pass;
@@ -69,9 +69,9 @@ Technique* Technique::clone(Material* material, NodeCloneContext &context) const
     for (std::vector<Pass*>::const_iterator it = _passes.begin(); it != _passes.end(); ++it)
     {
         Pass* pass = *it;
-        GP_ASSERT(pass);
+        assert(pass);
         Pass* passCopy = pass->clone(technique, context);
-        GP_ASSERT(passCopy);
+        assert(passCopy);
         technique->_passes.push_back(passCopy);
     }
     RenderState::cloneInto(technique, context);

@@ -111,14 +111,14 @@ FrameBuffer* FrameBuffer::create(const char* id, unsigned int width, unsigned in
 
 FrameBuffer* FrameBuffer::getFrameBuffer(const char* id)
 {
-    GP_ASSERT(id);
+    assert(id);
 
     // Search the vector for a matching ID.
     std::vector<FrameBuffer*>::const_iterator it;
     for (it = _frameBuffers.begin(); it < _frameBuffers.end(); ++it)
     {
         FrameBuffer* fb = *it;
-        GP_ASSERT(fb);
+        assert(fb);
         if (strcmp(id, fb->getId()) == 0)
         {
             return fb;
@@ -155,7 +155,7 @@ unsigned int FrameBuffer::getMaxRenderTargets()
 
 void FrameBuffer::setRenderTarget(RenderTarget* target, unsigned int index)
 {
-    GP_ASSERT(!target || (target->getTexture() && target->getTexture()->getType() == Texture::TEXTURE_2D));
+    assert(!target || (target->getTexture() && target->getTexture()->getType() == Texture::TEXTURE_2D));
 
     // No change
     if (_renderTargets[index] == target)
@@ -166,16 +166,16 @@ void FrameBuffer::setRenderTarget(RenderTarget* target, unsigned int index)
 
 void FrameBuffer::setRenderTarget(RenderTarget* target, Texture::CubeFace face, unsigned int index)
 {
-    GP_ASSERT(face >= Texture::POSITIVE_X && face <= Texture::NEGATIVE_Z);
-    GP_ASSERT(!target || (target->getTexture() && target->getTexture()->getType() == Texture::TEXTURE_CUBE));
+    assert(face >= Texture::POSITIVE_X && face <= Texture::NEGATIVE_Z);
+    assert(!target || (target->getTexture() && target->getTexture()->getType() == Texture::TEXTURE_CUBE));
 
     setRenderTarget(target, index, GL_TEXTURE_CUBE_MAP_POSITIVE_X + face);
 }
 
 void FrameBuffer::setRenderTarget(RenderTarget* target, unsigned int index, GLenum textureTarget)
 {
-    GP_ASSERT(index < _maxRenderTargets);
-    GP_ASSERT(_renderTargets);
+    assert(index < _maxRenderTargets);
+    assert(_renderTargets);
 
     // Release our reference to the current RenderTarget at this index.
     if (_renderTargets[index])
@@ -226,7 +226,7 @@ void FrameBuffer::setRenderTarget(RenderTarget* target, unsigned int index, GLen
 
 RenderTarget* FrameBuffer::getRenderTarget(unsigned int index) const
 {
-    GP_ASSERT(_renderTargets);
+    assert(_renderTargets);
     if (index < _maxRenderTargets)
     {
         return _renderTargets[index];
@@ -300,7 +300,7 @@ FrameBuffer* FrameBuffer::bind(GLenum type)
 
 void FrameBuffer::getScreenshot(Image* image)
 {
-    GP_ASSERT( image );
+    assert( image );
 
     unsigned int width = _currentFrameBuffer->getWidth();
     unsigned int height = _currentFrameBuffer->getHeight();

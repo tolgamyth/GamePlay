@@ -139,7 +139,7 @@ void MaterialParameter::setValue(const Vector2& value)
 
 void MaterialParameter::setValue(const Vector2* values, unsigned int count)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     _value.floatPtrValue = const_cast<float*> (&values[0].x);
@@ -163,7 +163,7 @@ void MaterialParameter::setValue(const Vector3& value)
 
 void MaterialParameter::setValue(const Vector3* values, unsigned int count)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     _value.floatPtrValue = const_cast<float*> (&values[0].x);
@@ -187,7 +187,7 @@ void MaterialParameter::setValue(const Vector4& value)
 
 void MaterialParameter::setValue(const Vector4* values, unsigned int count)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     _value.floatPtrValue = const_cast<float*> (&values[0].x);
@@ -215,7 +215,7 @@ void MaterialParameter::setValue(const Matrix& value)
 
 void MaterialParameter::setValue(const Matrix* values, unsigned int count)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     _value.floatPtrValue = const_cast<Matrix&> (values[0]).m;
@@ -225,7 +225,7 @@ void MaterialParameter::setValue(const Matrix* values, unsigned int count)
 
 void MaterialParameter::setValue(const Texture::Sampler* sampler)
 {
-    GP_ASSERT(sampler);
+    assert(sampler);
     clearValue();
 
     const_cast<Texture::Sampler*>(sampler)->addRef();
@@ -235,7 +235,7 @@ void MaterialParameter::setValue(const Texture::Sampler* sampler)
 
 void MaterialParameter::setValue(const Texture::Sampler** samplers, unsigned int count)
 {
-    GP_ASSERT(samplers);
+    assert(samplers);
     clearValue();
 
     for (unsigned int i = 0; i < count; ++i)
@@ -249,7 +249,7 @@ void MaterialParameter::setValue(const Texture::Sampler** samplers, unsigned int
 
 Texture::Sampler* MaterialParameter::setValue(const char* texturePath, bool generateMipmaps)
 {
-    GP_ASSERT(texturePath);
+    assert(texturePath);
     clearValue();
 
     Texture::Sampler* sampler = Texture::Sampler::create(texturePath, generateMipmaps);
@@ -268,7 +268,7 @@ void MaterialParameter::setFloat(float value)
 
 void MaterialParameter::setFloatArray(const float* values, unsigned int count, bool copy)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     if (copy)
@@ -293,7 +293,7 @@ void MaterialParameter::setInt(int value)
 
 void MaterialParameter::setIntArray(const int* values, unsigned int count, bool copy)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     if (copy)
@@ -318,7 +318,7 @@ void MaterialParameter::setVector2(const Vector2& value)
 
 void MaterialParameter::setVector2Array(const Vector2* values, unsigned int count, bool copy)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     if (copy)
@@ -343,7 +343,7 @@ void MaterialParameter::setVector3(const Vector3& value)
 
 void MaterialParameter::setVector3Array(const Vector3* values, unsigned int count, bool copy)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     if (copy)
@@ -368,7 +368,7 @@ void MaterialParameter::setVector4(const Vector4& value)
 
 void MaterialParameter::setVector4Array(const Vector4* values, unsigned int count, bool copy)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     if (copy)
@@ -393,7 +393,7 @@ void MaterialParameter::setMatrix(const Matrix& value)
 
 void MaterialParameter::setMatrixArray(const Matrix* values, unsigned int count, bool copy)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     if (copy)
@@ -423,7 +423,7 @@ void MaterialParameter::setSampler(const Texture::Sampler* value)
 
 void MaterialParameter::setSamplerArray(const Texture::Sampler** values, unsigned int count, bool copy)
 {
-    GP_ASSERT(values);
+    assert(values);
     clearValue();
 
     if (copy)
@@ -448,7 +448,7 @@ void MaterialParameter::setSamplerArray(const Texture::Sampler** values, unsigne
 
 void MaterialParameter::bind(Effect* effect)
 {
-    GP_ASSERT(effect);
+    assert(effect);
 
     // If we had a Uniform cached that is not from the passed in effect,
     // we need to update our uniform to point to the new effect's uniform.
@@ -518,7 +518,7 @@ void MaterialParameter::bind(Effect* effect)
 
 void MaterialParameter::bindValue(Node* node, const char* binding)
 {
-    GP_ASSERT(binding);
+    assert(binding);
 
     if (strcmp(binding, "&Node::getBackVector") == 0)
     {
@@ -644,7 +644,7 @@ unsigned int MaterialParameter::getAnimationPropertyComponentCount(int propertyI
 
 void MaterialParameter::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 {
-    GP_ASSERT(value);
+    assert(value);
     switch (propertyId)
     {
         case ANIMATE_UNIFORM:
@@ -655,7 +655,7 @@ void MaterialParameter::getAnimationPropertyValue(int propertyId, AnimationValue
                     value->setFloat(0, _value.floatValue);
                     break;
                 case FLOAT_ARRAY:
-                    GP_ASSERT(_value.floatPtrValue);
+                    assert(_value.floatPtrValue);
                     for (unsigned int i = 0; i < _count; i++)
                     {
                         value->setFloat(i, _value.floatPtrValue[i]);
@@ -665,7 +665,7 @@ void MaterialParameter::getAnimationPropertyValue(int propertyId, AnimationValue
                     value->setFloat(0, _value.intValue);
                     break;
                 case INT_ARRAY:
-                    GP_ASSERT(_value.intPtrValue);
+                    assert(_value.intPtrValue);
                     for (unsigned int i = 0; i < _count; i++)
                     {
                         value->setFloat(i, _value.intPtrValue[i]);
@@ -697,8 +697,8 @@ void MaterialParameter::getAnimationPropertyValue(int propertyId, AnimationValue
 
 void MaterialParameter::setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight)
 {
-    GP_ASSERT(value);
-    GP_ASSERT(blendWeight >= 0.0f && blendWeight <= 1.0f);
+    assert(value);
+    assert(blendWeight >= 0.0f && blendWeight <= 1.0f);
 
     switch (propertyId)
     {
@@ -716,7 +716,7 @@ void MaterialParameter::setAnimationPropertyValue(int propertyId, AnimationValue
                     _value.intValue = Curve::lerp(blendWeight, _value.intValue, value->getFloat(0));
                     break;
                 case INT_ARRAY:
-                    GP_ASSERT(_value.intPtrValue);
+                    assert(_value.intPtrValue);
                     for (unsigned int i = 0; i < _count; i++)
                         _value.intPtrValue[i] = Curve::lerp(blendWeight, _value.intPtrValue[i], value->getFloat(i));
                     break;
@@ -746,8 +746,8 @@ void MaterialParameter::setAnimationPropertyValue(int propertyId, AnimationValue
 
 void MaterialParameter::applyAnimationValue(AnimationValue* value, float blendWeight, int components)
 {
-    GP_ASSERT(value);
-    GP_ASSERT(_value.floatPtrValue);
+    assert(value);
+    assert(_value.floatPtrValue);
 
     unsigned int count = _count * components;
     for (unsigned int i = 0; i < count; i++)
@@ -756,7 +756,7 @@ void MaterialParameter::applyAnimationValue(AnimationValue* value, float blendWe
 
 void MaterialParameter::cloneInto(MaterialParameter* materialParameter) const
 {
-    GP_ASSERT(materialParameter);
+    assert(materialParameter);
     materialParameter->_type = _type;
     materialParameter->_count = _count;
     materialParameter->_dynamic = _dynamic;
@@ -782,7 +782,7 @@ void MaterialParameter::cloneInto(MaterialParameter* materialParameter) const
         Vector2* value = reinterpret_cast<Vector2*>(_value.floatPtrValue);
         if (_count == 1)
         {
-            GP_ASSERT(value);
+            assert(value);
             materialParameter->setValue(*value);
         }
         else
@@ -796,7 +796,7 @@ void MaterialParameter::cloneInto(MaterialParameter* materialParameter) const
         Vector3* value = reinterpret_cast<Vector3*>(_value.floatPtrValue);
         if (_count == 1)
         {
-            GP_ASSERT(value);
+            assert(value);
             materialParameter->setValue(*value);
         }
         else
@@ -810,7 +810,7 @@ void MaterialParameter::cloneInto(MaterialParameter* materialParameter) const
         Vector4* value = reinterpret_cast<Vector4*>(_value.floatPtrValue);
         if (_count == 1)
         {
-            GP_ASSERT(value);
+            assert(value);
             materialParameter->setValue(*value);
         }
         else
@@ -824,7 +824,7 @@ void MaterialParameter::cloneInto(MaterialParameter* materialParameter) const
         Matrix* value = reinterpret_cast<Matrix*>(_value.floatPtrValue);
         if (_count == 1)
         {
-            GP_ASSERT(value);
+            assert(value);
             materialParameter->setValue(*value);
         }
         else
@@ -841,7 +841,7 @@ void MaterialParameter::cloneInto(MaterialParameter* materialParameter) const
         break;
     case METHOD:
         materialParameter->_value.method = _value.method;
-        GP_ASSERT(materialParameter->_value.method);
+        assert(materialParameter->_value.method);
         materialParameter->_value.method->addRef();
         break;
     default:

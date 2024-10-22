@@ -97,7 +97,7 @@ void Theme::finalize()
 
 Theme* Theme::create(const char* url)
 {
-    GP_ASSERT(url);
+    assert(url);
 
     // Search theme cache first.
     for (size_t i = 0, count = __themeCache.size(); i < count; ++i)
@@ -114,7 +114,7 @@ Theme* Theme::create(const char* url)
 
     // Load theme properties from file path.
     Properties* properties = Properties::create(url);
-    GP_ASSERT(properties);
+    assert(properties);
     if (properties == NULL)
     {
         return NULL;
@@ -122,7 +122,7 @@ Theme* Theme::create(const char* url)
 
     // Check if the Properties is valid and has a valid namespace.
     Properties* themeProperties = (strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace();
-    GP_ASSERT(themeProperties);
+    assert(themeProperties);
     if (!themeProperties || !(strcmpnocase(themeProperties->getNamespace(), "theme") == 0))
     {
         SAFE_DELETE(properties);
@@ -137,9 +137,9 @@ Theme* Theme::create(const char* url)
     std::string textureFile;
     themeProperties->getPath("texture", &textureFile);
     theme->_texture = Texture::create(textureFile.c_str(), true);
-    GP_ASSERT(theme->_texture);
+    assert(theme->_texture);
     theme->_spriteBatch = SpriteBatch::create(theme->_texture);
-    GP_ASSERT(theme->_spriteBatch);
+    assert(theme->_spriteBatch);
     theme->_spriteBatch->getSampler()->setFilterMode(Texture::LINEAR_MIPMAP_LINEAR, Texture::LINEAR);
     theme->_spriteBatch->getSampler()->setWrapMode(Texture::CLAMP, Texture::CLAMP);
 
@@ -189,7 +189,7 @@ Theme* Theme::create(const char* url)
             }
 
             Skin* skin = Skin::create(space->getId(), tw, th, region, border, color);
-            GP_ASSERT(skin);
+            assert(skin);
             theme->_skins.push_back(skin);
         }
 
@@ -253,7 +253,7 @@ Theme* Theme::create(const char* url)
                     theme->lookUpSprites(innerSpace, &imageList, &cursor, &skin);
 
                     normal = Theme::Style::Overlay::create();
-                    GP_ASSERT(normal);
+                    assert(normal);
                     normal->setSkin(skin);
                     normal->setCursor(cursor);
                     normal->setImageList(imageList);
@@ -389,7 +389,7 @@ Theme* Theme::create(const char* url)
                     if (strcmpnocase(innerSpacename, "stateFocus") == 0)
                     {
                         focus = Theme::Style::Overlay::create();
-                        GP_ASSERT(focus);
+                        assert(focus);
                         focus->setSkin(skin);
                         focus->setCursor(cursor);
                         focus->setImageList(imageList);
@@ -409,7 +409,7 @@ Theme* Theme::create(const char* url)
                     else if (strcmpnocase(innerSpacename, "stateActive") == 0)
                     {
                         active = Theme::Style::Overlay::create();
-                        GP_ASSERT(active);
+                        assert(active);
                         active->setSkin(skin);
                         active->setCursor(cursor);
                         active->setImageList(imageList);
@@ -429,7 +429,7 @@ Theme* Theme::create(const char* url)
                     else if (strcmpnocase(innerSpacename, "stateDisabled") == 0)
                     {
                         disabled = Theme::Style::Overlay::create();
-                        GP_ASSERT(disabled);
+                        assert(disabled);
                         disabled->setSkin(skin);
                         disabled->setCursor(cursor);
                         disabled->setImageList(imageList);
@@ -449,7 +449,7 @@ Theme* Theme::create(const char* url)
                     else if (strcmpnocase(innerSpacename, "stateHover") == 0)
                     {
                         hover = Theme::Style::Overlay::create();
-                        GP_ASSERT(hover);
+                        assert(hover);
                         hover->setSkin(skin);
                         hover->setCursor(cursor);
                         hover->setImageList(imageList);
@@ -487,7 +487,7 @@ Theme* Theme::create(const char* url)
             // Events will still be triggered, but a control's overlay will not be changed.
 
             Theme::Style* s = new Theme::Style(theme, space->getId(), tw, th, margin, padding, normal, focus, active, disabled, hover);
-            GP_ASSERT(s);
+            assert(s);
             theme->_styles.push_back(s);
         }
 
@@ -504,11 +504,11 @@ Theme* Theme::create(const char* url)
 
 Theme::Style* Theme::getStyle(const char* name) const
 {
-    GP_ASSERT(name);
+    assert(name);
 
     for (size_t i = 0, count = _styles.size(); i < count; ++i)
     {
-        GP_ASSERT(_styles[i]);
+        assert(_styles[i]);
         if (strcmpnocase(name, _styles[i]->getId()) == 0)
         {
             return _styles[i];
@@ -538,7 +538,7 @@ Theme::Style* Theme::getEmptyStyle()
 
 void Theme::setProjectionMatrix(const Matrix& matrix)
 {
-    GP_ASSERT(_spriteBatch);
+    assert(_spriteBatch);
     _spriteBatch->setProjectionMatrix(matrix);
 }
 
@@ -596,7 +596,7 @@ Theme::ThemeImage::~ThemeImage()
 
 Theme::ThemeImage* Theme::ThemeImage::create(float tw, float th, Properties* properties, const Vector4& defaultColor)
 {
-    GP_ASSERT(properties);
+    assert(properties);
 
     Vector4 regionVector;                
     properties->getVector4("region", &regionVector);
@@ -656,7 +656,7 @@ Theme::ImageList::ImageList(const ImageList& copy)
     for (it = copy._images.begin(); it != copy._images.end(); ++it)
     {
         ThemeImage* image = *it;
-        GP_ASSERT(image);
+        assert(image);
         _images.push_back(new ThemeImage(*image));
     }
 }
@@ -673,7 +673,7 @@ Theme::ImageList::~ImageList()
 
 Theme::ImageList* Theme::ImageList::create(float tw, float th, Properties* properties)
 {
-    GP_ASSERT(properties);
+    assert(properties);
 
     Vector4 color(1, 1, 1, 1);
     if (properties->exists("color"))
@@ -693,7 +693,7 @@ Theme::ImageList* Theme::ImageList::create(float tw, float th, Properties* prope
     while (space != NULL)
     {
         ThemeImage* image = ThemeImage::create(tw, th, space, color);
-        GP_ASSERT(image);
+        assert(image);
         imageList->_images.push_back(image);
         space = properties->getNextNamespace();
     }
@@ -708,13 +708,13 @@ const char* Theme::ImageList::getId() const
 
 Theme::ThemeImage* Theme::ImageList::getImage(const char* imageId) const
 {
-    GP_ASSERT(imageId);
+    assert(imageId);
 
     for (size_t i = 0, count = _images.size(); i < count; ++i)
     {
         ThemeImage* image = _images[i];
-        GP_ASSERT(image);
-        GP_ASSERT(image->getId());
+        assert(image);
+        assert(image->getId());
         if (strcmpnocase(image->getId(), imageId) == 0)
         {
             return image;
@@ -839,7 +839,7 @@ const Vector4& Theme::Skin::getColor() const
  */
 void Theme::generateUVs(float tw, float th, float x, float y, float width, float height, UVs* uvs)
 {
-    GP_ASSERT(uvs);
+    assert(uvs);
     uvs->u1 = x * tw;
     uvs->u2 = (x + width) * tw;
     uvs->v1 = 1.0f - (y * th);
@@ -848,18 +848,18 @@ void Theme::generateUVs(float tw, float th, float x, float y, float width, float
 
 void Theme::lookUpSprites(const Properties* overlaySpace, ImageList** imageList, ThemeImage** cursor, Skin** skin)
 {
-    GP_ASSERT(overlaySpace);
+    assert(overlaySpace);
 
     const char* imageListString = overlaySpace->getString("imageList");
     if (imageListString)
     {
         for (unsigned int i = 0; i < _imageLists.size(); ++i)
         {
-            GP_ASSERT(_imageLists[i]);
-            GP_ASSERT(_imageLists[i]->getId());
+            assert(_imageLists[i]);
+            assert(_imageLists[i]->getId());
             if (strcmpnocase(_imageLists[i]->getId(), imageListString) == 0)
             {
-                GP_ASSERT(imageList);
+                assert(imageList);
                 *imageList = _imageLists[i];
                 break;
             }
@@ -871,11 +871,11 @@ void Theme::lookUpSprites(const Properties* overlaySpace, ImageList** imageList,
     {
         for (unsigned int i = 0; i < _images.size(); ++i)
         {
-            GP_ASSERT(_images[i]);
-            GP_ASSERT(_images[i]->getId());
+            assert(_images[i]);
+            assert(_images[i]->getId());
             if (strcmpnocase(_images[i]->getId(), cursorString) == 0)
             {
-                GP_ASSERT(cursor);
+                assert(cursor);
                 *cursor = _images[i];
                 break;
             }
@@ -887,11 +887,11 @@ void Theme::lookUpSprites(const Properties* overlaySpace, ImageList** imageList,
     {
         for (unsigned int i = 0; i < _skins.size(); ++i)
         {
-            GP_ASSERT(_skins[i]);
-            GP_ASSERT(_skins[i]->getId());
+            assert(_skins[i]);
+            assert(_skins[i]->getId());
             if (strcmpnocase(_skins[i]->getId(), skinString) == 0)
             {
-                GP_ASSERT(skin);
+                assert(skin);
                 *skin = _skins[i];
                 break;
             }

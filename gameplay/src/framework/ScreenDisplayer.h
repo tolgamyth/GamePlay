@@ -1,5 +1,4 @@
-#ifndef SCREENDISPLAYER_H_
-#define SCREENDISPLAYER_H_
+#pragma once
 
 #include "framework/Game.h"
 #include "framework/Platform.h"
@@ -83,5 +82,3 @@ template <typename T> void ScreenDisplayer::run(T* instance, void (T::*method) (
     __##instance##ScreenDisplayer.run(instance, method, cookie, time)
 
 }
-
-#endif

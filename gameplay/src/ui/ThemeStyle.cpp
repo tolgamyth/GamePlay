@@ -191,7 +191,7 @@ const Vector4& Theme::Style::Overlay::getSkinColor() const
 
 void Theme::Style::Overlay::setSkinRegion(const Rectangle& region, float tw, float th)
 {
-    GP_ASSERT(_skin);
+    assert(_skin);
     _skin->setRegion(region, tw, th);
 }
 
@@ -295,16 +295,16 @@ const Rectangle& Theme::Style::Overlay::getImageRegion(const char* id) const
     
 void Theme::Style::Overlay::setImageRegion(const char* id, const Rectangle& region, float tw, float th)
 {
-    GP_ASSERT(_imageList);
+    assert(_imageList);
     ThemeImage* image = _imageList->getImage(id);
-    GP_ASSERT(image);
+    assert(image);
     image->_region.set(region);
     generateUVs(tw, th, region.x, region.y, region.width, region.height, &(image->_uvs));
 }
 
 const Vector4& Theme::Style::Overlay::getImageColor(const char* id) const
 {
-    GP_ASSERT(_imageList);
+    assert(_imageList);
     ThemeImage* image = _imageList->getImage(id);
     if (image)
     {
@@ -318,15 +318,15 @@ const Vector4& Theme::Style::Overlay::getImageColor(const char* id) const
 
 void Theme::Style::Overlay::setImageColor(const char* id, const Vector4& color)
 {
-    GP_ASSERT(_imageList);
+    assert(_imageList);
     ThemeImage* image = _imageList->getImage(id);
-    GP_ASSERT(image);
+    assert(image);
     image->_color.set(color);
 }
 
 const Theme::UVs& Theme::Style::Overlay::getImageUVs(const char* id) const
 {
-    GP_ASSERT(_imageList);
+    assert(_imageList);
     ThemeImage* image = _imageList->getImage(id);
     if (image)
     {
@@ -352,7 +352,7 @@ const Rectangle& Theme::Style::Overlay::getCursorRegion() const
     
 void Theme::Style::Overlay::setCursorRegion(const Rectangle& region, float tw, float th)
 {
-    GP_ASSERT(_cursor);
+    assert(_cursor);
     _cursor->_region.set(region);
     generateUVs(tw, th, region.x, region.y, region.width, region.height, &(_cursor->_uvs));
 }
@@ -371,7 +371,7 @@ const Vector4& Theme::Style::Overlay::getCursorColor() const
 
 void Theme::Style::Overlay::setCursorColor(const Vector4& color)
 {
-    GP_ASSERT(_cursor);
+    assert(_cursor);
     _cursor->_color.set(color);
 }
 
@@ -458,7 +458,7 @@ unsigned int Theme::Style::Overlay::getAnimationPropertyComponentCount(int prope
 
 void Theme::Style::Overlay::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     switch(propertyId)
     {
@@ -472,7 +472,7 @@ void Theme::Style::Overlay::getAnimationPropertyValue(int propertyId, AnimationV
 
 void Theme::Style::Overlay::setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     switch(propertyId)
     {

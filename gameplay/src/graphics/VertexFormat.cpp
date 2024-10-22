@@ -7,7 +7,7 @@ namespace gameplay
 VertexFormat::VertexFormat(const Element* elements, unsigned int elementCount)
     : _vertexSize(0)
 {
-    GP_ASSERT(elements);
+    assert(elements);
 
     // Copy elements and compute vertex size
     for (unsigned int i = 0; i < elementCount; ++i)
@@ -27,7 +27,7 @@ VertexFormat::~VertexFormat()
 
 const VertexFormat::Element& VertexFormat::getElement(unsigned int index) const
 {
-    GP_ASSERT(index < _elements.size());
+    assert(index < _elements.size());
     return _elements[index];
 }
 

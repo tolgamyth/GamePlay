@@ -12,7 +12,7 @@ namespace gameplay
 AudioSource::AudioSource(AudioBuffer* buffer, ALuint source) 
     : _alSource(source), _buffer(buffer), _looped(false), _gain(1.0f), _pitch(1.0f), _node(NULL)
 {
-    GP_ASSERT(buffer);
+    assert(buffer);
 
     if (isStreamed())
         AL_CHECK(alSourceQueueBuffers(_alSource, 1, &buffer->_alBufferQueue[0]));
@@ -36,7 +36,7 @@ AudioSource::~AudioSource()
         // playing sources. When the source is deleted afterwards, it should be removed
         // from controller's set regardless of its playing state.
         AudioController* audioController = Game::getInstance()->getAudioController();
-        GP_ASSERT(audioController);
+        assert(audioController);
         audioController->removePlayingSource(this);
 
         AL_CHECK(alDeleteSources(1, &_alSource));
@@ -85,7 +85,7 @@ AudioSource* AudioSource::create(const char* url, bool streamed)
 AudioSource* AudioSource::create(Properties* properties)
 {
     // Check if the properties is valid and has a valid namespace.
-    GP_ASSERT(properties);
+    assert(properties);
     if (!properties || !(strcmp(properties->getNamespace(), "audio") == 0))
     {
         GP_ERROR("Failed to load audio source from properties object: must be non-null object and have namespace equal to 'audio'.");
@@ -156,7 +156,7 @@ AudioSource::State AudioSource::getState() const
 
 bool AudioSource::isStreamed() const
 {
-    GP_ASSERT(_buffer);
+    assert(_buffer);
     return _buffer->_streamed;
 }
 
@@ -166,7 +166,7 @@ void AudioSource::play()
 
     // Add the source to the controller's list of currently playing sources.
     AudioController* audioController = Game::getInstance()->getAudioController();
-    GP_ASSERT(audioController);
+    assert(audioController);
     audioController->addPlayingSource(this);
 }
 
@@ -177,7 +177,7 @@ void AudioSource::pause()
     // Remove the source from the controller's set of currently playing sources
     // if the source is being paused by the user and not the controller itself.
     AudioController* audioController = Game::getInstance()->getAudioController();
-    GP_ASSERT(audioController);
+    assert(audioController);
     audioController->removePlayingSource(this);
 }
 
@@ -195,7 +195,7 @@ void AudioSource::stop()
 
     // Remove the source from the controller's set of currently playing sources.
     AudioController* audioController = Game::getInstance()->getAudioController();
-    GP_ASSERT(audioController);
+    assert(audioController);
     audioController->removePlayingSource(this);
 }
 
@@ -295,7 +295,7 @@ void AudioSource::transformChanged(Transform* transform, long cookie)
 
 AudioSource* AudioSource::clone(NodeCloneContext& context)
 {
-    GP_ASSERT(_buffer);
+    assert(_buffer);
 
     ALuint alSource = 0;
     AL_CHECK( alGenSources(1, &alSource) );
@@ -324,7 +324,7 @@ AudioSource* AudioSource::clone(NodeCloneContext& context)
 
 bool AudioSource::streamDataIfNeeded()
 {
-    GP_ASSERT( isStreamed() );
+    assert( isStreamed() );
     if( getState() != PLAYING )
         return false;
 

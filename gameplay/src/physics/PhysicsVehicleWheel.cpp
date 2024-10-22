@@ -95,7 +95,7 @@ PhysicsVehicleWheel::~PhysicsVehicleWheel()
 
 btCollisionObject* PhysicsVehicleWheel::getCollisionObject() const
 {
-    GP_ASSERT(_host);
+    assert(_host);
 
     return _host->getCollisionObject();
 }
@@ -112,7 +112,7 @@ void PhysicsVehicleWheel::setEnabled(bool enable)
 
 void PhysicsVehicleWheel::findAncestorAndBind()
 {
-    GP_ASSERT(getNode());
+    assert(getNode());
 
     // Search for the first PhysicsVehicle that shares a common ancestor, and
     // bind with it. The following code performs a naive search; nothing more
@@ -174,8 +174,8 @@ void PhysicsVehicleWheel::setHost(PhysicsVehicle* host, unsigned int indexInHost
 
 void PhysicsVehicleWheel::addToVehicle(btRaycastVehicle* vehicle)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->getWheelCount() == vehicle->getNumWheels() + 1);
+    assert(_host);
+    assert(_host->getWheelCount() == vehicle->getNumWheels() + 1);
 
     // Use safe defaults for now. Properties are assigned elsewhere.
     btRaycastVehicle::btVehicleTuning tuning;
@@ -191,8 +191,8 @@ void PhysicsVehicleWheel::addToVehicle(btRaycastVehicle* vehicle)
 
 void PhysicsVehicleWheel::transform(Node* node) const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_node);
+    assert(_host);
+    assert(_host->_node);
 
     node->setRotation(_orientation);
 
@@ -207,8 +207,8 @@ void PhysicsVehicleWheel::transform(Node* node) const
 
 void PhysicsVehicleWheel::update(float elapsedTime)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     const btTransform& trans = _host->_vehicle->getWheelInfo(_indexInHost).m_worldTransform;
     const btQuaternion& rot = trans.getRotation();
@@ -248,8 +248,8 @@ void PhysicsVehicleWheel::getConnectionDefault(Vector3* result) const
 
 void PhysicsVehicleWheel::getWheelPos(Vector3* result) const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_node);
+    assert(_host);
+    assert(_host->_node);
 
     *result = _initialOffset;
     _host->_node->getMatrix().transformPoint(result);
@@ -257,24 +257,24 @@ void PhysicsVehicleWheel::getWheelPos(Vector3* result) const
 
 bool PhysicsVehicleWheel::isSteerable() const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_bIsFrontWheel;
 }
 
 void PhysicsVehicleWheel::setSteerable(bool steerable)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_bIsFrontWheel = steerable;
 }
 
 void PhysicsVehicleWheel::getWheelDirection(Vector3* wheelDirection) const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     const btVector3& v = _host->_vehicle->getWheelInfo(_indexInHost).m_wheelDirectionCS;
     wheelDirection->set(v.x(), v.y(), v.z());
@@ -282,16 +282,16 @@ void PhysicsVehicleWheel::getWheelDirection(Vector3* wheelDirection) const
 
 void PhysicsVehicleWheel::setWheelDirection(const Vector3& wheelDirection)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_wheelDirectionCS.setValue(wheelDirection.x, wheelDirection.y, wheelDirection.z);
 }
 
 void PhysicsVehicleWheel::getWheelAxle(Vector3* wheelAxle) const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     const btVector3& v = _host->_vehicle->getWheelInfo(_indexInHost).m_wheelAxleCS;
     wheelAxle->set(v.x(), v.y(), v.z());
@@ -299,16 +299,16 @@ void PhysicsVehicleWheel::getWheelAxle(Vector3* wheelAxle) const
 
 void PhysicsVehicleWheel::setWheelAxle(const Vector3& wheelAxle)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_wheelAxleCS.setValue( wheelAxle.x, wheelAxle.y, wheelAxle.z);
 }
 
 void PhysicsVehicleWheel::getStrutConnectionOffset(Vector3* strutConnectionOffset) const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     const btVector3& v = _host->_vehicle->getWheelInfo(_indexInHost).m_chassisConnectionPointCS;
     strutConnectionOffset->set(v.x(), v.y(), v.z());
@@ -319,8 +319,8 @@ void PhysicsVehicleWheel::getStrutConnectionOffset(Vector3* strutConnectionOffse
 
 void PhysicsVehicleWheel::setStrutConnectionOffset(const Vector3& strutConnectionOffset)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     Vector3 strutConnectionPoint;
     getConnectionDefault(&strutConnectionPoint);
@@ -332,144 +332,144 @@ void PhysicsVehicleWheel::setStrutConnectionOffset(const Vector3& strutConnectio
 
 float PhysicsVehicleWheel::getStrutRestLength() const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_suspensionRestLength1;
 }
 
 void PhysicsVehicleWheel::setStrutRestLength(float strutRestLength)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_suspensionRestLength1 = strutRestLength;
 }
 
 float PhysicsVehicleWheel::getStrutTravelMax() const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_maxSuspensionTravelCm / 100.0f;
 }
 
 void PhysicsVehicleWheel::setStrutTravelMax(float strutTravelMax)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_maxSuspensionTravelCm = strutTravelMax * 100.0f;
 }
 
 float PhysicsVehicleWheel::getStrutStiffness() const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_suspensionStiffness;
 }
 
 void PhysicsVehicleWheel::setStrutStiffness(float strutStiffness)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_suspensionStiffness = strutStiffness;
 }
 
 float PhysicsVehicleWheel::getStrutDampingCompression() const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsDampingCompression;
 }
 
 void PhysicsVehicleWheel::setStrutDampingCompression(float strutDampingCompression)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsDampingCompression = strutDampingCompression;
 }
 
 float PhysicsVehicleWheel::getStrutDampingRelaxation() const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsDampingRelaxation;
 }
 
 void PhysicsVehicleWheel::setStrutDampingRelaxation(float strutDampingRelaxation)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsDampingRelaxation = strutDampingRelaxation;
 }
 
 float PhysicsVehicleWheel::getStrutForceMax() const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_maxSuspensionForce;
 }
 
 void PhysicsVehicleWheel::setStrutForceMax(float strutForceMax)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_maxSuspensionForce = strutForceMax;
 }
 
 float PhysicsVehicleWheel::getFrictionBreakout() const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_frictionSlip;
 }
 
 void PhysicsVehicleWheel::setFrictionBreakout(float frictionBreakout)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_frictionSlip = frictionBreakout;
 }
 
 float PhysicsVehicleWheel::getWheelRadius() const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsRadius;
 }
 
 void PhysicsVehicleWheel::setWheelRadius(float wheelRadius)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsRadius = wheelRadius;
 }
 
 float PhysicsVehicleWheel::getRollInfluence() const
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_rollInfluence;
 }
 
 void PhysicsVehicleWheel::setRollInfluence(float rollInfluence)
 {
-    GP_ASSERT(_host);
-    GP_ASSERT(_host->_vehicle);
+    assert(_host);
+    assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_rollInfluence = rollInfluence;
 }

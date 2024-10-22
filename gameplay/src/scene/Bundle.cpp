@@ -72,9 +72,9 @@ unsigned int Bundle::getVersionMinor() const
 template <class T>
 bool Bundle::readArray(unsigned int* length, T** ptr)
 {
-    GP_ASSERT(length);
-    GP_ASSERT(ptr);
-    GP_ASSERT(_stream);
+    assert(length);
+    assert(ptr);
+    assert(_stream);
 
     if (!read(length))
     {
@@ -97,8 +97,8 @@ bool Bundle::readArray(unsigned int* length, T** ptr)
 template <class T>
 bool Bundle::readArray(unsigned int* length, std::vector<T>* values)
 {
-    GP_ASSERT(length);
-    GP_ASSERT(_stream);
+    assert(length);
+    assert(_stream);
 
     if (!read(length))
     {
@@ -120,9 +120,9 @@ bool Bundle::readArray(unsigned int* length, std::vector<T>* values)
 template <class T>
 bool Bundle::readArray(unsigned int* length, std::vector<T>* values, unsigned int readSize)
 {
-    GP_ASSERT(length);
-    GP_ASSERT(_stream);
-    GP_ASSERT(sizeof(T) >= readSize);
+    assert(length);
+    assert(_stream);
+    assert(sizeof(T) >= readSize);
 
     if (!read(length))
     {
@@ -143,7 +143,7 @@ bool Bundle::readArray(unsigned int* length, std::vector<T>* values, unsigned in
 
 static std::string readString(Stream* stream)
 {
-    GP_ASSERT(stream);
+    assert(stream);
 
     unsigned int length;
     if (stream->read(&length, 4, 1) != 1)
@@ -153,7 +153,7 @@ static std::string readString(Stream* stream)
     }
 
     // Sanity check to detect if string length is far too big.
-    GP_ASSERT(length < BUNDLE_MAX_STRING_LENGTH);
+    assert(length < BUNDLE_MAX_STRING_LENGTH);
 
     std::string str;
     if (length > 0)
@@ -170,13 +170,13 @@ static std::string readString(Stream* stream)
 
 Bundle* Bundle::create(const char* path)
 {
-    GP_ASSERT(path);
+    assert(path);
 
     // Search the cache for this bundle.
     for (size_t i = 0, count = __bundleCache.size(); i < count; ++i)
     {
         Bundle* p = __bundleCache[i];
-        GP_ASSERT(p);
+        assert(p);
         if (p->_path == path)
         {
             // Found a match
@@ -255,8 +255,8 @@ Bundle* Bundle::create(const char* path)
 
 Bundle::Reference* Bundle::find(const char* id) const
 {
-    GP_ASSERT(id);
-    GP_ASSERT(_references);
+    assert(id);
+    assert(_references);
 
     // Search the ref table for the given id (case-sensitive).
     for (unsigned int i = 0; i < _referenceCount; ++i)
@@ -282,7 +282,7 @@ void Bundle::clearLoadSession()
 
 const char* Bundle::getIdFromOffset() const
 {
-    GP_ASSERT(_stream);
+    assert(_stream);
     return getIdFromOffset((unsigned int) _stream->position());
 }
 
@@ -291,7 +291,7 @@ const char* Bundle::getIdFromOffset(unsigned int offset) const
     // Search the ref table for the given offset.
     if (offset > 0)
     {
-        GP_ASSERT(_references);
+        assert(_references);
         for (unsigned int i = 0; i < _referenceCount; ++i)
         {
             if (_references[i].offset == offset && _references[i].id.length() > 0)
@@ -337,7 +337,7 @@ Bundle::Reference* Bundle::seekTo(const char* id, unsigned int type)
     }
 
     // Seek to the offset of this object.
-    GP_ASSERT(_stream);
+    assert(_stream);
     if (_stream->seek(ref->offset, SEEK_SET) == false)
     {
         GP_ERROR("Failed to seek to object '%s' in bundle '%s'.", id, _path.c_str());
@@ -349,8 +349,8 @@ Bundle::Reference* Bundle::seekTo(const char* id, unsigned int type)
 
 Bundle::Reference* Bundle::seekToFirstType(unsigned int type)
 {
-    GP_ASSERT(_references);
-    GP_ASSERT(_stream);
+    assert(_references);
+    assert(_stream);
 
     for (unsigned int i = 0; i < _referenceCount; ++i)
     {
@@ -441,9 +441,9 @@ Scene* Bundle::loadScene(const char* id)
     if (xref.length() > 1 && xref[0] == '#') // TODO: Handle full xrefs
     {
         Node* node = scene->findNode(xref.c_str() + 1, true);
-        GP_ASSERT(node);
+        assert(node);
         Camera* camera = node->getCamera();
-        GP_ASSERT(camera);
+        assert(camera);
         scene->setActiveCamera(camera);
     }
 
@@ -470,8 +470,8 @@ Scene* Bundle::loadScene(const char* id)
     scene->setAmbientColor(red, green, blue);
 
     // Parse animations.
-    GP_ASSERT(_references);
-    GP_ASSERT(_stream);
+    assert(_references);
+    assert(_stream);
     for (unsigned int i = 0; i < _referenceCount; ++i)
     {
         Reference* ref = &_references[i];
@@ -499,9 +499,9 @@ Node* Bundle::loadNode(const char* id)
 
 Node* Bundle::loadNode(const char* id, Scene* sceneContext)
 {
-    GP_ASSERT(id);
-    GP_ASSERT(_references);
-    GP_ASSERT(_stream);
+    assert(id);
+    assert(_references);
+    assert(_stream);
 
     clearLoadSession();
 
@@ -607,7 +607,7 @@ Node* Bundle::loadNode(const char* id, Scene* sceneContext)
 
 Node* Bundle::loadNode(const char* id, Scene* sceneContext, Node* nodeContext)
 {
-    GP_ASSERT(id);
+    assert(id);
 
     Node* node = NULL;
 
@@ -644,8 +644,8 @@ Node* Bundle::loadNode(const char* id, Scene* sceneContext, Node* nodeContext)
 bool Bundle::skipNode()
 {
     const char* id = getIdFromOffset();
-    GP_ASSERT(id);
-    GP_ASSERT(_stream);
+    assert(id);
+    assert(_stream);
 
     // Skip the node's type.
     unsigned int nodeType;
@@ -693,8 +693,8 @@ bool Bundle::skipNode()
 Node* Bundle::readNode(Scene* sceneContext, Node* nodeContext)
 {
     const char* id = getIdFromOffset();
-    GP_ASSERT(id);
-    GP_ASSERT(_stream);
+    assert(id);
+    assert(_stream);
 
     // If we are tracking nodes and it's not in the set yet, add it.
     if (_trackedNodes)
@@ -774,7 +774,7 @@ Node* Bundle::readNode(Scene* sceneContext, Node* nodeContext)
             // if we've already loaded this child node during this load session.
             Node* child = NULL;
             id = getIdFromOffset();
-            GP_ASSERT(id);
+            assert(id);
 
             if (sceneContext)
             {
@@ -1082,7 +1082,7 @@ MeshSkin* Bundle::readMeshSkin()
     }
     if (jointsBindPosesCount > 0)
     {
-        GP_ASSERT(jointCount * 16 == jointsBindPosesCount);
+        assert(jointCount * 16 == jointsBindPosesCount);
         float m[16];
         for (unsigned int i = 0; i < jointCount; i++)
         {
@@ -1105,13 +1105,13 @@ MeshSkin* Bundle::readMeshSkin()
 
 void Bundle::resolveJointReferences(Scene* sceneContext, Node* nodeContext)
 {
-    GP_ASSERT(_stream);
+    assert(_stream);
 
     for (size_t i = 0, skinCount = _meshSkins.size(); i < skinCount; ++i)
     {
         MeshSkinData* skinData = _meshSkins[i];
-        GP_ASSERT(skinData);
-        GP_ASSERT(skinData->skin);
+        assert(skinData);
+        assert(skinData->skin);
 
         // Resolve all joints in skin joint list.
         size_t jointCount = skinData->joints.size();
@@ -1139,7 +1139,7 @@ void Bundle::resolveJointReferences(Scene* sceneContext, Node* nodeContext)
         {
             Joint* rootJoint = skinData->skin->getJoint((unsigned int)0);
             Node* node = rootJoint;
-            GP_ASSERT(node);
+            assert(node);
             Node* parent = node->getParent();
 
             std::vector<Node*> loadedNodes;
@@ -1253,7 +1253,7 @@ void Bundle::readAnimations(Scene* scene)
 
 Animation* Bundle::readAnimationChannel(Scene* scene, Animation* animation, const char* animationId)
 {
-    GP_ASSERT(animationId);
+    assert(animationId);
 
     // Read target id.
     std::string targetId = readString(_stream);
@@ -1289,7 +1289,7 @@ Animation* Bundle::readAnimationChannel(Scene* scene, Animation* animation, cons
 
 Animation* Bundle::readAnimationChannelData(Animation* animation, const char* id, AnimationTarget* target, unsigned int targetAttribute)
 {
-    GP_ASSERT(id);
+    assert(id);
 
     std::vector<unsigned int> keyTimes;
     std::vector<float> values;
@@ -1341,8 +1341,8 @@ Animation* Bundle::readAnimationChannelData(Animation* animation, const char* id
 
     if (targetAttribute > 0)
     {
-        GP_ASSERT(target);
-        GP_ASSERT(keyTimes.size() > 0 && values.size() > 0);
+        assert(target);
+        assert(keyTimes.size() > 0 && values.size() > 0);
         if (animation == NULL)
         {
             // TODO: This code currently assumes LINEAR only.
@@ -1364,8 +1364,8 @@ Mesh* Bundle::loadMesh(const char* id)
 
 Mesh* Bundle::loadMesh(const char* id, const char* nodeId)
 {
-    GP_ASSERT(_stream);
-    GP_ASSERT(id);
+    assert(_stream);
+    assert(id);
 
     // Save the file position.
     long position = _stream->position();
@@ -1413,7 +1413,7 @@ Mesh* Bundle::loadMesh(const char* id, const char* nodeId)
     for (unsigned int i = 0; i < meshData->parts.size(); ++i)
     {
         MeshPartData* partData = meshData->parts[i];
-        GP_ASSERT(partData);
+        assert(partData);
 
         MeshPart* part = mesh->addPart(partData->primitiveType, partData->indexFormat, partData->indexCount, false);
         if (part == NULL)
@@ -1491,7 +1491,7 @@ Bundle::MeshData* Bundle::readMeshData()
         return NULL;
     }
 
-    GP_ASSERT(meshData->vertexFormat.getVertexSize());
+    assert(meshData->vertexFormat.getVertexSize());
     meshData->vertexCount = vertexByteCount / meshData->vertexFormat.getVertexSize();
     meshData->vertexData = new unsigned char[vertexByteCount];
     if (_stream->read(meshData->vertexData, 1, vertexByteCount) != vertexByteCount)
@@ -1569,7 +1569,7 @@ Bundle::MeshData* Bundle::readMeshData()
             return NULL;
         }
 
-        GP_ASSERT(indexSize);
+        assert(indexSize);
         partData->indexCount = iByteCount / indexSize;
 
         partData->indexData = new unsigned char[iByteCount];
@@ -1586,7 +1586,7 @@ Bundle::MeshData* Bundle::readMeshData()
 
 Bundle::MeshData* Bundle::readMeshData(const char* url)
 {
-    GP_ASSERT(url);
+    assert(url);
 
     size_t len = strlen(url);
     if (len == 0)
@@ -1633,8 +1633,8 @@ Bundle::MeshData* Bundle::readMeshData(const char* url)
 
 Font* Bundle::loadFont(const char* id)
 {
-    GP_ASSERT(id);
-    GP_ASSERT(_stream);
+    assert(id);
+    assert(_stream);
 
     // Seek to the specified font.
     Reference* ref = seekTo(id, BUNDLE_TYPE_FONT);
@@ -1833,7 +1833,7 @@ Font* Bundle::loadFont(const char* id)
 
 void Bundle::setTransform(const float* values, Transform* transform)
 {
-    GP_ASSERT(transform);
+    assert(transform);
 
     // Load array into transform.
     Matrix matrix(values);
@@ -1857,7 +1857,7 @@ unsigned int Bundle::getObjectCount() const
 
 const char* Bundle::getObjectId(unsigned int index) const
 {
-    GP_ASSERT(_references);
+    assert(_references);
     return (index >= _referenceCount ? NULL : _references[index].id.c_str());
 }
 

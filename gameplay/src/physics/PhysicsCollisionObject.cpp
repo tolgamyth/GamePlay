@@ -54,13 +54,13 @@ PhysicsCollisionObject::~PhysicsCollisionObject()
         SAFE_DELETE(_scriptListeners);
     }
 
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(Game::getInstance()->getPhysicsController());
     Game::getInstance()->getPhysicsController()->destroyShape(_collisionShape);
 }
 
 PhysicsCollisionShape::Type PhysicsCollisionObject::getShapeType() const
 {
-    GP_ASSERT(getCollisionShape());
+    assert(getCollisionShape());
     return getCollisionShape()->getType();
 }
 
@@ -82,7 +82,7 @@ bool PhysicsCollisionObject::isKinematic() const
     case CHARACTER:
         return true;
     default:
-        GP_ASSERT(getCollisionObject());
+        assert(getCollisionObject());
         return getCollisionObject()->isKinematicObject();
     }
 }
@@ -95,14 +95,14 @@ bool PhysicsCollisionObject::isStatic() const
     case CHARACTER:
         return false;
     default:
-        GP_ASSERT(getCollisionObject());
+        assert(getCollisionObject());
         return getCollisionObject()->isStaticObject();
     }
 }
 
 bool PhysicsCollisionObject::isDynamic() const
 {
-    GP_ASSERT(getCollisionObject());
+    assert(getCollisionObject());
     return !getCollisionObject()->isStaticOrKinematicObject();
 }
 
@@ -134,13 +134,13 @@ void PhysicsCollisionObject::setEnabled(bool enable)
 
 void PhysicsCollisionObject::addCollisionListener(CollisionListener* listener, PhysicsCollisionObject* object)
 {
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(Game::getInstance()->getPhysicsController());
     Game::getInstance()->getPhysicsController()->addCollisionListener(listener, this, object);
 }
 
 void PhysicsCollisionObject::removeCollisionListener(CollisionListener* listener, PhysicsCollisionObject* object)
 {
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(Game::getInstance()->getPhysicsController());
     Game::getInstance()->getPhysicsController()->removeCollisionListener(listener, this, object);
 }
 
@@ -177,9 +177,9 @@ void PhysicsCollisionObject::removeCollisionListener(const char* function, Physi
 
 bool PhysicsCollisionObject::collidesWith(PhysicsCollisionObject* object) const
 {
-    GP_ASSERT(Game::getInstance()->getPhysicsController() && Game::getInstance()->getPhysicsController()->_world);
-    GP_ASSERT(object && object->getCollisionObject());
-    GP_ASSERT(getCollisionObject());
+    assert(Game::getInstance()->getPhysicsController() && Game::getInstance()->getPhysicsController()->_world);
+    assert(object && object->getCollisionObject());
+    assert(getCollisionObject());
 
     static CollidesWithCallback callback;
 
@@ -228,8 +228,8 @@ PhysicsCollisionObject::PhysicsMotionState::~PhysicsMotionState()
 
 void PhysicsCollisionObject::PhysicsMotionState::getWorldTransform(btTransform &transform) const
 {
-    GP_ASSERT(_node);
-    GP_ASSERT(_collisionObject);
+    assert(_node);
+    assert(_collisionObject);
 
     if (_collisionObject->isKinematic())
         updateTransformFromNode();
@@ -239,7 +239,7 @@ void PhysicsCollisionObject::PhysicsMotionState::getWorldTransform(btTransform &
 
 void PhysicsCollisionObject::PhysicsMotionState::setWorldTransform(const btTransform &transform)
 {
-    GP_ASSERT(_node);
+    assert(_node);
 
     _worldTransform = transform * _centerOfMassOffset;
         
@@ -252,7 +252,7 @@ void PhysicsCollisionObject::PhysicsMotionState::setWorldTransform(const btTrans
 
 void PhysicsCollisionObject::PhysicsMotionState::updateTransformFromNode() const
 {
-    GP_ASSERT(_node);
+    assert(_node);
 
     // Store the initial world transform (minus the scale) for use by Bullet later on.
     Quaternion rotation;

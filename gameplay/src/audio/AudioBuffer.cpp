@@ -11,21 +11,21 @@ static std::vector<AudioBuffer*> __buffers;
 // Callbacks for loading an ogg file using Stream
 static size_t readStream(void* ptr, size_t size, size_t nmemb, void* datasource)
 {
-    GP_ASSERT(datasource);
+    assert(datasource);
     Stream* stream = reinterpret_cast<Stream*>(datasource);
     return stream->read(ptr, size, nmemb);
 }
 
 static int seekStream(void *datasource, ogg_int64_t offset, int whence)
 {
-    GP_ASSERT(datasource);
+    assert(datasource);
     Stream* stream = reinterpret_cast<Stream*>(datasource);
     return !stream->seek(offset, whence);
 }
 
 static int closeStream(void *datasource)
 {
-    GP_ASSERT(datasource);
+    assert(datasource);
     Stream* stream = reinterpret_cast<Stream*>(datasource);
     stream->close();
     return 0;
@@ -33,7 +33,7 @@ static int closeStream(void *datasource)
 
 static long tellStream(void* datasource)
 {
-    GP_ASSERT(datasource);
+    assert(datasource);
     Stream* stream = reinterpret_cast<Stream*>(datasource);
     return stream->position();
 }
@@ -78,7 +78,7 @@ AudioBuffer::~AudioBuffer()
 
 AudioBuffer* AudioBuffer::create(const char* path, bool streamed)
 {
-    GP_ASSERT(path);
+    assert(path);
 
     AudioBuffer* buffer = NULL;
     if (!streamed)
@@ -87,7 +87,7 @@ AudioBuffer* AudioBuffer::create(const char* path, bool streamed)
         for (unsigned int i = 0; i < bufferCount; i++)
         {
             buffer = __buffers[i];
-            GP_ASSERT(buffer);
+            assert(buffer);
             if (buffer->_filePath.compare(path) == 0)
             {
                 buffer->addRef();
@@ -184,7 +184,7 @@ cleanup:
 
 bool AudioBuffer::loadWav(Stream* stream, ALuint buffer, bool streamed, AudioStreamStateWav* streamState)
 {
-    GP_ASSERT(stream);
+    assert(stream);
 
     unsigned char data[12];
     
@@ -383,7 +383,7 @@ bool AudioBuffer::loadWav(Stream* stream, ALuint buffer, bool streamed, AudioStr
 
 bool AudioBuffer::loadOgg(Stream* stream, ALuint buffer, bool streamed, AudioStreamStateOgg* streamState)
 {
-    GP_ASSERT(stream);
+    assert(stream);
 
     vorbis_info* info;
     ALenum format;
@@ -406,7 +406,7 @@ bool AudioBuffer::loadOgg(Stream* stream, ALuint buffer, bool streamed, AudioStr
     }
 
     info = ov_info(&streamState->oggFile, -1);
-    GP_ASSERT(info);
+    assert(info);
     if (info->channels == 1)
         format = AL_FORMAT_MONO16;
     else

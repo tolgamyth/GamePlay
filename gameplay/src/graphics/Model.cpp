@@ -17,7 +17,7 @@ Model::Model() : Drawable(),
 Model::Model(Mesh* mesh) : Drawable(),
     _mesh(mesh), _material(NULL), _partCount(0), _partMaterials(NULL), _skin(NULL)
 {
-    GP_ASSERT(mesh);
+    assert(mesh);
     _partCount = mesh->getPartCount();
 }
 
@@ -38,7 +38,7 @@ Model::~Model()
 
 Model* Model::create(Mesh* mesh)
 {
-    GP_ASSERT(mesh);
+    assert(mesh);
     mesh->addRef();
     return new Model(mesh);
 }
@@ -50,13 +50,13 @@ Mesh* Model::getMesh() const
 
 unsigned int Model::getMeshPartCount() const
 {
-    GP_ASSERT(_mesh);
+    assert(_mesh);
     return _mesh->getPartCount();
 }
 
 Material* Model::getMaterial(int partIndex)
 {
-    GP_ASSERT(partIndex == -1 || partIndex >= 0);
+    assert(partIndex == -1 || partIndex >= 0);
 
     Material* m = NULL;
 
@@ -81,7 +81,7 @@ Material* Model::getMaterial(int partIndex)
 
 void Model::setMaterial(Material* material, int partIndex)
 {
-    GP_ASSERT(partIndex == -1 || (partIndex >= 0 && partIndex < (int)getMeshPartCount()));
+    assert(partIndex == -1 || (partIndex >= 0 && partIndex < (int)getMeshPartCount()));
 
     Material* oldMaterial = NULL;
 
@@ -130,10 +130,10 @@ void Model::setMaterial(Material* material, int partIndex)
         for (unsigned int i = 0, tCount = oldMaterial->getTechniqueCount(); i < tCount; ++i)
         {
             Technique* t = oldMaterial->getTechniqueByIndex(i);
-            GP_ASSERT(t);
+            assert(t);
             for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
             {
-                GP_ASSERT(t->getPassByIndex(j));
+                assert(t->getPassByIndex(j));
                 t->getPassByIndex(j)->setVertexAttributeBinding(NULL);
             }
         }
@@ -146,11 +146,11 @@ void Model::setMaterial(Material* material, int partIndex)
         for (unsigned int i = 0, tCount = material->getTechniqueCount(); i < tCount; ++i)
         {
             Technique* t = material->getTechniqueByIndex(i);
-            GP_ASSERT(t);
+            assert(t);
             for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
             {
                 Pass* p = t->getPassByIndex(j);
-                GP_ASSERT(p);
+                assert(p);
                 VertexAttributeBinding* b = VertexAttributeBinding::create(_mesh, p->getEffect());
                 p->setVertexAttributeBinding(b);
                 SAFE_RELEASE(b);
@@ -328,7 +328,7 @@ static bool drawWireframe(MeshPart* part)
 
 unsigned int Model::draw(bool wireframe)
 {
-    GP_ASSERT(_mesh);
+    assert(_mesh);
 
     unsigned int partCount = _mesh->getPartCount();
     if (partCount == 0)
@@ -337,12 +337,12 @@ unsigned int Model::draw(bool wireframe)
         if (_material)
         {
             Technique* technique = _material->getTechnique();
-            GP_ASSERT(technique);
+            assert(technique);
             unsigned int passCount = technique->getPassCount();
             for (unsigned int i = 0; i < passCount; ++i)
             {
                 Pass* pass = technique->getPassByIndex(i);
-                GP_ASSERT(pass);
+                assert(pass);
                 pass->bind();
                 GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0) );
                 if (!wireframe || !drawWireframe(_mesh))
@@ -358,19 +358,19 @@ unsigned int Model::draw(bool wireframe)
         for (unsigned int i = 0; i < partCount; ++i)
         {
             MeshPart* part = _mesh->getPart(i);
-            GP_ASSERT(part);
+            assert(part);
 
             // Get the material for this mesh part.
             Material* material = getMaterial(i);
             if (material)
             {
                 Technique* technique = material->getTechnique();
-                GP_ASSERT(technique);
+                assert(technique);
                 unsigned int passCount = technique->getPassCount();
                 for (unsigned int j = 0; j < passCount; ++j)
                 {
                     Pass* pass = technique->getPassByIndex(j);
-                    GP_ASSERT(pass);
+                    assert(pass);
                     pass->bind();
                     GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->_indexBuffer) );
                     if (!wireframe || !drawWireframe(part))
@@ -387,7 +387,7 @@ unsigned int Model::draw(bool wireframe)
 
 void Model::setMaterialNodeBinding(Material *material)
 {
-    GP_ASSERT(material);
+    assert(material);
 
     if (_node)
     {
@@ -421,7 +421,7 @@ Drawable* Model::clone(NodeCloneContext& context)
     }
     if (_partMaterials)
     {
-        GP_ASSERT(_partCount == model->_partCount);
+        assert(_partCount == model->_partCount);
         for (unsigned int i = 0; i < _partCount; ++i)
         {
             if (_partMaterials[i])
@@ -437,7 +437,7 @@ Drawable* Model::clone(NodeCloneContext& context)
 
 void Model::validatePartCount()
 {
-    GP_ASSERT(_mesh);
+    assert(_mesh);
     unsigned int partCount = _mesh->getPartCount();
 
     if (_partCount != partCount)

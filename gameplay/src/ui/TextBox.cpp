@@ -451,7 +451,7 @@ void TextBox::setCaretLocation(int x, int y)
         else if (point.y > textBounds.y + textBounds.height)
         {
             Font* font = getFont(state);
-            GP_ASSERT(font);
+            assert(font);
             unsigned int fontSize = getFontSize(state);
             point.y = textBounds.y + textBounds.height - fontSize;
         }
@@ -472,7 +472,7 @@ void TextBox::setCaretLocation(int x, int y)
 
 void TextBox::getCaretLocation(Vector2* p)
 {
-    GP_ASSERT(p);
+    assert(p);
 
     State state = getState();
     getFont(state)->getLocationAtIndex(getDisplayedText().c_str(), _textBounds, getFontSize(state), p, _caretLocation, getTextAlignment(state), true, getTextRightToLeft(state));

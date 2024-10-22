@@ -52,7 +52,7 @@ Camera* Camera::createOrthographic(float zoomX, float zoomY, float aspectRatio, 
 
 Camera* Camera::create(Properties* properties)
 {
-    GP_ASSERT(properties);
+    assert(properties);
 
     // Read camera type
     std::string typeStr;
@@ -125,14 +125,14 @@ Camera::Type Camera::getCameraType() const
 
 float Camera::getFieldOfView() const
 {
-    GP_ASSERT(_type == Camera::PERSPECTIVE);
+    assert(_type == Camera::PERSPECTIVE);
 
     return _fieldOfView;
 }
 
 void Camera::setFieldOfView(float fieldOfView)
 {
-    GP_ASSERT(_type == Camera::PERSPECTIVE);
+    assert(_type == Camera::PERSPECTIVE);
 
     _fieldOfView = fieldOfView;
     _bits |= CAMERA_DIRTY_PROJ | CAMERA_DIRTY_VIEW_PROJ | CAMERA_DIRTY_INV_VIEW_PROJ | CAMERA_DIRTY_BOUNDS;
@@ -141,14 +141,14 @@ void Camera::setFieldOfView(float fieldOfView)
 
 float Camera::getZoomX() const
 {
-    GP_ASSERT(_type == Camera::ORTHOGRAPHIC);
+    assert(_type == Camera::ORTHOGRAPHIC);
 
     return _zoom[0];
 }
 
 void Camera::setZoomX(float zoomX)
 {
-    GP_ASSERT(_type == Camera::ORTHOGRAPHIC);
+    assert(_type == Camera::ORTHOGRAPHIC);
 
     _zoom[0] = zoomX;
     _bits |= CAMERA_DIRTY_PROJ | CAMERA_DIRTY_VIEW_PROJ | CAMERA_DIRTY_INV_VIEW_PROJ | CAMERA_DIRTY_BOUNDS;
@@ -157,14 +157,14 @@ void Camera::setZoomX(float zoomX)
 
 float Camera::getZoomY() const
 {
-    GP_ASSERT(_type == Camera::ORTHOGRAPHIC);
+    assert(_type == Camera::ORTHOGRAPHIC);
 
     return _zoom[1];
 }
 
 void Camera::setZoomY(float zoomY)
 {
-    GP_ASSERT(_type == Camera::ORTHOGRAPHIC);
+    assert(_type == Camera::ORTHOGRAPHIC);
 
     _zoom[1] = zoomY;
     _bits |= CAMERA_DIRTY_PROJ | CAMERA_DIRTY_VIEW_PROJ | CAMERA_DIRTY_INV_VIEW_PROJ | CAMERA_DIRTY_BOUNDS;
@@ -345,15 +345,15 @@ const Frustum& Camera::getFrustum() const
 
 void Camera::project(const Rectangle& viewport, const Vector3& position, float* x, float* y, float* depth) const
 {
-    GP_ASSERT(x);
-    GP_ASSERT(y);
+    assert(x);
+    assert(y);
 
     // Transform the point to clip-space.
     Vector4 clipPos;
     getViewProjectionMatrix().transformVector(Vector4(position.x, position.y, position.z, 1.0f), &clipPos);
 
     // Compute normalized device coordinates.
-    GP_ASSERT(clipPos.w != 0.0f);
+    assert(clipPos.w != 0.0f);
     float ndcX = clipPos.x / clipPos.w;
     float ndcY = clipPos.y / clipPos.w;
 
@@ -369,7 +369,7 @@ void Camera::project(const Rectangle& viewport, const Vector3& position, float* 
 
 void Camera::project(const Rectangle& viewport, const Vector3& position, Vector2* out) const
 {
-    GP_ASSERT(out);
+    assert(out);
     float x, y;
     project(viewport, position, &x, &y);
     out->set(x, y);
@@ -377,7 +377,7 @@ void Camera::project(const Rectangle& viewport, const Vector3& position, Vector2
 
 void Camera::project(const Rectangle& viewport, const Vector3& position, Vector3* out) const
 {
-    GP_ASSERT(out);
+    assert(out);
     float x, y, depth;
     project(viewport, position, &x, &y, &depth);
     out->set(x, y, depth);
@@ -385,10 +385,10 @@ void Camera::project(const Rectangle& viewport, const Vector3& position, Vector3
 
 void Camera::unproject(const Rectangle& viewport, float x, float y, float depth, Vector3* dst) const
 {
-    GP_ASSERT(dst);
+    assert(dst);
     
     // Create our screen space position in NDC.
-    GP_ASSERT(viewport.width != 0.0f && viewport.height != 0.0f);
+    assert(viewport.width != 0.0f && viewport.height != 0.0f);
     Vector4 screen((x - viewport.x) / viewport.width, ((viewport.height - y) - viewport.y) / viewport.height, depth, 1.0f);
 
     // Map to range -1 to 1.
@@ -412,7 +412,7 @@ void Camera::unproject(const Rectangle& viewport, float x, float y, float depth,
 
 void Camera::pickRay(const Rectangle& viewport, float x, float y, Ray* dst) const
 {
-    GP_ASSERT(dst);
+    assert(dst);
 
     // Get the world-space position at the near clip plane.
     Vector3 nearPoint;
@@ -441,7 +441,7 @@ Camera* Camera::clone(NodeCloneContext& context)
     {
         cameraClone = createOrthographic(getZoomX(), getZoomY(), getAspectRatio(), _nearPlane, _farPlane);
     }
-    GP_ASSERT(cameraClone);
+    assert(cameraClone);
 
     if (Node* node = context.findClonedNode(getNode()))
     {
@@ -471,7 +471,7 @@ void Camera::cameraChanged()
 
 void Camera::addListener(Camera::Listener* listener)
 {
-    GP_ASSERT(listener);
+    assert(listener);
 
     if (_listeners == NULL)
         _listeners = new std::list<Camera::Listener*>();
@@ -481,7 +481,7 @@ void Camera::addListener(Camera::Listener* listener)
 
 void Camera::removeListener(Camera::Listener* listener)
 {
-    GP_ASSERT(listener);
+    assert(listener);
 
     if (_listeners)
     {

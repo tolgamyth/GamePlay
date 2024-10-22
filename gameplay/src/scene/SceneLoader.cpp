@@ -895,9 +895,9 @@ void SceneLoader::createAnimations()
 
 PhysicsConstraint* SceneLoader::loadGenericConstraint(const Properties* constraint, PhysicsRigidBody* rbA, PhysicsRigidBody* rbB)
 {
-    GP_ASSERT(rbA);
-    GP_ASSERT(constraint);
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(rbA);
+    assert(constraint);
+    assert(Game::getInstance()->getPhysicsController());
     PhysicsGenericConstraint* physicsConstraint = NULL;
 
     // Create the constraint from the specified properties.
@@ -926,7 +926,7 @@ PhysicsConstraint* SceneLoader::loadGenericConstraint(const Properties* constrai
     {
         physicsConstraint = Game::getInstance()->getPhysicsController()->createGenericConstraint(rbA, rbB);
     }
-    GP_ASSERT(physicsConstraint);
+    assert(physicsConstraint);
 
     // Set the optional parameters that were specified.
     Vector3 v;
@@ -944,9 +944,9 @@ PhysicsConstraint* SceneLoader::loadGenericConstraint(const Properties* constrai
 
 PhysicsConstraint* SceneLoader::loadHingeConstraint(const Properties* constraint, PhysicsRigidBody* rbA, PhysicsRigidBody* rbB)
 {
-    GP_ASSERT(rbA);
-    GP_ASSERT(constraint);
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(rbA);
+    assert(constraint);
+    assert(Game::getInstance()->getPhysicsController());
     PhysicsHingeConstraint* physicsConstraint = NULL;
 
     // Create the constraint from the specified properties.
@@ -999,7 +999,7 @@ PhysicsConstraint* SceneLoader::loadHingeConstraint(const Properties* constraint
 
 Scene* SceneLoader::loadMainSceneData(const Properties* sceneProperties)
 {
-    GP_ASSERT(sceneProperties);
+    assert(sceneProperties);
 
     // Load the main scene from the specified path.
     Bundle* bundle = Bundle::create(_gpbPath.c_str());
@@ -1024,8 +1024,8 @@ Scene* SceneLoader::loadMainSceneData(const Properties* sceneProperties)
 
 void SceneLoader::loadPhysics(Properties* physics)
 {
-    GP_ASSERT(physics);
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(physics);
+    assert(Game::getInstance()->getPhysicsController());
 
     // Go through the supported global physics properties and apply them.
     Vector3 gravity;
@@ -1175,9 +1175,9 @@ void SceneLoader::loadReferencedFiles()
 
 PhysicsConstraint* SceneLoader::loadSocketConstraint(const Properties* constraint, PhysicsRigidBody* rbA, PhysicsRigidBody* rbB)
 {
-    GP_ASSERT(rbA);
-    GP_ASSERT(constraint);
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(rbA);
+    assert(constraint);
+    assert(Game::getInstance()->getPhysicsController());
 
     PhysicsSocketConstraint* physicsConstraint = NULL;
     Vector3 toA;
@@ -1207,9 +1207,9 @@ PhysicsConstraint* SceneLoader::loadSocketConstraint(const Properties* constrain
 
 PhysicsConstraint* SceneLoader::loadSpringConstraint(const Properties* constraint, PhysicsRigidBody* rbA, PhysicsRigidBody* rbB)
 {
-    GP_ASSERT(rbA);
-    GP_ASSERT(constraint);
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(rbA);
+    assert(constraint);
+    assert(Game::getInstance()->getPhysicsController());
 
     if (!rbB)
     {
@@ -1235,7 +1235,7 @@ PhysicsConstraint* SceneLoader::loadSpringConstraint(const Properties* constrain
     {
         physicsConstraint = Game::getInstance()->getPhysicsController()->createSpringConstraint(rbA, rbB);
     }
-    GP_ASSERT(physicsConstraint);
+    assert(physicsConstraint);
 
     // Set the optional parameters that were specified.
     Vector3 v;

@@ -28,39 +28,39 @@ void GestureSample::initialize()
     {
         anySupported = true;
         registerGesture(Gesture::GESTURE_TAP);
-        GP_ASSERT(isGestureRegistered(Gesture::GESTURE_TAP));
+        assert(isGestureRegistered(Gesture::GESTURE_TAP));
     }
     if (isGestureSupported(Gesture::GESTURE_SWIPE))
     {
         anySupported = true;
         registerGesture(Gesture::GESTURE_SWIPE);
-        GP_ASSERT(isGestureRegistered(Gesture::GESTURE_SWIPE));
+        assert(isGestureRegistered(Gesture::GESTURE_SWIPE));
     }
     if (isGestureSupported(Gesture::GESTURE_PINCH))
     {
         anySupported = true;
         registerGesture(Gesture::GESTURE_PINCH);
-        GP_ASSERT(isGestureRegistered(Gesture::GESTURE_PINCH));
+        assert(isGestureRegistered(Gesture::GESTURE_PINCH));
     }
 	if (isGestureSupported(Gesture::GESTURE_LONG_TAP))
 	{
         anySupported = true;
         registerGesture(Gesture::GESTURE_LONG_TAP);
-        GP_ASSERT(isGestureRegistered(Gesture::GESTURE_LONG_TAP));
+        assert(isGestureRegistered(Gesture::GESTURE_LONG_TAP));
 	}
 	if (isGestureSupported(Gesture::GESTURE_DRAG))
 	{
         anySupported = true;
         registerGesture(Gesture::GESTURE_DRAG);
-        GP_ASSERT(isGestureRegistered(Gesture::GESTURE_DRAG));
+        assert(isGestureRegistered(Gesture::GESTURE_DRAG));
 	}
 	if (isGestureSupported(Gesture::GESTURE_DROP))
 	{
         anySupported = true;
         registerGesture(Gesture::GESTURE_DROP);
-        GP_ASSERT(isGestureRegistered(Gesture::GESTURE_DROP));
+        assert(isGestureRegistered(Gesture::GESTURE_DROP));
 	}
-    //GP_ASSERT(anySupported == isGestureSupported(Gesture::GESTURE_ANY_SUPPORTED));
+    //assert(anySupported == isGestureSupported(Gesture::GESTURE_ANY_SUPPORTED));
 }
 
 void GestureSample::finalize()

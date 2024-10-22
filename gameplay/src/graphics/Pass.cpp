@@ -21,8 +21,8 @@ Pass::~Pass()
 
 bool Pass::initialize(const char* vshPath, const char* fshPath, const char* defines)
 {
-    GP_ASSERT(vshPath);
-    GP_ASSERT(fshPath);
+    assert(vshPath);
+    assert(fshPath);
 
     SAFE_RELEASE(_effect);
     SAFE_RELEASE(_vaBinding);
@@ -66,7 +66,7 @@ VertexAttributeBinding* Pass::getVertexAttributeBinding() const
 
 void Pass::bind()
 {
-    GP_ASSERT(_effect);
+    assert(_effect);
 
     // Bind our effect.
     _effect->bind();
@@ -92,7 +92,7 @@ void Pass::unbind()
 
 Pass* Pass::clone(Technique* technique, NodeCloneContext &context) const
 {
-    GP_ASSERT(_effect);
+    assert(_effect);
     _effect->addRef();
 
     Pass* pass = new Pass(getId(), technique);

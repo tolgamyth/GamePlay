@@ -95,7 +95,7 @@ Material* Material::create(Properties* materialProperties, PassCallback callback
 
 Material* Material::create(Effect* effect)
 {
-    GP_ASSERT(effect);
+    assert(effect);
 
     // Create a new material with a single technique and pass for the given effect.
     Material* material = new Material();
@@ -115,8 +115,8 @@ Material* Material::create(Effect* effect)
 
 Material* Material::create(const char* vshPath, const char* fshPath, const char* defines)
 {
-    GP_ASSERT(vshPath);
-    GP_ASSERT(fshPath);
+    assert(vshPath);
+    assert(fshPath);
 
     // Create a new material with a single technique and pass for the given effect
     Material* material = new Material();
@@ -146,17 +146,17 @@ unsigned int Material::getTechniqueCount() const
 
 Technique* Material::getTechniqueByIndex(unsigned int index) const
 {
-    GP_ASSERT(index < _techniques.size());
+    assert(index < _techniques.size());
     return _techniques[index];
 }
 
 Technique* Material::getTechnique(const char* id) const
 {
-    GP_ASSERT(id);
+    assert(id);
     for (size_t i = 0, count = _techniques.size(); i < count; ++i)
     {
         Technique* t = _techniques[i];
-        GP_ASSERT(t);
+        assert(t);
         if (strcmp(t->getId(), id) == 0)
         {
             return t;
@@ -198,7 +198,7 @@ Material* Material::clone(NodeCloneContext &context) const
     for (std::vector<Technique*>::const_iterator it = _techniques.begin(); it != _techniques.end(); ++it)
     {
         const Technique* technique = *it;
-        GP_ASSERT(technique);
+        assert(technique);
         Technique* techniqueClone = technique->clone(material, context);
         material->_techniques.push_back(techniqueClone);
         if (_currentTechnique == technique)
@@ -211,8 +211,8 @@ Material* Material::clone(NodeCloneContext &context) const
 
 bool Material::loadTechnique(Material* material, Properties* techniqueProperties, PassCallback callback, void* cookie)
 {
-    GP_ASSERT(material);
-    GP_ASSERT(techniqueProperties);
+    assert(material);
+    assert(techniqueProperties);
 
     // Create a new technique.
     Technique* technique = new Technique(techniqueProperties->getId(), material);
@@ -245,14 +245,14 @@ bool Material::loadTechnique(Material* material, Properties* techniqueProperties
 
 bool Material::loadPass(Technique* technique, Properties* passProperties, PassCallback callback, void* cookie)
 {
-    GP_ASSERT(passProperties);
-    GP_ASSERT(technique);
+    assert(passProperties);
+    assert(technique);
 
     // Fetch shader info required to create the effect of this technique.
     const char* vertexShaderPath = passProperties->getString("vertexShader");
-    GP_ASSERT(vertexShaderPath);
+    assert(vertexShaderPath);
     const char* fragmentShaderPath = passProperties->getString("fragmentShader");
-    GP_ASSERT(fragmentShaderPath);
+    assert(fragmentShaderPath);
     const char* passDefines = passProperties->getString("defines");
 
     // Create the pass
@@ -290,7 +290,7 @@ bool Material::loadPass(Technique* technique, Properties* passProperties, PassCa
 
 static bool isMaterialKeyword(const char* str)
 {
-    GP_ASSERT(str);
+    assert(str);
 
     #define MATERIAL_KEYWORD_COUNT 3
     static const char* reservedKeywords[MATERIAL_KEYWORD_COUNT] =
@@ -371,8 +371,8 @@ static Texture::Wrap parseTextureWrapMode(const char* str, Texture::Wrap default
 
 void Material::loadRenderState(RenderState* renderState, Properties* properties)
 {
-    GP_ASSERT(renderState);
-    GP_ASSERT(properties);
+    assert(renderState);
+    assert(properties);
 
     // Rewind the properties to start reading from the start.
     properties->rewind();
@@ -386,7 +386,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
         switch (properties->getType())
         {
         case Properties::NUMBER:
-            GP_ASSERT(renderState->getParameter(name));
+            assert(renderState->getParameter(name));
             renderState->getParameter(name)->setValue(properties->getFloat());
             break;
         case Properties::VECTOR2:
@@ -394,7 +394,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
                 Vector2 vector2;
                 if (properties->getVector2(NULL, &vector2))
                 {
-                    GP_ASSERT(renderState->getParameter(name));
+                    assert(renderState->getParameter(name));
                     renderState->getParameter(name)->setValue(vector2);
                 }
             }
@@ -404,7 +404,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
                 Vector3 vector3;
                 if (properties->getVector3(NULL, &vector3))
                 {
-                    GP_ASSERT(renderState->getParameter(name));
+                    assert(renderState->getParameter(name));
                     renderState->getParameter(name)->setValue(vector3);
                 }
             }
@@ -414,7 +414,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
                 Vector4 vector4;
                 if (properties->getVector4(NULL, &vector4))
                 {
-                    GP_ASSERT(renderState->getParameter(name));
+                    assert(renderState->getParameter(name));
                     renderState->getParameter(name)->setValue(vector4);
                 }
             }
@@ -424,7 +424,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
                 Matrix matrix;
                 if (properties->getMatrix(NULL, &matrix))
                 {
-                    GP_ASSERT(renderState->getParameter(name));
+                    assert(renderState->getParameter(name));
                     renderState->getParameter(name)->setValue(matrix);
                 }
             }
@@ -473,7 +473,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
             Texture::Filter magFilter = parseTextureFilterMode(ns->getString("magFilter"), Texture::LINEAR);
 
             // Set the sampler parameter.
-            GP_ASSERT(renderState->getParameter(name));
+            assert(renderState->getParameter(name));
             Texture::Sampler* sampler = renderState->getParameter(name)->setValue(path.c_str(), mipmap);
             if (sampler)
             {
@@ -485,7 +485,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
         {
             while ((name = ns->getNextProperty()))
             {
-                GP_ASSERT(renderState->getStateBlock());
+                assert(renderState->getStateBlock());
                 renderState->getStateBlock()->setState(name, ns->getString());
             }
         }

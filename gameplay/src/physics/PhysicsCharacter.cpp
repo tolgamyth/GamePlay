@@ -35,7 +35,7 @@ public:
     {
         PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(convexResult.m_hitCollisionObject->getUserPointer());
         
-        GP_ASSERT(object);
+        assert(object);
         if (object == _me || object->getType() == PhysicsCollisionObject::GHOST_OBJECT)
             return 1.0f;
 
@@ -58,11 +58,11 @@ PhysicsCharacter::PhysicsCharacter(Node* node, const PhysicsCollisionShape::Defi
     setMaxSlopeAngle(45.0f);
 
     // Set the collision flags on the ghost object to indicate it's a character.
-    GP_ASSERT(_ghostObject);
+    assert(_ghostObject);
     _ghostObject->setCollisionFlags(_ghostObject->getCollisionFlags() | btCollisionObject::CF_CHARACTER_OBJECT | btCollisionObject::CF_NO_CONTACT_RESPONSE);
 
     // Register ourselves as an action on the physics world so we are called back during physics ticks.
-    GP_ASSERT(Game::getInstance()->getPhysicsController() && Game::getInstance()->getPhysicsController()->_world);
+    assert(Game::getInstance()->getPhysicsController() && Game::getInstance()->getPhysicsController()->_world);
     _actionInterface = new ActionInterface(this);
     Game::getInstance()->getPhysicsController()->_world->addAction(_actionInterface);
 }
@@ -70,7 +70,7 @@ PhysicsCharacter::PhysicsCharacter(Node* node, const PhysicsCollisionShape::Defi
 PhysicsCharacter::~PhysicsCharacter()
 {
     // Unregister ourselves as action from world.
-    GP_ASSERT(Game::getInstance()->getPhysicsController() && Game::getInstance()->getPhysicsController()->_world);
+    assert(Game::getInstance()->getPhysicsController() && Game::getInstance()->getPhysicsController()->_world);
     Game::getInstance()->getPhysicsController()->_world->removeAction(_actionInterface);
     SAFE_DELETE(_actionInterface);
 
@@ -203,25 +203,25 @@ void PhysicsCharacter::resetVelocityState()
 
 void PhysicsCharacter::rotate(const Vector3& axis, float angle)
 {
-    GP_ASSERT(_node);
+    assert(_node);
     _node->rotate(axis, angle);
 }
 
 void PhysicsCharacter::rotate(const Quaternion& rotation)
 {
-    GP_ASSERT(_node);
+    assert(_node);
     _node->rotate(rotation);
 }
 
 void PhysicsCharacter::setRotation(const Vector3& axis, float angle)
 {
-    GP_ASSERT(_node);
+    assert(_node);
     _node->setRotation(axis, angle);
 }
 
 void PhysicsCharacter::setRotation(const Quaternion& rotation)
 {
-    GP_ASSERT(_node);
+    assert(_node);
     _node->setRotation(rotation);
 }
 
@@ -254,7 +254,7 @@ void PhysicsCharacter::jump(float height, bool force)
     //  v0 == initial velocity (zero for jumping)
     //  a == acceleration (inverse gravity)
     //  s == linear displacement (height)
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(Game::getInstance()->getPhysicsController());
     Vector3 jumpVelocity = Game::getInstance()->getPhysicsController()->getGravity() * height * 2.0f;
     jumpVelocity.set(
         jumpVelocity.x == 0 ? 0 : std::sqrt(std::fabs(jumpVelocity.x)) * (jumpVelocity.x > 0 ? 1.0f : -1.0f),
@@ -265,7 +265,7 @@ void PhysicsCharacter::jump(float height, bool force)
 
 void PhysicsCharacter::updateCurrentVelocity()
 {
-    GP_ASSERT(_node);
+    assert(_node);
     
     Vector3 temp;
     btScalar velocity2 = 0;
@@ -368,10 +368,10 @@ void PhysicsCharacter::stepForwardAndStrafe(btCollisionWorld* collisionWorld, fl
 
     int maxIter = 10;
 
-    GP_ASSERT(_ghostObject && _ghostObject->getBroadphaseHandle());
-    GP_ASSERT(_collisionShape);
-    GP_ASSERT(collisionWorld);
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(_ghostObject && _ghostObject->getBroadphaseHandle());
+    assert(_collisionShape);
+    assert(collisionWorld);
+    assert(Game::getInstance()->getPhysicsController());
     while (fraction > btScalar(0.01) && maxIter-- > 0)
     {
         start.setOrigin(_currentPosition);
@@ -391,11 +391,11 @@ void PhysicsCharacter::stepForwardAndStrafe(btCollisionWorld* collisionWorld, fl
         {
             Vector3 normal(callback.m_hitNormalWorld.x(), callback.m_hitNormalWorld.y(), callback.m_hitNormalWorld.z());
             PhysicsCollisionObject* o = Game::getInstance()->getPhysicsController()->getCollisionObject(callback.m_hitCollisionObject);
-            GP_ASSERT(o);
+            assert(o);
             if (o->getType() == PhysicsCollisionObject::RIGID_BODY && o->isDynamic())
             {
                 PhysicsRigidBody* rb = static_cast<PhysicsRigidBody*>(o);
-                GP_ASSERT(rb);
+                assert(rb);
                 normal.normalize();
                 rb->applyImpulse(_mass * -normal * velocity.length());
             }
@@ -427,10 +427,10 @@ void PhysicsCharacter::stepForwardAndStrafe(btCollisionWorld* collisionWorld, fl
 
 void PhysicsCharacter::stepDown(btCollisionWorld* collisionWorld, btScalar time)
 {
-    GP_ASSERT(Game::getInstance()->getPhysicsController() && Game::getInstance()->getPhysicsController()->_world);
-    GP_ASSERT(_ghostObject && _ghostObject->getBroadphaseHandle());
-    GP_ASSERT(_collisionShape);
-    GP_ASSERT(collisionWorld);
+    assert(Game::getInstance()->getPhysicsController() && Game::getInstance()->getPhysicsController()->_world);
+    assert(_ghostObject && _ghostObject->getBroadphaseHandle());
+    assert(_collisionShape);
+    assert(collisionWorld);
 
     // Contribute gravity to vertical velocity.
     btVector3 gravity = Game::getInstance()->getPhysicsController()->_world->getGravity();
@@ -481,11 +481,11 @@ void PhysicsCharacter::stepDown(btCollisionWorld* collisionWorld, btScalar time)
             else
             {
                 PhysicsCollisionObject* o = Game::getInstance()->getPhysicsController()->getCollisionObject(callback.m_hitCollisionObject);
-                GP_ASSERT(o);
+                assert(o);
                 if (o->getType() == PhysicsCollisionObject::RIGID_BODY && o->isDynamic())
                 {
                     PhysicsRigidBody* rb = static_cast<PhysicsRigidBody*>(o);
-                    GP_ASSERT(rb);
+                    assert(rb);
                     normal.normalize();
                     rb->applyImpulse(_mass * -normal * sqrt(BV(normal).dot(_verticalVelocity)));
                 }
@@ -567,14 +567,14 @@ void PhysicsCharacter::updateTargetPositionFromCollision(btVector3& targetPositi
 
 bool PhysicsCharacter::fixCollision(btCollisionWorld* world)
 {
-    GP_ASSERT(_node);
-    GP_ASSERT(_ghostObject);
-    GP_ASSERT(world && world->getDispatcher());
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(_node);
+    assert(_ghostObject);
+    assert(world && world->getDispatcher());
+    assert(Game::getInstance()->getPhysicsController());
 
     bool collision = false;
     btOverlappingPairCache* pairCache = _ghostObject->getOverlappingPairCache();
-    GP_ASSERT(pairCache);
+    assert(pairCache);
 
     // Tell the world to dispatch collision events for our ghost object.
     world->getDispatcher()->dispatchAllCollisionPairs(pairCache, world->getDispatchInfo(), world->getDispatcher());
@@ -600,7 +600,7 @@ bool PhysicsCharacter::fixCollision(btCollisionWorld* world)
         for (int j = 0, manifoldCount = _manifoldArray.size(); j < manifoldCount; ++j)
         {
             btPersistentManifold* manifold = _manifoldArray[j];
-            GP_ASSERT(manifold);
+            assert(manifold);
 
             // Get the direction of the contact points (used to scale normal vector in the correct direction).
             btScalar directionSign = manifold->getBody0() == _ghostObject ? -1.0f : 1.0f;
@@ -663,8 +663,8 @@ void PhysicsCharacter::updateAction(btCollisionWorld* collisionWorld, btScalar d
     if (!isEnabled())
         return;
 
-    GP_ASSERT(_ghostObject);
-    GP_ASSERT(_node);
+    assert(_ghostObject);
+    assert(_node);
 
     // First check for existing collisions and attempt to respond/fix them.
     // Basically we are trying to move the character so that it does not penetrate

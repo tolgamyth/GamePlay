@@ -28,9 +28,9 @@ TileSet* TileSet::create(const char* imagePath,
                          float tileWidth, float tileHeight,
                          unsigned int rowCount, unsigned int columnCount)
 {
-    GP_ASSERT(imagePath);
-    GP_ASSERT(tileWidth > 0 && tileHeight > 0);
-    GP_ASSERT(rowCount > 0 && columnCount > 0);
+    assert(imagePath);
+    assert(tileWidth > 0 && tileHeight > 0);
+    assert(rowCount > 0 && columnCount > 0);
     
     SpriteBatch* batch = SpriteBatch::create(imagePath);
     batch->getSampler()->setWrapMode(Texture::CLAMP, Texture::CLAMP);
@@ -148,17 +148,17 @@ TileSet* TileSet::create(Properties* properties)
 
 void TileSet::setTileSource(unsigned int column, unsigned int row, const Vector2& source)
 {
-    GP_ASSERT(column < _columnCount);
-    GP_ASSERT(row < _rowCount);
+    assert(column < _columnCount);
+    assert(row < _rowCount);
     
     _tiles[row * _columnCount + column] = source;
 }
 
 void TileSet::getTileSource(unsigned int column, unsigned int row, Vector2* source)
 {
-    GP_ASSERT(column < _columnCount);
-    GP_ASSERT(row < _rowCount);
-    GP_ASSERT(source);
+    assert(column < _columnCount);
+    assert(row < _rowCount);
+    assert(source);
     
     source->x = _tiles[row * _columnCount + column].x;
     source->y = _tiles[row * _columnCount + column].y;

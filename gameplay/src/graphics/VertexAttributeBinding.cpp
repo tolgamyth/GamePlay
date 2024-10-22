@@ -36,14 +36,14 @@ VertexAttributeBinding::~VertexAttributeBinding()
 
 VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, Effect* effect)
 {
-    GP_ASSERT(mesh);
+    assert(mesh);
 
     // Search for an existing vertex attribute binding that can be used.
     VertexAttributeBinding* b;
     for (size_t i = 0, count = __vertexAttributeBindingCache.size(); i < count; ++i)
     {
         b = __vertexAttributeBindingCache[i];
-        GP_ASSERT(b);
+        assert(b);
         if (b->_mesh == mesh && b->_effect == effect)
         {
             // Found a match!
@@ -70,7 +70,7 @@ VertexAttributeBinding* VertexAttributeBinding::create(const VertexFormat& verte
 
 VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect)
 {
-    GP_ASSERT(effect);
+    assert(effect);
 
     // One-time initialization.
     if (__maxVertexAttribs == 0)
@@ -214,7 +214,7 @@ VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, const VertexF
 
 void VertexAttributeBinding::setVertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalize, GLsizei stride, void* pointer)
 {
-    GP_ASSERT(indx < (GLuint)__maxVertexAttribs);
+    assert(indx < (GLuint)__maxVertexAttribs);
 
     if (_handle)
     {
@@ -225,7 +225,7 @@ void VertexAttributeBinding::setVertexAttribPointer(GLuint indx, GLint size, GLe
     else
     {
         // Software mode.
-        GP_ASSERT(_attributes);
+        assert(_attributes);
         _attributes[indx].enabled = true;
         _attributes[indx].size = size;
         _attributes[indx].type = type;
@@ -254,7 +254,7 @@ void VertexAttributeBinding::bind()
             GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, 0) );
         }
 
-        GP_ASSERT(_attributes);
+        assert(_attributes);
         for (unsigned int i = 0; i < __maxVertexAttribs; ++i)
         {
             VertexAttribute& a = _attributes[i];
@@ -282,7 +282,7 @@ void VertexAttributeBinding::unbind()
             GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, 0) );
         }
 
-        GP_ASSERT(_attributes);
+        assert(_attributes);
         for (unsigned int i = 0; i < __maxVertexAttribs; ++i)
         {
             if (_attributes[i].enabled)

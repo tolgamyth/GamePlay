@@ -21,15 +21,15 @@ PhysicsConstraint::~PhysicsConstraint()
         _b->removeConstraint(this);
 
     // Remove the constraint from the physics world and delete the Bullet object.
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(Game::getInstance()->getPhysicsController());
     Game::getInstance()->getPhysicsController()->removeConstraint(this);
     SAFE_DELETE(_constraint);
 }
 
 Vector3 PhysicsConstraint::centerOfMassMidpoint(const Node* a, const Node* b)
 {
-    GP_ASSERT(a);
-    GP_ASSERT(b);
+    assert(a);
+    assert(b);
 
     Vector3 tA, tB;
     a->getWorldMatrix().getTranslation(&tA);
@@ -48,7 +48,7 @@ Vector3 PhysicsConstraint::centerOfMassMidpoint(const Node* a, const Node* b)
 
 Quaternion PhysicsConstraint::getRotationOffset(const Node* node, const Vector3& point)
 {
-    GP_ASSERT(node);
+    assert(node);
 
     // Create a translation matrix that translates to the given origin.
     Matrix m;
@@ -69,7 +69,7 @@ Quaternion PhysicsConstraint::getRotationOffset(const Node* node, const Vector3&
 
 Vector3 PhysicsConstraint::getTranslationOffset(const Node* node, const Vector3& point)
 {
-    GP_ASSERT(node);
+    assert(node);
 
     // Create a translation matrix that translates to the given origin.
     Matrix m;
@@ -99,7 +99,7 @@ Vector3 PhysicsConstraint::getTranslationOffset(const Node* node, const Vector3&
 
 btTransform PhysicsConstraint::getTransformOffset(const Node* node, const Vector3& origin)
 {
-    GP_ASSERT(node);
+    assert(node);
 
     // Create a translation matrix that translates to the given origin.
     Matrix m;
@@ -132,7 +132,7 @@ btTransform PhysicsConstraint::getTransformOffset(const Node* node, const Vector
 
 Vector3 PhysicsConstraint::getWorldCenterOfMass(const Node* node)
 {
-    GP_ASSERT(node);
+    assert(node);
 
     const BoundingSphere& sphere = node->getBoundingSphere();
     if (!(sphere.center.isZero() && sphere.radius == 0))
@@ -151,7 +151,7 @@ Vector3 PhysicsConstraint::getWorldCenterOfMass(const Node* node)
 
 Vector3 PhysicsConstraint::offsetByCenterOfMass(const Node* node, const Vector3& v)
 {
-    GP_ASSERT(node && node->getCollisionObject() && node->getCollisionObject()->_motionState);
+    assert(node && node->getCollisionObject() && node->getCollisionObject()->_motionState);
     btVector3 centerOfMassOffset = node->getCollisionObject()->_motionState->_centerOfMassOffset.getOrigin();
     return Vector3(v.x + centerOfMassOffset.x(), v.y + centerOfMassOffset.y(), v.z + centerOfMassOffset.z());
 }

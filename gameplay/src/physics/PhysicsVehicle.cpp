@@ -168,7 +168,7 @@ PhysicsVehicle* PhysicsVehicle::create(Node* node, Properties* properties)
 
 void PhysicsVehicle::initialize()
 {
-    GP_ASSERT(getNode());
+    assert(getNode());
 
     // Safe default values
     setSteeringGain(0.5f);
@@ -202,7 +202,7 @@ PhysicsVehicle::~PhysicsVehicle()
 
 btCollisionObject* PhysicsVehicle::getCollisionObject() const
 {
-    GP_ASSERT(_rigidBody);
+    assert(_rigidBody);
 
     return _rigidBody->getCollisionObject();
 }
@@ -214,7 +214,7 @@ PhysicsCollisionObject::Type PhysicsVehicle::getType() const
 
 PhysicsRigidBody* PhysicsVehicle::getRigidBody() const
 {
-    GP_ASSERT(_rigidBody);
+    assert(_rigidBody);
 
     return _rigidBody;
 }

@@ -17,7 +17,7 @@ extern "C" int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LP
 {
     Game* game = Game::getInstance();
     Platform* platform = Platform::create(game);
-    GP_ASSERT(platform);
+    assert(platform);
     int result = platform->enterMessagePump();
     delete platform;
     return result;

@@ -57,8 +57,8 @@ SpriteBatch* SpriteBatch::create(const char* texturePath, Effect* effect, unsign
 
 SpriteBatch* SpriteBatch::create(Texture* texture,  Effect* effect, unsigned int initialCapacity)
 {
-    GP_ASSERT(texture != NULL);
-    GP_ASSERT(texture->getType() == Texture::TEXTURE_2D);
+    assert(texture != NULL);
+    assert(texture->getType() == Texture::TEXTURE_2D);
 
     bool customEffect = (effect != NULL);
     if (!customEffect)
@@ -321,7 +321,7 @@ void SpriteBatch::draw(float x, float y, float z, float width, float height, flo
 
 void SpriteBatch::addSprite(float x, float y, float width, float height, float u1, float v1, float u2, float v2, const Vector4& color, SpriteBatch::SpriteVertex* vertices)
 {
-    GP_ASSERT(vertices);
+    assert(vertices);
 
     const float x2 = x + width;
     const float y2 = y + height;
@@ -333,7 +333,7 @@ void SpriteBatch::addSprite(float x, float y, float width, float height, float u
 
 void SpriteBatch::addSprite(float x, float y, float width, float height, float u1, float v1, float u2, float v2, const Vector4& color, const Rectangle& clip, SpriteBatch::SpriteVertex* vertices)
 {
-    GP_ASSERT(vertices);
+    assert(vertices);
 
     // Only add a sprite if at least part of the sprite is within the clip region.
     if (clipSprite(clip, x, y, width, height, u1, v1, u2, v2))
@@ -349,8 +349,8 @@ void SpriteBatch::addSprite(float x, float y, float width, float height, float u
 
 void SpriteBatch::draw(SpriteBatch::SpriteVertex* vertices, unsigned int vertexCount, unsigned short* indices, unsigned int indexCount)
 {
-    GP_ASSERT(vertices);
-    GP_ASSERT(indices);
+    assert(vertices);
+    assert(indices);
 
     _batch->add(vertices, vertexCount, indices, indexCount);
 }

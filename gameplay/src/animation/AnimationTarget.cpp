@@ -23,8 +23,8 @@ AnimationTarget::~AnimationTarget()
         while (itr != _animationChannels->end())
         {
             Animation::Channel* channel = (*itr);
-            GP_ASSERT(channel);
-            GP_ASSERT(channel->_animation);
+            assert(channel);
+            assert(channel->_animation);
             channel->_animation->removeChannel(channel);
             SAFE_DELETE(channel);
             itr++;
@@ -36,8 +36,8 @@ AnimationTarget::~AnimationTarget()
 
 Animation* AnimationTarget::createAnimation(const char* id, int propertyId, unsigned int keyCount, unsigned int* keyTimes, float* keyValues, Curve::InterpolationType type)
 {
-    GP_ASSERT(type != Curve::BEZIER && type != Curve::HERMITE);
-    GP_ASSERT(keyCount >= 1 && keyTimes && keyValues);
+    assert(type != Curve::BEZIER && type != Curve::HERMITE);
+    assert(keyCount >= 1 && keyTimes && keyValues);
 
     Animation* animation = new Animation(id, this, propertyId, keyCount, keyTimes, keyValues, type);
 
@@ -46,7 +46,7 @@ Animation* AnimationTarget::createAnimation(const char* id, int propertyId, unsi
 
 Animation* AnimationTarget::createAnimation(const char* id, int propertyId, unsigned int keyCount, unsigned int* keyTimes, float* keyValues, float* keyInValue, float* keyOutValue, Curve::InterpolationType type)
 {
-    GP_ASSERT(keyCount >= 1 && keyTimes && keyValues && keyInValue && keyOutValue);
+    assert(keyCount >= 1 && keyTimes && keyValues && keyInValue && keyOutValue);
     Animation* animation = new Animation(id, this, propertyId, keyCount, keyTimes, keyValues, keyInValue, keyOutValue, type);
 
     return animation;
@@ -55,7 +55,7 @@ Animation* AnimationTarget::createAnimation(const char* id, int propertyId, unsi
 Animation* AnimationTarget::createAnimation(const char* id, const char* url)
 {
     Properties* p = Properties::create(url);
-    GP_ASSERT(p);
+    assert(p);
 
     Animation* animation = createAnimation(id, (strlen(p->getNamespace()) > 0) ? p : p->getNextNamespace());
 
@@ -66,11 +66,11 @@ Animation* AnimationTarget::createAnimation(const char* id, const char* url)
 
 Animation* AnimationTarget::createAnimationFromTo(const char* id, int propertyId, float* from, float* to, Curve::InterpolationType type, unsigned long duration)
 {
-    GP_ASSERT(from);
-    GP_ASSERT(to);
+    assert(from);
+    assert(to);
 
     const unsigned int propertyComponentCount = getAnimationPropertyComponentCount(propertyId);
-    GP_ASSERT(propertyComponentCount > 0);
+    assert(propertyComponentCount > 0);
     float* keyValues = new float[2 * propertyComponentCount];
 
     memcpy(keyValues, from, sizeof(float) * propertyComponentCount);
@@ -90,11 +90,11 @@ Animation* AnimationTarget::createAnimationFromTo(const char* id, int propertyId
 
 Animation* AnimationTarget::createAnimationFromBy(const char* id, int propertyId, float* from, float* by, Curve::InterpolationType type, unsigned long duration)
 {
-    GP_ASSERT(from);
-    GP_ASSERT(by);
+    assert(from);
+    assert(by);
 
     const unsigned int propertyComponentCount = getAnimationPropertyComponentCount(propertyId);
-    GP_ASSERT(propertyComponentCount > 0);
+    assert(propertyComponentCount > 0);
     float* keyValues = new float[2 * propertyComponentCount];
 
     memcpy(keyValues, from, sizeof(float) * propertyComponentCount);
@@ -116,7 +116,7 @@ Animation* AnimationTarget::createAnimationFromBy(const char* id, int propertyId
 
 Animation* AnimationTarget::createAnimation(const char* id, Properties* animationProperties)
 {
-    GP_ASSERT(animationProperties);
+    assert(animationProperties);
     if (std::strcmp(animationProperties->getNamespace(), "animation") != 0)
     {
         GP_ERROR("Invalid animation namespace '%s'.", animationProperties->getNamespace());
@@ -189,7 +189,7 @@ Animation* AnimationTarget::createAnimation(const char* id, Properties* animatio
     endOffset = std::string::npos;
 
     int componentCount = getAnimationPropertyComponentCount(propertyId);
-    GP_ASSERT(componentCount > 0);
+    assert(componentCount > 0);
 
     unsigned int components = keyCount * componentCount;
 
@@ -307,7 +307,7 @@ void AnimationTarget::destroyAnimation(const char* id)
         return;
 
     // Remove this target's channel from animation, and from the target's list of channels.
-    GP_ASSERT(channel->_animation);
+    assert(channel->_animation);
     channel->_animation->removeChannel(channel);
     removeChannel(channel);
 
@@ -319,7 +319,7 @@ Animation* AnimationTarget::getAnimation(const char* id) const
     if (_animationChannels)
     {
         std::vector<Animation::Channel*>::iterator itr = _animationChannels->begin();
-        GP_ASSERT(*itr);
+        assert(*itr);
 
         if (id == NULL)
             return (*itr)->_animation;
@@ -328,8 +328,8 @@ Animation* AnimationTarget::getAnimation(const char* id) const
         for (; itr != _animationChannels->end(); itr++)
         {
             channel = (Animation::Channel*)(*itr);
-            GP_ASSERT(channel);
-            GP_ASSERT(channel->_animation);
+            assert(channel);
+            assert(channel->_animation);
             if (channel->_animation->_id.compare(id) == 0)
             {
                 return channel->_animation;
@@ -342,7 +342,7 @@ Animation* AnimationTarget::getAnimation(const char* id) const
 
 int AnimationTarget::getPropertyId(TargetType type, const char* propertyIdStr)
 {
-    GP_ASSERT(propertyIdStr);
+    assert(propertyIdStr);
 
     if (type == AnimationTarget::TRANSFORM)
     {
@@ -407,7 +407,7 @@ void AnimationTarget::addChannel(Animation::Channel* channel)
     if (_animationChannels == NULL)
         _animationChannels = new std::vector<Animation::Channel*>;
 
-    GP_ASSERT(channel);
+    assert(channel);
     _animationChannels->push_back(channel);
 }
 
@@ -445,7 +445,7 @@ Animation::Channel* AnimationTarget::getChannel(const char* id) const
         for (; itr != _animationChannels->end(); itr++)
         {
             channel = (Animation::Channel*)(*itr);
-            GP_ASSERT(channel);
+            assert(channel);
             if (channel->_animation->_id.compare(id) == 0)
             {
                 return channel;
@@ -463,8 +463,8 @@ void AnimationTarget::cloneInto(AnimationTarget* target, NodeCloneContext &conte
         for (std::vector<Animation::Channel*>::const_iterator it = _animationChannels->begin(); it != _animationChannels->end(); ++it)
         {
             Animation::Channel* channel = *it;
-            GP_ASSERT(channel);
-            GP_ASSERT(channel->_animation);
+            assert(channel);
+            assert(channel->_animation);
 
             Animation* animation = context.findClonedAnimation(channel->_animation);
             if (animation != NULL)

@@ -99,7 +99,7 @@ void RadioButton::clearSelected(const std::string& groupId)
     for (it = __radioButtons.begin(); it < __radioButtons.end(); ++it)
     {
         RadioButton* radioButton = *it;
-        GP_ASSERT(radioButton);
+        assert(radioButton);
         if (groupId == radioButton->_groupId)
         {
             radioButton->setSelected(false);

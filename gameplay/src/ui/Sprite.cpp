@@ -31,10 +31,10 @@ Sprite* Sprite::create(const char* imagePath, float width, float height, Effect*
 Sprite* Sprite::create(const char* imagePath, float width, float height,
                        const Rectangle& source, unsigned int frameCount, Effect* effect)
 {
-    GP_ASSERT(imagePath != NULL);
-    GP_ASSERT(width >= -1 && height >= -1);
-    GP_ASSERT(source.width >= -1 && source.height >= -1);
-    GP_ASSERT(frameCount > 0);
+    assert(imagePath != NULL);
+    assert(width >= -1 && height >= -1);
+    assert(source.width >= -1 && source.height >= -1);
+    assert(frameCount > 0);
     
     SpriteBatch* batch = SpriteBatch::create(imagePath, effect);
     batch->getSampler()->setWrapMode(Texture::CLAMP, Texture::CLAMP);
@@ -65,7 +65,7 @@ Sprite* Sprite::create(const char* imagePath, float width, float height,
 
 static bool parseBlendMode(const char* str, Sprite::BlendMode* blend)
 {
-    GP_ASSERT(blend);
+    assert(blend);
 
     if (!str)
     {
@@ -101,7 +101,7 @@ static bool parseBlendMode(const char* str, Sprite::BlendMode* blend)
 
 static bool parseFlipFlags(const char* str, Sprite::FlipFlags* flip)
 {
-    GP_ASSERT(flip);
+    assert(flip);
 
     if (!str)
     {
@@ -137,7 +137,7 @@ static bool parseFlipFlags(const char* str, Sprite::FlipFlags* flip)
 
 static bool parseOffset(const char* str, Sprite::Offset* offset)
 {
-    GP_ASSERT(offset);
+    assert(offset);
 
     if (!str)
     {
@@ -410,14 +410,14 @@ int Sprite::getFlip() const
 
 void Sprite::setFrameSource(unsigned int frameIndex, const Rectangle& source)
 {
-    GP_ASSERT(frameIndex < _frameCount);
+    assert(frameIndex < _frameCount);
     
     _frames[frameIndex] = source;
 }
 
 const Rectangle& Sprite::getFrameSource(unsigned int frameIndex) const
 {
-    GP_ASSERT(frameIndex < _frameCount);
+    assert(frameIndex < _frameCount);
     
     return _frames[frameIndex];
 }
@@ -684,7 +684,7 @@ Drawable* Sprite::clone(NodeCloneContext& context)
 
 int Sprite::getPropertyId(TargetType type, const char* propertyIdStr)
 {
-    GP_ASSERT(propertyIdStr);
+    assert(propertyIdStr);
 
     if (type == AnimationTarget::TRANSFORM)
     {
@@ -722,7 +722,7 @@ unsigned int Sprite::getAnimationPropertyComponentCount(int propertyId) const
 
 void Sprite::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 {
-    GP_ASSERT(value);
+    assert(value);
     
     switch (propertyId)
     {
@@ -745,7 +745,7 @@ void Sprite::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 
 void Sprite::setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight)
 {
-    GP_ASSERT(value);
+    assert(value);
     
     switch(propertyId)
     {

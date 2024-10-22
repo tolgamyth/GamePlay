@@ -52,14 +52,14 @@ RenderTarget* RenderTarget::create(const char* id, Texture* texture)
 
 RenderTarget* RenderTarget::getRenderTarget(const char* id)
 {
-    GP_ASSERT(id);
+    assert(id);
 
     // Search the vector for a matching ID.
     std::vector<RenderTarget*>::const_iterator it;
     for (it = __renderTargets.begin(); it < __renderTargets.end(); ++it)
     {
         RenderTarget* dst = *it;
-        GP_ASSERT(dst);
+        assert(dst);
         if (strcmp(id, dst->getId()) == 0)
         {
             return dst;

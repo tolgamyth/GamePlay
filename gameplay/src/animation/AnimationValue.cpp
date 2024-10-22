@@ -7,7 +7,7 @@ namespace gameplay
 AnimationValue::AnimationValue(unsigned int componentCount)
   : _componentCount(componentCount), _componentSize(componentCount * sizeof(float))
 {
-    GP_ASSERT(_componentCount > 0);
+    assert(_componentCount > 0);
     _value = new float[_componentCount];
 }
 
@@ -42,30 +42,30 @@ AnimationValue& AnimationValue::operator=(const AnimationValue& v)
 
 float AnimationValue::getFloat(unsigned int index) const
 {
-    GP_ASSERT(index < _componentCount);
-    GP_ASSERT(_value);
+    assert(index < _componentCount);
+    assert(_value);
 
     return _value[index];
 }
 
 void AnimationValue::setFloat(unsigned int index, float value)
 {
-    GP_ASSERT(index < _componentCount);
-    GP_ASSERT(_value);
+    assert(index < _componentCount);
+    assert(_value);
 
     _value[index] = value;
 }
 
 void AnimationValue::getFloats(unsigned int index, float* values, unsigned int count) const
 {
-    GP_ASSERT(_value && values && index < _componentCount && (index + count) <= _componentCount);
+    assert(_value && values && index < _componentCount && (index + count) <= _componentCount);
 
     memcpy(values, &_value[index], count * sizeof(float));
 }
 
 void AnimationValue::setFloats(unsigned int index, float* values, unsigned int count)
 {
-    GP_ASSERT(_value && values && index < _componentCount && (index + count) <= _componentCount);
+    assert(_value && values && index < _componentCount && (index + count) <= _componentCount);
 
     memcpy(&_value[index], values, count * sizeof(float));
 }

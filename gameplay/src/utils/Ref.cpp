@@ -32,13 +32,13 @@ Ref::~Ref()
 
 void Ref::addRef()
 {
-    GP_ASSERT(_refCount > 0 && _refCount < 1000000);
+    assert(_refCount > 0 && _refCount < 1000000);
     ++_refCount;
 }
 
 void Ref::release()
 {
-    GP_ASSERT(_refCount > 0 && _refCount < 1000000);
+    assert(_refCount > 0 && _refCount < 1000000);
     if ((--_refCount) <= 0)
     {
 #ifdef GP_USE_MEM_LEAK_DETECTION
@@ -78,7 +78,7 @@ void Ref::printLeaks()
         for (RefAllocationRecord* rec = __refAllocations; rec != NULL; rec = rec->next)
         {
             Ref* ref = rec->ref;
-            GP_ASSERT(ref);
+            assert(ref);
             const char* type = typeid(*ref).name();
             print("[memory] LEAK: Ref object '%s' still active with reference count %d.\n", (type ? type : ""), ref->getRefCount());
         }
@@ -87,7 +87,7 @@ void Ref::printLeaks()
 
 void* trackRef(Ref* ref)
 {
-    GP_ASSERT(ref);
+    assert(ref);
 
     // Create memory allocation record.
     RefAllocationRecord* rec = (RefAllocationRecord*)malloc(sizeof(RefAllocationRecord));

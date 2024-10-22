@@ -243,7 +243,7 @@ Terrain* Terrain::create(HeightField* heightfield, const Vector3& scale,
     unsigned int patchSize, unsigned int detailLevels, float skirtScale,
     const char* normalMapPath, const char* materialPath, Properties* properties)
 {
-    GP_ASSERT(heightfield);
+    assert(heightfield);
 
     unsigned int width = heightfield->getColumnCount();
     unsigned int height = heightfield->getRowCount();
@@ -263,7 +263,7 @@ Terrain* Terrain::create(HeightField* heightfield, const Vector3& scale,
     {
         terrain->_normalMap = Texture::Sampler::create(normalMapPath, true);
         terrain->_normalMap->setWrapMode(Texture::CLAMP, Texture::CLAMP);
-        GP_ASSERT( terrain->_normalMap->getTexture()->getType() == Texture::TEXTURE_2D );
+        assert( terrain->_normalMap->getTexture()->getType() == Texture::TEXTURE_2D );
     }
 
     float halfWidth = (width - 1) * 0.5f;
@@ -502,8 +502,8 @@ float Terrain::getHeight(float x, float z) const
     float cols = _heightfield->getColumnCount();
     float rows = _heightfield->getRowCount();
 
-    GP_ASSERT(cols > 0);
-    GP_ASSERT(rows > 0);
+    assert(cols > 0);
+    assert(rows > 0);
 
     // Since the specified coordinates are in world space, we need to use the 
     // inverse of our world matrix to transform the world x,z coords back into

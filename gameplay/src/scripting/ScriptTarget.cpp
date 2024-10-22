@@ -33,7 +33,7 @@ ScriptTarget::EventRegistry::~EventRegistry()
 
 const ScriptTarget::Event* ScriptTarget::EventRegistry::addEvent(const char* name, const char* args)
 {
-    GP_ASSERT(name);
+    assert(name);
 
     Event* evt = new Event;
     evt->name = name;
@@ -51,14 +51,14 @@ unsigned int ScriptTarget::EventRegistry::getEventCount() const
 
 const ScriptTarget::Event* ScriptTarget::EventRegistry::getEvent(unsigned int index) const
 {
-    GP_ASSERT(index < _events.size());
+    assert(index < _events.size());
 
     return _events[index];
 }
 
 const ScriptTarget::Event* ScriptTarget::EventRegistry::getEvent(const char* name) const
 {
-    GP_ASSERT(name);
+    assert(name);
 
     for (size_t i = 0, count = _events.size(); i < count; ++i)
     {
@@ -104,7 +104,7 @@ ScriptTarget::~ScriptTarget()
 
 void ScriptTarget::registerEvents(EventRegistry* registry)
 {
-    GP_ASSERT(registry);
+    assert(registry);
 
     // Attach the registry
     RegistryEntry* re = new RegistryEntry(registry);
@@ -176,7 +176,7 @@ Script* ScriptTarget::addScript(const char* path)
 
 bool ScriptTarget::removeScript(const char* path)
 {
-    GP_ASSERT(path);
+    assert(path);
 
     ScriptEntry* se = _scripts;
     while (se)
@@ -194,7 +194,7 @@ bool ScriptTarget::removeScript(const char* path)
 
 void ScriptTarget::removeScript(ScriptEntry* se)
 {
-    GP_ASSERT(se);
+    assert(se);
 
     // Link out this ScriptEntry
     if (se->prev)
@@ -233,8 +233,8 @@ void ScriptTarget::removeScript(ScriptEntry* se)
 
 void ScriptTarget::addScriptCallback(const Event* event, const char* function)
 {
-    GP_ASSERT(event);
-    GP_ASSERT(function);
+    assert(event);
+    assert(function);
 
     // Parse the script name (if it exists) and function out
     std::string scriptPath, func;
@@ -383,7 +383,7 @@ bool ScriptTarget::hasScriptListener(const char* eventName) const
 
 const ScriptTarget::Event* ScriptTarget::getScriptEvent(const char* eventName) const
 {
-    GP_ASSERT(eventName);
+    assert(eventName);
 
     // Lookup the event for this name
     const Event* event = NULL;
@@ -400,7 +400,7 @@ const ScriptTarget::Event* ScriptTarget::getScriptEvent(const char* eventName) c
 
 bool ScriptTarget::hasScriptListener(const Event* event) const
 {
-    GP_ASSERT(event);
+    assert(event);
 
     if (_scriptCallbacks)
     {
@@ -416,7 +416,7 @@ bool ScriptTarget::hasScriptListener(const Event* event) const
 
 template<> void ScriptTarget::fireScriptEvent<void>(const Event* event, ...)
 {
-    GP_ASSERT(event);
+    assert(event);
 
     if (!_scriptCallbacks)
         return; // no registered callbacks
@@ -442,7 +442,7 @@ template<> void ScriptTarget::fireScriptEvent<void>(const Event* event, ...)
 
 template<> bool ScriptTarget::fireScriptEvent<bool>(const Event* event, ...)
 {
-    GP_ASSERT(event);
+    assert(event);
 
     if (!_scriptCallbacks)
         return false; // no registered callbacks

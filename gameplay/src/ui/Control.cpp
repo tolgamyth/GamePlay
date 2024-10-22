@@ -537,7 +537,7 @@ void Control::setOpacity(float opacity, unsigned char states)
 float Control::getOpacity(State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getOpacity();
 }
 
@@ -586,7 +586,7 @@ void Control::setBorder(float top, float bottom, float left, float right, unsign
 const Theme::Border& Control::getBorder(State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getBorder();
 }
 
@@ -606,7 +606,7 @@ void Control::setSkinRegion(const Rectangle& region, unsigned char states)
 const Rectangle& Control::getSkinRegion(State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getSkinRegion();
 }
 
@@ -626,13 +626,13 @@ void Control::setSkinColor(const Vector4& color, unsigned char states)
 const Vector4& Control::getSkinColor(State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getSkinColor();
 }
 
 void Control::setMargin(float top, float bottom, float left, float right)
 {
-    GP_ASSERT(_style);
+    assert(_style);
     overrideStyle();
     _style->setMargin(top, bottom, left, right);
     setDirty(DIRTY_BOUNDS);
@@ -640,13 +640,13 @@ void Control::setMargin(float top, float bottom, float left, float right)
 
 const Theme::Margin& Control::getMargin() const
 {
-    GP_ASSERT(_style);
+    assert(_style);
     return _style->getMargin();
 }
 
 void Control::setPadding(float top, float bottom, float left, float right)
 {
-    GP_ASSERT(_style);
+    assert(_style);
     overrideStyle();
     _style->setPadding(top, bottom, left, right);
     setDirty(DIRTY_BOUNDS);
@@ -654,7 +654,7 @@ void Control::setPadding(float top, float bottom, float left, float right)
 
 const Theme::Padding& Control::getPadding() const
 {
-    GP_ASSERT(_style);
+    assert(_style);
     return _style->getPadding();
 }
 
@@ -674,7 +674,7 @@ void Control::setImageRegion(const char* id, const Rectangle& region, unsigned c
 const Rectangle& Control::getImageRegion(const char* id, State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getImageRegion(id);
 }
 
@@ -694,14 +694,14 @@ void Control::setImageColor(const char* id, const Vector4& color, unsigned char 
 const Vector4& Control::getImageColor(const char* id, State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getImageColor(id);
 }
 
 const Theme::UVs& Control::getImageUVs(const char* id, State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getImageUVs(id);
 }
 
@@ -721,7 +721,7 @@ void Control::setCursorRegion(const Rectangle& region, unsigned char states)
 const Rectangle& Control::getCursorRegion(State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getCursorRegion();
 }
 
@@ -741,14 +741,14 @@ void Control::setCursorColor(const Vector4& color, unsigned char states)
 const Vector4& Control::getCursorColor(State state)
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getCursorColor();
 }
 
 const Theme::UVs& Control::getCursorUVs(State state)
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getCursorUVs();
 }
 
@@ -771,7 +771,7 @@ void Control::setFont(Font* font, unsigned char states)
 Font* Control::getFont(State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getFont();
 }
 
@@ -794,7 +794,7 @@ void Control::setFontSize(unsigned int fontSize, unsigned char states)
 unsigned int Control::getFontSize(State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getFontSize();
 }
 
@@ -814,7 +814,7 @@ void Control::setTextColor(const Vector4& color, unsigned char states)
 const Vector4& Control::getTextColor(State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getTextColor();
 }
 
@@ -834,7 +834,7 @@ void Control::setTextAlignment(Font::Justify alignment, unsigned char states)
 Font::Justify Control::getTextAlignment(State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getTextAlignment();
 }
 
@@ -854,7 +854,7 @@ void Control::setTextRightToLeft(bool rightToLeft, unsigned char states)
 bool Control::getTextRightToLeft(State state) const
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getTextRightToLeft();
 }
 
@@ -947,7 +947,7 @@ void Control::setFocusIndex(int focusIndex)
 
 void Control::addListener(Control::Listener* listener, int eventFlags)
 {
-    GP_ASSERT(listener);
+    assert(listener);
 
     if ((eventFlags & Control::Listener::PRESS) == Control::Listener::PRESS)
     {
@@ -1005,7 +1005,7 @@ void Control::removeListener(Control::Listener* listener)
 
 void Control::addSpecificListener(Control::Listener* listener, Control::Listener::EventType eventType)
 {
-    GP_ASSERT(listener);
+    assert(listener);
 
     if (!_listeners)
     {
@@ -1072,7 +1072,7 @@ void Control::notifyListeners(Control::Listener::EventType eventType)
             std::list<Control::Listener*>* listenerList = itr->second;
             for (std::list<Control::Listener*>::iterator listenerItr = listenerList->begin(); listenerItr != listenerList->end(); ++listenerItr)
             {
-                GP_ASSERT(*listenerItr);
+                assert(*listenerItr);
                 (*listenerItr)->controlEvent(this, eventType);
             }
         }
@@ -1520,7 +1520,7 @@ unsigned int Control::getAnimationPropertyComponentCount(int propertyId) const
 
 void Control::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     switch (propertyId)
     {
@@ -1554,7 +1554,7 @@ void Control::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 
 void Control::setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     switch(propertyId)
     {
@@ -1586,8 +1586,8 @@ void Control::setAnimationPropertyValue(int propertyId, AnimationValue* value, f
 
 Theme::Style::Overlay** Control::getOverlays(unsigned char overlayTypes, Theme::Style::Overlay** overlays)
 {
-    GP_ASSERT(overlays);
-    GP_ASSERT(_style);
+    assert(overlays);
+    assert(_style);
 
     unsigned int index = 0;
     if ((overlayTypes & NORMAL) == NORMAL)
@@ -1620,7 +1620,7 @@ Theme::Style::Overlay** Control::getOverlays(unsigned char overlayTypes, Theme::
 
 Theme::Style::Overlay* Control::getOverlay(State state) const
 {
-    GP_ASSERT(_style);
+    assert(_style);
 
     Theme::Style::Overlay* overlay = NULL;
 
@@ -1665,16 +1665,16 @@ void Control::overrideStyle()
     }
 
     // Copy the style.
-    GP_ASSERT(_style);
+    assert(_style);
     _style = new Theme::Style(*_style);
     _styleOverridden = true;
 }
 
 void Control::overrideThemedProperties(Properties* properties, unsigned char states)
 {
-    GP_ASSERT(properties);
-    GP_ASSERT(_style);
-    GP_ASSERT(_style->_theme);
+    assert(properties);
+    assert(_style);
+    assert(_style->_theme);
 
     Theme::ImageList* imageList = NULL;
     Theme::ThemeImage* cursor = NULL;
@@ -1776,7 +1776,7 @@ void Control::setSkin(Theme::Skin* skin, unsigned char states)
 Theme::Skin* Control::getSkin(State state)
 {
     Theme::Style::Overlay* overlay = getOverlay(state);
-    GP_ASSERT(overlay);
+    assert(overlay);
     return overlay->getSkin();
 }
 

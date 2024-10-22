@@ -151,7 +151,7 @@ void Container::initialize(const char* typeName, Theme::Style* style, Properties
 
 void Container::addControls(Properties* properties)
 {
-    GP_ASSERT(properties);
+    assert(properties);
 
     // Add all the controls to this container.
     Properties* controlSpace = properties->getNextNamespace();
@@ -201,7 +201,7 @@ void Container::setLayout(Layout::Type type)
 
 unsigned int Container::addControl(Control* control)
 {
-	GP_ASSERT(control);
+	assert(control);
 
 	if( control->_parent == this )
 	{
@@ -216,7 +216,7 @@ unsigned int Container::addControl(Control* control)
 		}
 
 		// Should never reach this.
-		GP_ASSERT( false );
+		assert( false );
 		return 0;
 	}
 
@@ -253,7 +253,7 @@ unsigned int Container::addControl(Control* control)
 
 void Container::insertControl(Control* control, unsigned int index)
 {
-    GP_ASSERT(control);
+    assert(control);
 
     if (control->_parent && control->_parent != this)
     {
@@ -272,7 +272,7 @@ void Container::insertControl(Control* control, unsigned int index)
 
 void Container::removeControl(unsigned int index)
 {
-    GP_ASSERT(index < _controls.size());
+    assert(index < _controls.size());
 
     std::vector<Control*>::iterator it = _controls.begin() + index;
     Control* control = *it;
@@ -290,7 +290,7 @@ void Container::removeControl(unsigned int index)
 
 void Container::removeControl(const char* id)
 {
-    GP_ASSERT(id);
+    assert(id);
 
     for (size_t i = 0, size = _controls.size(); i < size; ++i)
     {
@@ -305,7 +305,7 @@ void Container::removeControl(const char* id)
 
 void Container::removeControl(Control* control)
 {
-    GP_ASSERT(control);
+    assert(control);
 
     for (size_t i = 0, size = _controls.size(); i < size; ++i)
     {
@@ -320,18 +320,18 @@ void Container::removeControl(Control* control)
 
 Control* Container::getControl(unsigned int index) const
 {
-    GP_ASSERT(index < _controls.size());
+    assert(index < _controls.size());
     return _controls[index];
 }
 
 Control* Container::getControl(const char* id) const
 {
-    GP_ASSERT(id);
+    assert(id);
     std::vector<Control*>::const_iterator it;
     for (it = _controls.begin(); it < _controls.end(); it++)
     {
         Control* c = *it;
-        GP_ASSERT(c);
+        assert(c);
         if (strcmp(id, c->getId()) == 0)
         {
             return c;
@@ -437,7 +437,7 @@ Animation* Container::getAnimation(const char* id) const
     for (; itr != end; itr++)
     {
         control = *itr;
-        GP_ASSERT(control);
+        assert(control);
         Animation* animation = control->getAnimation(id);
         if (animation)
             return animation;
@@ -592,7 +592,7 @@ void Container::updateBounds()
     Control::updateBounds();
 
     // Update layout to position children correctly within us
-    GP_ASSERT(_layout);
+    assert(_layout);
     _layout->update(this);
 }
 
@@ -603,14 +603,14 @@ void Container::updateAbsoluteBounds(const Vector2& offset)
     // Get scrollbar images and diminish clipping bounds to make room for scrollbars.
     if ((_scroll & SCROLL_HORIZONTAL) == SCROLL_HORIZONTAL)
     {
-        GP_ASSERT(_scrollBarLeftCap && _scrollBarHorizontal && _scrollBarRightCap);
+        assert(_scrollBarLeftCap && _scrollBarHorizontal && _scrollBarRightCap);
         _viewportBounds.height -= _scrollBarHorizontal->getRegion().height;
         _viewportClipBounds.height -= _scrollBarHorizontal->getRegion().height;
     }
 
     if ((_scroll & SCROLL_VERTICAL) == SCROLL_VERTICAL)
     {
-        GP_ASSERT(_scrollBarTopCap && _scrollBarVertical && _scrollBarBottomCap);
+        assert(_scrollBarTopCap && _scrollBarVertical && _scrollBarBottomCap);
         _viewportBounds.width -= _scrollBarVertical->getRegion().width;
         _viewportClipBounds.width -= _scrollBarVertical->getRegion().width;
     }
@@ -627,7 +627,7 @@ bool Container::updateChildBounds()
     for (size_t i = 0, count = _controls.size(); i < count; ++i)
     {
         Control* ctrl = _controls[i];
-        GP_ASSERT(ctrl);
+        assert(ctrl);
 
         if (ctrl->isVisible())
         {
@@ -1547,7 +1547,7 @@ unsigned int Container::getAnimationPropertyComponentCount(int propertyId) const
 
 void Container::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     switch(propertyId)
     {
@@ -1562,7 +1562,7 @@ void Container::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 
 void Container::setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     switch(propertyId)
     {

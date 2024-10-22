@@ -1,5 +1,4 @@
-#ifndef PLATFORM_H_
-#define PLATFORM_H_
+#pragma once
 
 #include "math/Vector2.h"
 #include "input/Keyboard.h"
@@ -447,5 +446,3 @@ private:
 }
 
 #include "framework/Game.h"
-
-#endif

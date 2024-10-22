@@ -45,7 +45,7 @@ void AudioController::initialize()
 
 void AudioController::finalize()
 {
-    GP_ASSERT(_streamingSources.empty());
+    assert(_streamingSources.empty());
     if (_streamingThread.get())
     {
         _streamingThreadActive = false;
@@ -74,7 +74,7 @@ void AudioController::pause()
     AudioSource* source = NULL;
     while (itr != _playingSources.end())
     {
-        GP_ASSERT(*itr);
+        assert(*itr);
         source = *itr;
         _pausingSource = source;
         source->pause();
@@ -99,7 +99,7 @@ void AudioController::resume()
     AudioSource* source = NULL;
     while (itr != _playingSources.end())
     {
-        GP_ASSERT(*itr);
+        assert(*itr);
         source = *itr;
         source->resume();
         itr++;
@@ -126,7 +126,7 @@ void AudioController::addPlayingSource(AudioSource* source)
 
         if (source->isStreamed())
         {
-            GP_ASSERT(_streamingSources.find(source) == _streamingSources.end());
+            assert(_streamingSources.find(source) == _streamingSources.end());
             bool startThread = _streamingSources.empty() && _streamingThread.get() == NULL;
             _streamingMutex->lock();
             _streamingSources.insert(source);
@@ -149,7 +149,7 @@ void AudioController::removePlayingSource(AudioSource* source)
  
             if (source->isStreamed())
             {
-                GP_ASSERT(_streamingSources.find(source) != _streamingSources.end());
+                assert(_streamingSources.find(source) != _streamingSources.end());
                 _streamingMutex->lock();
                 _streamingSources.erase(source);
                 _streamingMutex->unlock();

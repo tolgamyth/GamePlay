@@ -27,8 +27,8 @@ Text& Text::operator=(const Text& text)
     
 Text* Text::create(const char* fontPath, const char* str, const Vector4& color, unsigned int size)
 {
-    GP_ASSERT(fontPath);
-    GP_ASSERT(str);
+    assert(fontPath);
+    assert(str);
 
     Font* font = Font::create(fontPath);
     Font* drawFont;
@@ -274,7 +274,7 @@ unsigned int Text::draw(bool wireframe)
     
 int Text::getPropertyId(TargetType type, const char* propertyIdStr)
 {
-    GP_ASSERT(propertyIdStr);
+    assert(propertyIdStr);
 
     if (type == AnimationTarget::TRANSFORM)
     {
@@ -306,7 +306,7 @@ unsigned int Text::getAnimationPropertyComponentCount(int propertyId) const
 
 void Text::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 {
-    GP_ASSERT(value);
+    assert(value);
     
     switch (propertyId)
     {
@@ -326,7 +326,7 @@ void Text::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 
 void Text::setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight)
 {
-    GP_ASSERT(value);
+    assert(value);
     
     switch(propertyId)
     {

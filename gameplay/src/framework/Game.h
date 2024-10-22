@@ -1,5 +1,4 @@
-#ifndef GAME_H_
-#define GAME_H_
+#pragma once
 
 #include <memory>
 
@@ -778,5 +777,3 @@ private:
 }
 
 #include "Game.inl"
-
-#endif

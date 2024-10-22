@@ -1,5 +1,4 @@
-#ifndef FILESYSTEM_H_
-#define FILESYSTEM_H_
+#pragma once
 
 #include "framework/Stream.h"
 #include <string>
@@ -264,5 +263,3 @@ private:
 };
 
 }
-
-#endif

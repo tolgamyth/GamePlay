@@ -14,7 +14,7 @@ Material* PostProcessSample::_compositorMaterial = NULL;
 
 PostProcessSample::Compositor* PostProcessSample::Compositor::create(FrameBuffer* srcBuffer, FrameBuffer* dstBuffer, const char* materialPath, const char* techniqueId)
 {
-    GP_ASSERT(srcBuffer);
+    assert(srcBuffer);
 
     Material* material = Material::create(materialPath);
     Texture::Sampler* sampler = Texture::Sampler::create(srcBuffer->getRenderTarget()->getTexture());

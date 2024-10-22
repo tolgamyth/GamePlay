@@ -74,7 +74,7 @@ Light* Light::createSpot(float red, float green, float blue, float range, float 
 
 Light* Light::create(Properties* properties)
 {
-    GP_ASSERT(properties);
+    assert(properties);
 
     // Read light type
     std::string typeStr;
@@ -172,13 +172,13 @@ const Vector3& Light::getColor() const
     switch (_type)
     {
     case DIRECTIONAL:
-        GP_ASSERT(_directional);
+        assert(_directional);
         return _directional->color;
     case POINT:
-        GP_ASSERT(_point);
+        assert(_point);
         return _point->color;
     case SPOT:
-        GP_ASSERT(_spot);
+        assert(_spot);
         return _spot->color;
     default:
         GP_ERROR("Unsupported light type (%d).", _type);
@@ -192,15 +192,15 @@ void Light::setColor(const Vector3& color)
     switch (_type)
     {
     case DIRECTIONAL:
-        GP_ASSERT(_directional);
+        assert(_directional);
         _directional->color = color;
         break;
     case POINT:
-        GP_ASSERT(_point);
+        assert(_point);
         _point->color = color;
         break;
     case SPOT:
-        GP_ASSERT(_spot);
+        assert(_spot);
         _spot->color = color;
         break;
     default:
@@ -216,15 +216,15 @@ void Light::setColor(float red, float green, float blue)
 
 float Light::getRange()  const
 {
-    GP_ASSERT(_type != DIRECTIONAL);
+    assert(_type != DIRECTIONAL);
 
     switch (_type)
     {
     case POINT:
-        GP_ASSERT(_point);
+        assert(_point);
         return _point->range;
     case SPOT:
-        GP_ASSERT(_spot);
+        assert(_spot);
         return _spot->range;
     default:
         GP_ERROR("Unsupported light type (%d).", _type);
@@ -234,17 +234,17 @@ float Light::getRange()  const
     
 void Light::setRange(float range)
 {
-    GP_ASSERT(_type != DIRECTIONAL);
+    assert(_type != DIRECTIONAL);
 
     switch (_type)
     {
     case POINT:
-        GP_ASSERT(_point);
+        assert(_point);
         _point->range = range;
         _point->rangeInverse = 1.0f / range;
         break;
     case SPOT:
-        GP_ASSERT(_spot);
+        assert(_spot);
         _spot->range = range;
         _spot->rangeInverse = 1.0f / range;
         break;
@@ -259,15 +259,15 @@ void Light::setRange(float range)
 
 float Light::getRangeInverse() const
 {
-    GP_ASSERT(_type != DIRECTIONAL);
+    assert(_type != DIRECTIONAL);
 
     switch (_type)
     {
     case POINT:
-        GP_ASSERT(_point);
+        assert(_point);
         return _point->rangeInverse;
     case SPOT:
-        GP_ASSERT(_spot);
+        assert(_spot);
         return _spot->rangeInverse;
     default:
         GP_ERROR("Unsupported light type (%d).", _type);
@@ -277,14 +277,14 @@ float Light::getRangeInverse() const
     
 float Light::getInnerAngle()  const
 {
-    GP_ASSERT(_type == SPOT);
+    assert(_type == SPOT);
 
     return _spot->innerAngle;
 }
 
 void Light::setInnerAngle(float innerAngle)
 {
-    GP_ASSERT(_type == SPOT);
+    assert(_type == SPOT);
 
     _spot->innerAngle = innerAngle;
     _spot->innerAngleCos = cos(innerAngle);
@@ -292,14 +292,14 @@ void Light::setInnerAngle(float innerAngle)
     
 float Light::getOuterAngle()  const
 {
-    GP_ASSERT(_type == SPOT);
+    assert(_type == SPOT);
 
     return _spot->outerAngle;
 }
 
 void Light::setOuterAngle(float outerAngle)
 {
-    GP_ASSERT(_type == SPOT);
+    assert(_type == SPOT);
 
     _spot->outerAngle = outerAngle;
     _spot->outerAngleCos = cos(outerAngle);
@@ -310,14 +310,14 @@ void Light::setOuterAngle(float outerAngle)
     
 float Light::getInnerAngleCos()  const
 {
-    GP_ASSERT(_type == SPOT);
+    assert(_type == SPOT);
 
     return _spot->innerAngleCos;
 }
     
 float Light::getOuterAngleCos()  const
 {
-    GP_ASSERT(_type == SPOT);
+    assert(_type == SPOT);
 
     return _spot->outerAngleCos;
 }
@@ -340,7 +340,7 @@ Light* Light::clone(NodeCloneContext &context)
         GP_ERROR("Unsupported light type (%d).", _type);
         return NULL;
     }
-    GP_ASSERT(lightClone);
+    assert(lightClone);
 
     if (Node* node = context.findClonedNode(getNode()))
     {

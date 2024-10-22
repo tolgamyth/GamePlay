@@ -165,7 +165,7 @@ static bool getNestedVariable(lua_State* lua, const char* name, int env = 0)
 
 Script* ScriptController::loadScript(const char* path, Script::Scope scope, bool forceReload)
 {
-    GP_ASSERT(path);
+    assert(path);
 
     Script* script = NULL;
 
@@ -217,7 +217,7 @@ Script* ScriptController::loadScript(const char* path, Script::Scope scope, bool
 
 bool ScriptController::loadScript(Script* script)
 {
-    GP_ASSERT(script);
+    assert(script);
 
     if (!FileSystem::fileExists(script->_path.c_str()))
     {
@@ -955,7 +955,7 @@ void ScriptController::pushScript(Script* script)
 
 void ScriptController::popScript()
 {
-    GP_ASSERT(!_envStack.empty());
+    assert(!_envStack.empty());
 
     Script* script = _envStack.back();
 

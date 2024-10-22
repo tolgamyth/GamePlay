@@ -152,8 +152,8 @@ Mesh* Mesh::createQuad(const Vector3& p1, const Vector3& p2, const Vector3& p3, 
 
 Mesh* Mesh::createLines(Vector3* points, unsigned int pointCount)
 {
-    GP_ASSERT(points);
-    GP_ASSERT(pointCount);
+    assert(points);
+    assert(pointCount);
 
     float* vertices = new float[pointCount*3];
     memcpy(vertices, points, pointCount*3*sizeof(float));
@@ -322,7 +322,7 @@ unsigned int Mesh::getPartCount() const
 
 MeshPart* Mesh::getPart(unsigned int index)
 {
-    GP_ASSERT(_parts);
+    assert(_parts);
     return _parts[index];
 }
 

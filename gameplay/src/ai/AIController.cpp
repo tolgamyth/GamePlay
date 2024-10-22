@@ -171,7 +171,7 @@ void AIController::removeAgent(AIAgent* agent)
 
 AIAgent* AIController::findAgent(const char* id) const
 {
-    GP_ASSERT(id);
+    assert(id);
 
     AIAgent* agent = _firstAgent;
     while (agent)

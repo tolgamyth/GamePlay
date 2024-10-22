@@ -53,15 +53,15 @@ double AIMessage::getDeliveryTime() const
 
 int AIMessage::getInt(unsigned int index) const
 {
-    GP_ASSERT(index < _parameterCount);
-    GP_ASSERT(_parameters[index].type == AIMessage::INTEGER);
+    assert(index < _parameterCount);
+    assert(_parameters[index].type == AIMessage::INTEGER);
 
     return _parameters[index].intValue;
 }
 
 void AIMessage::setInt(unsigned int index, int value)
 {
-    GP_ASSERT(index < _parameterCount);
+    assert(index < _parameterCount);
 
     clearParameter(index);
 
@@ -71,15 +71,15 @@ void AIMessage::setInt(unsigned int index, int value)
 
 long AIMessage::getLong(unsigned int index) const
 {
-    GP_ASSERT(index < _parameterCount);
-    GP_ASSERT(_parameters[index].type == AIMessage::LONG);
+    assert(index < _parameterCount);
+    assert(_parameters[index].type == AIMessage::LONG);
 
     return _parameters[index].longValue;
 }
 
 void AIMessage::setLong(unsigned int index, long value)
 {
-    GP_ASSERT(index < _parameterCount);
+    assert(index < _parameterCount);
 
     clearParameter(index);
 
@@ -89,15 +89,15 @@ void AIMessage::setLong(unsigned int index, long value)
 
 float AIMessage::getFloat(unsigned int index) const
 {
-    GP_ASSERT(index < _parameterCount);
-    GP_ASSERT(_parameters[index].type == AIMessage::FLOAT);
+    assert(index < _parameterCount);
+    assert(_parameters[index].type == AIMessage::FLOAT);
 
     return _parameters[index].floatValue;
 }
 
 void AIMessage::setFloat(unsigned int index, float value)
 {
-    GP_ASSERT(index < _parameterCount);
+    assert(index < _parameterCount);
 
     clearParameter(index);
 
@@ -107,15 +107,15 @@ void AIMessage::setFloat(unsigned int index, float value)
 
 double AIMessage::getDouble(unsigned int index) const
 {
-    GP_ASSERT(index < _parameterCount);
-    GP_ASSERT(_parameters[index].type == AIMessage::DOUBLE);
+    assert(index < _parameterCount);
+    assert(_parameters[index].type == AIMessage::DOUBLE);
 
     return _parameters[index].doubleValue;
 }
 
 void AIMessage::setDouble(unsigned int index, double value)
 {
-    GP_ASSERT(index < _parameterCount);
+    assert(index < _parameterCount);
 
     clearParameter(index);
 
@@ -125,15 +125,15 @@ void AIMessage::setDouble(unsigned int index, double value)
 
 bool AIMessage::getBoolean(unsigned int index) const
 {
-    GP_ASSERT(index < _parameterCount);
-    GP_ASSERT(_parameters[index].type == AIMessage::BOOLEAN);
+    assert(index < _parameterCount);
+    assert(_parameters[index].type == AIMessage::BOOLEAN);
 
     return _parameters[index].boolValue;
 }
 
 void AIMessage::setBoolean(unsigned int index, bool value)
 {
-    GP_ASSERT(index < _parameterCount);
+    assert(index < _parameterCount);
 
     clearParameter(index);
 
@@ -143,16 +143,16 @@ void AIMessage::setBoolean(unsigned int index, bool value)
 
 const char* AIMessage::getString(unsigned int index) const
 {
-    GP_ASSERT(index < _parameterCount);
-    GP_ASSERT(_parameters[index].type == AIMessage::STRING);
+    assert(index < _parameterCount);
+    assert(_parameters[index].type == AIMessage::STRING);
 
     return _parameters[index].stringValue;
 }
 
 void AIMessage::setString(unsigned int index, const char* value)
 {
-    GP_ASSERT(index < _parameterCount);
-    GP_ASSERT(value);
+    assert(index < _parameterCount);
+    assert(value);
 
     clearParameter(index);
 
@@ -171,14 +171,14 @@ unsigned int AIMessage::getParameterCount() const
 
 AIMessage::ParameterType AIMessage::getParameterType(unsigned int index) const
 {
-    GP_ASSERT(index < _parameterCount);
+    assert(index < _parameterCount);
 
     return _parameters[index].type;
 }
 
 void AIMessage::clearParameter(unsigned int index)
 {
-    GP_ASSERT(index < _parameterCount);
+    assert(index < _parameterCount);
 
     _parameters[index].clear();
 }

@@ -66,7 +66,7 @@ inline AIController* Game::getAIController() const
 template <class T>
 void Game::renderOnce(T* instance, void (T::*method)(void*), void* cookie)
 {
-    GP_ASSERT(instance);
+    assert(instance);
     (instance->*method)(cookie);
     Platform::swapBuffers();
 }

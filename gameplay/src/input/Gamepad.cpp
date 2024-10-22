@@ -14,9 +14,9 @@ static std::vector<Gamepad*> __gamepads;
 Gamepad::Gamepad(const char* formPath)
     : _handle((GamepadHandle)INT_MAX), _buttonCount(0), _joystickCount(0), _triggerCount(0), _form(NULL), _buttons(0)
 {
-    GP_ASSERT(formPath);
+    assert(formPath);
     _form = Form::create(formPath);
-    GP_ASSERT(_form);
+    assert(_form);
     _form->setConsumeInputEvents(false);
     _name = "Virtual";
 
@@ -118,7 +118,7 @@ void Gamepad::bindGamepadControls(Container* container)
     for (; itr != controls.end(); itr++)
     {
         Control* control = *itr;
-        GP_ASSERT(control);
+        assert(control);
 
         if (control->isContainer())
         {

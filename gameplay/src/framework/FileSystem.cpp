@@ -233,7 +233,7 @@ std::string FileSystem::displayFileDialog(size_t dialogMode, const char* title, 
 
 const char* FileSystem::resolvePath(const char* path)
 {
-    GP_ASSERT(path);
+    assert(path);
 
     size_t len = strlen(path);
     if (len > 1 && path[0] == '@')
@@ -342,7 +342,7 @@ bool FileSystem::listFiles(const char* dirPath, std::vector<std::string>& files)
 
 bool FileSystem::fileExists(const char* filePath)
 {
-    GP_ASSERT(filePath);
+    assert(filePath);
 
     std::string fullPath;
 
@@ -411,8 +411,8 @@ Stream* FileSystem::open(const char* path, size_t streamMode)
 
 FILE* FileSystem::openFile(const char* filePath, const char* mode)
 {
-    GP_ASSERT(filePath);
-    GP_ASSERT(mode);
+    assert(filePath);
+    assert(mode);
 
     std::string fullPath;
     getFullPath(filePath, fullPath);
@@ -425,7 +425,7 @@ FILE* FileSystem::openFile(const char* filePath, const char* mode)
 
 char* FileSystem::readAll(const char* filePath, int* fileSize)
 {
-    GP_ASSERT(filePath);
+    assert(filePath);
 
     // Open file for reading.
     std::unique_ptr<Stream> stream(open(filePath));
@@ -487,7 +487,7 @@ void FileSystem::createFileFromAsset(const char* path)
 #ifdef __ANDROID__
     static std::set<std::string> upToDateAssets;
 
-    GP_ASSERT(path);
+    assert(path);
     std::string fullPath(__resourcePath);
     std::string resolvedPath = FileSystem::resolvePath(path);
     fullPath += resolvedPath;

@@ -16,7 +16,7 @@ static void readStream(png_structp png, png_bytep data, png_size_t length)
 
 Image* Image::create(const char* path)
 {
-    GP_ASSERT(path);
+    assert(path);
 
     // Open the file.
     std::unique_ptr<Stream> stream(FileSystem::open(path));
@@ -109,8 +109,8 @@ Image* Image::create(const char* path)
 
 Image* Image::create(unsigned int width, unsigned int height, Image::Format format, unsigned char* data)
 {
-    GP_ASSERT(width > 0 && height > 0);
-    GP_ASSERT(format >= RGB && format <= RGBA);
+    assert(width > 0 && height > 0);
+    assert(format >= RGB && format <= RGBA);
 
     unsigned int pixelSize = 0;
     switch(format)

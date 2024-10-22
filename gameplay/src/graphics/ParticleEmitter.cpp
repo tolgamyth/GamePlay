@@ -31,7 +31,7 @@ ParticleEmitter::ParticleEmitter(unsigned int particleCountMax) : Drawable(),
     _orbitPosition(false), _orbitVelocity(false), _orbitAcceleration(false),
     _timePerEmission(PARTICLE_EMISSION_RATE_TIME_INTERVAL), _emitTime(0), _lastUpdated(0)
 {
-    GP_ASSERT(particleCountMax);
+    assert(particleCountMax);
     _particles = new Particle[particleCountMax];
 }
 
@@ -51,8 +51,8 @@ ParticleEmitter* ParticleEmitter::create(const char* textureFile, BlendMode blen
         GP_ERROR("Failed to create texture for particle emitter.");
         return NULL;
     }
-    GP_ASSERT(texture->getWidth());
-    GP_ASSERT(texture->getHeight());
+    assert(texture->getWidth());
+    assert(texture->getHeight());
 
     ParticleEmitter* emitter = ParticleEmitter::create(texture, blendMode, particleCountMax);
     SAFE_RELEASE(texture);
@@ -62,7 +62,7 @@ ParticleEmitter* ParticleEmitter::create(const char* textureFile, BlendMode blen
 ParticleEmitter* ParticleEmitter::create(Texture* texture, BlendMode blendMode,  unsigned int particleCountMax)
 {
     ParticleEmitter* emitter = new ParticleEmitter(particleCountMax);
-    GP_ASSERT(emitter);
+    assert(emitter);
 
     emitter->setTexture(texture, blendMode);
 
@@ -265,7 +265,7 @@ unsigned int ParticleEmitter::getEmissionRate() const
 
 void ParticleEmitter::setEmissionRate(unsigned int rate)
 {
-    GP_ASSERT(rate);
+    assert(rate);
     _emissionRate = rate;
     _timePerEmission = 1000.0f / (float)_emissionRate;
 }
@@ -299,8 +299,8 @@ bool ParticleEmitter::isActive() const
 
 void ParticleEmitter::emitOnce(unsigned int particleCount)
 {
-    GP_ASSERT(_node);
-    GP_ASSERT(_particles);
+    assert(_node);
+    assert(_particles);
 
     // Limit particleCount so as not to go over _particleCountMax.
     if (particleCount + _particleCount > _particleCountMax)
@@ -561,8 +561,8 @@ const Vector3& ParticleEmitter::getRotationAxisVariance() const
 
 void ParticleEmitter::setBlendMode(BlendMode blendMode)
 {
-    GP_ASSERT(_spriteBatch);
-    GP_ASSERT(_spriteBatch->getStateBlock());
+    assert(_spriteBatch);
+    assert(_spriteBatch->getStateBlock());
 
     switch (blendMode)
     {
@@ -651,8 +651,8 @@ unsigned int ParticleEmitter::getSpriteHeight() const
 
 void ParticleEmitter::setSpriteTexCoords(unsigned int frameCount, float* texCoords)
 {
-    GP_ASSERT(frameCount);
-    GP_ASSERT(texCoords);
+    assert(frameCount);
+    assert(texCoords);
 
     _spriteFrameCount = frameCount;
     _spritePercentPerFrame = 1.0f / (float)frameCount;
@@ -664,8 +664,8 @@ void ParticleEmitter::setSpriteTexCoords(unsigned int frameCount, float* texCoor
 
 void ParticleEmitter::setSpriteFrameCoords(unsigned int frameCount, Rectangle* frameCoords)
 {
-    GP_ASSERT(frameCount);
-    GP_ASSERT(frameCoords);
+    assert(frameCount);
+    assert(frameCoords);
 
     _spriteFrameCount = frameCount;
     _spritePercentPerFrame = 1.0f / (float)frameCount;
@@ -685,8 +685,8 @@ void ParticleEmitter::setSpriteFrameCoords(unsigned int frameCount, Rectangle* f
 
 void ParticleEmitter::setSpriteFrameCoords(unsigned int frameCount, int width, int height)
 {
-    GP_ASSERT(width);
-    GP_ASSERT(height);
+    assert(width);
+    assert(height);
 
     Rectangle* frameCoords = new Rectangle[frameCount];
     unsigned int cols = _spriteTextureWidth / width;
@@ -768,7 +768,7 @@ float ParticleEmitter::generateScalar(float min, float max)
 
 void ParticleEmitter::generateVectorInRect(const Vector3& base, const Vector3& variance, Vector3* dst)
 {
-    GP_ASSERT(dst);
+    assert(dst);
 
     // Scale each component of the variance vector by a random float
     // between -1 and 1, then add this to the corresponding base component.
@@ -779,7 +779,7 @@ void ParticleEmitter::generateVectorInRect(const Vector3& base, const Vector3& v
 
 void ParticleEmitter::generateVectorInEllipsoid(const Vector3& center, const Vector3& scale, Vector3* dst)
 {
-    GP_ASSERT(dst);
+    assert(dst);
 
     // Generate a point within a unit cube, then reject if the point is not in a unit sphere.
     do
@@ -812,7 +812,7 @@ void ParticleEmitter::generateVector(const Vector3& base, const Vector3& varianc
 
 void ParticleEmitter::generateColor(const Vector4& base, const Vector4& variance, Vector4* dst)
 {
-    GP_ASSERT(dst);
+    assert(dst);
 
     // Scale each component of the variance color by a random float
     // between -1 and 1, then add this to the corresponding base component.
@@ -824,7 +824,7 @@ void ParticleEmitter::generateColor(const Vector4& base, const Vector4& variance
 
 ParticleEmitter::BlendMode ParticleEmitter::getBlendModeFromString(const char* str)
 {
-    GP_ASSERT(str);
+    assert(str);
 
     if (strcmp(str, "BLEND_NONE") == 0 || strcmp(str, "NONE") == 0 )
     {
@@ -880,7 +880,7 @@ void ParticleEmitter::update(float elapsedTime)
         _emitTime += elapsedMs; //+= elapsedTime;
 
         // How many particles should we emit this frame?
-        GP_ASSERT(_timePerEmission);
+        assert(_timePerEmission);
         unsigned int emitCount = (unsigned int)(_emitTime / _timePerEmission);
 
         if (emitCount)
@@ -894,7 +894,7 @@ void ParticleEmitter::update(float elapsedTime)
     }
 
     // Now update all currently living particles.
-    GP_ASSERT(_particles);
+    assert(_particles);
     for (unsigned int particlesIndex = 0; particlesIndex < _particleCount; ++particlesIndex)
     {
         Particle* p = &_particles[particlesIndex];
@@ -986,9 +986,9 @@ unsigned int ParticleEmitter::draw(bool wireframe)
 
     if (_particleCount > 0)
     {
-        GP_ASSERT(_spriteBatch);
-        GP_ASSERT(_particles);
-        GP_ASSERT(_spriteTextureCoords);
+        assert(_spriteBatch);
+        assert(_particles);
+        assert(_spriteTextureCoords);
 
         // Set our node's view projection matrix to this emitter's effect.
         if (_node)
@@ -1003,7 +1003,7 @@ unsigned int ParticleEmitter::draw(bool wireframe)
         static const Vector2 pivot(0.5f, 0.5f);
 
         // 3D Rotation so that particles always face the camera.
-        GP_ASSERT(_node && _node->getScene() && _node->getScene()->getActiveCamera() && _node->getScene()->getActiveCamera()->getNode());
+        assert(_node && _node->getScene() && _node->getScene()->getActiveCamera() && _node->getScene()->getActiveCamera()->getNode());
         const Matrix& cameraWorldMatrix = _node->getScene()->getActiveCamera()->getNode()->getWorldMatrix();
 
         Vector3 right;

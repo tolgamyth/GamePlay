@@ -34,7 +34,7 @@ MeshBatch* MeshBatch::create(const VertexFormat& vertexFormat, Mesh::PrimitiveTy
 
 MeshBatch* MeshBatch::create(const VertexFormat& vertexFormat, Mesh::PrimitiveType primitiveType, Material* material, bool indexed, unsigned int initialCapacity, unsigned int growSize)
 {
-    GP_ASSERT(material);
+    assert(material);
 
     MeshBatch* batch = new MeshBatch(vertexFormat, primitiveType, material, indexed, initialCapacity, growSize);
 
@@ -45,7 +45,7 @@ MeshBatch* MeshBatch::create(const VertexFormat& vertexFormat, Mesh::PrimitiveTy
 
 void MeshBatch::add(const void* vertices, size_t size, unsigned int vertexCount, const unsigned short* indices, unsigned int indexCount)
 {
-    GP_ASSERT(vertices);
+    assert(vertices);
     
     unsigned int newVertexCount = _vertexCount + vertexCount;
     unsigned int newIndexCount = _indexCount + indexCount;
@@ -62,15 +62,15 @@ void MeshBatch::add(const void* vertices, size_t size, unsigned int vertexCount,
     }
     
     // Copy vertex data.
-    GP_ASSERT(_verticesPtr);
+    assert(_verticesPtr);
     unsigned int vBytes = vertexCount * _vertexFormat.getVertexSize();
     memcpy(_verticesPtr, vertices, vBytes);
     
     // Copy index data.
     if (_indexed)
     {
-        GP_ASSERT(indices);
-        GP_ASSERT(_indicesPtr);
+        assert(indices);
+        assert(_indicesPtr);
 
         if (_vertexCount == 0)
         {
@@ -105,17 +105,17 @@ void MeshBatch::add(const void* vertices, size_t size, unsigned int vertexCount,
 
 void MeshBatch::updateVertexAttributeBinding()
 {
-    GP_ASSERT(_material);
+    assert(_material);
 
     // Update our vertex attribute bindings.
     for (unsigned int i = 0, techniqueCount = _material->getTechniqueCount(); i < techniqueCount; ++i)
     {
         Technique* t = _material->getTechniqueByIndex(i);
-        GP_ASSERT(t);
+        assert(t);
         for (unsigned int j = 0, passCount = t->getPassCount(); j < passCount; ++j)
         {
             Pass* p = t->getPassByIndex(j);
-            GP_ASSERT(p);
+            assert(p);
             VertexAttributeBinding* b = VertexAttributeBinding::create(_vertexFormat, _vertices, p->getEffect());
             p->setVertexAttributeBinding(b);
             SAFE_RELEASE(b);
@@ -250,18 +250,18 @@ void MeshBatch::draw()
     // ARRAY_BUFFER will be unbound automatically during pass->bind().
     GL_ASSERT( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0 ) );
 
-    GP_ASSERT(_material);
+    assert(_material);
     if (_indexed)
-        GP_ASSERT(_indices);
+        assert(_indices);
 
     // Bind the material.
     Technique* technique = _material->getTechnique();
-    GP_ASSERT(technique);
+    assert(technique);
     unsigned int passCount = technique->getPassCount();
     for (unsigned int i = 0; i < passCount; ++i)
     {
         Pass* pass = technique->getPassByIndex(i);
-        GP_ASSERT(pass);
+        assert(pass);
         pass->bind();
 
         if (_indexed)

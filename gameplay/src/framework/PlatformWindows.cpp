@@ -797,7 +797,7 @@ bool initializeGL(WindowCreationParams* params)
 
 Platform* Platform::create(Game* game)
 {
-    GP_ASSERT(game);
+    assert(game);
 
     FileSystem::setResourcePath("./");
     Platform* platform = new Platform(game);
@@ -969,7 +969,7 @@ error:
 
 int Platform::enterMessagePump()
 {
-    GP_ASSERT(_game);
+    assert(_game);
 
     // Get the initial time.
     LARGE_INTEGER tps;
@@ -977,7 +977,7 @@ int Platform::enterMessagePump()
     __timeTicksPerMillis = (double)(tps.QuadPart / 1000L);
     LARGE_INTEGER queryTime;
     QueryPerformanceCounter(&queryTime);
-    GP_ASSERT(__timeTicksPerMillis);
+    assert(__timeTicksPerMillis);
     __timeStart = queryTime.QuadPart / __timeTicksPerMillis;
 
     SwapBuffers(__hdc);
@@ -1059,7 +1059,7 @@ double Platform::getAbsoluteTime()
 {
     LARGE_INTEGER queryTime;
     QueryPerformanceCounter(&queryTime);
-    GP_ASSERT(__timeTicksPerMillis);
+    assert(__timeTicksPerMillis);
     __timeAbsolute = queryTime.QuadPart / __timeTicksPerMillis;
 
     return __timeAbsolute - __timeStart;
@@ -1137,8 +1137,8 @@ bool Platform::hasAccelerometer()
 
 void Platform::getAccelerometerValues(float* pitch, float* roll)
 {
-    GP_ASSERT(pitch);
-    GP_ASSERT(roll);
+    assert(pitch);
+    assert(roll);
 
     *pitch = 0;
     *roll = 0;
@@ -1259,7 +1259,7 @@ bool Platform::isGestureRegistered(Gesture::GestureEvent evt)
 #ifdef GP_USE_GAMEPAD
 void Platform::pollGamepadState(Gamepad* gamepad)
 {
-    GP_ASSERT(gamepad->_handle < XUSER_MAX_COUNT);
+    assert(gamepad->_handle < XUSER_MAX_COUNT);
 
     if (XInputGetState(gamepad->_handle, &__xInputState) == NO_ERROR)
     {
@@ -1299,7 +1299,7 @@ void Platform::pollGamepadState(Gamepad* gamepad)
         unsigned int i;
         for (i = 0; i < gamepad->_joystickCount; ++i)
         {
-            GP_ASSERT(i < 2);
+            assert(i < 2);
 
             float x;
             float y;
@@ -1320,7 +1320,7 @@ void Platform::pollGamepadState(Gamepad* gamepad)
 
         for (i = 0; i < gamepad->_triggerCount; ++i)
         {
-            GP_ASSERT(i < 2);
+            assert(i < 2);
 
             BYTE trigger;
             switch (i)

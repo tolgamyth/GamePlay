@@ -8,7 +8,7 @@ namespace gameplay
 void PhysicsHingeConstraint::setLimits(float minAngle, float maxAngle, float bounciness)
 {
     // Use the defaults for softness (0.9) and biasFactor (0.3).
-    GP_ASSERT(_constraint);
+    assert(_constraint);
     ((btHingeConstraint*)_constraint)->setLimit(minAngle, maxAngle, 0.9f, 0.3f, bounciness);
 }
 
@@ -16,7 +16,7 @@ PhysicsHingeConstraint::PhysicsHingeConstraint(PhysicsRigidBody* a, const Quater
     PhysicsRigidBody* b, const Quaternion& rotationOffsetB, const Vector3& translationOffsetB)
     : PhysicsConstraint(a, b)
 {
-    GP_ASSERT(a && a->_body && a->getNode());
+    assert(a && a->_body && a->getNode());
 
     // Take scale into account for the first node's translation offset.
     Vector3 sA;
@@ -25,7 +25,7 @@ PhysicsHingeConstraint::PhysicsHingeConstraint(PhysicsRigidBody* a, const Quater
 
     if (b)
     {
-        GP_ASSERT(b->_body && b->getNode());
+        assert(b->_body && b->getNode());
 
         // Take scale into account for the second node's translation offset.
         Vector3 sB;

@@ -54,7 +54,7 @@ void FlowLayout::setSpacing(int horizontalSpacing, int verticalSpacing)
 
 void FlowLayout::update(const Container* container)
 {
-    GP_ASSERT(container);
+    assert(container);
     const Rectangle& containerBounds = container->getBounds();
     const Theme::Border& containerBorder = container->getBorder(container->getState());
     const Theme::Padding& containerPadding = container->getPadding();
@@ -71,7 +71,7 @@ void FlowLayout::update(const Container* container)
     for (size_t i = 0, controlsCount = controls.size(); i < controlsCount; i++)
     {
         Control* control = controls.at(i);
-        GP_ASSERT(control);
+        assert(control);
 
         if (!control->isVisible())
             continue;

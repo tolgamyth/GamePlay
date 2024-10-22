@@ -292,7 +292,7 @@ void RacerGame::update(float elapsedTime)
 
 bool RacerGame::isUpset() const
 {
-    GP_ASSERT(_carVehicle);
+    assert(_carVehicle);
 
     return _carVehicle->getNode()->getUpVector().y < 0.4f;
 }

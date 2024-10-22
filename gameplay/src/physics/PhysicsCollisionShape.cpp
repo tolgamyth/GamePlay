@@ -77,7 +77,7 @@ PhysicsCollisionShape::Definition::Definition(const Definition& definition)
         break;
 
     case PhysicsCollisionShape::SHAPE_MESH:
-        GP_ASSERT(data.mesh);
+        assert(data.mesh);
         data.mesh->addRef();
         break;
     }
@@ -113,7 +113,7 @@ PhysicsCollisionShape::Definition& PhysicsCollisionShape::Definition::operator=(
             break;
 
         case PhysicsCollisionShape::SHAPE_MESH:
-            GP_ASSERT(data.mesh);
+            assert(data.mesh);
             data.mesh->addRef();
             break;
         }
@@ -129,7 +129,7 @@ bool PhysicsCollisionShape::Definition::isEmpty() const
 
 PhysicsCollisionShape::Definition PhysicsCollisionShape::Definition::create(Node* node, Properties* properties)
 {
-    GP_ASSERT(node);
+    assert(node);
 
     // Check if the properties is valid and has a valid namespace.
     if (!properties || !(strcmp(properties->getNamespace(), "collisionObject") == 0))
@@ -425,7 +425,7 @@ PhysicsCollisionShape::Definition PhysicsCollisionShape::heightfield()
 
 PhysicsCollisionShape::Definition PhysicsCollisionShape::heightfield(HeightField* heightfield)
 {
-    GP_ASSERT(heightfield);
+    assert(heightfield);
 
     heightfield->addRef();
 
@@ -439,7 +439,7 @@ PhysicsCollisionShape::Definition PhysicsCollisionShape::heightfield(HeightField
 
 PhysicsCollisionShape::Definition PhysicsCollisionShape::mesh(Mesh* mesh)
 {
-    GP_ASSERT(mesh);
+    assert(mesh);
     mesh->addRef();
 
     Definition d;

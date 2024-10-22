@@ -11,11 +11,11 @@ PhysicsGhostObject::PhysicsGhostObject(Node* node, const PhysicsCollisionShape::
 {
     Vector3 centerOfMassOffset;
     PhysicsController* physicsController = Game::getInstance()->getPhysicsController();
-    GP_ASSERT(physicsController);
+    assert(physicsController);
 
     // Create and set the collision shape for the ghost object.
     _collisionShape = physicsController->createShape(node, shape, &centerOfMassOffset, false);
-    GP_ASSERT(_collisionShape);
+    assert(_collisionShape);
 
     // Create the ghost object.
     _ghostObject = bullet_new<btPairCachingGhostObject>();
@@ -29,16 +29,16 @@ PhysicsGhostObject::PhysicsGhostObject(Node* node, const PhysicsCollisionShape::
     // Add the ghost object to the physics world.
     physicsController->addCollisionObject(this);
 
-    GP_ASSERT(_node);
+    assert(_node);
     _node->addListener(this);
 }
 
 PhysicsGhostObject::~PhysicsGhostObject()
 {
-    GP_ASSERT(_node);
+    assert(_node);
     _node->removeListener(this);
 
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(Game::getInstance()->getPhysicsController());
     Game::getInstance()->getPhysicsController()->removeCollisionObject(this, true);
 
     SAFE_DELETE(_ghostObject);
@@ -92,8 +92,8 @@ btCollisionObject* PhysicsGhostObject::getCollisionObject() const
 
 void PhysicsGhostObject::transformChanged(Transform* transform, long cookie)
 {
-    GP_ASSERT(_motionState);
-    GP_ASSERT(_ghostObject);
+    assert(_motionState);
+    assert(_ghostObject);
 
     // Update the motion state with the transform from the node.
     _motionState->updateTransformFromNode();

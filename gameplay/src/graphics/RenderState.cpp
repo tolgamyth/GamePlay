@@ -59,14 +59,14 @@ void RenderState::finalize()
 
 MaterialParameter* RenderState::getParameter(const char* name) const
 {
-    GP_ASSERT(name);
+    assert(name);
 
     // Search for an existing parameter with this name.
     MaterialParameter* param;
     for (size_t i = 0, count = _parameters.size(); i < count; ++i)
     {
         param = _parameters[i];
-        GP_ASSERT(param);
+        assert(param);
         if (strcmp(param->getName(), name) == 0)
         {
             return param;
@@ -166,8 +166,8 @@ void RenderState::setParameterAutoBinding(const char* name, AutoBinding autoBind
 
 void RenderState::setParameterAutoBinding(const char* name, const char* autoBinding)
 {
-    GP_ASSERT(name);
-    GP_ASSERT(autoBinding);
+    assert(name);
+    assert(autoBinding);
 
     if (autoBinding == NULL)
     {
@@ -235,10 +235,10 @@ void RenderState::setNodeBinding(Node* node)
 
 void RenderState::applyAutoBinding(const char* uniformName, const char* autoBinding)
 {
-    GP_ASSERT(_nodeBinding);
+    assert(_nodeBinding);
 
     MaterialParameter* param = getParameter(uniformName);
-    GP_ASSERT(param);
+    assert(param);
 
     bool bound = false;
 
@@ -403,7 +403,7 @@ const Vector3& RenderState::autoBindingGetAmbientColor() const
 
 void RenderState::bind(Pass* pass)
 {
-    GP_ASSERT(pass);
+    assert(pass);
 
     // Get the combined modified state bits for our RenderState hierarchy.
     long stateOverrideBits = _state ? _state->_bits : 0;
@@ -427,7 +427,7 @@ void RenderState::bind(Pass* pass)
     {
         for (size_t i = 0, count = rs->_parameters.size(); i < count; ++i)
         {
-            GP_ASSERT(rs->_parameters[i]);
+            assert(rs->_parameters[i]);
             rs->_parameters[i]->bind(effect);
         }
 
@@ -462,7 +462,7 @@ RenderState* RenderState::getTopmost(RenderState* below)
 
 void RenderState::cloneInto(RenderState* renderState, NodeCloneContext& context) const
 {
-    GP_ASSERT(renderState);
+    assert(renderState);
 
     // Clone parameters
     for (std::map<std::string, std::string>::const_iterator it = _autoBindings.begin(); it != _autoBindings.end(); ++it)
@@ -472,7 +472,7 @@ void RenderState::cloneInto(RenderState* renderState, NodeCloneContext& context)
     for (std::vector<MaterialParameter*>::const_iterator it = _parameters.begin(); it != _parameters.end(); ++it)
     {
         const MaterialParameter* param = *it;
-        GP_ASSERT(param);
+        assert(param);
 
         // If this parameter is a method binding auto binding, don't clone it - it will get setup automatically
         // via the cloned auto bindings instead.
@@ -534,7 +534,7 @@ void RenderState::StateBlock::bind()
 
 void RenderState::StateBlock::bindNoRestore()
 {
-    GP_ASSERT(_defaultState);
+    assert(_defaultState);
 
     // Update any state that differs from _defaultState and flip _defaultState bits
     if ((_bits & RS_BLEND) && (_blendEnabled != _defaultState->_blendEnabled))
@@ -624,7 +624,7 @@ void RenderState::StateBlock::bindNoRestore()
 
 void RenderState::StateBlock::restore(long stateOverrideBits)
 {
-    GP_ASSERT(_defaultState);
+    assert(_defaultState);
 
     // If there is no state to restore (i.e. no non-default state), do nothing.
     if (_defaultState->_bits == 0)
@@ -714,7 +714,7 @@ void RenderState::StateBlock::restore(long stateOverrideBits)
 
 void RenderState::StateBlock::enableDepthWrite()
 {
-    GP_ASSERT(_defaultState);
+    assert(_defaultState);
 
     // Internal method used by Game::clear() to restore depth writing before a
     // clear operation. This is necessary if the last code to draw before the
@@ -729,7 +729,7 @@ void RenderState::StateBlock::enableDepthWrite()
 
 void RenderState::StateBlock::cloneInto(StateBlock* state)
 {
-    GP_ASSERT(state);
+    assert(state);
 
     state->_cullFaceEnabled = _cullFaceEnabled;
     state->_depthTestEnabled = _depthTestEnabled;
@@ -753,7 +753,7 @@ void RenderState::StateBlock::cloneInto(StateBlock* state)
 
 static bool parseBoolean(const char* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     if (strlen(value) == 4)
     {
@@ -769,7 +769,7 @@ static bool parseBoolean(const char* value)
 
 static int parseInt(const char* value)
 {
-	GP_ASSERT(value);
+	assert(value);
 
 	int rValue;
     int scanned = sscanf(value, "%d", &rValue);
@@ -783,7 +783,7 @@ static int parseInt(const char* value)
 
 static unsigned int parseUInt(const char* value)
 {
-	GP_ASSERT(value);
+	assert(value);
 
 	unsigned int rValue;
     int scanned = sscanf(value, "%u", &rValue);
@@ -797,7 +797,7 @@ static unsigned int parseUInt(const char* value)
 
 static RenderState::Blend parseBlend(const char* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     // Convert the string to uppercase for comparison.
     std::string upper(value);
@@ -837,7 +837,7 @@ static RenderState::Blend parseBlend(const char* value)
 
 static RenderState::DepthFunction parseDepthFunc(const char* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     // Convert string to uppercase for comparison
     std::string upper(value);
@@ -867,7 +867,7 @@ static RenderState::DepthFunction parseDepthFunc(const char* value)
 
 static RenderState::CullFaceSide parseCullFaceSide(const char* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     // Convert string to uppercase for comparison
     std::string upper(value);
@@ -887,7 +887,7 @@ static RenderState::CullFaceSide parseCullFaceSide(const char* value)
 
 static RenderState::FrontFace parseFrontFace(const char* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     // Convert string to uppercase for comparison
     std::string upper(value);
@@ -905,7 +905,7 @@ static RenderState::FrontFace parseFrontFace(const char* value)
 
 static RenderState::StencilFunction parseStencilFunc(const char* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     // Convert string to uppercase for comparison
     std::string upper(value);
@@ -935,7 +935,7 @@ static RenderState::StencilFunction parseStencilFunc(const char* value)
 
 static RenderState::StencilOperation parseStencilOp(const char* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     // Convert string to uppercase for comparison
     std::string upper(value);
@@ -965,7 +965,7 @@ static RenderState::StencilOperation parseStencilOp(const char* value)
 
 void RenderState::StateBlock::setState(const char* name, const char* value)
 {
-    GP_ASSERT(name);
+    assert(name);
 
     if (strcmp(name, "blend") == 0)
     {

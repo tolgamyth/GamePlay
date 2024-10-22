@@ -1,5 +1,4 @@
-#ifndef BASE_H_
-#define BASE_H_
+#pragma once
 
 // C/C++
 #include <new>
@@ -73,13 +72,6 @@ extern int strcmpnocase(const char* s1, const char* s2);
 #define __current__func__ __FUNCTION__
 #else
 #define __current__func__ __func__
-#endif
-
-// Assert macros.
-#ifdef _DEBUG
-#define GP_ASSERT(expression) assert(expression)
-#else
-#define GP_ASSERT(expression)
 #endif
 
 #if defined(WIN32) && defined(_MSC_VER)
@@ -312,7 +304,7 @@ typedef unsigned long GamepadHandle;
     { \
         gl_code; \
         __gl_error_code = glGetError(); \
-        GP_ASSERT(__gl_error_code == GL_NO_ERROR); \
+        assert(__gl_error_code == GL_NO_ERROR); \
     } while(0)
 #endif
 
@@ -346,5 +338,3 @@ extern ALenum __al_error_code;
  * Accesses the most recently set global AL error.
  */
 #define AL_LAST_ERROR() __al_error_code
-
-#endif

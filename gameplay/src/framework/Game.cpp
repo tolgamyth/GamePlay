@@ -64,7 +64,7 @@ Game::Game()
       _frameLastFPS(0), _frameCount(0), _frameRate(0), _width(0), _height(0),
       _clearDepth(1.0f), _clearStencil(0), _timeEvents(NULL)
 {
-    GP_ASSERT(__gameInstance == NULL);
+    assert(__gameInstance == NULL);
 
     __gameInstance = this;
     _timeEvents = new std::priority_queue<TimeEvent, std::vector<TimeEvent>, std::less<TimeEvent> >();
@@ -85,7 +85,7 @@ Game::~Game()
 
 Game* Game::getInstance()
 {
-    GP_ASSERT(__gameInstance);
+    assert(__gameInstance);
     return __gameInstance;
 }
 
@@ -224,10 +224,10 @@ void Game::shutdown()
     // Call user finalization.
     if (_state != UNINITIALIZED)
     {
-        GP_ASSERT(_animationController);
-        GP_ASSERT(_audioController);
-        GP_ASSERT(_physicsController);
-        GP_ASSERT(_aiController);
+        assert(_animationController);
+        assert(_audioController);
+        assert(_physicsController);
+        assert(_aiController);
 
         Platform::signalShutdown();
 
@@ -277,10 +277,10 @@ void Game::pause()
 {
     if (_state == RUNNING)
     {
-        GP_ASSERT(_animationController);
-        GP_ASSERT(_audioController);
-        GP_ASSERT(_physicsController);
-        GP_ASSERT(_aiController);
+        assert(_animationController);
+        assert(_audioController);
+        assert(_physicsController);
+        assert(_aiController);
         _state = PAUSED;
         _pausedTimeLast = Platform::getAbsoluteTime();
         _animationController->pause();
@@ -300,10 +300,10 @@ void Game::resume()
 
         if (_pausedCount == 0)
         {
-            GP_ASSERT(_animationController);
-            GP_ASSERT(_audioController);
-            GP_ASSERT(_physicsController);
-            GP_ASSERT(_aiController);
+            assert(_animationController);
+            assert(_audioController);
+            assert(_physicsController);
+            assert(_aiController);
             _state = RUNNING;
             _pausedTimeTotal += Platform::getAbsoluteTime() - _pausedTimeLast;
             _animationController->resume();
@@ -361,10 +361,10 @@ void Game::frame()
 
     if (_state == Game::RUNNING)
     {
-        GP_ASSERT(_animationController);
-        GP_ASSERT(_audioController);
-        GP_ASSERT(_physicsController);
-        GP_ASSERT(_aiController);
+        assert(_animationController);
+        assert(_audioController);
+        assert(_physicsController);
+        assert(_aiController);
 
         // Update Time.
         float elapsedTime = (frameTime - lastFrameTime);
@@ -443,10 +443,10 @@ void Game::renderOnce(const char* function)
 
 void Game::updateOnce()
 {
-    GP_ASSERT(_animationController);
-    GP_ASSERT(_audioController);
-    GP_ASSERT(_physicsController);
-    GP_ASSERT(_aiController);
+    assert(_animationController);
+    assert(_audioController);
+    assert(_physicsController);
+    assert(_aiController);
 
     // Update Time.
     static double lastFrameTime = getGameTime();
@@ -696,7 +696,7 @@ void Game::getArguments(int* argc, char*** argv) const
 
 void Game::schedule(float timeOffset, TimeListener* timeListener, void* cookie)
 {
-    GP_ASSERT(_timeEvents);
+    assert(_timeEvents);
     TimeEvent timeEvent(getGameTime() + timeOffset, timeListener, cookie);
     _timeEvents->push(timeEvent);
 }
@@ -791,9 +791,9 @@ void Game::loadGamepads()
                 if (inner->exists("form"))
                 {
                     const char* gamepadFormPath = inner->getString("form");
-                    GP_ASSERT(gamepadFormPath);
+                    assert(gamepadFormPath);
                     Gamepad* gamepad = Gamepad::add(gamepadFormPath);
-                    GP_ASSERT(gamepad);
+                    assert(gamepad);
                 }
             }
 

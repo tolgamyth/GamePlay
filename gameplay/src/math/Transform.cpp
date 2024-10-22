@@ -67,7 +67,7 @@ void Transform::resumeTransformChanged()
         for (size_t i = 0; i < transformCount; i++)
         {
             Transform* t = _transformsChanged.at(i);
-            GP_ASSERT(t);
+            assert(t);
             t->transformChanged();
         }
 
@@ -77,7 +77,7 @@ void Transform::resumeTransformChanged()
         for (size_t i = 0; i < transformCount; i++)
         {
             Transform* t = _transformsChanged.at(i);
-            GP_ASSERT(t);
+            assert(t);
             t->_matrixDirtyBits &= ~DIRTY_NOTIFY;
         }
 
@@ -132,7 +132,7 @@ const Vector3& Transform::getScale() const
 
 void Transform::getScale(Vector3* scale) const
 {
-    GP_ASSERT(scale);
+    assert(scale);
     scale->set(_scale);
 }
 
@@ -158,19 +158,19 @@ const Quaternion& Transform::getRotation() const
 
 void Transform::getRotation(Quaternion* rotation) const
 {
-    GP_ASSERT(rotation);
+    assert(rotation);
     rotation->set(_rotation);
 }
 
 void Transform::getRotation(Matrix* rotation) const
 {
-    GP_ASSERT(rotation);
+    assert(rotation);
     Matrix::createRotation(_rotation, rotation);
 }
 
 float Transform::getRotation(Vector3* axis) const
 {
-    GP_ASSERT(axis);
+    assert(axis);
     return _rotation.toAxisAngle(axis);
 }
 
@@ -181,7 +181,7 @@ const Vector3& Transform::getTranslation() const
 
 void Transform::getTranslation(Vector3* translation) const
 {
-    GP_ASSERT(translation);
+    assert(translation);
     translation->set(_translation);
 }
 
@@ -771,7 +771,7 @@ unsigned int Transform::getAnimationPropertyComponentCount(int propertyId) const
 
 void Transform::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 {
-    GP_ASSERT(value);
+    assert(value);
 
     switch (propertyId)
     {
@@ -829,8 +829,8 @@ void Transform::getAnimationPropertyValue(int propertyId, AnimationValue* value)
 
 void Transform::setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight)
 {
-    GP_ASSERT(value);
-    GP_ASSERT(blendWeight >= 0.0f && blendWeight <= 1.0f);
+    assert(value);
+    assert(blendWeight >= 0.0f && blendWeight <= 1.0f);
 
     switch (propertyId)
     {
@@ -938,14 +938,14 @@ bool Transform::isDirty(char matrixDirtyBits) const
 
 void Transform::suspendTransformChange(Transform* transform)
 {
-    GP_ASSERT(transform);
+    assert(transform);
     transform->_matrixDirtyBits |= DIRTY_NOTIFY;
     _transformsChanged.push_back(transform);
 }
 
 void Transform::addListener(Transform::Listener* listener, long cookie)
 {
-    GP_ASSERT(listener);
+    assert(listener);
 
     if (_listeners == NULL)
         _listeners = new std::list<TransformListener>();
@@ -958,7 +958,7 @@ void Transform::addListener(Transform::Listener* listener, long cookie)
 
 void Transform::removeListener(Transform::Listener* listener)
 {
-    GP_ASSERT(listener);
+    assert(listener);
 
     if (_listeners)
     {
@@ -980,7 +980,7 @@ void Transform::transformChanged()
         for (std::list<TransformListener>::iterator itr = _listeners->begin(); itr != _listeners->end(); ++itr)
         {
             TransformListener& l = *itr;
-            GP_ASSERT(l.listener);
+            assert(l.listener);
             l.listener->transformChanged(this, l.cookie);
         }
     }
@@ -989,7 +989,7 @@ void Transform::transformChanged()
 
 void Transform::cloneInto(Transform* transform, NodeCloneContext &context) const
 {
-    GP_ASSERT(transform);
+    assert(transform);
 
     AnimationTarget::cloneInto(transform, context);
     transform->_scale.set(_scale);
@@ -1003,7 +1003,7 @@ void Transform::applyAnimationValueRotation(AnimationValue* value, unsigned int 
     if (isStatic())
         return;
 
-    GP_ASSERT(value);
+    assert(value);
     Quaternion::slerp(_rotation.x, _rotation.y, _rotation.z, _rotation.w, value->getFloat(index), value->getFloat(index + 1), value->getFloat(index + 2), value->getFloat(index + 3), blendWeight, 
         &_rotation.x, &_rotation.y, &_rotation.z, &_rotation.w);
     dirty(DIRTY_ROTATION);

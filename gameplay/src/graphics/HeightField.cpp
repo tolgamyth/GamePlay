@@ -47,8 +47,8 @@ HeightField* HeightField::createFromRAW(const char* path, unsigned int width, un
 
 HeightField* HeightField::create(const char* path, unsigned int width, unsigned int height, float heightMin, float heightMax)
 {
-    GP_ASSERT(path);
-    GP_ASSERT(heightMax >= heightMin);
+    assert(path);
+    assert(heightMax >= heightMin);
 
     float heightScale = heightMax - heightMin;
 

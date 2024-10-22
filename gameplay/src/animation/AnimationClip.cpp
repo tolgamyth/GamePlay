@@ -19,13 +19,13 @@ AnimationClip::AnimationClip(const char* id, Animation* animation, unsigned long
 {
     GP_REGISTER_SCRIPT_EVENTS();
 
-    GP_ASSERT(_animation);
-    GP_ASSERT(0 <= startTime && startTime <= _animation->_duration && 0 <= endTime && endTime <= _animation->_duration);
+    assert(_animation);
+    assert(0 <= startTime && startTime <= _animation->_duration && 0 <= endTime && endTime <= _animation->_duration);
 
     for (size_t i = 0, count = _animation->_channels.size(); i < count; i++)
     {
-        GP_ASSERT(_animation->_channels[i]);
-        GP_ASSERT(_animation->_channels[i]->getCurve());
+        assert(_animation->_channels[i]);
+        assert(_animation->_channels[i]->getCurve());
         _values.push_back(new AnimationValue(_animation->_channels[i]->getCurve()->getComponentCount()));
     }
 }
@@ -100,7 +100,7 @@ float AnimationClip::getElapsedTime() const
 
 void AnimationClip::setRepeatCount(float repeatCount)
 {
-    GP_ASSERT(repeatCount == REPEAT_INDEFINITE || repeatCount > 0.0f);
+    assert(repeatCount == REPEAT_INDEFINITE || repeatCount > 0.0f);
 
     _repeatCount = repeatCount;
 
@@ -124,7 +124,7 @@ float AnimationClip::getRepeatCount() const
 
 void AnimationClip::setActiveDuration(unsigned long duration)
 {
-    GP_ASSERT(duration >= 0);
+    assert(duration >= 0);
 
     if (duration == REPEAT_INDEFINITE)
     {
@@ -213,8 +213,8 @@ void AnimationClip::play()
     else
     {
         setClipStateBit(CLIP_IS_PLAYING_BIT);
-        GP_ASSERT(_animation);
-        GP_ASSERT(_animation->_controller);
+        assert(_animation);
+        assert(_animation->_controller);
         _animation->_controller->schedule(this);
     }
     
@@ -244,7 +244,7 @@ void AnimationClip::pause()
 
 void AnimationClip::crossFade(AnimationClip* clip, unsigned long duration)
 {
-    GP_ASSERT(clip);
+    assert(clip);
 
     // Check if the given clip is fading into this clip.
     // We should reset the clip from fading out, and this one from fading in 
@@ -285,8 +285,8 @@ void AnimationClip::crossFade(AnimationClip* clip, unsigned long duration)
 
 void AnimationClip::addListener(AnimationClip::Listener* listener, unsigned long eventTime)
 {
-    GP_ASSERT(listener);
-    GP_ASSERT(eventTime < _activeDuration);
+    assert(listener);
+    assert(eventTime < _activeDuration);
 
     ListenerEvent* listenerEvent = new ListenerEvent(listener, eventTime);
 
@@ -303,7 +303,7 @@ void AnimationClip::addListener(AnimationClip::Listener* listener, unsigned long
     {
         for (std::list<ListenerEvent*>::iterator itr = _listeners->begin(); itr != _listeners->end(); itr++)
         {
-            GP_ASSERT(*itr);
+            assert(*itr);
             if (eventTime < (*itr)->_eventTime)
             {
                 itr = _listeners->insert(itr, listenerEvent);
@@ -313,7 +313,7 @@ void AnimationClip::addListener(AnimationClip::Listener* listener, unsigned long
                 if (isClipStateBitSet(CLIP_IS_PLAYING_BIT))
                 {
                     float currentTime = fmodf(_elapsedTime, (float)_duration);
-                    GP_ASSERT(**_listenerItr || *_listenerItr == _listeners->end());
+                    assert(**_listenerItr || *_listenerItr == _listeners->end());
                     if ((_speed >= 0.0f && currentTime < eventTime && (*_listenerItr == _listeners->end() || eventTime < (**_listenerItr)->_eventTime)) ||
                         (_speed <= 0 && currentTime > eventTime && (*_listenerItr == _listeners->begin() || eventTime > (**_listenerItr)->_eventTime)))
                     {
@@ -331,14 +331,14 @@ void AnimationClip::removeListener(AnimationClip::Listener* listener, unsigned l
 {
     if (_listeners)
     {
-        GP_ASSERT(listener);
+        assert(listener);
         std::list<ListenerEvent*>::iterator iter = std::find_if(_listeners->begin(), _listeners->end(), [&](ListenerEvent* lst){ return lst->_eventTime == eventTime && lst->_listener == listener; });
         if (iter != _listeners->end())
         {
             if (isClipStateBitSet(CLIP_IS_PLAYING_BIT))
             {
                 float currentTime = fmodf(_elapsedTime, (float)_duration);
-                GP_ASSERT(**_listenerItr || *_listenerItr == _listeners->end());
+                assert(**_listenerItr || *_listenerItr == _listeners->end());
 
                 // We the listener has not been triggered yet, then check if it is next to be triggered, remove it, and update the iterator
                 if (((_speed >= 0.0f && currentTime < eventTime) || (_speed <= 0 && currentTime > eventTime)) &&
@@ -358,7 +358,7 @@ void AnimationClip::addBeginListener(AnimationClip::Listener* listener)
     if (!_beginListeners)
         _beginListeners = new std::vector<Listener*>;
 
-    GP_ASSERT(listener);
+    assert(listener);
     _beginListeners->push_back(listener);
 }
 
@@ -366,7 +366,7 @@ void AnimationClip::removeBeginListener(AnimationClip::Listener* listener)
 {
     if (_beginListeners)
     {
-        GP_ASSERT(listener);
+        assert(listener);
         std::vector<Listener*>::iterator iter = std::find(_beginListeners->begin(), _beginListeners->end(), listener);
         if (iter != _beginListeners->end())
         {
@@ -380,7 +380,7 @@ void AnimationClip::addEndListener(AnimationClip::Listener* listener)
     if (!_endListeners)
         _endListeners = new std::vector<Listener*>;
 
-    GP_ASSERT(listener);
+    assert(listener);
     _endListeners->push_back(listener);
 }
 
@@ -388,7 +388,7 @@ void AnimationClip::removeEndListener(AnimationClip::Listener* listener)
 {
     if (_endListeners)
     {
-        GP_ASSERT(listener);
+        assert(listener);
         std::vector<Listener*>::iterator iter = std::find(_endListeners->begin(), _endListeners->end(), listener);
         if (iter != _endListeners->end())
         {
@@ -461,15 +461,15 @@ bool AnimationClip::update(float elapsedTime)
     // Notify any listeners of Animation events.
     if (_listeners)
     {
-        GP_ASSERT(_listenerItr);
+        assert(_listenerItr);
 
         if (_speed >= 0.0f)
         {
             while (*_listenerItr != _listeners->end() && _elapsedTime >= (long) (**_listenerItr)->_eventTime)
             {
-                GP_ASSERT(_listenerItr);
-                GP_ASSERT(**_listenerItr);
-                GP_ASSERT((**_listenerItr)->_listener);
+                assert(_listenerItr);
+                assert(**_listenerItr);
+                assert((**_listenerItr)->_listener);
 
                 (**_listenerItr)->_listener->animationEvent(this, Listener::TIME);
                 ++(*_listenerItr);
@@ -479,9 +479,9 @@ bool AnimationClip::update(float elapsedTime)
         {
             while (*_listenerItr != _listeners->begin() && _elapsedTime <= (long) (**_listenerItr)->_eventTime)
             {
-                GP_ASSERT(_listenerItr);
-                GP_ASSERT(**_listenerItr);
-                GP_ASSERT((**_listenerItr)->_listener);
+                assert(_listenerItr);
+                assert(**_listenerItr);
+                assert((**_listenerItr)->_listener);
 
                 (**_listenerItr)->_listener->animationEvent(this, Listener::TIME);
                 --(*_listenerItr);
@@ -493,7 +493,7 @@ bool AnimationClip::update(float elapsedTime)
     fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(AnimationClip, clipUpdate), this, _elapsedTime);
 
     // Add back in start time, and divide by the total animation's duration to get the actual percentage complete
-    GP_ASSERT(_animation);
+    assert(_animation);
 
     // Compute percentage complete for the current loop (prevent a divide by zero if _duration==0).
     // Note that we don't use (currentTime/(_duration+_loopBlendTime)). That's because we want a
@@ -506,12 +506,12 @@ bool AnimationClip::update(float elapsedTime)
     // If we're cross fading, compute blend weights
     if (isClipStateBitSet(CLIP_IS_FADING_OUT_BIT))
     {
-        GP_ASSERT(_crossFadeToClip);
-        GP_ASSERT(_crossFadeOutDuration > 0);
+        assert(_crossFadeToClip);
+        assert(_crossFadeOutDuration > 0);
 
         if (isClipStateBitSet(CLIP_IS_FADING_OUT_STARTED_BIT)) // Calculate elapsed time since the fade out begin.
         {
-            GP_ASSERT(_crossFadeToClip);
+            assert(_crossFadeToClip);
             _crossFadeOutElapsed = (Game::getGameTime() - _crossFadeToClip->_timeStarted) * fabs(_speed); 
             resetClipStateBit(CLIP_IS_FADING_OUT_STARTED_BIT);
         }
@@ -562,14 +562,14 @@ bool AnimationClip::update(float elapsedTime)
     for (size_t i = 0; i < channelCount; i++)
     {
         channel = _animation->_channels[i];
-        GP_ASSERT(channel);
+        assert(channel);
         target = channel->_target;
-        GP_ASSERT(target);
+        assert(target);
         value = _values[i];
-        GP_ASSERT(value);
+        assert(value);
 
         // Evaluate the point on Curve
-        GP_ASSERT(channel->getCurve());
+        assert(channel->getCurve());
         channel->getCurve()->evaluate(percentComplete, percentageStart, percentageEnd, percentageBlend, value->_value);
 
         // Set the animation value on the target property.
@@ -613,7 +613,7 @@ void AnimationClip::onBegin()
         std::vector<Listener*>::iterator listener = _beginListeners->begin();
         while (listener != _beginListeners->end())
         {
-            GP_ASSERT(*listener);
+            assert(*listener);
             (*listener)->animationEvent(this, Listener::BEGIN);
             listener++;
         }
@@ -638,7 +638,7 @@ void AnimationClip::onEnd()
         std::vector<Listener*>::iterator listener = _endListeners->begin();
         while (listener != _endListeners->end())
         {
-            GP_ASSERT(*listener);
+            assert(*listener);
             (*listener)->animationEvent(this, Listener::END);
             listener++;
         }

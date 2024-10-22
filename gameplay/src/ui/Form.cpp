@@ -143,7 +143,7 @@ Form* Form::getForm(const char* id)
     for (size_t i = 0, size = __forms.size(); i < size; ++i)
     {
         Form* f = __forms[i];
-        GP_ASSERT(f);
+        assert(f);
         if (strcmp(id, f->getId()) == 0)
         {
             return f;

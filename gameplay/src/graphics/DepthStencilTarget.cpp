@@ -89,14 +89,14 @@ DepthStencilTarget* DepthStencilTarget::create(const char* id, Format format, un
 
 DepthStencilTarget* DepthStencilTarget::getDepthStencilTarget(const char* id)
 {
-    GP_ASSERT(id);
+    assert(id);
 
     // Search the vector for a matching ID.
     std::vector<DepthStencilTarget*>::const_iterator it;
     for (it = __depthStencilTargets.begin(); it < __depthStencilTargets.end(); it++)
     {
         DepthStencilTarget* dst = *it;
-        GP_ASSERT(dst);
+        assert(dst);
         if (strcmp(id, dst->getId()) == 0)
         {
             return dst;

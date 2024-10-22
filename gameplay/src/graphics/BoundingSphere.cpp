@@ -145,7 +145,7 @@ void BoundingSphere::merge(const BoundingSphere& sphere)
     }
 
     // Calculate the unit vector between the two centers.
-    GP_ASSERT(d != 0.0f);
+    assert(d != 0.0f);
     float dI = 1.0f / d;
     vx *= dI;
     vy *= dI;
@@ -212,7 +212,7 @@ void BoundingSphere::merge(const BoundingBox& box)
     }
 
     // Calculate the unit vector between the center and the farthest point.
-    GP_ASSERT(distance != 0.0f);
+    assert(distance != 0.0f);
     float dI = 1.0f / distance;
     v1x *= dI;
     v1y *= dI;

@@ -22,7 +22,7 @@ Animation::Animation(const char* id, AnimationTarget* target, int propertyId, un
 
     // Release the animation because a newly created animation has a ref count of 1 and the channels hold the ref to animation.
     release();
-    GP_ASSERT(getRefCount() == 1);
+    assert(getRefCount() == 1);
 }
 
 Animation::Animation(const char* id, AnimationTarget* target, int propertyId, unsigned int keyCount, unsigned int* keyTimes, float* keyValues, float* keyInValue, float* keyOutValue, unsigned int type)
@@ -31,7 +31,7 @@ Animation::Animation(const char* id, AnimationTarget* target, int propertyId, un
     createChannel(target, propertyId, keyCount, keyTimes, keyValues, keyInValue, keyOutValue, type);
     // Release the animation because a newly created animation has a ref count of 1 and the channels hold the ref to animation.
     release();
-    GP_ASSERT(getRefCount() == 1);
+    assert(getRefCount() == 1);
 }
 
 Animation::Animation(const char* id)
@@ -47,7 +47,7 @@ Animation::~Animation()
     {
         if (_defaultClip->isClipStateBitSet(AnimationClip::CLIP_IS_PLAYING_BIT))
         {
-            GP_ASSERT(_controller);
+            assert(_controller);
             _controller->unschedule(_defaultClip);
         }
         SAFE_RELEASE(_defaultClip);
@@ -60,10 +60,10 @@ Animation::~Animation()
         while (clipIter != _clips->end())
         {
             AnimationClip* clip = *clipIter;
-            GP_ASSERT(clip);
+            assert(clip);
             if (clip->isClipStateBitSet(AnimationClip::CLIP_IS_PLAYING_BIT))
             {
-                GP_ASSERT(_controller);
+                assert(_controller);
                 _controller->unschedule(clip);
             }
             SAFE_RELEASE(clip);
@@ -77,12 +77,12 @@ Animation::~Animation()
 Animation::Channel::Channel(Animation* animation, AnimationTarget* target, int propertyId, Curve* curve, unsigned long duration)
     : _animation(animation), _target(target), _propertyId(propertyId), _curve(curve), _duration(duration)
 {
-    GP_ASSERT(_animation);
-    GP_ASSERT(_target);
-    GP_ASSERT(_curve);
+    assert(_animation);
+    assert(_target);
+    assert(_curve);
 
     // get property component count, and ensure the property exists on the AnimationTarget by getting the property component count.
-    GP_ASSERT(_target->getAnimationPropertyComponentCount(propertyId));
+    assert(_target->getAnimationPropertyComponentCount(propertyId));
     _curve->addRef();
     _target->addChannel(this);
     _animation->addRef();
@@ -91,9 +91,9 @@ Animation::Channel::Channel(Animation* animation, AnimationTarget* target, int p
 Animation::Channel::Channel(const Channel& copy, Animation* animation, AnimationTarget* target)
     : _animation(animation), _target(target), _propertyId(copy._propertyId), _curve(copy._curve), _duration(copy._duration)
 {
-    GP_ASSERT(_curve);
-    GP_ASSERT(_target);
-    GP_ASSERT(_animation);
+    assert(_curve);
+    assert(_target);
+    assert(_animation);
 
     _curve->addRef();
     _target->addChannel(this);
@@ -124,10 +124,10 @@ unsigned long Animation::getDuration() const
 void Animation::createClips(const char* url)
 {
     Properties* properties = Properties::create(url);
-    GP_ASSERT(properties);
+    assert(properties);
 
     Properties* pAnimation = (strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace();
-    GP_ASSERT(pAnimation);
+    assert(pAnimation);
 
     int frameCount = pAnimation->getInt("frameCount");
     if (frameCount <= 0)
@@ -229,7 +229,7 @@ bool Animation::targets(AnimationTarget* target) const
 {
     for (std::vector<Animation::Channel*>::const_iterator itr = _channels.begin(); itr != _channels.end(); ++itr)
     {
-        GP_ASSERT(*itr);
+        assert(*itr);
         if ((*itr)->_target == target)
         {
             return true;
@@ -246,7 +246,7 @@ void Animation::createDefaultClip()
 
 void Animation::createClips(Properties* animationProperties, unsigned int frameCount)
 {
-    GP_ASSERT(animationProperties);
+    assert(animationProperties);
 
     Properties* pClip = animationProperties->getNextNamespace();
 
@@ -291,7 +291,7 @@ void Animation::addClip(AnimationClip* clip)
     if (_clips == NULL)
         _clips = new std::vector<AnimationClip*>;
 
-    GP_ASSERT(clip);
+    assert(clip);
     _clips->push_back(clip);
 }
 
@@ -303,7 +303,7 @@ AnimationClip* Animation::findClip(const char* id) const
         for (size_t i = 0; i < clipCount; i++)
         {
             AnimationClip* clip = _clips->at(i);
-            GP_ASSERT(clip);
+            assert(clip);
             if (clip->_id.compare(id) == 0)
             {
                 return clip;
@@ -315,15 +315,15 @@ AnimationClip* Animation::findClip(const char* id) const
 
 Animation::Channel* Animation::createChannel(AnimationTarget* target, int propertyId, unsigned int keyCount, unsigned int* keyTimes, float* keyValues, unsigned int type)
 {
-    GP_ASSERT(target);
-    GP_ASSERT(keyTimes);
-    GP_ASSERT(keyValues);
+    assert(target);
+    assert(keyTimes);
+    assert(keyValues);
 
     unsigned int propertyComponentCount = target->getAnimationPropertyComponentCount(propertyId);
-    GP_ASSERT(propertyComponentCount > 0);
+    assert(propertyComponentCount > 0);
 
     Curve* curve = Curve::create(keyCount, propertyComponentCount);
-    GP_ASSERT(curve);
+    assert(curve);
     if (target->_targetType == AnimationTarget::TRANSFORM)
         setTransformRotationOffset(curve, propertyId);
 
@@ -359,15 +359,15 @@ Animation::Channel* Animation::createChannel(AnimationTarget* target, int proper
 
 Animation::Channel* Animation::createChannel(AnimationTarget* target, int propertyId, unsigned int keyCount, unsigned int* keyTimes, float* keyValues, float* keyInValue, float* keyOutValue, unsigned int type)
 {
-    GP_ASSERT(target);
-    GP_ASSERT(keyTimes);
-    GP_ASSERT(keyValues);
+    assert(target);
+    assert(keyTimes);
+    assert(keyValues);
 
     unsigned int propertyComponentCount = target->getAnimationPropertyComponentCount(propertyId);
-    GP_ASSERT(propertyComponentCount > 0);
+    assert(propertyComponentCount > 0);
 
     Curve* curve = Curve::create(keyCount, propertyComponentCount);
-    GP_ASSERT(curve);
+    assert(curve);
     if (target->_targetType == AnimationTarget::TRANSFORM)
         setTransformRotationOffset(curve, propertyId);
 
@@ -401,7 +401,7 @@ Animation::Channel* Animation::createChannel(AnimationTarget* target, int proper
 
 void Animation::addChannel(Channel* channel)
 {
-    GP_ASSERT(channel);
+    assert(channel);
     _channels.push_back(channel);
 
     if (channel->_duration > _duration)
@@ -428,7 +428,7 @@ void Animation::removeChannel(Channel* channel)
 
 void Animation::setTransformRotationOffset(Curve* curve, unsigned int propertyId)
 {
-    GP_ASSERT(curve);
+    assert(curve);
 
     switch (propertyId)
     {
@@ -447,7 +447,7 @@ void Animation::setTransformRotationOffset(Curve* curve, unsigned int propertyId
 
 Animation* Animation::clone(Channel* channel, AnimationTarget* target)
 {
-    GP_ASSERT(channel);
+    assert(channel);
 
     Animation* animation = new Animation(getId());
 
@@ -455,7 +455,7 @@ Animation* Animation::clone(Channel* channel, AnimationTarget* target)
     animation->addChannel(channelCopy);
     // Release the animation because a newly created animation has a ref count of 1 and the channels hold the ref to animation.
     animation->release();
-    GP_ASSERT(animation->getRefCount() == 1);
+    assert(animation->getRefCount() == 1);
 
     // Clone the clips
     

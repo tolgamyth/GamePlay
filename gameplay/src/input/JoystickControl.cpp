@@ -342,7 +342,7 @@ bool JoystickControl::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned i
                 else
                 {
                     value.set(_displacement);
-                    GP_ASSERT(_radiusPixels);
+                    assert(_radiusPixels);
                     value.scale(1.0f / _radiusPixels);
                 }
 
@@ -377,7 +377,7 @@ bool JoystickControl::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned i
                 else
                 {
                     value.set(_displacement);
-                    GP_ASSERT(_radiusPixels);
+                    assert(_radiusPixels);
                     value.scale(1.0f / _radiusPixels);
                 }
 

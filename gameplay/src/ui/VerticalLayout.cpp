@@ -44,7 +44,7 @@ void VerticalLayout::setSpacing(int spacing)
 
 void VerticalLayout::update(const Container* container)
 {
-    GP_ASSERT(container);
+    assert(container);
 
     // Need border, padding.
     Theme::Border border = container->getBorder(container->getState());
@@ -71,7 +71,7 @@ void VerticalLayout::update(const Container* container)
     while (i != end)
     {
         Control* control = controls.at(i);
-        GP_ASSERT(control);
+        assert(control);
 
         if (control->isVisible())
         {

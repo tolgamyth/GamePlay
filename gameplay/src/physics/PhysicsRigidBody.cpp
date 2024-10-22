@@ -13,13 +13,13 @@ namespace gameplay
 PhysicsRigidBody::PhysicsRigidBody(Node* node, const PhysicsCollisionShape::Definition& shape, const Parameters& parameters, int group, int mask)
         : PhysicsCollisionObject(node, group, mask), _body(NULL), _mass(parameters.mass), _constraints(NULL), _inDestructor(false)
 {
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
-    GP_ASSERT(_node);
+    assert(Game::getInstance()->getPhysicsController());
+    assert(_node);
 
     // Create our collision shape.
     Vector3 centerOfMassOffset;
     _collisionShape = Game::getInstance()->getPhysicsController()->createShape(node, shape, &centerOfMassOffset, parameters.mass != 0.0f);
-    GP_ASSERT(_collisionShape && _collisionShape->getShape());
+    assert(_collisionShape && _collisionShape->getShape());
 
     // Create motion state object.
     _motionState = new PhysicsMotionState(node, this, (centerOfMassOffset.lengthSquared() > MATH_EPSILON) ? &centerOfMassOffset : NULL);
@@ -64,9 +64,9 @@ PhysicsRigidBody::PhysicsRigidBody(Node* node, const PhysicsCollisionShape::Defi
 
 PhysicsRigidBody::~PhysicsRigidBody()
 {
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
-    GP_ASSERT(_collisionShape);
-    GP_ASSERT(_node);
+    assert(Game::getInstance()->getPhysicsController());
+    assert(_collisionShape);
+    assert(_node);
 
     // Clean up all constraints linked to this rigid body.
     _inDestructor = true;
@@ -108,7 +108,7 @@ void PhysicsRigidBody::applyForce(const Vector3& force, const Vector3* relativeP
     // to make sure that it isn't sleeping and apply the force.
     if (force.lengthSquared() > MATH_EPSILON)
     {
-        GP_ASSERT(_body);
+        assert(_body);
         _body->activate();
         if (relativePosition)
             _body->applyForce(BV(force), BV(*relativePosition));
@@ -123,7 +123,7 @@ void PhysicsRigidBody::applyImpulse(const Vector3& impulse, const Vector3* relat
     // to make sure that it isn't sleeping and apply the impulse.
     if (impulse.lengthSquared() > MATH_EPSILON)
     {
-        GP_ASSERT(_body);
+        assert(_body);
         _body->activate();
         if (relativePosition)
         {
@@ -140,7 +140,7 @@ void PhysicsRigidBody::applyTorque(const Vector3& torque)
     // to make sure that it isn't sleeping and apply the torque.
     if (torque.lengthSquared() > MATH_EPSILON)
     {
-        GP_ASSERT(_body);
+        assert(_body);
         _body->activate();
         _body->applyTorque(BV(torque));
     }
@@ -152,7 +152,7 @@ void PhysicsRigidBody::applyTorqueImpulse(const Vector3& torque)
     // to make sure that it isn't sleeping and apply the torque impulse.
     if (torque.lengthSquared() > MATH_EPSILON)
     {
-        GP_ASSERT(_body);
+        assert(_body);
         _body->activate();
         _body->applyTorqueImpulse(BV(torque));
     }
@@ -258,7 +258,7 @@ PhysicsRigidBody* PhysicsRigidBody::create(Node* node, Properties* properties, c
 
 void PhysicsRigidBody::setKinematic(bool kinematic)
 {
-    GP_ASSERT(_body);
+    assert(_body);
 
     if (kinematic)
     {
@@ -281,8 +281,8 @@ void PhysicsRigidBody::setEnabled(bool enable)
 
 float PhysicsRigidBody::getHeight(float x, float z) const
 {
-    GP_ASSERT(_collisionShape);
-    GP_ASSERT(_node);
+    assert(_collisionShape);
+    assert(_node);
 
     // If our node has a terrain, call getHeight() on it since we need to factor in local
     // scaling on the terrain into the height calculation.
@@ -297,7 +297,7 @@ float PhysicsRigidBody::getHeight(float x, float z) const
         return 0.0f;
     }
 
-    GP_ASSERT(_collisionShape->_shapeData.heightfieldData);
+    assert(_collisionShape->_shapeData.heightfieldData);
 
     // Ensure inverse matrix is updated so we can transform from world back into local heightfield coordinates for indexing
     if (_collisionShape->_shapeData.heightfieldData->inverseIsDirty)
@@ -311,8 +311,8 @@ float PhysicsRigidBody::getHeight(float x, float z) const
     float cols = _collisionShape->_shapeData.heightfieldData->heightfield->getColumnCount();
     float rows = _collisionShape->_shapeData.heightfieldData->heightfield->getRowCount();
 
-    GP_ASSERT(cols > 0);
-    GP_ASSERT(rows > 0);
+    assert(cols > 0);
+    assert(rows > 0);
 
     Vector3 v = _collisionShape->_shapeData.heightfieldData->inverse * Vector3(x, 0.0f, z);
     x = v.x + (cols - 1) * 0.5f;
@@ -331,7 +331,7 @@ float PhysicsRigidBody::getHeight(float x, float z) const
 
 void PhysicsRigidBody::addConstraint(PhysicsConstraint* constraint)
 {
-    GP_ASSERT(constraint);
+    assert(constraint);
     if (_constraints == NULL)
         _constraints = new std::vector<PhysicsConstraint*>();
 
@@ -365,7 +365,7 @@ void PhysicsRigidBody::transformChanged(Transform* transform, long cookie)
 {
     if (getShapeType() == PhysicsCollisionShape::SHAPE_HEIGHTFIELD)
     {
-        GP_ASSERT(_collisionShape && _collisionShape->_shapeData.heightfieldData);
+        assert(_collisionShape && _collisionShape->_shapeData.heightfieldData);
 
         // Dirty the heightfield's inverse matrix (used to compute height values from world-space coordinates)
         _collisionShape->_shapeData.heightfieldData->inverseIsDirty = true;

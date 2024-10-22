@@ -1,5 +1,4 @@
-#ifndef Stream_H_
-#define Stream_H_
+#pragma once
 
 namespace gameplay
 {
@@ -163,5 +162,3 @@ private:
 };
 
 }
-
-#endif

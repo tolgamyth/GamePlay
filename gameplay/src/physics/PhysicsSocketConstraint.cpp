@@ -8,10 +8,10 @@ namespace gameplay
 PhysicsSocketConstraint::PhysicsSocketConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
     : PhysicsConstraint(a, b)
 {
-    GP_ASSERT(a && a->_body && a->getNode());
+    assert(a && a->_body && a->getNode());
     if (b)
     {
-        GP_ASSERT(b->_body && b->getNode());
+        assert(b->_body && b->getNode());
         Vector3 origin = centerOfMassMidpoint(a->getNode(), b->getNode());
         btTransform frameInA = getTransformOffset(a->getNode(), origin);
         btTransform frameInB = getTransformOffset(b->getNode(), origin);
@@ -28,7 +28,7 @@ PhysicsSocketConstraint::PhysicsSocketConstraint(PhysicsRigidBody* a, const Vect
                                                  PhysicsRigidBody* b, const Vector3& translationOffsetB)
     : PhysicsConstraint(a, b)
 {
-    GP_ASSERT(a && a->_body && a->getNode());
+    assert(a && a->_body && a->getNode());
 
     // Take scale into account for the first node's translation offset.
     Vector3 sA;
@@ -37,7 +37,7 @@ PhysicsSocketConstraint::PhysicsSocketConstraint(PhysicsRigidBody* a, const Vect
 
     if (b)
     {
-        GP_ASSERT(b->_body && b->getNode());
+        assert(b->_body && b->getNode());
 
         // Take scale into account for the second node's translation offset.
         Vector3 sB;

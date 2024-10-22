@@ -84,7 +84,7 @@ Node::Type Node::getType() const
 
 void Node::addChild(Node* child)
 {
-    GP_ASSERT(child);
+    assert(child);
 
     if (child->_parent == this)
     {
@@ -225,7 +225,7 @@ Node* Node::findNode(const char* id, bool recursive, bool exactMatch) const
 
 Node* Node::findNode(const char* id, bool recursive, bool exactMatch, bool skipSkin) const
 {
-    GP_ASSERT(id);
+    assert(id);
 
     // If not skipSkin hierarchy, try searching the skin hierarchy
     if (!skipSkin)
@@ -279,7 +279,7 @@ unsigned int Node::findNodes(const char* id, std::vector<Node*>& nodes, bool rec
 
 unsigned int Node::findNodes(const char* id, std::vector<Node*>& nodes, bool recursive, bool exactMatch, bool skipSkin) const
 {
-    GP_ASSERT(id);
+    assert(id);
 
     // If the drawable is a model with a mesh skin, search the skin's hierarchy as well.
     unsigned int count = 0;
@@ -341,13 +341,13 @@ Scene* Node::getScene() const
 
 bool Node::hasTag(const char* name) const
 {
-    GP_ASSERT(name);
+    assert(name);
     return (_tags ? _tags->find(name) != _tags->end() : false);
 }
 
 const char* Node::getTag(const char* name) const
 {
-    GP_ASSERT(name);
+    assert(name);
 
     if (!_tags)
         return NULL;
@@ -358,7 +358,7 @@ const char* Node::getTag(const char* name) const
 
 void Node::setTag(const char* name, const char* value)
 {
-    GP_ASSERT(name);
+    assert(name);
 
     if (value == NULL)
     {
@@ -722,7 +722,7 @@ Animation* Node::getAnimation(const char* id) const
             std::vector<MaterialParameter*>::iterator itr = material->_parameters.begin();
             for (; itr != material->_parameters.end(); itr++)
             {
-                GP_ASSERT(*itr);
+                assert(*itr);
                 animation = ((MaterialParameter*)(*itr))->getAnimation(id);
                 if (animation)
                     return animation;
@@ -903,7 +903,7 @@ const BoundingSphere& Node::getBoundingSphere() const
                 // since joint parent nodes that are not in the matrix palette do not need to
                 // be considered as directly transforming vertices on the GPU (they can instead
                 // be applied directly to the bounding volume transformation below).
-                GP_ASSERT(model->getSkin()->getRootJoint());
+                assert(model->getSkin()->getRootJoint());
                 Node* jointParent = model->getSkin()->getRootJoint()->getParent();
                 if (jointParent)
                 {
@@ -960,13 +960,13 @@ Node* Node::cloneSingleNode(NodeCloneContext &context) const
 Node* Node::cloneRecursive(NodeCloneContext &context) const
 {
     Node* copy = cloneSingleNode(context);
-    GP_ASSERT(copy);
+    assert(copy);
 
     // Add child nodes
     for (Node* child = getFirstChild(); child != NULL; child = child->getNextSibling())
     {
         Node* childCopy = child->cloneRecursive(context);
-        GP_ASSERT(childCopy);
+        assert(childCopy);
         copy->addChild(childCopy);
         childCopy->release();
     }
@@ -976,7 +976,7 @@ Node* Node::cloneRecursive(NodeCloneContext &context) const
 
 void Node::cloneInto(Node* node, NodeCloneContext& context) const
 {
-    GP_ASSERT(node);
+    assert(node);
 
     Transform::cloneInto(node, context);
 
@@ -1235,7 +1235,7 @@ NodeCloneContext::~NodeCloneContext()
 
 Animation* NodeCloneContext::findClonedAnimation(const Animation* animation)
 {
-    GP_ASSERT(animation);
+    assert(animation);
 
     std::map<const Animation*, Animation*>::iterator it = _clonedAnimations.find(animation);
     return it != _clonedAnimations.end() ? it->second : NULL;
@@ -1243,15 +1243,15 @@ Animation* NodeCloneContext::findClonedAnimation(const Animation* animation)
 
 void NodeCloneContext::registerClonedAnimation(const Animation* original, Animation* clone)
 {
-    GP_ASSERT(original);
-    GP_ASSERT(clone);
+    assert(original);
+    assert(clone);
 
     _clonedAnimations[original] = clone;
 }
 
 Node* NodeCloneContext::findClonedNode(const Node* node)
 {
-    GP_ASSERT(node);
+    assert(node);
 
     std::map<const Node*, Node*>::iterator it = _clonedNodes.find(node);
     return it != _clonedNodes.end() ? it->second : NULL;
@@ -1259,8 +1259,8 @@ Node* NodeCloneContext::findClonedNode(const Node* node)
 
 void NodeCloneContext::registerClonedNode(const Node* original, Node* clone)
 {
-    GP_ASSERT(original);
-    GP_ASSERT(clone);
+    assert(original);
+    assert(clone);
 
     _clonedNodes[original] = clone;
 }

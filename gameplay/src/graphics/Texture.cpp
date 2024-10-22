@@ -77,13 +77,13 @@ Texture::~Texture()
 
 Texture* Texture::create(const char* path, bool generateMipmaps)
 {
-    GP_ASSERT( path );
+    assert( path );
 
     // Search texture cache first.
     for (size_t i = 0, count = __textureCache.size(); i < count; ++i)
     {
         Texture* t = __textureCache[i];
-        GP_ASSERT( t );
+        assert( t );
         if (t->_path == path)
         {
             // If 'generateMipmaps' is true, call Texture::generateMipamps() to force the
@@ -147,7 +147,7 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
 
 Texture* Texture::create(Image* image, bool generateMipmaps)
 {
-    GP_ASSERT( image );
+    assert( image );
 
     switch (image->getFormat())
     {
@@ -231,15 +231,15 @@ size_t Texture::getFormatBPP(Format format)
 
 Texture* Texture::create(Format format, unsigned int width, unsigned int height, const unsigned char* data, bool generateMipmaps, Texture::Type type)
 {
-    GP_ASSERT( type == Texture::TEXTURE_2D || type == Texture::TEXTURE_CUBE );
+    assert( type == Texture::TEXTURE_2D || type == Texture::TEXTURE_CUBE );
 
     GLenum target = (GLenum)type;
 
     GLint internalFormat = getFormatInternal(format);
-    GP_ASSERT( internalFormat != 0 );
+    assert( internalFormat != 0 );
 
     GLenum texelType = getFormatTexel(format);
-    GP_ASSERT( texelType != 0 );
+    assert( texelType != 0 );
 
     // Create the texture.
     GLuint textureId;
@@ -320,7 +320,7 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
 
 Texture* Texture::create(TextureHandle handle, int width, int height, Format format)
 {
-    GP_ASSERT( handle );
+    assert( handle );
 
     Texture* texture = new Texture();
     if (glIsTexture(handle))
@@ -354,9 +354,9 @@ Texture* Texture::create(TextureHandle handle, int width, int height, Format for
 void Texture::setData(const unsigned char* data)
 {
     // Don't work with any compressed or cached textures
-    GP_ASSERT( data );
-    GP_ASSERT( (!_compressed) );
-    GP_ASSERT( (!_cached) );
+    assert( data );
+    assert( (!_compressed) );
+    assert( (!_cached) );
 
     GL_ASSERT( glBindTexture((GLenum)_type, _handle) );
 
@@ -507,14 +507,14 @@ Texture* Texture::createCompressedPVRTC(const char* path)
 
 GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei* width, GLsizei* height, GLenum* format, unsigned int* mipMapCount, unsigned int* faceCount, GLenum* faces)
 {
-    GP_ASSERT( stream );
-    GP_ASSERT( path );
-    GP_ASSERT( width );
-    GP_ASSERT( height );
-    GP_ASSERT( format );
-    GP_ASSERT( mipMapCount );
-    GP_ASSERT( faceCount );
-    GP_ASSERT( faces );
+    assert( stream );
+    assert( path );
+    assert( width );
+    assert( height );
+    assert( format );
+    assert( mipMapCount );
+    assert( faceCount );
+    assert( faces );
 
     struct pvrtc_file_header
     {
@@ -793,7 +793,7 @@ int Texture::getMaskByteIndex(unsigned int mask)
 
 Texture* Texture::createCompressedDDS(const char* path)
 {
-    GP_ASSERT( path );
+    assert( path );
 
     // DDS file structures.
     struct dds_pixel_format
@@ -1212,7 +1212,7 @@ bool Texture::isCompressed() const
 Texture::Sampler::Sampler(Texture* texture)
     : _texture(texture), _wrapS(Texture::REPEAT), _wrapT(Texture::REPEAT), _wrapR(Texture::REPEAT)
 {
-    GP_ASSERT( texture );
+    assert( texture );
     _minFilter = texture->_minFilter;
     _magFilter = texture->_magFilter;
 }
@@ -1224,8 +1224,8 @@ Texture::Sampler::~Sampler()
 
 Texture::Sampler* Texture::Sampler::create(Texture* texture)
 {
-    GP_ASSERT( texture );
-    GP_ASSERT( texture->_type == Texture::TEXTURE_2D || texture->_type == Texture::TEXTURE_CUBE );
+    assert( texture );
+    assert( texture->_type == Texture::TEXTURE_2D || texture->_type == Texture::TEXTURE_CUBE );
     texture->addRef();
     return new Sampler(texture);
 }
@@ -1256,7 +1256,7 @@ Texture* Texture::Sampler::getTexture() const
 
 void Texture::Sampler::bind()
 {
-    GP_ASSERT( _texture );
+    assert( _texture );
 
     GLenum target = (GLenum)_texture->_type;
     if (__currentTextureId != _texture->_handle)

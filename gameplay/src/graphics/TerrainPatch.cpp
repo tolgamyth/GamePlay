@@ -149,7 +149,7 @@ void TerrainPatch::addLOD(float* heights, unsigned int width, unsigned int heigh
         bool xskirt = verticalSkirtSize > 0 ? true : false;
         for (unsigned int x = x1; ; )
         {
-            GP_ASSERT(index < vertexCount);
+            assert(index < vertexCount);
 
             float* v = vertices + (index * vertexElements);
             index++;
@@ -248,7 +248,7 @@ void TerrainPatch::addLOD(float* heights, unsigned int width, unsigned int heigh
             z = std::min(z + step, z2);
         }
     }
-    GP_ASSERT(index == vertexCount);
+    assert(index == vertexCount);
 
     Vector3 center(min + ((max - min) * 0.5f));
 
@@ -281,7 +281,7 @@ void TerrainPatch::addLOD(float* heights, unsigned int width, unsigned int heigh
     if (indexCount > USHRT_MAX)
     {
         GP_WARN("Index count of %d for terrain patch exceeds the limit of 65535. Please specifiy a smaller patch size.", indexCount);
-        GP_ASSERT(indexCount <= USHRT_MAX);
+        assert(indexCount <= USHRT_MAX);
     }
 
     MeshPart* part = mesh->addPart(Mesh::TRIANGLE_STRIP, Mesh::INDEX16, indexCount);
@@ -331,7 +331,7 @@ void TerrainPatch::addLOD(float* heights, unsigned int width, unsigned int heigh
             }
         }
     }
-    GP_ASSERT(index == indexCount);
+    assert(index == indexCount);
     part->setIndexData(indices, 0, indexCount);
 
     SAFE_DELETE_ARRAY(vertices);
@@ -477,7 +477,7 @@ bool TerrainPatch::setLayer(int index, const char* texturePath, const Vector2& t
 std::string TerrainPatch::passCallback(Pass* pass, void* cookie)
 {
     TerrainPatch* patch = reinterpret_cast<TerrainPatch*>(cookie);
-    GP_ASSERT(patch);
+    assert(patch);
 
     return patch->passCreated(pass);
 }
@@ -539,7 +539,7 @@ bool TerrainPatch::updateMaterial()
     for (size_t i = 0, count = _levels.size(); i < count; ++i)
     {
         Material* material = Material::create(_terrain->_materialPath.c_str(), &passCallback, this);
-        GP_ASSERT(material);
+        assert(material);
         if (!material)
         {
             GP_WARN("Failed to load material for terrain patch: %s", _terrain->_materialPath.c_str());

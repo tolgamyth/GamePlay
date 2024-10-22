@@ -43,8 +43,8 @@ Effect::~Effect()
 
 Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const char* defines)
 {
-    GP_ASSERT(vshPath);
-    GP_ASSERT(fshPath);
+    assert(vshPath);
+    assert(fshPath);
 
     // Search the effect cache for an identical effect that is already loaded.
     std::string uniqueId = vshPath;
@@ -59,7 +59,7 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
     if (itr != __effectCache.end())
     {
         // Found an exiting effect with this id, so increase its ref count and return it.
-        GP_ASSERT(itr->second);
+        assert(itr->second);
         itr->second->addRef();
         return itr->second;
     }
@@ -228,8 +228,8 @@ static void writeShaderToErrorFile(const char* filePath, const char* source)
 
 Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, const char* fshPath, const char* fshSource, const char* defines)
 {
-    GP_ASSERT(vshSource);
-    GP_ASSERT(fshSource);
+    assert(vshSource);
+    assert(fshSource);
 
     const unsigned int SHADER_SOURCE_LENGTH = 3;
     const GLchar* shaderSource[SHADER_SOURCE_LENGTH];
@@ -529,88 +529,88 @@ unsigned int Effect::getUniformCount() const
 
 void Effect::setValue(Uniform* uniform, float value)
 {
-    GP_ASSERT(uniform);
+    assert(uniform);
     GL_ASSERT( glUniform1f(uniform->_location, value) );
 }
 
 void Effect::setValue(Uniform* uniform, const float* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
-    GP_ASSERT(values);
+    assert(uniform);
+    assert(values);
     GL_ASSERT( glUniform1fv(uniform->_location, count, values) );
 }
 
 void Effect::setValue(Uniform* uniform, int value)
 {
-    GP_ASSERT(uniform);
+    assert(uniform);
     GL_ASSERT( glUniform1i(uniform->_location, value) );
 }
 
 void Effect::setValue(Uniform* uniform, const int* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
-    GP_ASSERT(values);
+    assert(uniform);
+    assert(values);
     GL_ASSERT( glUniform1iv(uniform->_location, count, values) );
 }
 
 void Effect::setValue(Uniform* uniform, const Matrix& value)
 {
-    GP_ASSERT(uniform);
+    assert(uniform);
     GL_ASSERT( glUniformMatrix4fv(uniform->_location, 1, GL_FALSE, value.m) );
 }
 
 void Effect::setValue(Uniform* uniform, const Matrix* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
-    GP_ASSERT(values);
+    assert(uniform);
+    assert(values);
     GL_ASSERT( glUniformMatrix4fv(uniform->_location, count, GL_FALSE, (GLfloat*)values) );
 }
 
 void Effect::setValue(Uniform* uniform, const Vector2& value)
 {
-    GP_ASSERT(uniform);
+    assert(uniform);
     GL_ASSERT( glUniform2f(uniform->_location, value.x, value.y) );
 }
 
 void Effect::setValue(Uniform* uniform, const Vector2* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
-    GP_ASSERT(values);
+    assert(uniform);
+    assert(values);
     GL_ASSERT( glUniform2fv(uniform->_location, count, (GLfloat*)values) );
 }
 
 void Effect::setValue(Uniform* uniform, const Vector3& value)
 {
-    GP_ASSERT(uniform);
+    assert(uniform);
     GL_ASSERT( glUniform3f(uniform->_location, value.x, value.y, value.z) );
 }
 
 void Effect::setValue(Uniform* uniform, const Vector3* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
-    GP_ASSERT(values);
+    assert(uniform);
+    assert(values);
     GL_ASSERT( glUniform3fv(uniform->_location, count, (GLfloat*)values) );
 }
 
 void Effect::setValue(Uniform* uniform, const Vector4& value)
 {
-    GP_ASSERT(uniform);
+    assert(uniform);
     GL_ASSERT( glUniform4f(uniform->_location, value.x, value.y, value.z, value.w) );
 }
 
 void Effect::setValue(Uniform* uniform, const Vector4* values, unsigned int count)
 {
-    GP_ASSERT(uniform);
-    GP_ASSERT(values);
+    assert(uniform);
+    assert(values);
     GL_ASSERT( glUniform4fv(uniform->_location, count, (GLfloat*)values) );
 }
 
 void Effect::setValue(Uniform* uniform, const Texture::Sampler* sampler)
 {
-    GP_ASSERT(uniform);
-    GP_ASSERT(uniform->_type == GL_SAMPLER_2D || uniform->_type == GL_SAMPLER_CUBE);
-    GP_ASSERT(sampler);
-    GP_ASSERT((sampler->getTexture()->getType() == Texture::TEXTURE_2D && uniform->_type == GL_SAMPLER_2D) || 
+    assert(uniform);
+    assert(uniform->_type == GL_SAMPLER_2D || uniform->_type == GL_SAMPLER_CUBE);
+    assert(sampler);
+    assert((sampler->getTexture()->getType() == Texture::TEXTURE_2D && uniform->_type == GL_SAMPLER_2D) || 
         (sampler->getTexture()->getType() == Texture::TEXTURE_CUBE && uniform->_type == GL_SAMPLER_CUBE));
 
     GL_ASSERT( glActiveTexture(GL_TEXTURE0 + uniform->_index) );
@@ -623,15 +623,15 @@ void Effect::setValue(Uniform* uniform, const Texture::Sampler* sampler)
 
 void Effect::setValue(Uniform* uniform, const Texture::Sampler** values, unsigned int count)
 {
-    GP_ASSERT(uniform);
-    GP_ASSERT(uniform->_type == GL_SAMPLER_2D || uniform->_type == GL_SAMPLER_CUBE);
-    GP_ASSERT(values);
+    assert(uniform);
+    assert(uniform->_type == GL_SAMPLER_2D || uniform->_type == GL_SAMPLER_CUBE);
+    assert(values);
 
     // Set samplers as active and load texture unit array
     GLint units[32];
     for (unsigned int i = 0; i < count; ++i)
     {
-        GP_ASSERT((const_cast<Texture::Sampler*>(values[i])->getTexture()->getType() == Texture::TEXTURE_2D && uniform->_type == GL_SAMPLER_2D) || 
+        assert((const_cast<Texture::Sampler*>(values[i])->getTexture()->getType() == Texture::TEXTURE_2D && uniform->_type == GL_SAMPLER_2D) || 
             (const_cast<Texture::Sampler*>(values[i])->getTexture()->getType() == Texture::TEXTURE_CUBE && uniform->_type == GL_SAMPLER_CUBE));
         GL_ASSERT( glActiveTexture(GL_TEXTURE0 + uniform->_index + i) );
 

@@ -54,7 +54,7 @@ const char* PhysicsController::getTypeName() const
 
 void PhysicsController::addStatusListener(Listener* listener)
 {
-    GP_ASSERT(listener);
+    assert(listener);
     if (!_listeners)
         _listeners = new std::vector<Listener*>();
 
@@ -63,7 +63,7 @@ void PhysicsController::addStatusListener(Listener* listener)
 
 void PhysicsController::removeStatusListener(Listener* listener)
 {
-    GP_ASSERT(listener);
+    assert(listener);
     if (!_listeners)
         return;
 
@@ -162,8 +162,8 @@ void PhysicsController::setGravity(const Vector3& gravity)
 
 void PhysicsController::drawDebug(const Matrix& viewProjection)
 {
-    GP_ASSERT(_debugDrawer);
-    GP_ASSERT(_world);
+    assert(_debugDrawer);
+    assert(_world);
 
     _debugDrawer->begin(viewProjection);
     _world->debugDrawWorld();
@@ -201,7 +201,7 @@ bool PhysicsController::rayTest(const Ray& ray, float distance, PhysicsControlle
 
         btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace)
         {
-            GP_ASSERT(rayResult.m_collisionObject);
+            assert(rayResult.m_collisionObject);
             PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(rayResult.m_collisionObject->getUserPointer());
 
             if (object == NULL)
@@ -221,7 +221,7 @@ bool PhysicsController::rayTest(const Ray& ray, float distance, PhysicsControlle
         }
     };
 
-    GP_ASSERT(_world);
+    assert(_world);
 
     btVector3 rayFromWorld(BV(ray.getOrigin()));
     btVector3 rayToWorld(rayFromWorld + BV(ray.getDirection() * distance));
@@ -276,7 +276,7 @@ bool PhysicsController::sweepTest(PhysicsCollisionObject* object, const Vector3&
 
         btScalar addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
         {
-            GP_ASSERT(convexResult.m_hitCollisionObject);
+            assert(convexResult.m_hitCollisionObject);
             PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(convexResult.m_hitCollisionObject->getUserPointer());
 
             if (object == NULL)
@@ -296,7 +296,7 @@ bool PhysicsController::sweepTest(PhysicsCollisionObject* object, const Vector3&
         }
     };
 
-    GP_ASSERT(object && object->getCollisionShape());
+    assert(object && object->getCollisionShape());
     PhysicsCollisionShape* shape = object->getCollisionShape();
     PhysicsCollisionShape::Type type = shape->getType();
     if (type != PhysicsCollisionShape::SHAPE_BOX && type != PhysicsCollisionShape::SHAPE_SPHERE && type != PhysicsCollisionShape::SHAPE_CAPSULE)
@@ -340,7 +340,7 @@ bool PhysicsController::sweepTest(PhysicsCollisionObject* object, const Vector3&
         break;
     }*/
 
-    GP_ASSERT(_world);
+    assert(_world);
     _world->convexSweepTest(static_cast<btConvexShape*>(shape->getShape()), start, end, callback, _world->getDispatchInfo().m_allowedCcdPenetration);
 
     // Check for hits and store results.
@@ -363,7 +363,7 @@ bool PhysicsController::sweepTest(PhysicsCollisionObject* object, const Vector3&
 btScalar PhysicsController::CollisionCallback::addSingleResult(btManifoldPoint& cp, const btCollisionObjectWrapper* a, int partIdA, int indexA, 
     const btCollisionObjectWrapper* b, int partIdB, int indexB)
 {
-    GP_ASSERT(_pc);
+    assert(_pc);
 
     // Get pointers to the PhysicsCollisionObject objects.
     PhysicsCollisionObject* objectA = _pc->getCollisionObject(a->m_collisionObject);
@@ -393,7 +393,7 @@ btScalar PhysicsController::CollisionCallback::addSingleResult(btManifoldPoint& 
             std::vector<PhysicsCollisionObject::CollisionListener*>::const_iterator iter = ci._listeners.begin();
             for (; iter != ci._listeners.end(); iter++)
             {
-                GP_ASSERT(*iter);
+                assert(*iter);
                 collisionInfo->_listeners.push_back(*iter);
             }
         }
@@ -404,7 +404,7 @@ btScalar PhysicsController::CollisionCallback::addSingleResult(btManifoldPoint& 
             std::vector<PhysicsCollisionObject::CollisionListener*>::const_iterator iter = ci._listeners.begin();
             for (; iter != ci._listeners.end(); iter++)
             {
-                GP_ASSERT(*iter);
+                assert(*iter);
                 collisionInfo->_listeners.push_back(*iter);
             }
         }
@@ -416,7 +416,7 @@ btScalar PhysicsController::CollisionCallback::addSingleResult(btManifoldPoint& 
         std::vector<PhysicsCollisionObject::CollisionListener*>::const_iterator iter = collisionInfo->_listeners.begin();
         for (; iter != collisionInfo->_listeners.end(); iter++)
         {
-            GP_ASSERT(*iter);
+            assert(*iter);
             if ((collisionInfo->_status & REMOVE) == 0)
             {
                 (*iter)->collisionEvent(PhysicsCollisionObject::CollisionListener::COLLIDING, pair, Vector3(cp.getPositionWorldOnA().x(), cp.getPositionWorldOnA().y(), cp.getPositionWorldOnA().z()),
@@ -445,7 +445,7 @@ void PhysicsController::initialize()
     _world->setGravity(BV(_gravity));
 
     // Register ghost pair callback so bullet detects collisions with ghost objects (used for character collisions).
-    GP_ASSERT(_world->getPairCache());
+    assert(_world->getPairCache());
     _ghostPairCallback = bullet_new<btGhostPairCallback>();
     _world->getPairCache()->setInternalGhostPairCallback(_ghostPairCallback);
     _world->getDispatchInfo().m_allowedCcdPenetration = 0.0001f;
@@ -478,7 +478,7 @@ void PhysicsController::resume()
 
 void PhysicsController::update(float elapsedTime)
 {
-    GP_ASSERT(_world);
+    assert(_world);
     _isUpdating = true;
 
     // Update the physics simulation, with a maximum
@@ -497,7 +497,7 @@ void PhysicsController::update(float elapsedTime)
         {
             for (int i = 0; i < _world->getNumCollisionObjects(); i++)
             {
-                GP_ASSERT(_world->getCollisionObjectArray()[i]);
+                assert(_world->getCollisionObjectArray()[i]);
                 if (_world->getCollisionObjectArray()[i]->isActive())
                 {
                     _status = Listener::ACTIVATED;
@@ -510,7 +510,7 @@ void PhysicsController::update(float elapsedTime)
             bool allInactive = true;
             for (int i = 0; i < _world->getNumCollisionObjects(); i++)
             {
-                GP_ASSERT(_world->getCollisionObjectArray()[i]);
+                assert(_world->getCollisionObjectArray()[i]);
                 if (_world->getCollisionObjectArray()[i]->isActive())
                 {
                     allInactive = false;
@@ -529,7 +529,7 @@ void PhysicsController::update(float elapsedTime)
             {
                 for (unsigned int k = 0; k < _listeners->size(); k++)
                 {
-                    GP_ASSERT((*_listeners)[k]);
+                    assert((*_listeners)[k]);
                     (*_listeners)[k]->statusEvent(_status);
                 }
             }
@@ -612,10 +612,10 @@ void PhysicsController::update(float elapsedTime)
 
 void PhysicsController::addCollisionListener(PhysicsCollisionObject::CollisionListener* listener, PhysicsCollisionObject* objectA, PhysicsCollisionObject* objectB)
 {
-    GP_ASSERT(listener);
+    assert(listener);
     
     // One of the collision objects in the pair must be non-null.
-    GP_ASSERT(objectA || objectB);
+    assert(objectA || objectB);
     PhysicsCollisionObject::CollisionPair pair(objectA, objectB);
 
     // Add the listener and ensure the status includes that this collision pair is registered.
@@ -627,7 +627,7 @@ void PhysicsController::addCollisionListener(PhysicsCollisionObject::CollisionLi
 void PhysicsController::removeCollisionListener(PhysicsCollisionObject::CollisionListener* listener, PhysicsCollisionObject* objectA, PhysicsCollisionObject* objectB)
 {
     // One of the collision objects in the pair must be non-null.
-    GP_ASSERT(objectA || objectB);
+    assert(objectA || objectB);
     PhysicsCollisionObject::CollisionPair pair(objectA, objectB);
 
     // Mark the collision pair for these objects for removal.
@@ -639,8 +639,8 @@ void PhysicsController::removeCollisionListener(PhysicsCollisionObject::Collisio
 
 void PhysicsController::addCollisionObject(PhysicsCollisionObject* object)
 {
-    GP_ASSERT(object && object->getCollisionObject());
-    GP_ASSERT(_world);
+    assert(object && object->getCollisionObject());
+    assert(_world);
 
     // Assign user pointer for the bullet collision object to allow efficient
     // lookups of bullet objects -> gameplay objects.
@@ -671,9 +671,9 @@ void PhysicsController::addCollisionObject(PhysicsCollisionObject* object)
 
 void PhysicsController::removeCollisionObject(PhysicsCollisionObject* object, bool removeListeners)
 {
-    GP_ASSERT(object);
-    GP_ASSERT(_world);
-    GP_ASSERT(!_isUpdating);
+    assert(object);
+    assert(_world);
+    assert(!_isUpdating);
 
     // Remove the collision object from the world.
     if (object->getCollisionObject())
@@ -710,19 +710,19 @@ void PhysicsController::removeCollisionObject(PhysicsCollisionObject* object, bo
 PhysicsCollisionObject* PhysicsController::getCollisionObject(const btCollisionObject* collisionObject) const
 {
     // Gameplay collision objects are stored in the userPointer data of Bullet collision objects.
-    GP_ASSERT(collisionObject);
+    assert(collisionObject);
     return reinterpret_cast<PhysicsCollisionObject*>(collisionObject->getUserPointer());
 }
 
 static void getBoundingBox(Node* node, BoundingBox* out, bool merge = false)
 {
-    GP_ASSERT(node);
-    GP_ASSERT(out);
+    assert(node);
+    assert(out);
 
     Model* model = dynamic_cast<Model*>(node->getDrawable());
     if (model != NULL)
     {
-        GP_ASSERT(model->getMesh());
+        assert(model->getMesh());
 
         if (merge)
             out->merge(model->getMesh()->getBoundingBox());
@@ -743,13 +743,13 @@ static void getBoundingBox(Node* node, BoundingBox* out, bool merge = false)
 
 static void getBoundingSphere(Node* node, BoundingSphere* out, bool merge = false)
 {
-    GP_ASSERT(node);
-    GP_ASSERT(out);
+    assert(node);
+    assert(out);
 
     Model* model = dynamic_cast<Model*>(node->getDrawable());
     if (model != NULL)
     {
-        GP_ASSERT(model->getMesh());
+        assert(model->getMesh());
 
         if (merge)
             out->merge(model->getMesh()->getBoundingSphere());
@@ -770,7 +770,7 @@ static void getBoundingSphere(Node* node, BoundingSphere* out, bool merge = fals
 
 static void computeCenterOfMass(const Vector3& center, const Vector3& scale, Vector3* centerOfMassOffset)
 {
-    GP_ASSERT(centerOfMassOffset);
+    assert(centerOfMassOffset);
 
     // Update center of mass offset.
     *centerOfMassOffset = center;
@@ -782,7 +782,7 @@ static void computeCenterOfMass(const Vector3& center, const Vector3& scale, Vec
 
 PhysicsCollisionShape* PhysicsController::createShape(Node* node, const PhysicsCollisionShape::Definition& shape, Vector3* centerOfMassOffset, bool dynamic)
 {
-    GP_ASSERT(node);
+    assert(node);
 
     PhysicsCollisionShape* collisionShape = NULL;
 
@@ -927,7 +927,7 @@ PhysicsCollisionShape* PhysicsController::createBox(const Vector3& extents, cons
     for (unsigned int i = 0; i < _shapes.size(); ++i)
     {
         shape = _shapes[i];
-        GP_ASSERT(shape);
+        assert(shape);
         if (shape->getType() == PhysicsCollisionShape::SHAPE_BOX)
         {
             btBoxShape* box = static_cast<btBoxShape*>(shape->_shape);
@@ -964,7 +964,7 @@ PhysicsCollisionShape* PhysicsController::createSphere(float radius, const Vecto
     for (unsigned int i = 0; i < _shapes.size(); ++i)
     {
         shape = _shapes[i];
-        GP_ASSERT(shape);
+        assert(shape);
         if (shape->getType() == PhysicsCollisionShape::SHAPE_SPHERE)
         {
             btSphereShape* sphere = static_cast<btSphereShape*>(shape->_shape);
@@ -997,7 +997,7 @@ PhysicsCollisionShape* PhysicsController::createCapsule(float radius, float heig
     for (unsigned int i = 0; i < _shapes.size(); i++)
     {
         shape = _shapes[i];
-        GP_ASSERT(shape);
+        assert(shape);
         if (shape->getType() == PhysicsCollisionShape::SHAPE_CAPSULE)
         {
             btCapsuleShape* capsule = static_cast<btCapsuleShape*>(shape->_shape);
@@ -1018,9 +1018,9 @@ PhysicsCollisionShape* PhysicsController::createCapsule(float radius, float heig
 
 PhysicsCollisionShape* PhysicsController::createHeightfield(Node* node, HeightField* heightfield, Vector3* centerOfMassOffset)
 {
-    GP_ASSERT(node);
-    GP_ASSERT(heightfield);
-    GP_ASSERT(centerOfMassOffset);
+    assert(node);
+    assert(heightfield);
+    assert(centerOfMassOffset);
 
     // Inspect the height array for the min and max values
     float* heights = heightfield->getArray();
@@ -1076,7 +1076,7 @@ PhysicsCollisionShape* PhysicsController::createHeightfield(Node* node, HeightFi
 
 PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& scale, bool dynamic)
 {
-    GP_ASSERT(mesh);
+    assert(mesh);
 
     // The mesh must have a valid URL (i.e. it must have been loaded from a Bundle)
     // in order to fetch mesh data for computing mesh rigid body.
@@ -1173,7 +1173,7 @@ PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& 
             for (size_t i = 0; i < partCount; i++)
             {
                 meshPart = data->parts[i];
-                GP_ASSERT(meshPart);
+                assert(meshPart);
 
                 switch (meshPart->indexFormat)
                 {
@@ -1278,9 +1278,9 @@ void PhysicsController::destroyShape(PhysicsCollisionShape* shape)
 
 void PhysicsController::addConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b, PhysicsConstraint* constraint)
 {
-    GP_ASSERT(a);
-    GP_ASSERT(constraint);
-    GP_ASSERT(_world);
+    assert(a);
+    assert(constraint);
+    assert(_world);
 
     a->addConstraint(constraint);
     if (b)
@@ -1293,18 +1293,18 @@ void PhysicsController::addConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b, 
 
 bool PhysicsController::checkConstraintRigidBodies(PhysicsRigidBody* a, PhysicsRigidBody* b)
 {
-    GP_ASSERT(a);
+    assert(a);
 
     if (!a->supportsConstraints())
     {
-        GP_ASSERT(a->_node);
+        assert(a->_node);
         GP_ERROR("Rigid body '%s' does not support constraints; unexpected behavior may occur.", a->_node->getId());
         return false;
     }
     
     if (b && !b->supportsConstraints())
     {
-        GP_ASSERT(b->_node);
+        assert(b->_node);
         GP_ERROR("Rigid body '%s' does not support constraints; unexpected behavior may occur.", b->_node->getId());
         return false;
     }
@@ -1314,8 +1314,8 @@ bool PhysicsController::checkConstraintRigidBodies(PhysicsRigidBody* a, PhysicsR
 
 void PhysicsController::removeConstraint(PhysicsConstraint* constraint)
 {
-    GP_ASSERT(constraint);
-    GP_ASSERT(_world);
+    assert(constraint);
+    assert(_world);
 
     // Find the constraint and remove it from the physics world.
     for (int i = _world->getNumConstraints() - 1; i >= 0; i--)
@@ -1360,7 +1360,7 @@ PhysicsController::DebugDrawer::DebugDrawer()
 
     Effect* effect = Effect::createFromSource(vs_str, fs_str);
     Material* material = Material::create(effect);
-    GP_ASSERT(material && material->getStateBlock());
+    assert(material && material->getStateBlock());
     material->getStateBlock()->setDepthTest(true);
     material->getStateBlock()->setDepthFunction(RenderState::DEPTH_LEQUAL);
 
@@ -1381,14 +1381,14 @@ PhysicsController::DebugDrawer::~DebugDrawer()
 
 void PhysicsController::DebugDrawer::begin(const Matrix& viewProjection)
 {
-    GP_ASSERT(_meshBatch);
+    assert(_meshBatch);
     _meshBatch->start();
     _meshBatch->getMaterial()->getParameter("u_viewProjectionMatrix")->setValue(viewProjection);
 }
 
 void PhysicsController::DebugDrawer::end()
 {
-    GP_ASSERT(_meshBatch && _meshBatch->getMaterial());
+  assert(_meshBatch && _meshBatch->getMaterial());
     _meshBatch->finish();
     _meshBatch->draw();
     _lineCount = 0;
@@ -1396,7 +1396,7 @@ void PhysicsController::DebugDrawer::end()
 
 void PhysicsController::DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
 {
-    GP_ASSERT(_meshBatch);
+  assert(_meshBatch);
 
     static DebugDrawer::DebugVertex vertices[2];
 
@@ -1459,7 +1459,7 @@ int PhysicsController::DebugDrawer::getDebugMode() const
 
 PhysicsController::Listener::~Listener()
 {
-    GP_ASSERT(Game::getInstance()->getPhysicsController());
+    assert(Game::getInstance()->getPhysicsController());
     Game::getInstance()->getPhysicsController()->removeStatusListener(this);
 }
 

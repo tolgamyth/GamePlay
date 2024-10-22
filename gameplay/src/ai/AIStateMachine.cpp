@@ -10,7 +10,7 @@ namespace gameplay
 AIStateMachine::AIStateMachine(AIAgent* agent)
     : _agent(agent)
 {
-    GP_ASSERT(agent);
+    assert(agent);
     if (AIState::_empty)
         AIState::_empty->addRef();
     else
@@ -69,7 +69,7 @@ void AIStateMachine::removeState(AIState* state)
 
 AIState* AIStateMachine::getState(const char* id) const
 {
-    GP_ASSERT(id);
+    assert(id);
 
     for (std::list<AIState*>::const_iterator itr = _states.begin(); itr != _states.end(); ++itr)
     {
@@ -89,7 +89,7 @@ AIState* AIStateMachine::getActiveState() const
 
 bool AIStateMachine::hasState(AIState* state) const
 {
-    GP_ASSERT(state);
+    assert(state);
 
     return (std::find(_states.begin(), _states.end(), state) != _states.end());
 }
@@ -123,7 +123,7 @@ void AIStateMachine::sendChangeStateMessage(AIState* newState)
 
 void AIStateMachine::setStateInternal(AIState* state)
 {
-    GP_ASSERT(hasState(state));
+    assert(hasState(state));
 
     // Fire the exit event for the current state
     _currentState->exit(this);
