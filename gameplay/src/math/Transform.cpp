@@ -10,7 +10,7 @@ int Transform::_suspendTransformChanged(0);
 std::vector<Transform*> Transform::_transformsChanged;
 
 Transform::Transform()
-    : _matrixDirtyBits(0), _listeners(NULL)
+    : _matrixDirtyBits(0), _listeners(nullptr)
 {
     GP_REGISTER_SCRIPT_EVENTS();
 
@@ -19,7 +19,7 @@ Transform::Transform()
 }
 
 Transform::Transform(const Vector3& scale, const Quaternion& rotation, const Vector3& translation)
-    : _matrixDirtyBits(0), _listeners(NULL)
+    : _matrixDirtyBits(0), _listeners(nullptr)
 {
     GP_REGISTER_SCRIPT_EVENTS();
 
@@ -28,7 +28,7 @@ Transform::Transform(const Vector3& scale, const Quaternion& rotation, const Vec
 }
 
 Transform::Transform(const Vector3& scale, const Matrix& rotation, const Vector3& translation)
-    : _matrixDirtyBits(0), _listeners(NULL)
+    : _matrixDirtyBits(0), _listeners(nullptr)
 {
     GP_REGISTER_SCRIPT_EVENTS();
 
@@ -37,7 +37,7 @@ Transform::Transform(const Vector3& scale, const Matrix& rotation, const Vector3
 }
 
 Transform::Transform(const Transform& copy)
-    : _matrixDirtyBits(0), _listeners(NULL)
+    : _matrixDirtyBits(0), _listeners(nullptr)
 {
     GP_REGISTER_SCRIPT_EVENTS();
 
@@ -947,7 +947,7 @@ void Transform::addListener(Transform::Listener* listener, long cookie)
 {
     assert(listener);
 
-    if (_listeners == NULL)
+    if (_listeners == nullptr)
         _listeners = new std::list<TransformListener>();
 
     TransformListener l;

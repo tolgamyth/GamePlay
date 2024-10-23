@@ -25,7 +25,7 @@ static const float BILLBOARD_HEIGHT = 0.5f;
 static const unsigned int BILLBOARD_COUNT = 300;
 
 BillboardSample::BillboardSample()
-    : _font(NULL), _scene(NULL), _ground(NULL), _gamepad(NULL), _moveFlags(0), _prevX(0), _prevY(0), _buttonPressed(false)
+    : _font(nullptr), _scene(nullptr), _ground(nullptr), _gamepad(nullptr), _moveFlags(0), _prevX(0), _prevY(0), _buttonPressed(false)
 {
 }
 

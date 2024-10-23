@@ -14,8 +14,8 @@ extern void splitURL(const std::string& url, std::string* file, std::string* id)
 AnimationClip::AnimationClip(const char* id, Animation* animation, unsigned long startTime, unsigned long endTime)
     : _id(id), _animation(animation), _startTime(startTime), _endTime(endTime), _duration(_endTime - _startTime), 
       _stateBits(0x00), _repeatCount(1.0f), _loopBlendTime(0), _activeDuration(_duration * _repeatCount), _speed(1.0f), _timeStarted(0), 
-      _elapsedTime(0), _crossFadeToClip(NULL), _crossFadeOutElapsed(0), _crossFadeOutDuration(0), _blendWeight(1.0f),
-      _beginListeners(NULL), _endListeners(NULL), _listeners(NULL), _listenerItr(NULL)
+      _elapsedTime(0), _crossFadeToClip(nullptr), _crossFadeOutElapsed(0), _crossFadeOutDuration(0), _blendWeight(1.0f),
+      _beginListeners(nullptr), _endListeners(nullptr), _listeners(nullptr), _listenerItr(nullptr)
 {
     GP_REGISTER_SCRIPT_EVENTS();
 
@@ -552,9 +552,9 @@ bool AnimationClip::update(float elapsedTime)
     }
     
     // Evaluate this clip.
-    Animation::Channel* channel = NULL;
-    AnimationValue* value = NULL;
-    AnimationTarget* target = NULL;
+    Animation::Channel* channel = nullptr;
+    AnimationValue* value = nullptr;
+    AnimationTarget* target = nullptr;
     size_t channelCount = _animation->_channels.size();
     float percentageStart = (float)_startTime / (float)_animation->_duration;
     float percentageEnd = (float)_endTime / (float)_animation->_duration;
@@ -674,10 +674,10 @@ AnimationClip* AnimationClip::clone(Animation* animation) const
     newClip->setBlendWeight(getBlendWeight());
     
     size_t size = _values.size();
-    newClip->_values.resize(size, NULL);
+    newClip->_values.resize(size, nullptr);
     for (size_t i = 0; i < size; ++i)
     {
-        if (newClip->_values[i] == NULL)
+        if (newClip->_values[i] == nullptr)
         {
             newClip->_values[i] = new AnimationValue(*_values[i]);
         }

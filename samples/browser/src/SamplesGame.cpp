@@ -3,14 +3,14 @@
 using std::string;
 using std::pair;
 
-std::vector<std::string>* SamplesGame::_categories = NULL;
-std::vector<SamplesGame::SampleRecordList>* SamplesGame::_samples = NULL;
+std::vector<std::string>* SamplesGame::_categories = nullptr;
+std::vector<SamplesGame::SampleRecordList>* SamplesGame::_samples = nullptr;
 
 // Declare our game instance
 SamplesGame game;
 
 SamplesGame::SamplesGame()
-    : _activeSample(NULL), _font(NULL),  _sampleSelectForm(NULL)
+    : _activeSample(nullptr), _font(nullptr),  _sampleSelectForm(nullptr)
 {
 }
 
@@ -27,7 +27,7 @@ void SamplesGame::initialize()
     getScriptController()->loadScript("res/common/camera.lua");
 
     // Create the selection form
-    _sampleSelectForm = Form::create("sampleSelect", NULL, Layout::LAYOUT_VERTICAL);
+    _sampleSelectForm = Form::create("sampleSelect", nullptr, Layout::LAYOUT_VERTICAL);
     _sampleSelectForm->setWidth(220);
     _sampleSelectForm->setHeight(1, true);
     _sampleSelectForm->setScroll(Container::SCROLL_VERTICAL);
@@ -91,7 +91,7 @@ void SamplesGame::update(float elapsedTime)
             return;
         }
 
-        getScriptController()->executeFunction<void>("camera_update", "f", NULL, elapsedTime);
+        getScriptController()->executeFunction<void>("camera_update", "f", nullptr, elapsedTime);
         _activeSample->update(elapsedTime);
         return;
     }
@@ -131,7 +131,7 @@ void SamplesGame::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int c
         }
         else
         {
-            getScriptController()->executeFunction<void>("camera_touchEvent", "[Touch::TouchEvent]iiui", NULL, evt, x, y, contactIndex);
+            getScriptController()->executeFunction<void>("camera_touchEvent", "[Touch::TouchEvent]iiui", nullptr, evt, x, y, contactIndex);
             _activeSample->touchEvent(evt, x, y, contactIndex);
         }
         return;
@@ -149,7 +149,7 @@ void SamplesGame::keyEvent(Keyboard::KeyEvent evt, int key)
         }
         else
         {
-            getScriptController()->executeFunction<void>("camera_keyEvent", "[Keyboard::KeyEvent][Keyboard::Key]", NULL, evt, key);
+            getScriptController()->executeFunction<void>("camera_keyEvent", "[Keyboard::KeyEvent][Keyboard::Key]", nullptr, evt, key);
             _activeSample->keyEvent(evt, key);
         }
         return;
@@ -276,9 +276,9 @@ void SamplesGame::exitActiveSample()
 
 void SamplesGame::addSample(const char* category, const char* title, void* func, unsigned int order)
 {
-    if (_samples == NULL)
+    if (_samples == nullptr)
         _samples = new std::vector<SampleRecordList>();
-    if (_categories == NULL)
+    if (_categories == nullptr)
     {
         _categories = new std::vector<std::string>();
         _categories->push_back("Graphics");

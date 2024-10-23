@@ -4,7 +4,7 @@
 namespace gameplay
 {
 
-ScreenDisplayer* ScreenDisplayer::__scriptInstance = NULL;
+ScreenDisplayer* ScreenDisplayer::__scriptInstance = nullptr;
 
 ScreenDisplayer::ScreenDisplayer() : _time(0L), _startTime(0)
 {
@@ -19,7 +19,7 @@ ScreenDisplayer::~ScreenDisplayer()
 
 void ScreenDisplayer::start(const char* function, unsigned long time)
 {
-    if (__scriptInstance == NULL)
+    if (__scriptInstance == nullptr)
     {
         __scriptInstance = new ScreenDisplayer();
     }

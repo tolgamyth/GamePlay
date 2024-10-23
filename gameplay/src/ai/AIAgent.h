@@ -114,7 +114,7 @@ public:
     /**
      * Sets an event listener for this AIAgent.
      *
-     * @param listener The new AIAgent listener, or NULL to remove any existing listener.
+     * @param listener The new AIAgent listener, or nullptr to remove any existing listener.
      */
     void setListener(Listener* listener);
 

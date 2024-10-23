@@ -102,7 +102,7 @@ public:
      * @param title The title of the dialog. (Ex. Select File or Save File)
      * @param filterDescription The file filter description. (Ex. All Files or Image Files)
      * @param filterExtensions The extensions to filter on. (Ex. png;bmp)
-     * @param initialDirectory The initial directory to start. NULL runs from the executable directory.
+     * @param initialDirectory The initial directory to start. nullptr runs from the executable directory.
      * @return The file that is opened or saved, or an empty string if canceled.
      *
      * @script{ignore}
@@ -155,7 +155,7 @@ public:
      * @param streamMode The stream mode used to open the file.
      * 
      * @return A stream that can be used to read or write to the file depending on the mode.
-     *         Returns NULL if there was an error. (Request mode not supported).
+     *         Returns nullptr if there was an error. (Request mode not supported).
      *
      * @script{ignore}
      */
@@ -170,7 +170,7 @@ public:
      * @param filePath The path to the file to be opened, relative to the currently set resource path.
      * @param mode The mode used to open the file, passed directly to fopen.
      * 
-     * @return A pointer to a FILE object that can be used to identify the stream or NULL on error.
+     * @return A pointer to a FILE object that can be used to identify the stream or nullptr on error.
      * 
      * @see setResourcePath(const char*)
      * @script{ignore}
@@ -186,10 +186,10 @@ public:
      * @param filePath The path to the file to be read.
      * @param fileSize The size of the file in bytes (optional).
      * 
-     * @return A newly allocated (NULL-terminated) character array containing the
-     *      contents of the file, or NULL if the file could not be read.
+     * @return A newly allocated (nullptr-terminated) character array containing the
+     *      contents of the file, or nullptr if the file could not be read.
      */
-    static char* readAll(const char* filePath, int* fileSize = NULL);
+    static char* readAll(const char* filePath, int* fileSize = nullptr);
 
     /**
      * Determines if the file path is an absolute path for the current platform.
@@ -234,9 +234,9 @@ public:
      * - "image.png" will return ""
      * - "c:\foo\bar\image.png" will return "c:/foo/bar/"
      * 
-     * @param path The file path. May be relative or absolute, forward or back slashes. May be NULL.
+     * @param path The file path. May be relative or absolute, forward or back slashes. May be nullptr.
      * 
-     * @return The directory name with the trailing '/'. Returns "" if path is NULL or the path does not contain a directory.
+     * @return The directory name with the trailing '/'. Returns "" if path is nullptr or the path does not contain a directory.
      */
     static std::string getDirectoryName(const char* path);
 

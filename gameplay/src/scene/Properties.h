@@ -99,8 +99,8 @@ class Properties;
  
         // Print all properties in this namespace.
         const char* name = properties->getNextProperty();
-        const char* value = NULL;
-        while (name != NULL)
+        const char* value = nullptr;
+        while (name != nullptr)
         {
             value = properties->getString(name);
             GP_WARN("%s = %s", name, value);
@@ -110,7 +110,7 @@ class Properties;
  
         // Print the properties of every namespace within this one.
         Properties* space = properties->getNextNamespace();
-        while (space != NULL)
+        while (space != nullptr)
         {
             printProperties(space);
             space = properties->getNextNamespace();
@@ -150,7 +150,7 @@ public:
      * 
      * @param url The URL to create the properties from.
      * 
-     * @return The created Properties or NULL if there was an error.
+     * @return The created Properties or nullptr if there was an error.
      * @script{create}
      */
     static Properties* create(const char* url);
@@ -164,10 +164,10 @@ public:
      * Get the name of the next property.
      *
      * If a valid next property is returned, the value of the property can be
-     * retrieved using any of the get methods in this class, passing NULL for
+     * retrieved using any of the get methods in this class, passing nullptr for
      // the property name.
      *
-     * @return The name of the next property, or NULL if there are no properties remaining.
+     * @return The name of the next property, or nullptr if there are no properties remaining.
      */
     const char* getNextProperty();
 
@@ -225,22 +225,22 @@ public:
     /**
      * Returns the type of a property.
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's type.
+     * @param name The name of the property to interpret, or nullptr to return the current property's type.
      *
      * @return The type of the property.
      */
-    Type getType(const char* name = NULL) const;
+    Type getType(const char* name = nullptr) const;
 
     /**
      * Get the value of the given property as a string. This can always be retrieved,
      * whatever the intended type of the property.
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * @param defaultValue The default value to return if the specified property does not exist.
      * 
      * @return The value of the given property as a string, or the empty string if no property with that name exists.
      */
-    const char* getString(const char* name = NULL, const char* defaultValue = NULL) const;
+    const char* getString(const char* name = nullptr, const char* defaultValue = nullptr) const;
 
     /**
      * Sets the value of the property with the specified name.
@@ -249,7 +249,7 @@ public:
      * one is added. Otherwise, the value of the first property with the
      * specified name is updated.
      *
-     * If name is NULL, the value current property (see getNextProperty) is
+     * If name is nullptr, the value current property (see getNextProperty) is
      * set, unless there is no current property, in which case false
      * is returned.
      *
@@ -263,48 +263,48 @@ public:
     /**
      * Interpret the value of the given property as a boolean.
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * @param defaultValue the default value to return if the specified property does not exist within the properties file.
      * 
      * @return true if the property exists and its value is "true", otherwise false.
      */
-    bool getBool(const char* name = NULL, bool defaultValue = false) const;
+    bool getBool(const char* name = nullptr, bool defaultValue = false) const;
 
     /**
      * Interpret the value of the given property as an integer.
      * If the property does not exist, zero will be returned.
      * If the property exists but could not be scanned, an error will be logged and zero will be returned.
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * 
      * @return The value of the given property interpreted as an integer.
      *   Zero if the property does not exist or could not be scanned.
      */
-    int getInt(const char* name = NULL) const;
+    int getInt(const char* name = nullptr) const;
 
     /**
      * Interpret the value of the given property as a floating-point number.
      * If the property does not exist, zero will be returned.
      * If the property exists but could not be scanned, an error will be logged and zero will be returned.
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * 
      * @return The value of the given property interpreted as a float.
      *   Zero if the property does not exist or could not be scanned.
      */
-    float getFloat(const char* name = NULL) const;
+    float getFloat(const char* name = nullptr) const;
 
     /**
      * Interpret the value of the given property as a long integer.
      * If the property does not exist, zero will be returned.
      * If the property exists but could not be scanned, an error will be logged and zero will be returned.
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * 
      * @return The value of the given property interpreted as a long.
      *   Zero if the property does not exist or could not be scanned.
      */
-    long getLong(const char* name = NULL) const;
+    long getLong(const char* name = nullptr) const;
 
     /**
      * Interpret the value of the given property as a Matrix.
@@ -312,7 +312,7 @@ public:
      * If the property exists but could not be scanned, an error will be logged and out will be set
      * to the identity matrix.
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * @param out The matrix to set to this property's interpreted value.
      * 
      * @return True on success, false if the property does not exist or could not be scanned.
@@ -325,7 +325,7 @@ public:
      * If the property exists but could not be scanned, an error will be logged and out will be set
      * to Vector2(0.0f, 0.0f).
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * @param out The vector to set to this property's interpreted value.
      * 
      * @return True on success, false if the property does not exist or could not be scanned.
@@ -338,7 +338,7 @@ public:
      * If the property exists but could not be scanned, an error will be logged and out will be set
      * to Vector3(0.0f, 0.0f, 0.0f).
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * @param out The vector to set to this property's interpreted value.
      * 
      * @return True on success, false if the property does not exist or could not be scanned.
@@ -351,7 +351,7 @@ public:
      * If the property exists but could not be scanned, an error will be logged and out will be set
      * to Vector4(0.0f, 0.0f, 0.0f, 0.0f).
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * @param out The vector to set to this property's interpreted value.
      * 
      * @return True on success, false if the property does not exist or could not be scanned.
@@ -364,7 +364,7 @@ public:
      * If the property exists but could not be scanned, an error will be logged and out will be set
      * to Quaternion().
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * @param out The quaternion to set to this property's interpreted value.
      * 
      * @return True on success, false if the property does not exist or could not be scanned.
@@ -378,7 +378,7 @@ public:
      * If the property exists but could not be scanned, an error will be logged and out will be set
      * to Vector3(0.0f, 0.0f, 0.0f).
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * @param out The vector to set to this property's interpreted value.
      * 
      * @return True on success, false if the property does not exist or could not be scanned.
@@ -392,7 +392,7 @@ public:
      * If the property exists but could not be scanned, an error will be logged and out will be set
      * to Vector4(0.0f, 0.0f, 0.0f, 0.0f).
      *
-     * @param name The name of the property to interpret, or NULL to return the current property's value.
+     * @param name The name of the property to interpret, or nullptr to return the current property's value.
      * @param out The vector to set to this property's interpreted value.
      * 
      * @return True on success, false if the property does not exist or could not be scanned.
@@ -424,7 +424,7 @@ public:
      *
      * @return The value of the specified variable, or defaultValue if not found.
      */
-    const char* getVariable(const char* name, const char* defaultValue = NULL) const;
+    const char* getVariable(const char* name, const char* defaultValue = nullptr) const;
 
     /**
      * Sets the value of the specified variable.
@@ -553,7 +553,7 @@ private:
     void mergeWith(Properties* overrides);
 
     // Called after create(); copies info from parents into derived namespaces.
-    void resolveInheritance(const char* id = NULL);
+    void resolveInheritance(const char* id = nullptr);
 
     std::string _namespace;
     std::string _id;

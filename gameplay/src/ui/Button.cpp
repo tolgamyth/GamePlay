@@ -18,7 +18,7 @@ Button* Button::create(const char* id, Theme::Style* style)
 {
     Button* button = new Button();
     button->_id = id ? id : "";
-    button->initialize("Button", style, NULL);
+    button->initialize("Button", style, nullptr);
     return button;
 }
 

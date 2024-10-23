@@ -87,11 +87,11 @@ public:
      *
      * @param vertices Array of vertices.
      * @param vertexCount Number of vertices.
-     * @param indices Array of indices into the vertex array (should be NULL for non-indexed batches).
+     * @param indices Array of indices into the vertex array (should be nullptr for non-indexed batches).
      * @param indexCount Number of indices (should be zero for non-indexed batches).
      */
     template <class T>
-    void add(const T* vertices, unsigned int vertexCount, const unsigned short* indices = NULL, unsigned int indexCount = 0);
+    void add(const T* vertices, unsigned int vertexCount, const unsigned short* indices = nullptr, unsigned int indexCount = 0);
 
     /**
      * Adds a group of primitives to the batch.
@@ -109,10 +109,10 @@ public:
      *
      * @param vertices Array of vertices.
      * @param vertexCount Number of vertices.
-     * @param indices Array of indices into the vertex array (should be NULL for non-indexed batches).
+     * @param indices Array of indices into the vertex array (should be nullptr for non-indexed batches).
      * @param indexCount Number of indices (should be zero for non-indexed batches).
      */
-    void add(const float* vertices, unsigned int vertexCount, const unsigned short* indices = NULL, unsigned int indexCount = 0);
+    void add(const float* vertices, unsigned int vertexCount, const unsigned short* indices = nullptr, unsigned int indexCount = 0);
 
     /**
      * Starts batching.

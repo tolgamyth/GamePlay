@@ -14,8 +14,8 @@ using std::sin;
 using std::exp;
 using std::strcmp;
 
-#ifndef NULL
-#define NULL 0
+#ifndef nullptr
+#define nullptr 0
 #endif
 
 #ifndef MATH_PI
@@ -36,7 +36,7 @@ using std::strcmp;
     if (x) \
     { \
         delete x; \
-        x = NULL; \
+        x = nullptr; \
     }
 #endif
 
@@ -46,7 +46,7 @@ using std::strcmp;
     if (x) \
     { \
         delete[] x; \
-        x = NULL; \
+        x = nullptr; \
     }
 #endif
 
@@ -89,7 +89,7 @@ Curve* Curve::create(unsigned int pointCount, unsigned int componentCount)
 }
 
 Curve::Curve(unsigned int pointCount, unsigned int componentCount)
-    : _pointCount(pointCount), _componentCount(componentCount), _componentSize(sizeof(float)*componentCount), _quaternionOffset(NULL), _points(NULL)
+    : _pointCount(pointCount), _componentCount(componentCount), _componentSize(sizeof(float)*componentCount), _quaternionOffset(nullptr), _points(nullptr)
 {
     _points = new Point[_pointCount];
     for (unsigned int i = 0; i < _pointCount; i++)
@@ -110,7 +110,7 @@ Curve::~Curve()
 }
 
 Curve::Point::Point()
-    : time(0.0f), value(NULL), inValue(NULL), outValue(NULL), type(LINEAR)
+    : time(0.0f), value(nullptr), inValue(nullptr), outValue(nullptr), type(LINEAR)
 {
 }
 
@@ -170,7 +170,7 @@ void Curve::getPointValues(unsigned int index, float* value, float* inValue, flo
 
 void Curve::setPoint(unsigned int index, float time, float* value, InterpolationType type)
 {
-    setPoint(index, time, value, type, NULL, NULL);
+    setPoint(index, time, value, type, nullptr, nullptr);
 }
 
 void Curve::setPoint(unsigned int index, float time, float* value, InterpolationType type, float* inValue, float* outValue)

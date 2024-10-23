@@ -28,7 +28,7 @@ static const unsigned int DIRTY_FLAG_INVERSE_WORLD = 1;
 static float getDefaultHeight(unsigned int width, unsigned int height);
 
 Terrain::Terrain() : Drawable(),
-    _heightfield(NULL), _normalMap(NULL), _flags(FRUSTUM_CULLING | LEVEL_OF_DETAIL),
+    _heightfield(nullptr), _normalMap(nullptr), _flags(FRUSTUM_CULLING | LEVEL_OF_DETAIL),
     _dirtyFlags(DIRTY_FLAG_INVERSE_WORLD)
 {
 }
@@ -45,7 +45,7 @@ Terrain::~Terrain()
 
 Terrain* Terrain::create(const char* path)
 {
-    return create(path, NULL);
+    return create(path, nullptr);
 }
 
 Terrain* Terrain::create(Properties* properties)
@@ -57,14 +57,14 @@ Terrain* Terrain::create(const char* path, Properties* properties)
 {
     // Terrain properties
     Properties* p = properties;
-    Properties* pTerrain = NULL;
-    bool externalProperties = (p != NULL);
-    HeightField* heightfield = NULL;
+    Properties* pTerrain = nullptr;
+    bool externalProperties = (p != nullptr);
+    HeightField* heightfield = nullptr;
     Vector3 terrainSize;
     int patchSize = 0;
     int detailLevels = 1;
     float skirtScale = 0;
-    const char* normalMap = NULL;
+    const char* normalMap = nullptr;
     std::string materialPath;
 
     if (!p && path)
@@ -75,16 +75,16 @@ Terrain* Terrain::create(const char* path, Properties* properties)
     if (!p)
     {
         GP_WARN("Failed to properties for terrain: %s", path ? path : "");
-        return NULL;
+        return nullptr;
     }
 
     pTerrain = strlen(p->getNamespace()) > 0 ? p : p->getNextNamespace();
-    if (pTerrain == NULL)
+    if (pTerrain == nullptr)
     {
         GP_WARN("Invalid terrain definition.");
         if (!externalProperties)
             SAFE_DELETE(p);
-        return NULL;
+        return nullptr;
     }
 
     // Read heightmap info
@@ -98,7 +98,7 @@ Terrain* Terrain::create(const char* path, Properties* properties)
             GP_WARN("No 'path' property supplied in heightmap section of terrain definition: %s", path);
             if (!externalProperties)
                 SAFE_DELETE(p);
-            return NULL;
+            return nullptr;
         }
 
         std::string ext = FileSystem::getExtension(heightmap.c_str());
@@ -116,7 +116,7 @@ Terrain* Terrain::create(const char* path, Properties* properties)
                 GP_WARN("Invalid or missing 'size' attribute in heightmap defintion of terrain definition: %s", path);
                 if (!externalProperties)
                     SAFE_DELETE(p);
-                return NULL;
+                return nullptr;
             }
 
             // Read normalized height values from RAW file
@@ -128,7 +128,7 @@ Terrain* Terrain::create(const char* path, Properties* properties)
             GP_WARN("Unsupported heightmap format ('%s') in terrain definition: %s", heightmap.c_str(), path);
             if (!externalProperties)
                 SAFE_DELETE(p);
-            return NULL;
+            return nullptr;
         }
     }
     else
@@ -140,7 +140,7 @@ Terrain* Terrain::create(const char* path, Properties* properties)
             GP_WARN("No 'heightmap' property supplied in terrain definition: %s", path);
             if (!externalProperties)
                 SAFE_DELETE(p);
-            return NULL;
+            return nullptr;
         }
 
         std::string ext = FileSystem::getExtension(heightmap.c_str());
@@ -154,14 +154,14 @@ Terrain* Terrain::create(const char* path, Properties* properties)
             GP_WARN("RAW heightmaps must be specified inside a heightmap block with width and height properties.");
             if (!externalProperties)
                 SAFE_DELETE(p);
-            return NULL;
+            return nullptr;
         }
         else
         {
             GP_WARN("Unsupported 'heightmap' format ('%s') in terrain definition: %s.", heightmap.c_str(), path);
             if (!externalProperties)
                 SAFE_DELETE(p);
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -198,12 +198,12 @@ Terrain* Terrain::create(const char* path, Properties* properties)
     // Read 'material'
     materialPath = pTerrain->getString("material", "");
 
-    if (heightfield == NULL)
+    if (heightfield == nullptr)
     {
         GP_WARN("Failed to read heightfield heights for terrain definition: %s", path);
         if (!externalProperties)
             SAFE_DELETE(p);
-        return NULL;
+        return nullptr;
     }
 
     if (terrainSize.isZero())
@@ -236,7 +236,7 @@ Terrain* Terrain::create(const char* path, Properties* properties)
 
 Terrain* Terrain::create(HeightField* heightfield, const Vector3& scale, unsigned int patchSize, unsigned int detailLevels, float skirtScale, const char* normalMapPath, const char* materialPath)
 {
-    return create(heightfield, scale, patchSize, detailLevels, skirtScale, normalMapPath, materialPath, NULL);
+    return create(heightfield, scale, patchSize, detailLevels, skirtScale, normalMapPath, materialPath, nullptr);
 }
 
 Terrain* Terrain::create(HeightField* heightfield, const Vector3& scale,
@@ -251,7 +251,7 @@ Terrain* Terrain::create(HeightField* heightfield, const Vector3& scale,
     // Create the terrain object
     Terrain* terrain = new Terrain();
     terrain->_heightfield = heightfield;
-    terrain->_materialPath = (materialPath == NULL || strlen(materialPath) == 0) ? TERRAIN_MATERIAL : materialPath;
+    terrain->_materialPath = (materialPath == nullptr || strlen(materialPath) == 0) ? TERRAIN_MATERIAL : materialPath;
 
     // Store terrain local scaling so it can be applied to the heightfield
     terrain->_localScale.set(scale);
@@ -302,7 +302,7 @@ Terrain* Terrain::create(HeightField* heightfield, const Vector3& scale,
         // Parse terrain layers
         Properties* lp;
         int index = -1;
-        while ((lp = properties->getNextNamespace()) != NULL)
+        while ((lp = properties->getNextNamespace()) != nullptr)
         {
             if (strcmp(lp->getNamespace(), "layer") == 0)
             {
@@ -313,9 +313,9 @@ Terrain* Terrain::create(HeightField* heightfield, const Vector3& scale,
                     ++index;
 
                 std::string textureMap;
-                const char* textureMapPtr = NULL;
+                const char* textureMapPtr = nullptr;
                 std::string blendMap;
-                const char* blendMapPtr = NULL;
+                const char* blendMapPtr = nullptr;
                 Vector2 textureRepeat;
                 int blendChannel = 0;
                 int row = -1, column = -1;
@@ -542,7 +542,7 @@ unsigned int Terrain::draw(bool wireframe)
 Drawable* Terrain::clone(NodeCloneContext& context)
 {
     // TODO:
-    return NULL;
+    return nullptr;
 }
 
 static float getDefaultHeight(unsigned int width, unsigned int height)

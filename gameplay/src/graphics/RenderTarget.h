@@ -51,7 +51,7 @@ public:
      *
      * @param id The ID of the RenderTarget to search for.
      *
-     * @return The RenderTarget with the specified ID, or NULL if one was not found.
+     * @return The RenderTarget with the specified ID, or nullptr if one was not found.
      */
     static RenderTarget* getRenderTarget(const char* id);
 

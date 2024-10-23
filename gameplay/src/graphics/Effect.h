@@ -32,22 +32,22 @@ public:
      *
      * @param vshPath The path to the vertex shader file.
      * @param fshPath The path to the fragment shader file.
-     * @param defines A new-line delimited list of preprocessor defines. May be NULL.
+     * @param defines A new-line delimited list of preprocessor defines. May be nullptr.
      * 
      * @return The created effect.
      */
-    static Effect* createFromFile(const char* vshPath, const char* fshPath, const char* defines = NULL);
+    static Effect* createFromFile(const char* vshPath, const char* fshPath, const char* defines = nullptr);
 
     /**
      * Creates an effect from the given vertex and fragment shader source code.
      *
      * @param vshSource The vertex shader source code.
      * @param fshSource The fragment shader source code.
-     * @param defines A new-line delimited list of preprocessor defines. May be NULL.
+     * @param defines A new-line delimited list of preprocessor defines. May be nullptr.
      * 
      * @return The created effect.
      */
-    static Effect* createFromSource(const char* vshSource, const char* fshSource, const char* defines = NULL);
+    static Effect* createFromSource(const char* vshSource, const char* fshSource, const char* defines = nullptr);
 
     /**
      * Returns the unique string identifier for the effect, which is a concatenation of
@@ -69,7 +69,7 @@ public:
      *
      * @param name The name of the uniform to return.
      * 
-     * @return The uniform, or NULL if no such uniform exists.
+     * @return The uniform, or nullptr if no such uniform exists.
      */
     Uniform* getUniform(const char* name) const;
 
@@ -78,7 +78,7 @@ public:
      * 
      * @param index The index of the uniform to return.
      * 
-     * @return The uniform, or NULL if index is invalid.
+     * @return The uniform, or nullptr if index is invalid.
      */
     Uniform* getUniform(unsigned int index) const;
 
@@ -218,7 +218,7 @@ public:
     /**
      * Returns the currently bound effect for the rendering system.
      *
-     * @return The currently bound effect, or NULL if no effect is currently bound.
+     * @return The currently bound effect, or nullptr if no effect is currently bound.
      */
     static Effect* getCurrentEffect();
 
@@ -239,7 +239,7 @@ private:
      */
     Effect& operator=(const Effect&);
 
-    static Effect* createFromSource(const char* vshPath, const char* vshSource, const char* fshPath, const char* fshSource, const char* defines = NULL);
+    static Effect* createFromSource(const char* vshPath, const char* vshSource, const char* fshPath, const char* fshSource, const char* defines = nullptr);
 
     GLuint _program;
     std::string _id;

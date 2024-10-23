@@ -256,11 +256,11 @@ public:
      * @param position The world space position.
      * @param x The returned viewport x coordinate.
      * @param y The returned viewport y coordinate.
-     * @param depth The returned pixel depth (can be NULL).
+     * @param depth The returned pixel depth (can be nullptr).
      *
      * @script{ignore}
      */
-    void project(const Rectangle& viewport, const Vector3& position, float* x, float* y, float* depth = NULL) const;
+    void project(const Rectangle& viewport, const Vector3& position, float* x, float* y, float* depth = nullptr) const;
 
     /**
      * Projects the specified world position into the viewport coordinates.

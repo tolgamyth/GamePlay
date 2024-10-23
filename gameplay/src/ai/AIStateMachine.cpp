@@ -79,7 +79,7 @@ AIState* AIStateMachine::getState(const char* id) const
             return state;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 AIState* AIStateMachine::getActiveState() const

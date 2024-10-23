@@ -8,9 +8,9 @@ namespace gameplay
 {
 
 static std::vector<Theme*> __themeCache;
-static Theme* __defaultTheme = NULL;
+static Theme* __defaultTheme = nullptr;
 
-Theme::Theme() : _texture(NULL), _spriteBatch(NULL), _emptyImage(NULL)
+Theme::Theme() : _texture(nullptr), _spriteBatch(nullptr), _emptyImage(nullptr)
 {
 }
 
@@ -54,7 +54,7 @@ Theme::~Theme()
     SAFE_RELEASE(_emptyImage);
 
 	if (__defaultTheme == this)
-		__defaultTheme = NULL;
+		__defaultTheme = nullptr;
 }
 
 Theme* Theme::getDefault()
@@ -115,9 +115,9 @@ Theme* Theme::create(const char* url)
     // Load theme properties from file path.
     Properties* properties = Properties::create(url);
     assert(properties);
-    if (properties == NULL)
+    if (properties == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     // Check if the Properties is valid and has a valid namespace.
@@ -126,7 +126,7 @@ Theme* Theme::create(const char* url)
     if (!themeProperties || !(strcmpnocase(themeProperties->getNamespace(), "theme") == 0))
     {
         SAFE_DELETE(properties);
-        return NULL;
+        return nullptr;
     }
 
     // Create a new theme.
@@ -149,7 +149,7 @@ Theme* Theme::create(const char* url)
     theme->_emptyImage = new Theme::ThemeImage(tw, th, Rectangle::empty(), Vector4::zero());
 
     Properties* space = themeProperties->getNextNamespace();
-    while (space != NULL)
+    while (space != nullptr)
     {
         // First load all cursors, checkboxes etc. that can be referred to by styles.
         const char* spacename = space->getNamespace();
@@ -198,7 +198,7 @@ Theme* Theme::create(const char* url)
 
     themeProperties->rewind();
     space = themeProperties->getNextNamespace();
-    while (space != NULL)
+    while (space != nullptr)
     {
         const char* spacename = space->getNamespace();
         if (strcmpnocase(spacename, "style") == 0)
@@ -207,15 +207,15 @@ Theme* Theme::create(const char* url)
             // as well as Border and Padding namespaces.
             Theme::Margin margin;
             Theme::Padding padding;
-            Theme::Style::Overlay* normal = NULL;
-            Theme::Style::Overlay* focus = NULL;
-            Theme::Style::Overlay* active = NULL;
-            Theme::Style::Overlay* disabled = NULL;
-            Theme::Style::Overlay* hover = NULL;
+            Theme::Style::Overlay* normal = nullptr;
+            Theme::Style::Overlay* focus = nullptr;
+            Theme::Style::Overlay* active = nullptr;
+            Theme::Style::Overlay* disabled = nullptr;
+            Theme::Style::Overlay* hover = nullptr;
 
             // Need to load OVERLAY_NORMAL first so that the other overlays can inherit from it.
             Properties* innerSpace = space->getNextNamespace();
-            while (innerSpace != NULL)
+            while (innerSpace != nullptr)
             {
                 const char* innerSpacename = innerSpace->getNamespace();
                 if (strcmpnocase(innerSpacename, "stateNormal") == 0)
@@ -226,7 +226,7 @@ Theme* Theme::create(const char* url)
                         innerSpace->getColor("textColor", &textColor);
                     }
 
-                    Font* font = NULL;
+                    Font* font = nullptr;
                     std::string fontPath;
                     if (innerSpace->getPath("font", &fontPath))
                     {
@@ -247,9 +247,9 @@ Theme* Theme::create(const char* url)
                         opacity = innerSpace->getFloat("opacity");
                     }
 
-                    ImageList* imageList = NULL;
-                    ThemeImage* cursor = NULL;
-                    Skin* skin = NULL;
+                    ImageList* imageList = nullptr;
+                    ThemeImage* cursor = nullptr;
+                    Skin* skin = nullptr;
                     theme->lookUpSprites(innerSpace, &imageList, &cursor, &skin);
 
                     normal = Theme::Style::Overlay::create();
@@ -285,7 +285,7 @@ Theme* Theme::create(const char* url)
 
             space->rewind();
             innerSpace = space->getNextNamespace();
-            while (innerSpace != NULL)
+            while (innerSpace != nullptr)
             {
                 const char* innerSpacename = innerSpace->getNamespace();
                 if (strcmpnocase(innerSpacename, "margin") == 0)
@@ -312,7 +312,7 @@ Theme* Theme::create(const char* url)
                         textColor.set(normal->getTextColor());
                     }
 
-                    Font* font = NULL;
+                    Font* font = nullptr;
                     std::string fontPath;
                     if (innerSpace->getPath("font", &fontPath))
                     {
@@ -366,9 +366,9 @@ Theme* Theme::create(const char* url)
                         opacity = normal->getOpacity();
                     }
 
-                    ImageList* imageList = NULL;
-                    ThemeImage* cursor = NULL;
-                    Skin* skin = NULL;
+                    ImageList* imageList = nullptr;
+                    ThemeImage* cursor = nullptr;
+                    Skin* skin = nullptr;
                     theme->lookUpSprites(innerSpace, &imageList, &cursor, &skin);
 
                     if (!imageList)
@@ -483,7 +483,7 @@ Theme* Theme::create(const char* url)
                 disabled->addRef();
             }
 
-            // Note: The hover and active states have their overlay left NULL if unspecified.
+            // Note: The hover and active states have their overlay left nullptr if unspecified.
             // Events will still be triggered, but a control's overlay will not be changed.
 
             Theme::Style* s = new Theme::Style(theme, space->getId(), tw, th, margin, padding, normal, focus, active, disabled, hover);
@@ -515,7 +515,7 @@ Theme::Style* Theme::getStyle(const char* name) const
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 Theme::Style* Theme::getEmptyStyle()
@@ -528,7 +528,7 @@ Theme::Style* Theme::getEmptyStyle()
         overlay->addRef();
         overlay->addRef();
         emptyStyle = new Theme::Style(const_cast<Theme*>(this), "EMPTY_STYLE", 1.0f / _texture->getWidth(), 1.0f / _texture->getHeight(),
-            Theme::Margin::empty(), Theme::Border::empty(), overlay, overlay, NULL, overlay, NULL);
+            Theme::Margin::empty(), Theme::Border::empty(), overlay, overlay, nullptr, overlay, nullptr);
 
         _styles.push_back(emptyStyle);
     }
@@ -690,7 +690,7 @@ Theme::ImageList* Theme::ImageList::create(float tw, float th, Properties* prope
     }
 
     Properties* space = properties->getNextNamespace();
-    while (space != NULL)
+    while (space != nullptr)
     {
         ThemeImage* image = ThemeImage::create(tw, th, space, color);
         assert(image);
@@ -721,7 +721,7 @@ Theme::ThemeImage* Theme::ImageList::getImage(const char* imageId) const
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 /***************

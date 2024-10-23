@@ -125,7 +125,7 @@ public:
     /**
      * Gets the Form used to represent this gamepad.
      *
-     * @return the Form used to represent this gamepad. NULL if the gamepad is not represented with a Form.
+     * @return the Form used to represent this gamepad. nullptr if the gamepad is not represented with a Form.
      */
     Form* getForm() const;
 

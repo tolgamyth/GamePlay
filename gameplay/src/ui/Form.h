@@ -39,7 +39,7 @@ public:
      * 
      * @param url The URL pointing to the Properties object defining the form. 
      * 
-     * @return The new form or NULL if there was an error.
+     * @return The new form or nullptr if there was an error.
      * @script{create}
      */
     static Form* create(const char* url);
@@ -47,12 +47,12 @@ public:
     /**
      * Create a new Form.
 	 *
-	 * The specified style defines the visual style for the form. If NULL is passed
+	 * The specified style defines the visual style for the form. If nullptr is passed
 	 * for the style, the default UI theme is used. All controls attached to this
 	 * form will inherit the theme that contains the form's style.
      *
      * @param id The Form's ID.
-     * @param style The Form's custom style (optional - may be NULL).
+     * @param style The Form's custom style (optional - may be nullptr).
 	 * @param layoutType The form's layout type (optional).
      *
      * @return The new Form.
@@ -78,14 +78,14 @@ public:
      *
      * @param touchIndex Optional touch point index to retrieve the active control for.
      *
-     * @return The currently active control, or NULL if no controls are currently active.
+     * @return The currently active control, or nullptr if no controls are currently active.
      */
     static Control* getActiveControl(unsigned int touchIndex = 0);
 
     /**
      * Returns the current control that is in focus.
      *
-     * @return The current control in focus, or NULL if no controls are in focus.
+     * @return The current control in focus, or nullptr if no controls are in focus.
      */
     static Control* getFocusControl();
 

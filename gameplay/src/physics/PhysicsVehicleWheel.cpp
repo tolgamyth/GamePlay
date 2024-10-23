@@ -7,13 +7,13 @@ namespace gameplay
 {
 
 PhysicsVehicleWheel::PhysicsVehicleWheel(Node* node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters)
-    : PhysicsCollisionObject(node), _host(NULL), _indexInHost(0)
+    : PhysicsCollisionObject(node), _host(nullptr), _indexInHost(0)
 {
     findAncestorAndBind();
 }
 
 PhysicsVehicleWheel::PhysicsVehicleWheel(Node* node)
-    : PhysicsCollisionObject(node), _host(NULL), _indexInHost(0)
+    : PhysicsCollisionObject(node), _host(nullptr), _indexInHost(0)
 {
     findAncestorAndBind();
 }
@@ -26,7 +26,7 @@ PhysicsVehicleWheel* PhysicsVehicleWheel::create(Node* node, Properties* propert
     properties->rewind();
     Vector3 v;
     const char* name;
-    while ((name = properties->getNextProperty()) != NULL)
+    while ((name = properties->getNextProperty()) != nullptr)
     {
         if (strcmp(name, "steerable") == 0)
         {
@@ -125,7 +125,7 @@ void PhysicsVehicleWheel::findAncestorAndBind()
     // 2: Visit each sibling of n and perform a breadth-first search of its descendants
     // 3: Let n = the parent of n
     // 4: Go to 2.
-    PhysicsVehicle* host = NULL;
+    PhysicsVehicle* host = nullptr;
     Node* m;
     for (Node* n = getNode(); n && !host; n = n->getParent())
     {
@@ -158,7 +158,7 @@ PhysicsVehicle* PhysicsVehicleWheel::findVehicle(Node* node)
         return static_cast<PhysicsVehicle*>(collisionObject);
     }
 
-    PhysicsVehicle* result = NULL;
+    PhysicsVehicle* result = nullptr;
     for (Node* p = node->getFirstChild(); p && !result; p = p->getNextSibling())
     {
         result = findVehicle(p);

@@ -7,7 +7,7 @@ namespace gameplay
 {
   
 Text::Text() :
-    _font(NULL), _drawFont(NULL), _text(""), _size(0), _width(0), _height(0), _wrap(true), _rightToLeft(false),
+    _font(nullptr), _drawFont(nullptr), _text(""), _size(0), _width(0), _height(0), _wrap(true), _rightToLeft(false),
     _align(Font::ALIGN_TOP_LEFT), _clip(Rectangle(0, 0, 0, 0)),
     _opacity(1.0f), _color(Vector4::one())
 {
@@ -17,7 +17,7 @@ Text::~Text()
 {
     // _drawFont is a child of _font, so it should never be released
     SAFE_RELEASE(_font);
-    _drawFont = NULL;
+    _drawFont = nullptr;
 }
     
 Text& Text::operator=(const Text& text)
@@ -64,23 +64,23 @@ Text* Text::create(Properties* properties)
     if (!properties || strcmp(properties->getNamespace(), "text") != 0)
     {
         GP_ERROR("Properties object must be non-null and have namespace equal to 'text'.");
-        return NULL;
+        return nullptr;
     }
 
     // Get font path.
     const char* fontPath = properties->getString("font");
-    if (fontPath == NULL || strlen(fontPath) == 0)
+    if (fontPath == nullptr || strlen(fontPath) == 0)
     {
         GP_ERROR("Text is missing required font file path.");
-        return NULL;
+        return nullptr;
     }
 
     // Get text
     const char* text = properties->getString("text");
-    if (text == NULL || strlen(text) == 0)
+    if (text == nullptr || strlen(text) == 0)
     {
         GP_ERROR("Text is missing required 'text' value.");
-        return NULL;
+        return nullptr;
     }
 
     // Get size

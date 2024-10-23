@@ -548,7 +548,7 @@ public:
      * The returned StateBlock is referenced by this RenderState and therefore
      * should not be released by the user. To release a StateBlock for a
      * RenderState, the setState(StateBlock*) method should be called, passing
-     * NULL. This removes the StateBlock and resets the fixed-function render
+     * nullptr. This removes the StateBlock and resets the fixed-function render
      * state to the default state.
      *
      * It is legal to pass the returned StateBlock to another RenderState object.

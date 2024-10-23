@@ -10,7 +10,7 @@ namespace gameplay
 
 Mesh::Mesh(const VertexFormat& vertexFormat) 
     : _vertexFormat(vertexFormat), _vertexCount(0), _vertexBuffer(0), _primitiveType(TRIANGLES), 
-      _partCount(0), _parts(NULL), _dynamic(false)
+      _partCount(0), _parts(nullptr), _dynamic(false)
 {
 }
 
@@ -37,7 +37,7 @@ Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCoun
     GLuint vbo;
     GL_ASSERT( glGenBuffers(1, &vbo) );
     GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, vbo) );
-    GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+    GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, nullptr, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
 
     Mesh* mesh = new Mesh(vertexFormat);
     mesh->_vertexCount = vertexCount;
@@ -68,10 +68,10 @@ Mesh* Mesh::createQuad(float x, float y, float width, float height, float s1, fl
         VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), 4, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
-        return NULL;
+        return nullptr;
     }
 
     mesh->_primitiveType = TRIANGLE_STRIP;
@@ -101,10 +101,10 @@ Mesh* Mesh::createQuadFullscreen()
         VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), 4, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
-        return NULL;
+        return nullptr;
     }
 
     mesh->_primitiveType = TRIANGLE_STRIP;
@@ -138,10 +138,10 @@ Mesh* Mesh::createQuad(const Vector3& p1, const Vector3& p2, const Vector3& p3, 
     };
 
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), 4, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
-        return NULL;
+        return nullptr;
     }
 
     mesh->_primitiveType = TRIANGLE_STRIP;
@@ -163,11 +163,11 @@ Mesh* Mesh::createLines(Vector3* points, unsigned int pointCount)
         VertexFormat::Element(VertexFormat::POSITION, 3)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 1), pointCount, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
         SAFE_DELETE_ARRAY(vertices);
-        return NULL;
+        return nullptr;
     }
 
     mesh->_primitiveType = LINE_STRIP;
@@ -209,10 +209,10 @@ Mesh* Mesh::createBoundingBox(const BoundingBox& box)
         VertexFormat::Element(VertexFormat::POSITION, 3)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 1), 18, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
-        return NULL;
+        return nullptr;
     }
 
     mesh->_primitiveType = LINE_STRIP;

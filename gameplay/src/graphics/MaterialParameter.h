@@ -51,12 +51,12 @@ public:
     const char* getName() const;
 
     /**
-     * Returns the texture sampler or NULL if this MaterialParameter is not a sampler type.
+     * Returns the texture sampler or nullptr if this MaterialParameter is not a sampler type.
      * 
      * @param index Index of the sampler (if the parameter is a sampler array),
      *      or zero if it is a single sampler value.
      *
-     * @return The texture sampler or NULL if this MaterialParameter is not a sampler type.
+     * @return The texture sampler or nullptr if this MaterialParameter is not a sampler type.
      */
     Texture::Sampler* getSampler(unsigned int index = 0) const;
 

@@ -94,7 +94,7 @@ private:
 
     void addSceneAnimation(const char* animationID, const char* targetID, const char* url);
 
-    void addSceneNodeProperty(SceneNode& sceneNode, SceneNodeProperty::Type type, const char* value = NULL, bool supportsUrl = false, int index = 0);
+    void addSceneNodeProperty(SceneNode& sceneNode, SceneNodeProperty::Type type, const char* value = nullptr, bool supportsUrl = false, int index = 0);
 
     void applyNodeProperties(const Properties* sceneProperties, unsigned int typeFlags);
 

@@ -4,8 +4,8 @@
 namespace gameplay
 {
 
-JoystickControl::JoystickControl() : _radiusPixels(1.0f), _relative(true), _innerSizePixels(NULL), _outerSizePixels(NULL), _index(0),
-    _innerRegionCoord(NULL), _outerRegionCoord(NULL), _innerRegionCoordBoundsBits(0), _outerRegionCoordBoundsBits(0), _radiusCoord(_radiusPixels)
+JoystickControl::JoystickControl() : _radiusPixels(1.0f), _relative(true), _innerSizePixels(nullptr), _outerSizePixels(nullptr), _index(0),
+    _innerRegionCoord(nullptr), _outerRegionCoord(nullptr), _innerRegionCoordBoundsBits(0), _outerRegionCoordBoundsBits(0), _radiusCoord(_radiusPixels)
 {
 }
 
@@ -25,7 +25,7 @@ JoystickControl* JoystickControl::create(const char* id, Theme::Style* style)
 {
     JoystickControl* joystickControl = new JoystickControl();
     joystickControl->_id = id ? id : "";
-    joystickControl->initialize("Joystick", style, NULL);
+    joystickControl->initialize("Joystick", style, nullptr);
     return joystickControl;
 }
 
@@ -245,7 +245,7 @@ Vector2 JoystickControl::getPixelSize(const Theme::ThemeImage* image) const
 Theme::ThemeImage * JoystickControl::getNonEmptyImage(const char* id, Control::State state)
 {
     Theme::ThemeImage* image = getImage(id, state);
-    return strcmp(image->getId(), id) == 0 ? image : NULL;
+    return strcmp(image->getId(), id) == 0 ? image : nullptr;
 }
 
 void JoystickControl::updateAbsoluteSizes()

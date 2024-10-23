@@ -50,7 +50,7 @@ Pass* Technique::getPass(const char* id) const
             return pass;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void Technique::setNodeBinding(Node* node)

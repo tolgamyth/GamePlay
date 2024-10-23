@@ -31,28 +31,28 @@ public:
      * NOT free any actual game objects created/returned from the Bundle
      * instance and those objects must be released separately.
      * 
-     * @return The new Bundle or NULL if there was an error.
+     * @return The new Bundle or nullptr if there was an error.
      * @script{create}
      */
     static Bundle* create(const char* path);
 
     /**
      * Loads the scene with the specified ID from the bundle.
-     * If id is NULL then the first scene found is loaded.
+     * If id is nullptr then the first scene found is loaded.
      * 
-     * @param id The ID of the scene to load (NULL to load the first scene).
+     * @param id The ID of the scene to load (nullptr to load the first scene).
      * 
-     * @return The loaded scene, or NULL if the scene could not be loaded.
+     * @return The loaded scene, or nullptr if the scene could not be loaded.
      * @script{create}
      */
-    Scene* loadScene(const char* id = NULL);
+    Scene* loadScene(const char* id = nullptr);
 
     /**
      * Loads a node with the specified ID from the bundle.
      *
      * @param id The ID of the node to load in the bundle.
      * 
-     * @return The loaded node, or NULL if the node could not be loaded.
+     * @return The loaded node, or nullptr if the node could not be loaded.
      * @script{create}
      */
     Node* loadNode(const char* id);
@@ -62,7 +62,7 @@ public:
      *
      * @param id The ID of the mesh to load.
      * 
-     * @return The loaded mesh, or NULL if the mesh could not be loaded.
+     * @return The loaded mesh, or nullptr if the mesh could not be loaded.
      * @script{create}
      */
     Mesh* loadMesh(const char* id);
@@ -72,7 +72,7 @@ public:
      *
      * @param id The ID of the font to load.
      * 
-     * @return The loaded font, or NULL if the font could not be loaded.
+     * @return The loaded font, or nullptr if the font could not be loaded.
      * @script{create}
      */
     Font* loadFont(const char* id);
@@ -96,7 +96,7 @@ public:
      *
      * @param index The index of the object.
      * 
-     * @return The ID of the object at the given index, or NULL if index is invalid.
+     * @return The ID of the object at the given index, or nullptr if index is invalid.
      */
     const char* getObjectId(unsigned int index) const;
 
@@ -190,19 +190,19 @@ private:
 
     /**
      * Returns the ID of the object at the current file position.
-     * Returns NULL if not found.
+     * Returns nullptr if not found.
      * 
-     * @return The ID string or NULL if not found.
+     * @return The ID string or nullptr if not found.
      */
     const char* getIdFromOffset() const;
 
     /**
      * Returns the ID of the object at the given file offset by searching through the reference table.
-     * Returns NULL if not found.
+     * Returns nullptr if not found.
      *
      * @param offset The file offset.
      * 
-     * @return The ID string or NULL if not found.
+     * @return The ID string or nullptr if not found.
      */
     const char* getIdFromOffset(unsigned int offset) const;
 
@@ -220,7 +220,7 @@ private:
      * @param id The ID string to search for.
      * @param type The object type.
      * 
-     * @return The reference object or NULL if there was an error.
+     * @return The reference object or nullptr if there was an error.
      */
     Reference* seekTo(const char* id, unsigned int type);
 
@@ -229,14 +229,14 @@ private:
      * 
      * @param type The object type.
      * 
-     * @return The reference object or NULL if there was an error.
+     * @return The reference object or nullptr if there was an error.
      */
     Reference* seekToFirstType(unsigned int type);
 
     /**
      * Internal method to load a node.
      *
-     * Only one of node or scene should be passed as non-NULL (or neither).
+     * Only one of node or scene should be passed as non-nullptr (or neither).
      */
     Node* loadNode(const char* id, Scene* sceneContext, Node* nodeContext);
 
@@ -251,7 +251,7 @@ private:
      * @param id The ID of the mesh to load.
      * @param nodeId The id of the mesh's model's parent node.
      * 
-     * @return The loaded mesh, or NULL if the mesh could not be loaded.
+     * @return The loaded mesh, or nullptr if the mesh could not be loaded.
      */
     Mesh* loadMesh(const char* id, const char* nodeId);
 
@@ -338,28 +338,28 @@ private:
      * Recursively reads nodes from the current file position.
      * This method will load cameras, lights and models in the nodes.
      * 
-     * @return A pointer to new node or NULL if there was an error.
+     * @return A pointer to new node or nullptr if there was an error.
      */
     Node* readNode(Scene* sceneContext, Node* nodeContext);
 
     /**
      * Reads a camera from the current file position.
      *
-     * @return A pointer to a new camera or NULL if there was an error.
+     * @return A pointer to a new camera or nullptr if there was an error.
      */
     Camera* readCamera();
 
     /**
      * Reads a light from the current file position.
      *
-     * @return A pointer to a new light or NULL if there was an error.
+     * @return A pointer to a new light or nullptr if there was an error.
      */
     Light* readLight();
 
     /**
      * Reads a model from the current file position.
      * 
-     * @return A pointer to a new model or NULL if there was an error.
+     * @return A pointer to a new model or nullptr if there was an error.
      */
     Model* readModel(const char* nodeId);
 
@@ -384,7 +384,7 @@ private:
     /**
      * Reads a mesh skin from the current file position.
      *
-     * @return A pointer to a new mesh skin or NULL if there was an error.
+     * @return A pointer to a new mesh skin or nullptr if there was an error.
      */
     MeshSkin* readMeshSkin();
 

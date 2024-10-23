@@ -6,7 +6,7 @@
 #endif
 
 SceneLoadSample::SceneLoadSample()
-    : _font(NULL), _scene(NULL), _wireFrame(false)
+    : _font(nullptr), _scene(nullptr), _wireFrame(false)
 {
     
 }

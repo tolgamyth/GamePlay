@@ -130,7 +130,7 @@ void* debugAlloc(std::size_t size, const char* file, int line)
         static bool initialized = false;
         if (!initialized)
         {
-            if (!SymInitialize(GetCurrentProcess(), NULL, true))
+            if (!SymInitialize(GetCurrentProcess(), nullptr, true))
                 gameplay::print("Stack trace tracking will not work.\n");
             initialized = true;
         }
@@ -169,7 +169,7 @@ void* debugAlloc(std::size_t size, const char* file, int line)
         {
             rec->pc[i] = stackFrame.AddrPC.Offset;
             if (!StackWalk64(machineType, GetCurrentProcess(), GetCurrentThread(), &stackFrame,
-                &context, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL))
+                &context, nullptr, SymFunctionTableAccess64, SymGetModuleBase64, nullptr))
             {
                 break;
             }

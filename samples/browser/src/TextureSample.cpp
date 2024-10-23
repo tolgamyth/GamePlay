@@ -42,7 +42,7 @@ Material* setTextureUnlitMaterial(Model* model, const char* texturePath, bool mi
 }
 
 TextureSample::TextureSample()
-    : _font(NULL), _scene(NULL), _zOffset(0.0f)
+    : _font(nullptr), _scene(nullptr), _zOffset(0.0f)
 {   
 }
 

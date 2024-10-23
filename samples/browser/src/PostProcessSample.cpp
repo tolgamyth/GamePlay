@@ -8,8 +8,8 @@
 #define FRAMEBUFFER_WIDTH 1024
 #define FRAMEBUFFER_HEIGHT 1024
 
-Model* PostProcessSample::_quadModel = NULL;
-Material* PostProcessSample::_compositorMaterial = NULL;
+Model* PostProcessSample::_quadModel = nullptr;
+Material* PostProcessSample::_compositorMaterial = nullptr;
 
 
 PostProcessSample::Compositor* PostProcessSample::Compositor::create(FrameBuffer* srcBuffer, FrameBuffer* dstBuffer, const char* materialPath, const char* techniqueId)
@@ -20,7 +20,7 @@ PostProcessSample::Compositor* PostProcessSample::Compositor::create(FrameBuffer
     Texture::Sampler* sampler = Texture::Sampler::create(srcBuffer->getRenderTarget()->getTexture());
     material->getParameter("u_texture")->setValue(sampler);
     SAFE_RELEASE(sampler);
-    if (_quadModel == NULL)
+    if (_quadModel == nullptr)
     {
         Mesh* mesh = Mesh::createQuadFullscreen();
         _quadModel = Model::create(mesh);
@@ -73,7 +73,7 @@ void PostProcessSample::Compositor::blit(const Rectangle& dst)
 }
 
 PostProcessSample::PostProcessSample()
-    : _font(NULL), _scene(NULL), _modelNode(NULL), _frameBuffer(NULL), _compositorIndex(0)
+    : _font(nullptr), _scene(nullptr), _modelNode(nullptr), _frameBuffer(nullptr), _compositorIndex(0)
 {
 }
 
@@ -102,30 +102,30 @@ void PostProcessSample::initialize()
     SAFE_RELEASE(dst);
 
     // Create our compositors that all output to the default framebuffer.
-    Compositor* compositor = NULL;
+    Compositor* compositor = nullptr;
 
-    compositor = Compositor::create(_frameBuffer, NULL, "res/common/postprocess/postprocess.material", "Passthrough");
+    compositor = Compositor::create(_frameBuffer, nullptr, "res/common/postprocess/postprocess.material", "Passthrough");
     _compositors.push_back(compositor);
 
-    compositor = Compositor::create(_frameBuffer, NULL, "res/common/postprocess/postprocess.material", "Grayscale");
+    compositor = Compositor::create(_frameBuffer, nullptr, "res/common/postprocess/postprocess.material", "Grayscale");
     _compositors.push_back(compositor);
 
-    compositor = Compositor::create(_frameBuffer, NULL, "res/common/postprocess/postprocess.material", "Sepia");
+    compositor = Compositor::create(_frameBuffer, nullptr, "res/common/postprocess/postprocess.material", "Sepia");
     _compositors.push_back(compositor);
 
-    compositor = Compositor::create(_frameBuffer, NULL, "res/common/postprocess/postprocess.material", "Pixelate");
+    compositor = Compositor::create(_frameBuffer, nullptr, "res/common/postprocess/postprocess.material", "Pixelate");
     _compositors.push_back(compositor);
 
-    compositor = Compositor::create(_frameBuffer, NULL, "res/common/postprocess/postprocess.material", "Sobel Edge");
+    compositor = Compositor::create(_frameBuffer, nullptr, "res/common/postprocess/postprocess.material", "Sobel Edge");
     _compositors.push_back(compositor);
     compositor->getMaterial()->getParameter("u_width")->setValue((float)FRAMEBUFFER_WIDTH / 2.0f);
     compositor->getMaterial()->getParameter("u_height")->setValue((float)FRAMEBUFFER_HEIGHT / 2.0f);
 
-    compositor = Compositor::create(_frameBuffer, NULL, "res/common/postprocess/postprocess.material", "Gaussian Blur");
+    compositor = Compositor::create(_frameBuffer, nullptr, "res/common/postprocess/postprocess.material", "Gaussian Blur");
     _compositors.push_back(compositor);
     compositor->getMaterial()->getParameter("u_length")->setValue(1.0f / ((float)FRAMEBUFFER_WIDTH / 2.0f));
 
-    compositor = Compositor::create(_frameBuffer, NULL, "res/common/postprocess/postprocess.material", "Old Film");
+    compositor = Compositor::create(_frameBuffer, nullptr, "res/common/postprocess/postprocess.material", "Old Film");
     _compositors.push_back(compositor);
     compositor->getMaterial()->getParameter("u_sepiaValue")->setValue(0.8f);
     compositor->getMaterial()->getParameter("u_noiseValue")->setValue(0.4f);
@@ -179,7 +179,7 @@ void PostProcessSample::render(float elapsedTime)
     Compositor* compositor = _compositors[_compositorIndex];
 
     FrameBuffer* compositorDstFrameBuffer = compositor->getDstFrameBuffer();
-    FrameBuffer* prevToCompositeFrameBuffer = NULL;
+    FrameBuffer* prevToCompositeFrameBuffer = nullptr;
     if (compositorDstFrameBuffer)
     {
         prevToCompositeFrameBuffer = compositorDstFrameBuffer->bind();

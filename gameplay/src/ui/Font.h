@@ -62,20 +62,20 @@ public:
     /**
      * Creates a font from the given bundle.
      *
-     * If the 'id' parameter is NULL, it is assumed that the Bundle at 'path'
+     * If the 'id' parameter is nullptr, it is assumed that the Bundle at 'path'
      * contains exactly one Font resource. If the Bundle does not meet this criteria,
-     * NULL is returned.
+     * nullptr is returned.
      *
      * If a font for the given path has already been loaded, the existing font will be
      * returned with its reference count increased.
      *
      * @param path The path to a bundle file containing a font resource.
-     * @param id An optional ID of the font resource within the bundle (NULL for the first/only resource).
+     * @param id An optional ID of the font resource within the bundle (nullptr for the first/only resource).
      *
-     * @return The specified Font or NULL if there was an error.
+     * @return The specified Font or nullptr if there was an error.
      * @script{create}
      */
-    static Font* create(const char* path, const char* id = NULL);
+    static Font* create(const char* path, const char* id = nullptr);
 
     /**
      * Gets the font size (max height of glyphs) in pixels, at the specified index.
@@ -308,7 +308,7 @@ private:
      * @param texture A texture map containing rendered glyphs.
      * @param format The format of the font (bitmap or distance fields)
      *
-     * @return The new Font or NULL if there was an error.
+     * @return The new Font or nullptr if there was an error.
      */
     static Font* create(const char* family, Style style, unsigned int size, Glyph* glyphs, int glyphCount, Texture* texture, Font::Format format);
 
@@ -323,8 +323,8 @@ private:
     unsigned int getReversedTokenLength(const char* token, const char* bufStart);
 
     int handleDelimiters(const char** token, const unsigned int size, const int iteration, const int areaX, int* xPos, int* yPos, unsigned int* lineLength,
-                         std::vector<int>::const_iterator* xPositionsIt, std::vector<int>::const_iterator xPositionsEnd, unsigned int* charIndex = NULL,
-                         const Vector2* stopAtPosition = NULL, const int currentIndex = -1, const int destIndex = -1);
+                         std::vector<int>::const_iterator* xPositionsIt, std::vector<int>::const_iterator xPositionsEnd, unsigned int* charIndex = nullptr,
+                         const Vector2* stopAtPosition = nullptr, const int currentIndex = -1, const int destIndex = -1);
 
     void addLineInfo(const Rectangle& area, int lineWidth, int lineLength, Justify hAlign,
                      std::vector<int>* xPositions, std::vector<unsigned int>* lineLengths, bool rightToLeft);

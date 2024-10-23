@@ -60,7 +60,7 @@ public:
      * @return The new container.
      * @script{create}
      */
-    static Container* create(const char* id, Theme::Style* style = NULL, Layout::Type layout = Layout::LAYOUT_ABSOLUTE);
+    static Container* create(const char* id, Theme::Style* style = nullptr, Layout::Type layout = Layout::LAYOUT_ABSOLUTE);
 
     /**
      * Extends ScriptTarget::getTypeName() to return the type name of this class.
@@ -236,7 +236,7 @@ public:
     /**
      * @see AnimationTarget::getAnimation
      */
-    Animation* getAnimation(const char* id = NULL) const;
+    Animation* getAnimation(const char* id = nullptr) const;
 
     /**
      * @see Control::isContainer
@@ -324,7 +324,7 @@ protected:
      *
      * @return The new container.
      */
-    static Control* create(Theme::Style* style, Properties* properties = NULL);
+    static Control* create(Theme::Style* style, Properties* properties = nullptr);
 
     /**
      * @see Control::initialize

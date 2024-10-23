@@ -10,7 +10,7 @@
 const static unsigned int __formsCount = 5;
 
 FormsSample::FormsSample()
-    : _scene(NULL), _formNode(NULL), _formNodeParent(NULL), _formSelect(NULL), _activeForm(NULL), _gamepad(NULL), _keyFlags(0)
+    : _scene(nullptr), _formNode(nullptr), _formNodeParent(nullptr), _formSelect(nullptr), _activeForm(nullptr), _gamepad(nullptr), _keyFlags(0)
 {
     const char* formFiles[] = 
     {
@@ -49,8 +49,8 @@ void printProperties(Properties* properties, unsigned int tabCount)
  
     // Print all properties in this namespace.
     const char* name = properties->getNextProperty();
-    const char* value = NULL;
-    while (name != NULL)
+    const char* value = nullptr;
+    while (name != nullptr)
     {
         value = properties->getString(name);
         GP_WARN("%s\t%s = %s", tabs.c_str(), name, value);
@@ -59,7 +59,7 @@ void printProperties(Properties* properties, unsigned int tabCount)
  
     // Print the properties of every namespace within this one.
     Properties* space = properties->getNextNamespace();
-    while (space != NULL)
+    while (space != nullptr)
     {
         printProperties(space, tabCount+1);
         space = properties->getNextNamespace();
@@ -155,7 +155,7 @@ void FormsSample::formChanged()
 
 void FormsSample::createSampleForm()
 {
-    Form* form = Form::create("testForm", NULL);
+    Form* form = Form::create("testForm", nullptr);
     form->setSize(600, 600);
 
     Label* label = Label::create("testLabel");
@@ -211,7 +211,7 @@ void FormsSample::update(float elapsedTime)
     }
 
     // If no controls are in focus, then we poll the gamepad for movement input.
-    if (Form::getFocusControl() == NULL)
+    if (Form::getFocusControl() == nullptr)
     {
         if (!_joysticks[0].isZero())
         {

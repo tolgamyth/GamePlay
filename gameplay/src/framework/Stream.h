@@ -75,7 +75,7 @@ public:
      * @param str The array of chars to copy the string to.
      * @param num The maximum number of characters to be copied.
      * 
-     * @return On success, str is returned. On error, NULL is returned.
+     * @return On success, str is returned. On error, nullptr is returned.
      * 
      * @see canRead()
      */

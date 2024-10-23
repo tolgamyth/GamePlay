@@ -22,18 +22,18 @@ public:
     /**
      * Creates a new empty scene.
      *
-     * @param id ID of the new scene, or NULL to use an empty string for the ID (default).
+     * @param id ID of the new scene, or nullptr to use an empty string for the ID (default).
      *
      * @return The newly created empty scene.
      * @script{create}
      */
-    static Scene* create(const char* id = NULL);
+    static Scene* create(const char* id = nullptr);
 
     /**
      * Loads a scene from the given '.scene' or '.gpb' file.
      *
      * @param filePath The path to the '.scene' or '.gpb' file to load from.
-     * @return The loaded scene or <code>NULL</code> if the scene
+     * @return The loaded scene or <code>nullptr</code> if the scene
      *      could not be loaded from the given file.
      * @script{create}
      */
@@ -42,13 +42,13 @@ public:
     /**
      * Gets a currently active scene.
      *
-     * If id is an NULL, the first active scene is returned.
+     * If id is an nullptr, the first active scene is returned.
      *
-     * @param id ID of the scene to retrieve, or NULL to retrieve the first active scene.
+     * @param id ID of the scene to retrieve, or nullptr to retrieve the first active scene.
      *
-     * @return The scene that matches the specified ID, or NULL if no matching scene could be found.
+     * @return The scene that matches the specified ID, or nullptr if no matching scene could be found.
      */
-    static Scene* getScene(const char* id = NULL);
+    static Scene* getScene(const char* id = nullptr);
 
     /**
      * Gets the identifier for the scene.
@@ -97,7 +97,7 @@ public:
      *
      * @return The new node.
      */
-    Node* addNode(const char* id = NULL);
+    Node* addNode(const char* id = nullptr);
 
     /**
      * Adds the specified node to the scene.
@@ -313,7 +313,7 @@ private:
 template <class T>
 void Scene::visit(T* instance, bool (T::*visitMethod)(Node*))
 {
-    for (Node* node = getFirstNode(); node != NULL; node = node->getNextSibling())
+    for (Node* node = getFirstNode(); node != nullptr; node = node->getNextSibling())
     {
         visitNode(node, instance, visitMethod);
     }
@@ -322,7 +322,7 @@ void Scene::visit(T* instance, bool (T::*visitMethod)(Node*))
 template <class T, class C>
 void Scene::visit(T* instance, bool (T::*visitMethod)(Node*,C), C cookie)
 {
-    for (Node* node = getFirstNode(); node != NULL; node = node->getNextSibling())
+    for (Node* node = getFirstNode(); node != nullptr; node = node->getNextSibling())
     {
         visitNode(node, instance, visitMethod, cookie);
     }
@@ -330,7 +330,7 @@ void Scene::visit(T* instance, bool (T::*visitMethod)(Node*,C), C cookie)
 
 inline void Scene::visit(const char* visitMethod)
 {
-    for (Node* node = getFirstNode(); node != NULL; node = node->getNextSibling())
+    for (Node* node = getFirstNode(); node != nullptr; node = node->getNextSibling())
     {
         visitNode(node, visitMethod);
     }
@@ -354,7 +354,7 @@ void Scene::visitNode(Node* node, T* instance, bool (T::*visitMethod)(Node*))
     }
 
     // Recurse for all children.
-    for (Node* child = node->getFirstChild(); child != NULL; child = child->getNextSibling())
+    for (Node* child = node->getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
         visitNode(child, instance, visitMethod);
     }
@@ -378,7 +378,7 @@ void Scene::visitNode(Node* node, T* instance, bool (T::*visitMethod)(Node*,C), 
     }
 
     // Recurse for all children.
-    for (Node* child = node->getFirstChild(); child != NULL; child = child->getNextSibling())
+    for (Node* child = node->getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
         visitNode(child, instance, visitMethod, cookie);
     }

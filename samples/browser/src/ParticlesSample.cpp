@@ -14,26 +14,26 @@ const Vector4 BACKGROUND_COLOR = Vector4::zero();
 const float ZOOM_DEFAULT = 4.0f;
 
 ParticlesSample::ParticlesSample()
-    : _scene(NULL), _cameraParent(NULL), _particleEmitterNode(NULL), _particleEmitter(NULL),
+    : _scene(nullptr), _cameraParent(nullptr), _particleEmitterNode(nullptr), _particleEmitter(nullptr),
       _wDown(false), _aDown(false), _sDown(false), _dDown(false), _touched(false), _prevX(0), _prevY(0),
-      _panning(false), _rotating(false), _zooming(false), _font(NULL), _form(NULL),
-      _startRed(NULL), _startGreen(NULL), _startBlue(NULL), _startAlpha(NULL),
-      _endRed(NULL), _endGreen(NULL), _endBlue(NULL), _endAlpha(NULL),
-      _startMin(NULL), _startMax(NULL), _endMin(NULL),_endMax(NULL),
-      _energyMin(NULL), _energyMax(NULL),
-      _emissionRate(NULL), _posVarX(NULL),_posVarY(NULL),
-      _posVarZ(NULL), _velX(NULL), _velY(NULL), _velZ(NULL),
-      _velVarX(NULL), _velVarY(NULL), _velVarZ(NULL),
-      _accelX(NULL), _accelY(NULL),_accelZ(NULL),
-      _accelVarX(NULL), _accelVarY(NULL), _accelVarZ(NULL),
-      _spinSpeedMin(NULL), _spinSpeedMax(NULL),
-      _axisX(NULL), _axisY(NULL), _axisZ(NULL),
-      _axisVarX(NULL), _axisVarY(NULL), _axisVarZ(NULL),
-      _rotationSpeedMin(NULL), _rotationSpeedMax(NULL),
-      _burstSize(NULL), _started(NULL), _reset(NULL),
-      _emit(NULL), _zoomIn(NULL), _zoomOut(NULL),
-      _save(NULL), _load(NULL),
-      _position(NULL), _particleProperties(NULL)
+      _panning(false), _rotating(false), _zooming(false), _font(nullptr), _form(nullptr),
+      _startRed(nullptr), _startGreen(nullptr), _startBlue(nullptr), _startAlpha(nullptr),
+      _endRed(nullptr), _endGreen(nullptr), _endBlue(nullptr), _endAlpha(nullptr),
+      _startMin(nullptr), _startMax(nullptr), _endMin(nullptr),_endMax(nullptr),
+      _energyMin(nullptr), _energyMax(nullptr),
+      _emissionRate(nullptr), _posVarX(nullptr),_posVarY(nullptr),
+      _posVarZ(nullptr), _velX(nullptr), _velY(nullptr), _velZ(nullptr),
+      _velVarX(nullptr), _velVarY(nullptr), _velVarZ(nullptr),
+      _accelX(nullptr), _accelY(nullptr),_accelZ(nullptr),
+      _accelVarX(nullptr), _accelVarY(nullptr), _accelVarZ(nullptr),
+      _spinSpeedMin(nullptr), _spinSpeedMax(nullptr),
+      _axisX(nullptr), _axisY(nullptr), _axisZ(nullptr),
+      _axisVarX(nullptr), _axisVarY(nullptr), _axisVarZ(nullptr),
+      _rotationSpeedMin(nullptr), _rotationSpeedMax(nullptr),
+      _burstSize(nullptr), _started(nullptr), _reset(nullptr),
+      _emit(nullptr), _zoomIn(nullptr), _zoomOut(nullptr),
+      _save(nullptr), _load(nullptr),
+      _position(nullptr), _particleProperties(nullptr)
 {
 }
 
@@ -110,7 +110,7 @@ void ParticlesSample::addGrid(unsigned int lineCount)
         VertexFormat::Element(VertexFormat::COLOR, 3)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), pointCount, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
         return;
 
     mesh->setPrimitiveType(Mesh::LINES);

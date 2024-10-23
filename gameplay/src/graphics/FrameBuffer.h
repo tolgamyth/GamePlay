@@ -66,7 +66,7 @@ public:
      *
      * @param id The ID of the FrameBuffer to search for.
      *
-     * @return The FrameBuffer with the specified ID, or NULL if one was not found.
+     * @return The FrameBuffer with the specified ID, or nullptr if one was not found.
      */
     static FrameBuffer* getFrameBuffer(const char* id);
 

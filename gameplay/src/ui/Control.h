@@ -924,7 +924,7 @@ public:
     virtual bool isContainer() const;
 
     /**
-     * Returns this control's parent, or NULL if this control does not have a parent.
+     * Returns this control's parent, or nullptr if this control does not have a parent.
      *
      * @return This control's parent.
      */
@@ -940,7 +940,7 @@ public:
     bool isChild(Control* control) const;
 
     /**
-     * Returns this control's top level form, or NULL if this control does not belong to a form.
+     * Returns this control's top level form, or nullptr if this control does not belong to a form.
      *
      * @return this control's form.
      */

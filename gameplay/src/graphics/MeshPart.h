@@ -64,7 +64,7 @@ public:
      * If GPU is still working with the buffer object, mapIndexBuffer will not
      * return until GPU finishes its job with the corresponding buffer object.
      *
-     * To avoid waiting (idle), you can call first setIndexData with NULL pointer,
+     * To avoid waiting (idle), you can call first setIndexData with nullptr pointer,
      * then call mapIndexBuffer(). In this case, the previous data will be discarded
      * and mapIndexData() returns a new allocated pointer immediately even if GPU is
      * still working with the previous data.

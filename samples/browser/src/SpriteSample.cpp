@@ -6,8 +6,8 @@
 #endif
 
 SpriteSample::SpriteSample()
-    : _font(NULL), _scene(NULL), _cameraNode(NULL),
-      _playerSprite(NULL), _playerNode(NULL), _playerAnimation(NULL), _playerMovement(0)
+    : _font(nullptr), _scene(nullptr), _cameraNode(nullptr),
+      _playerSprite(nullptr), _playerNode(nullptr), _playerAnimation(nullptr), _playerMovement(0)
 {
 }
 

@@ -32,7 +32,7 @@ public:
      * @return The new button.
      * @script{create}
      */
-    static Button* create(const char* id, Theme::Style* style = NULL);
+    static Button* create(const char* id, Theme::Style* style = nullptr);
 
 protected:
 
@@ -54,7 +54,7 @@ protected:
      *
      * @return The new button.
      */
-    static Control* create(Theme::Style* style, Properties* properties = NULL);
+    static Control* create(Theme::Style* style, Properties* properties = nullptr);
 
     /**
      * @see Control::initialize

@@ -11,7 +11,7 @@ namespace gameplay
 {
 
 PhysicsRigidBody::PhysicsRigidBody(Node* node, const PhysicsCollisionShape::Definition& shape, const Parameters& parameters, int group, int mask)
-        : PhysicsCollisionObject(node, group, mask), _body(NULL), _mass(parameters.mass), _constraints(NULL), _inDestructor(false)
+        : PhysicsCollisionObject(node, group, mask), _body(nullptr), _mass(parameters.mass), _constraints(nullptr), _inDestructor(false)
 {
     assert(Game::getInstance()->getPhysicsController());
     assert(_node);
@@ -22,7 +22,7 @@ PhysicsRigidBody::PhysicsRigidBody(Node* node, const PhysicsCollisionShape::Defi
     assert(_collisionShape && _collisionShape->getShape());
 
     // Create motion state object.
-    _motionState = new PhysicsMotionState(node, this, (centerOfMassOffset.lengthSquared() > MATH_EPSILON) ? &centerOfMassOffset : NULL);
+    _motionState = new PhysicsMotionState(node, this, (centerOfMassOffset.lengthSquared() > MATH_EPSILON) ? &centerOfMassOffset : nullptr);
 
     // If the mass is non-zero, then the object is dynamic so we calculate the local 
     // inertia. However, if the collision shape is a triangle mesh, we don't calculate 
@@ -32,7 +32,7 @@ PhysicsRigidBody::PhysicsRigidBody(Node* node, const PhysicsCollisionShape::Defi
         _collisionShape->getShape()->calculateLocalInertia(parameters.mass, localInertia);
 
     // Create the Bullet physics rigid body object.
-    btRigidBody::btRigidBodyConstructionInfo rbInfo(parameters.mass, NULL, _collisionShape->getShape(), localInertia);
+    btRigidBody::btRigidBodyConstructionInfo rbInfo(parameters.mass, nullptr, _collisionShape->getShape(), localInertia);
     rbInfo.m_friction = parameters.friction;
     rbInfo.m_restitution = parameters.restitution;
     rbInfo.m_linearDamping = parameters.linearDamping;
@@ -164,7 +164,7 @@ PhysicsRigidBody* PhysicsRigidBody::create(Node* node, Properties* properties, c
     if (!properties || !(strcmp(properties->getNamespace(), "collisionObject") == 0))
     {
         GP_ERROR("Failed to load rigid body from properties object: must be non-null object and have namespace equal to 'collisionObject'.");
-        return NULL;
+        return nullptr;
     }
 
     // Check that the type is specified and correct.
@@ -172,12 +172,12 @@ PhysicsRigidBody* PhysicsRigidBody::create(Node* node, Properties* properties, c
     if (!type)
     {
         GP_ERROR("Failed to load physics rigid body from properties object; required attribute 'type' is missing.");
-        return NULL;
+        return nullptr;
     }
     if (strcmp(type, nspace) != 0)
     {
         GP_ERROR("Failed to load physics rigid body from properties object; attribute 'type' must be equal to '%s'.", nspace);
-        return NULL;
+        return nullptr;
     }
 
     // Load the physics collision shape definition.
@@ -185,17 +185,17 @@ PhysicsRigidBody* PhysicsRigidBody::create(Node* node, Properties* properties, c
     if (shape.isEmpty())
     {
         GP_ERROR("Failed to create collision shape during rigid body creation.");
-        return NULL;
+        return nullptr;
     }
 
     // Set the rigid body parameters to their defaults.
     Parameters parameters;
-    Vector3* gravity = NULL;
+    Vector3* gravity = nullptr;
 
     // Load the defined rigid body parameters.
     properties->rewind();
     const char* name;
-    while ((name = properties->getNextProperty()) != NULL)
+    while ((name = properties->getNextProperty()) != nullptr)
     {
         if (strcmp(name, "mass") == 0)
         {
@@ -223,20 +223,20 @@ PhysicsRigidBody* PhysicsRigidBody::create(Node* node, Properties* properties, c
         }
         else if (strcmp(name, "anisotropicFriction") == 0)
         {
-            properties->getVector3(NULL, &parameters.anisotropicFriction);
+            properties->getVector3(nullptr, &parameters.anisotropicFriction);
         }
         else if (strcmp(name, "gravity") == 0)
         {
             gravity = new Vector3();
-            properties->getVector3(NULL, gravity);
+            properties->getVector3(nullptr, gravity);
         }
         else if (strcmp(name, "angularFactor") == 0)
         {
-            properties->getVector3(NULL, &parameters.angularFactor);
+            properties->getVector3(nullptr, &parameters.angularFactor);
         }
         else if (strcmp(name, "linearFactor") == 0)
         {
-            properties->getVector3(NULL, &parameters.linearFactor);
+            properties->getVector3(nullptr, &parameters.linearFactor);
         }
         else
         {
@@ -332,7 +332,7 @@ float PhysicsRigidBody::getHeight(float x, float z) const
 void PhysicsRigidBody::addConstraint(PhysicsConstraint* constraint)
 {
     assert(constraint);
-    if (_constraints == NULL)
+    if (_constraints == nullptr)
         _constraints = new std::vector<PhysicsConstraint*>();
 
     _constraints->push_back(constraint);

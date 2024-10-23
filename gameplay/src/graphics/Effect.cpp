@@ -10,7 +10,7 @@ namespace gameplay
 
 // Cache of unique effects.
 static std::map<std::string, Effect*> __effectCache;
-static Effect* __currentEffect = NULL;
+static Effect* __currentEffect = nullptr;
 
 Effect::Effect() : _program(0)
 {
@@ -33,7 +33,7 @@ Effect::~Effect()
         if (__currentEffect == this)
         {
             GL_ASSERT( glUseProgram(0) );
-            __currentEffect = NULL;
+            __currentEffect = nullptr;
         }
 
         GL_ASSERT( glDeleteProgram(_program) );
@@ -66,17 +66,17 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
 
     // Read source from file.
     char* vshSource = FileSystem::readAll(vshPath);
-    if (vshSource == NULL)
+    if (vshSource == nullptr)
     {
         GP_ERROR("Failed to read vertex shader from file '%s'.", vshPath);
-        return NULL;
+        return nullptr;
     }
     char* fshSource = FileSystem::readAll(fshPath);
-    if (fshSource == NULL)
+    if (fshSource == nullptr)
     {
         GP_ERROR("Failed to read fragment shader from file '%s'.", fshPath);
         SAFE_DELETE_ARRAY(vshSource);
-        return NULL;
+        return nullptr;
     }
 
     Effect* effect = createFromSource(vshPath, vshSource, fshPath, fshSource, defines);
@@ -84,7 +84,7 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
     SAFE_DELETE_ARRAY(vshSource);
     SAFE_DELETE_ARRAY(fshSource);
 
-    if (effect == NULL)
+    if (effect == nullptr)
     {
         GP_ERROR("Failed to create effect from shaders '%s', '%s'.", vshPath, fshPath);
     }
@@ -100,13 +100,13 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
 
 Effect* Effect::createFromSource(const char* vshSource, const char* fshSource, const char* defines)
 {
-    return createFromSource(NULL, vshSource, NULL, fshSource, defines);
+    return createFromSource(nullptr, vshSource, nullptr, fshSource, defines);
 }
 
 static void replaceDefines(const char* defines, std::string& out)
 {
     Properties* graphicsConfig = Game::getInstance()->getConfig()->getNamespace("graphics", true);
-    const char* globalDefines = graphicsConfig ? graphicsConfig->getString("shaderDefines") : NULL;
+    const char* globalDefines = graphicsConfig ? graphicsConfig->getString("shaderDefines") : nullptr;
 
     // Build full semicolon delimited list of defines
 #ifdef OPENGL_ES
@@ -195,7 +195,7 @@ static void replaceIncludes(const char* filepath, const char* source, std::strin
             std::string includeStr = str.substr(startQuote, len);
             directoryPath.append(includeStr);
             const char* includedSource = FileSystem::readAll(directoryPath.c_str());
-            if (includedSource == NULL)
+            if (includedSource == nullptr)
             {
                 GP_ERROR("Compile failed for shader '%s' invalid filepath.", filepathStr.c_str());
                 return;
@@ -220,7 +220,7 @@ static void writeShaderToErrorFile(const char* filePath, const char* source)
     std::string path = filePath;
     path += ".err";
     std::unique_ptr<Stream> stream(FileSystem::open(path.c_str(), FileSystem::WRITE));
-    if (stream.get() != NULL && stream->canWrite())
+    if (stream.get() != nullptr && stream->canWrite())
     {
         stream->write(source, 1, strlen(source));
     }
@@ -233,7 +233,7 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
 
     const unsigned int SHADER_SOURCE_LENGTH = 3;
     const GLchar* shaderSource[SHADER_SOURCE_LENGTH];
-    char* infoLog = NULL;
+    char* infoLog = nullptr;
     GLuint vertexShader;
     GLuint fragmentShader;
     GLuint program;
@@ -256,7 +256,7 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
     }
     shaderSource[2] = vshPath ? vshSourceStr.c_str() :  vshSource;
     GL_ASSERT( vertexShader = glCreateShader(GL_VERTEX_SHADER) );
-    GL_ASSERT( glShaderSource(vertexShader, SHADER_SOURCE_LENGTH, shaderSource, NULL) );
+    GL_ASSERT( glShaderSource(vertexShader, SHADER_SOURCE_LENGTH, shaderSource, nullptr) );
     GL_ASSERT( glCompileShader(vertexShader) );
     GL_ASSERT( glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success) );
     if (success != GL_TRUE)
@@ -269,7 +269,7 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
         if (length > 0)
         {
             infoLog = new char[length];
-            GL_ASSERT( glGetShaderInfoLog(vertexShader, length, NULL, infoLog) );
+            GL_ASSERT( glGetShaderInfoLog(vertexShader, length, nullptr, infoLog) );
             infoLog[length-1] = '\0';
         }
 
@@ -277,13 +277,13 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
         if (vshPath)
             writeShaderToErrorFile(vshPath, shaderSource[2]);
 
-        GP_ERROR("Compile failed for vertex shader '%s' with error '%s'.", vshPath == NULL ? vshSource : vshPath, infoLog == NULL ? "" : infoLog);
+        GP_ERROR("Compile failed for vertex shader '%s' with error '%s'.", vshPath == nullptr ? vshSource : vshPath, infoLog == nullptr ? "" : infoLog);
         SAFE_DELETE_ARRAY(infoLog);
 
         // Clean up.
         GL_ASSERT( glDeleteShader(vertexShader) );
 
-        return NULL;
+        return nullptr;
     }
 
     // Compile the fragment shader.
@@ -297,7 +297,7 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
     }
     shaderSource[2] = fshPath ? fshSourceStr.c_str() : fshSource;
     GL_ASSERT( fragmentShader = glCreateShader(GL_FRAGMENT_SHADER) );
-    GL_ASSERT( glShaderSource(fragmentShader, SHADER_SOURCE_LENGTH, shaderSource, NULL) );
+    GL_ASSERT( glShaderSource(fragmentShader, SHADER_SOURCE_LENGTH, shaderSource, nullptr) );
     GL_ASSERT( glCompileShader(fragmentShader) );
     GL_ASSERT( glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success) );
     if (success != GL_TRUE)
@@ -310,7 +310,7 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
         if (length > 0)
         {
             infoLog = new char[length];
-            GL_ASSERT( glGetShaderInfoLog(fragmentShader, length, NULL, infoLog) );
+            GL_ASSERT( glGetShaderInfoLog(fragmentShader, length, nullptr, infoLog) );
             infoLog[length-1] = '\0';
         }
         
@@ -318,14 +318,14 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
         if (fshPath)
             writeShaderToErrorFile(fshPath, shaderSource[2]);
 
-        GP_ERROR("Compile failed for fragment shader (%s): %s", fshPath == NULL ? fshSource : fshPath, infoLog == NULL ? "" : infoLog);
+        GP_ERROR("Compile failed for fragment shader (%s): %s", fshPath == nullptr ? fshSource : fshPath, infoLog == nullptr ? "" : infoLog);
         SAFE_DELETE_ARRAY(infoLog);
 
         // Clean up.
         GL_ASSERT( glDeleteShader(vertexShader) );
         GL_ASSERT( glDeleteShader(fragmentShader) );
 
-        return NULL;
+        return nullptr;
     }
 
     // Link program.
@@ -350,16 +350,16 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
         if (length > 0)
         {
             infoLog = new char[length];
-            GL_ASSERT( glGetProgramInfoLog(program, length, NULL, infoLog) );
+            GL_ASSERT( glGetProgramInfoLog(program, length, nullptr, infoLog) );
             infoLog[length-1] = '\0';
         }
-        GP_ERROR("Linking program failed (%s,%s): %s", vshPath == NULL ? "NULL" : vshPath, fshPath == NULL ? "NULL" : fshPath, infoLog == NULL ? "" : infoLog);
+        GP_ERROR("Linking program failed (%s,%s): %s", vshPath == nullptr ? "nullptr" : vshPath, fshPath == nullptr ? "nullptr" : fshPath, infoLog == nullptr ? "" : infoLog);
         SAFE_DELETE_ARRAY(infoLog);
 
         // Clean up.
         GL_ASSERT( glDeleteProgram(program) );
 
-        return NULL;
+        return nullptr;
     }
 
     // Create and return the new Effect.
@@ -387,7 +387,7 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
             for (int i = 0; i < activeAttributes; ++i)
             {
                 // Query attribute info.
-                GL_ASSERT( glGetActiveAttrib(program, i, length, NULL, &attribSize, &attribType, attribName) );
+                GL_ASSERT( glGetActiveAttrib(program, i, length, nullptr, &attribSize, &attribType, attribName) );
                 attribName[length] = '\0';
 
                 // Query the pre-assigned attribute location.
@@ -416,7 +416,7 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
             for (int i = 0; i < activeUniforms; ++i)
             {
                 // Query uniform info.
-                GL_ASSERT( glGetActiveUniform(program, i, length, NULL, &uniformSize, &uniformType, uniformName) );
+                GL_ASSERT( glGetActiveUniform(program, i, length, nullptr, &uniformSize, &uniformType, uniformName) );
                 uniformName[length] = '\0';  // null terminate
                 if (length > 3)
                 {
@@ -485,7 +485,7 @@ Uniform* Effect::getUniform(const char* name) const
 		// Check for array uniforms ("u_directionalLightColor[0]" -> "u_directionalLightColor")
 		char* parentname = new char[strlen(name)+1];
 		strcpy(parentname, name);
-		if (strtok(parentname, "[") != NULL) {
+		if (strtok(parentname, "[") != nullptr) {
 			std::map<std::string, Uniform*>::const_iterator itr = _uniforms.find(parentname);
 			if (itr != _uniforms.end()) {
 				Uniform* puniform = itr->second;
@@ -505,8 +505,8 @@ Uniform* Effect::getUniform(const char* name) const
 		SAFE_DELETE_ARRAY(parentname);
     }
 
-	// No uniform variable found - return NULL
-	return NULL;
+	// No uniform variable found - return nullptr
+	return nullptr;
 }
 
 Uniform* Effect::getUniform(unsigned int index) const
@@ -519,7 +519,7 @@ Uniform* Effect::getUniform(unsigned int index) const
             return itr->second;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 unsigned int Effect::getUniformCount() const
@@ -658,7 +658,7 @@ Effect* Effect::getCurrentEffect()
 }
 
 Uniform::Uniform() :
-    _location(-1), _type(0), _index(0), _effect(NULL)
+    _location(-1), _type(0), _index(0), _effect(nullptr)
 {
 }
 

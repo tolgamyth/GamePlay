@@ -26,12 +26,12 @@ void calculateNamespacePath(const std::string& urlString, std::string& fileStrin
 Properties* getPropertiesFromNamespacePath(Properties* properties, const std::vector<std::string>& namespacePath);
 
 Properties::Properties()
-    : _variables(NULL), _dirPath(NULL), _visited(false), _parent(NULL)
+    : _variables(nullptr), _dirPath(nullptr), _visited(false), _parent(nullptr)
 {
 }
 
 Properties::Properties(const Properties& copy)
-    : _namespace(copy._namespace), _id(copy._id), _parentID(copy._parentID), _properties(copy._properties), _variables(NULL), _dirPath(NULL), _visited(false), _parent(copy._parent)
+    : _namespace(copy._namespace), _id(copy._id), _parentID(copy._parentID), _properties(copy._properties), _variables(nullptr), _dirPath(nullptr), _visited(false), _parent(copy._parent)
 {
     setDirectoryPath(copy._dirPath);
     _namespaces = std::vector<Properties*>();
@@ -45,14 +45,14 @@ Properties::Properties(const Properties& copy)
 }
 
 Properties::Properties(Stream* stream)
-    : _variables(NULL), _dirPath(NULL), _visited(false), _parent(NULL)
+    : _variables(nullptr), _dirPath(nullptr), _visited(false), _parent(nullptr)
 {
     readProperties(stream);
     rewind();
 }
 
 Properties::Properties(Stream* stream, const char* name, const char* id, const char* parentID, Properties* parent)
-    : _namespace(name), _variables(NULL), _dirPath(NULL), _visited(false), _parent(parent)
+    : _namespace(name), _variables(nullptr), _dirPath(nullptr), _visited(false), _parent(parent)
 {
     if (id)
     {
@@ -71,7 +71,7 @@ Properties* Properties::create(const char* url)
     if (!url || strlen(url) == 0)
     {
         GP_ERROR("Attempting to create a Properties object from an empty URL!");
-        return NULL;
+        return nullptr;
     }
 
     // Calculate the file and full namespace path from the specified url.
@@ -81,10 +81,10 @@ Properties* Properties::create(const char* url)
     calculateNamespacePath(urlString, fileString, namespacePath);
 
     std::unique_ptr<Stream> stream(FileSystem::open(fileString.c_str()));
-    if (stream.get() == NULL)
+    if (stream.get() == nullptr)
     {
         GP_WARN("Failed to open file '%s'.", fileString.c_str());
-        return NULL;
+        return nullptr;
     }
 
     Properties* properties = new Properties(stream.get());
@@ -97,7 +97,7 @@ Properties* Properties::create(const char* url)
     {
         GP_WARN("Failed to load properties from url '%s'.", url);
         SAFE_DELETE(properties);
-        return NULL;
+        return nullptr;
     }
 
     // If the loaded properties object is not the root namespace,
@@ -154,7 +154,7 @@ void Properties::readProperties(Stream* stream)
 
         // Read the next line.
         rc = stream->readLine(line, 2048);
-        if (rc == NULL)
+        if (rc == nullptr)
         {
             GP_ERROR("Error reading line from file.");
             return;
@@ -184,11 +184,11 @@ void Properties::readProperties(Stream* stream)
             // If an '=' appears on this line, parse it as a name/value pair.
             // Note: strchr() has to be called before strtok(), or a backup of line has to be kept.
             rc = strchr(line, '=');
-            if (rc != NULL)
+            if (rc != nullptr)
             {
                 // First token should be the property name.
                 name = strtok(line, "=");
-                if (name == NULL)
+                if (name == nullptr)
                 {
                     GP_ERROR("Error parsing properties file: attribute without name.");
                     return;
@@ -198,8 +198,8 @@ void Properties::readProperties(Stream* stream)
                 name = trimWhiteSpace(name);
 
                 // Scan for next token, the property's value.
-                value = strtok(NULL, "");
-                if (value == NULL)
+                value = strtok(nullptr, "");
+                if (value == nullptr)
                 {
                     GP_ERROR("Error parsing properties file: attribute with name ('%s') but no value.", name);
                     return;
@@ -221,7 +221,7 @@ void Properties::readProperties(Stream* stream)
             }
             else
             {
-                parentID = NULL;
+                parentID = nullptr;
 
                 // Get the last character on the line (ignoring whitespace).
                 const char* lineEnd = trimWhiteSpace(line) + (strlen(trimWhiteSpace(line)) - 1);
@@ -241,7 +241,7 @@ void Properties::readProperties(Stream* stream)
                 // Get the name of the namespace.
                 name = strtok(line, " \t\n{");
                 name = trimWhiteSpace(name);
-                if (name == NULL)
+                if (name == nullptr)
                 {
                     GP_ERROR("Error parsing properties file: failed to determine a valid token for line '%s'.", line);
                     return;
@@ -253,17 +253,17 @@ void Properties::readProperties(Stream* stream)
                 }
 
                 // Get its ID if it has one.
-                value = strtok(NULL, ":{");
+                value = strtok(nullptr, ":{");
                 value = trimWhiteSpace(value);
 
                 // Get its parent ID if it has one.
-                if (rcc != NULL)
+                if (rcc != nullptr)
                 {
-                    parentID = strtok(NULL, "{");
+                    parentID = strtok(nullptr, "{");
                     parentID = trimWhiteSpace(parentID);
                 }
 
-                if (value != NULL && value[0] == '{')
+                if (value != nullptr && value[0] == '{')
                 {
                     // If the namespace ends on this line, seek back to right before the '}' character.
                     if (rccc && rccc == lineEnd)
@@ -289,7 +289,7 @@ void Properties::readProperties(Stream* stream)
                     }
 
                     // New namespace without an ID.
-                    Properties* space = new Properties(stream, name, NULL, parentID, this);
+                    Properties* space = new Properties(stream, name, nullptr, parentID, this);
                     _namespaces.push_back(space);
 
                     // If the namespace ends on this line, seek to right after the '}' character.
@@ -305,7 +305,7 @@ void Properties::readProperties(Stream* stream)
                 else
                 {
                     // If '{' appears on the same line.
-                    if (rc != NULL)
+                    if (rc != nullptr)
                     {
                         // If the namespace ends on this line, seek back to right before the '}' character.
                         if (rccc && rccc == lineEnd)
@@ -362,7 +362,7 @@ void Properties::readProperties(Stream* stream)
                                 GP_ERROR("Failed to seek backwards a single character after testing if the next line starts with '{'.");
 
                             // Store "name value" as a name/value pair, or even just "name".
-                            if (value != NULL)
+                            if (value != nullptr)
                             {
                                 _properties.push_back(Property(name, value));
                             }
@@ -410,7 +410,7 @@ void Properties::skipWhiteSpace(Stream* stream)
 
 char* Properties::trimWhiteSpace(char *str)
 {
-    if (str == NULL)
+    if (str == nullptr)
     {
         return str;
     }
@@ -505,7 +505,7 @@ void Properties::resolveInheritance(const char* id)
         }
         else
         {
-            derived = NULL;
+            derived = nullptr;
         }
     }
 }
@@ -570,7 +570,7 @@ const char* Properties::getNextProperty()
         ++_propertiesItr;
     }
 
-    return _propertiesItr == _properties.end() ? NULL : _propertiesItr->name.c_str();
+    return _propertiesItr == _properties.end() ? nullptr : _propertiesItr->name.c_str();
 }
 
 Properties* Properties::getNextNamespace()
@@ -591,7 +591,7 @@ Properties* Properties::getNextNamespace()
         return ns;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void Properties::rewind()
@@ -619,7 +619,7 @@ Properties* Properties::getNamespace(const char* id, bool searchNames, bool recu
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 const char* Properties::getNamespace() const
@@ -634,7 +634,7 @@ const char* Properties::getId() const
 
 bool Properties::exists(const char* name) const
 {
-    if (name == NULL)
+    if (name == nullptr)
         return false;
 
     for (std::list<Property>::const_iterator itr = _properties.begin(); itr != _properties.end(); ++itr)
@@ -717,7 +717,7 @@ Properties::Type Properties::getType(const char* name) const
 const char* Properties::getString(const char* name, const char* defaultValue) const
 {
     char variable[256];
-    const char* value = NULL;
+    const char* value = nullptr;
 
     if (name)
     {
@@ -926,11 +926,11 @@ bool Properties::getPath(const char* name, std::string* path) const
         else
         {
             const Properties* prop = this;
-            while (prop != NULL)
+            while (prop != nullptr)
             {
                 // Search for the file path relative to the bundle file
                 const std::string* dirPath = prop->_dirPath;
-                if (dirPath != NULL && !dirPath->empty())
+                if (dirPath != nullptr && !dirPath->empty())
                 {
                     std::string relativePath = *dirPath;
                     relativePath.append(valueString);
@@ -949,7 +949,7 @@ bool Properties::getPath(const char* name, std::string* path) const
 
 const char* Properties::getVariable(const char* name, const char* defaultValue) const
 {
-    if (name == NULL)
+    if (name == nullptr)
         return defaultValue;
 
     // Search for variable in this Properties object
@@ -971,7 +971,7 @@ void Properties::setVariable(const char* name, const char* value)
 {
     assert(name);
 
-    Property* prop = NULL;
+    Property* prop = nullptr;
 
     // Search for variable in this Properties object and parents
     Properties* current = const_cast<Properties*>(this);
@@ -1043,7 +1043,7 @@ void Properties::setDirectoryPath(const std::string* path)
 
 void Properties::setDirectoryPath(const std::string& path)
 {
-    if (_dirPath == NULL)
+    if (_dirPath == nullptr)
     {
         _dirPath = new std::string(path);
     }
@@ -1088,10 +1088,10 @@ Properties* getPropertiesFromNamespacePath(Properties* properties, const std::ve
         {
             while (true)
             {
-                if (iter == NULL)
+                if (iter == nullptr)
                 {
                     GP_WARN("Failed to load properties object from url.");
-                    return NULL;
+                    return nullptr;
                 }
 
                 if (strcmp(iter->getId(), namespacePath[i].c_str()) == 0)

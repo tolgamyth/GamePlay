@@ -11,7 +11,7 @@
 #endif
 
 GestureSample::GestureSample()
-    : _font(NULL)
+    : _font(nullptr)
 {
 }
 

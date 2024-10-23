@@ -7,7 +7,7 @@ namespace gameplay
 {
 
 PhysicsGhostObject::PhysicsGhostObject(Node* node, const PhysicsCollisionShape::Definition& shape, int group, int mask)
-    : PhysicsCollisionObject(node, group, mask), _ghostObject(NULL)
+    : PhysicsCollisionObject(node, group, mask), _ghostObject(nullptr)
 {
     Vector3 centerOfMassOffset;
     PhysicsController* physicsController = Game::getInstance()->getPhysicsController();
@@ -50,7 +50,7 @@ PhysicsGhostObject* PhysicsGhostObject::create(Node* node, Properties* propertie
     if (!properties || !(strcmp(properties->getNamespace(), "collisionObject") == 0))
     {
         GP_ERROR("Failed to load ghost object from properties object: must be non-null object and have namespace equal to 'collisionObject'.");
-        return NULL;
+        return nullptr;
     }
 
     // Check that the type is specified and correct.
@@ -58,12 +58,12 @@ PhysicsGhostObject* PhysicsGhostObject::create(Node* node, Properties* propertie
     if (!type)
     {
         GP_ERROR("Failed to load ghost object from properties object; required attribute 'type' is missing.");
-        return NULL;
+        return nullptr;
     }
     if (strcmp(type, "GHOST_OBJECT") != 0)
     {
         GP_ERROR("Failed to load ghost object from properties object; attribute 'type' must be equal to 'GHOST_OBJECT'.");
-        return NULL;
+        return nullptr;
     }
 
     // Load the physics collision shape definition.
@@ -71,7 +71,7 @@ PhysicsGhostObject* PhysicsGhostObject::create(Node* node, Properties* propertie
     if (shape.isEmpty())
     {
         GP_ERROR("Failed to create collision shape during ghost object creation.");
-        return NULL;
+        return nullptr;
     }
 
     // Create the ghost object.

@@ -22,13 +22,13 @@ namespace gameplay
 
 Camera::Camera(float fieldOfView, float aspectRatio, float nearPlane, float farPlane)
     : _type(PERSPECTIVE), _fieldOfView(fieldOfView), _aspectRatio(aspectRatio), _nearPlane(nearPlane), _farPlane(farPlane),
-    _bits(CAMERA_DIRTY_ALL), _node(NULL), _listeners(NULL)
+    _bits(CAMERA_DIRTY_ALL), _node(nullptr), _listeners(nullptr)
 {
 }
 
 Camera::Camera(float zoomX, float zoomY, float aspectRatio, float nearPlane, float farPlane)
     : _type(ORTHOGRAPHIC), _aspectRatio(aspectRatio), _nearPlane(nearPlane), _farPlane(farPlane),
-	_bits(CAMERA_DIRTY_ALL), _node(NULL), _listeners(NULL)
+	_bits(CAMERA_DIRTY_ALL), _node(nullptr), _listeners(nullptr)
 {
     // Orthographic camera.
     _zoom[0] = zoomX;
@@ -70,7 +70,7 @@ Camera* Camera::create(Properties* properties)
     else
     {
         GP_ERROR("Invalid 'type' parameter for camera definition.");
-        return NULL;
+        return nullptr;
     }
 
     // Read common parameters
@@ -95,7 +95,7 @@ Camera* Camera::create(Properties* properties)
     else
         farPlane = 100; // use some reasonable default value
 
-    Camera* camera = NULL;
+    Camera* camera = nullptr;
 
     switch (type)
     {
@@ -432,7 +432,7 @@ void Camera::pickRay(const Rectangle& viewport, float x, float y, Ray* dst) cons
 
 Camera* Camera::clone(NodeCloneContext& context)
 {
-    Camera* cameraClone = NULL;
+    Camera* cameraClone = nullptr;
     if (getCameraType() == PERSPECTIVE)
     {
         cameraClone = createPerspective(_fieldOfView, _aspectRatio, _nearPlane, _farPlane);
@@ -459,7 +459,7 @@ void Camera::transformChanged(Transform* transform, long cookie)
 
 void Camera::cameraChanged()
 {
-    if (_listeners == NULL)
+    if (_listeners == nullptr)
         return;
 
     for (std::list<Camera::Listener*>::iterator itr = _listeners->begin(); itr != _listeners->end(); ++itr)
@@ -473,7 +473,7 @@ void Camera::addListener(Camera::Listener* listener)
 {
     assert(listener);
 
-    if (_listeners == NULL)
+    if (_listeners == nullptr)
         _listeners = new std::list<Camera::Listener*>();
 
     _listeners->push_back(listener);

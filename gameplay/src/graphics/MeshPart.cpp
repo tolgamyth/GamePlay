@@ -5,7 +5,7 @@ namespace gameplay
 {
 
 MeshPart::MeshPart() :
-    _mesh(NULL), _meshIndex(0), _primitiveType(Mesh::TRIANGLES), _indexCount(0), _indexBuffer(0), _dynamic(false)
+    _mesh(nullptr), _meshIndex(0), _primitiveType(Mesh::TRIANGLES), _indexCount(0), _indexBuffer(0), _dynamic(false)
 {
 }
 
@@ -40,10 +40,10 @@ MeshPart* MeshPart::create(Mesh* mesh, unsigned int meshIndex, Mesh::PrimitiveTy
     default:
         GP_ERROR("Unsupported index format (%d).", indexFormat);
         glDeleteBuffers(1, &vbo);
-        return NULL;
+        return nullptr;
     }
 
-    GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * indexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+    GL_ASSERT( glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * indexCount, nullptr, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
 
     MeshPart* part = new MeshPart();
     part->_mesh = mesh;

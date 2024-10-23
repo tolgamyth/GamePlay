@@ -165,7 +165,7 @@ void Matrix::createOrthographicOffCenter(float left, float right, float bottom, 
 void Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
                              const Vector3& cameraUpVector, Matrix* dst)
 {
-    createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, NULL, dst);
+    createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, nullptr, dst);
 }
 
 void Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
@@ -461,7 +461,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
     }
 
     // Nothing left to do.
-    if (scale == NULL && rotation == NULL)
+    if (scale == nullptr && rotation == nullptr)
         return true;
 
     // Extract the scale.
@@ -489,7 +489,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
     }
 
     // Nothing left to do.
-    if (rotation == NULL)
+    if (rotation == nullptr)
         return true;
 
     // Scale too close to zero, can't decompose rotation.
@@ -579,17 +579,17 @@ float Matrix::determinant() const
 
 void Matrix::getScale(Vector3* scale) const
 {
-    decompose(scale, NULL, NULL);
+    decompose(scale, nullptr, nullptr);
 }
 
 bool Matrix::getRotation(Quaternion* rotation) const
 {
-    return decompose(NULL, rotation, NULL);
+    return decompose(nullptr, rotation, nullptr);
 }
 
 void Matrix::getTranslation(Vector3* translation) const
 {
-    decompose(NULL, NULL, translation);
+    decompose(nullptr, nullptr, translation);
 }
 
 void Matrix::getUpVector(Vector3* dst) const

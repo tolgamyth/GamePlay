@@ -8,7 +8,7 @@ namespace gameplay
 {
 
 AudioController::AudioController() 
-: _alcDevice(NULL), _alcContext(NULL), _pausingSource(NULL), _streamingThreadActive(true)
+: _alcDevice(nullptr), _alcContext(nullptr), _pausingSource(nullptr), _streamingThreadActive(true)
 {
 }
 
@@ -18,14 +18,14 @@ AudioController::~AudioController()
 
 void AudioController::initialize()
 {
-    _alcDevice = alcOpenDevice(NULL);
+    _alcDevice = alcOpenDevice(nullptr);
     if (!_alcDevice)
     {
         GP_ERROR("Unable to open OpenAL device.\n");
         return;
     }
     
-    _alcContext = alcCreateContext(_alcDevice, NULL);
+    _alcContext = alcCreateContext(_alcDevice, nullptr);
     ALCenum alcErr = alcGetError(_alcDevice);
     if (!_alcContext || alcErr != ALC_NO_ERROR)
     {
@@ -50,19 +50,19 @@ void AudioController::finalize()
     {
         _streamingThreadActive = false;
         _streamingThread->join();
-        _streamingThread.reset(NULL);
+        _streamingThread.reset(nullptr);
     }
 
-    alcMakeContextCurrent(NULL);
+    alcMakeContextCurrent(nullptr);
     if (_alcContext)
     {
         alcDestroyContext(_alcContext);
-        _alcContext = NULL;
+        _alcContext = nullptr;
     }
     if (_alcDevice)
     {
         alcCloseDevice(_alcDevice);
-        _alcDevice = NULL;
+        _alcDevice = nullptr;
     }
 }
 
@@ -71,14 +71,14 @@ void AudioController::pause()
     std::set<AudioSource*>::iterator itr = _playingSources.begin();
 
     // For each source that is playing, pause it.
-    AudioSource* source = NULL;
+    AudioSource* source = nullptr;
     while (itr != _playingSources.end())
     {
         assert(*itr);
         source = *itr;
         _pausingSource = source;
         source->pause();
-        _pausingSource = NULL;
+        _pausingSource = nullptr;
         itr++;
     }
 #ifdef ALC_SOFT_pause_device
@@ -96,7 +96,7 @@ void AudioController::resume()
     std::set<AudioSource*>::iterator itr = _playingSources.begin();
 
     // For each source that is playing, resume it.
-    AudioSource* source = NULL;
+    AudioSource* source = nullptr;
     while (itr != _playingSources.end())
     {
         assert(*itr);
@@ -127,7 +127,7 @@ void AudioController::addPlayingSource(AudioSource* source)
         if (source->isStreamed())
         {
             assert(_streamingSources.find(source) == _streamingSources.end());
-            bool startThread = _streamingSources.empty() && _streamingThread.get() == NULL;
+            bool startThread = _streamingSources.empty() && _streamingThread.get() == nullptr;
             _streamingMutex->lock();
             _streamingSources.insert(source);
             _streamingMutex->unlock();

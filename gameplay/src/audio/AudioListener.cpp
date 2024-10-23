@@ -1,13 +1,12 @@
 #include "framework/Base.h"
 #include "scene/Node.h"
 #include "audio/AudioListener.h"
-#include "framework/Game.h"
 
 namespace gameplay
 {
 
 AudioListener::AudioListener()
-    : _gain(1.0f), _camera(NULL)
+    : _gain(1.0f), _camera(nullptr)
 {
 }
 
@@ -15,12 +14,13 @@ AudioListener::~AudioListener()
 {
 	// Call setCamera() to release camera and cause transform listener
 	// to be removed.
-	setCamera(NULL);
+	setCamera(nullptr);
 }
 
 AudioListener* AudioListener::getInstance()
 {
-    return Game::getInstance()->getAudioListener();
+  static AudioListener _instance;
+  return &_instance;
 }
 
 float AudioListener::getGain() const 

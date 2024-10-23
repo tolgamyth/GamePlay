@@ -71,9 +71,9 @@ Mesh* createGridMesh(unsigned int lineCount)
         VertexFormat::Element(VertexFormat::COLOR, 3)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), pointCount, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
     mesh->setPrimitiveType(Mesh::LINES);
     mesh->setVertexData(&vertices[0], 0, pointCount);
@@ -85,7 +85,7 @@ Model* createGridModel(unsigned int lineCount)
 {
     Mesh* mesh = createGridMesh(lineCount);
     if (!mesh)
-        return NULL;
+        return nullptr;
 
     Model* model = Model::create(mesh);
     mesh->release();

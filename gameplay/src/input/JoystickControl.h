@@ -30,7 +30,7 @@ public:
      * @return The new joystick.
      * @script{create}
      */
-    static JoystickControl* create(const char* id, Theme::Style* style = NULL);
+    static JoystickControl* create(const char* id, Theme::Style* style = nullptr);
 
     /**
      * Extends ScriptTarget::getTypeName() to return the type name of this class.
@@ -80,7 +80,7 @@ public:
      *
      * @return The image size of the inner region of the joystick. (x, y) == (width, height)
      */
-    const Vector2& getInnerRegionSize(bool* isWidthPercentage = NULL, bool* isHeightPercentage = NULL) const;
+    const Vector2& getInnerRegionSize(bool* isWidthPercentage = nullptr, bool* isHeightPercentage = nullptr) const;
 
     /**
      * Sets the image size of the outer region of the joystick. Does not do anything if there is no
@@ -101,7 +101,7 @@ public:
      * 
      * @return The image size of the outer region of the joystick. (x, y) == (width, height)
      */
-    const Vector2& getOuterRegionSize(bool* isWidthPercentage = NULL, bool* isHeightPercentage = NULL) const;
+    const Vector2& getOuterRegionSize(bool* isWidthPercentage = nullptr, bool* isHeightPercentage = nullptr) const;
 
     /**
      * Sets whether relative positioning is enabled or not.
@@ -170,7 +170,7 @@ protected:
 	 *
      * @return The new joystick.
      */
-    static Control* create(Theme::Style* style, Properties* properties = NULL);
+    static Control* create(Theme::Style* style, Properties* properties = nullptr);
 
     /**
      * @see Control::initialize

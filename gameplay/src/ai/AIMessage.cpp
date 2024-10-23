@@ -5,7 +5,7 @@ namespace gameplay
 {
 
 AIMessage::AIMessage()
-    : _id(0), _deliveryTime(0), _parameters(NULL), _parameterCount(0), _messageType(MESSAGE_TYPE_CUSTOM), _next(NULL)
+    : _id(0), _deliveryTime(0), _parameters(nullptr), _parameterCount(0), _messageType(MESSAGE_TYPE_CUSTOM), _next(nullptr)
 {
 }
 

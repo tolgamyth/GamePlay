@@ -323,7 +323,7 @@ private:
      * @param node The node to create a vehicle for; note that the node must have
      *      a model attached to it prior to creating a vehicle for it.
      * @param properties The properties object defining the vehicle (must have type equal to 'VEHICLE').
-     * @return The newly created vehicle, or <code>NULL</code> if the vehicle failed to load.
+     * @return The newly created vehicle, or <code>nullptr</code> if the vehicle failed to load.
      */
     static PhysicsVehicle* create(Node* node, Properties* properties);
 

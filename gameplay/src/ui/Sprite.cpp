@@ -7,8 +7,8 @@ namespace gameplay
 
 Sprite::Sprite() : Drawable(),
     _width(0), _height(0), _offset(OFFSET_BOTTOM_LEFT), _anchor(Vector2(0.5f, 0.5f)), _flipFlags(FLIP_NONE),
-    _frames(NULL), _frameCount(1), _frameStride(0), _framePadding(1), _frameIndex(0),
-    _opacity(1.0f), _color(Vector4::one()), _blendMode(BLEND_ALPHA), _batch(NULL)
+    _frames(nullptr), _frameCount(1), _frameStride(0), _framePadding(1), _frameIndex(0),
+    _opacity(1.0f), _color(Vector4::one()), _blendMode(BLEND_ALPHA), _batch(nullptr)
 {
 }
 
@@ -31,7 +31,7 @@ Sprite* Sprite::create(const char* imagePath, float width, float height, Effect*
 Sprite* Sprite::create(const char* imagePath, float width, float height,
                        const Rectangle& source, unsigned int frameCount, Effect* effect)
 {
-    assert(imagePath != NULL);
+    assert(imagePath != nullptr);
     assert(width >= -1 && height >= -1);
     assert(source.width >= -1 && source.height >= -1);
     assert(frameCount > 0);
@@ -225,19 +225,19 @@ Sprite* Sprite::create(Properties* properties)
     if (!properties || strcmp(properties->getNamespace(), "sprite") != 0)
     {
         GP_ERROR("Properties object must be non-null and have namespace equal to 'sprite'.");
-        return NULL;
+        return nullptr;
     }
 
     // Get image path.
     const char* imagePath = properties->getString("path");
-    if (imagePath == NULL || strlen(imagePath) == 0)
+    if (imagePath == nullptr || strlen(imagePath) == 0)
     {
         GP_ERROR("Sprite is missing required image file path.");
-        return NULL;
+        return nullptr;
     }
 
     // Don't support loading custom effects
-    Effect* effect = NULL;
+    Effect* effect = nullptr;
 
     // Get width and height
     float width = -1.0f;
@@ -615,7 +615,7 @@ unsigned int Sprite::draw(bool wireframe)
         // Apply node rotation
         const Quaternion& rot = _node->getRotation();
         if (rot.x != 0.0f || rot.y != 0.0f || rot.z != 0.0f)
-            rotationAngle = rot.toAxisAngle(NULL);
+            rotationAngle = rot.toAxisAngle(nullptr);
         
         // Apply node scale
         if (_node->getScaleX() != 1.0f)

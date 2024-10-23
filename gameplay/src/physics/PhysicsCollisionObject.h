@@ -224,7 +224,7 @@ public:
      * @param listener The listener to add.
      * @param object Optional collision object used to filter the collision event.
      */
-    void addCollisionListener(CollisionListener* listener, PhysicsCollisionObject* object = NULL);
+    void addCollisionListener(CollisionListener* listener, PhysicsCollisionObject* object = nullptr);
 
     /**
      * Removes a collision listener.
@@ -232,7 +232,7 @@ public:
      * @param listener The listener to remove.
      * @param object Optional collision object used to filter the collision event.
      */
-    void removeCollisionListener(CollisionListener* listener, PhysicsCollisionObject* object = NULL);
+    void removeCollisionListener(CollisionListener* listener, PhysicsCollisionObject* object = nullptr);
 
     /**
      * Adds a collision listener for this collision object.
@@ -243,7 +243,7 @@ public:
      * @param function A valid global script function to add as a listener callback.
      * @param object Optional collision object used to filter the collision event.
      */
-    void addCollisionListener(const char* function, PhysicsCollisionObject* object = NULL);
+    void addCollisionListener(const char* function, PhysicsCollisionObject* object = nullptr);
 
     /**
      * Removes a collision listener.
@@ -251,7 +251,7 @@ public:
      * @param function The previously added script function to remove.
      * @param object Optional collision object used to filter the collision event.
      */
-    void removeCollisionListener(const char* function, PhysicsCollisionObject* object = NULL);
+    void removeCollisionListener(const char* function, PhysicsCollisionObject* object = nullptr);
 
     /**
      * Checks if this collision object collides with the given object.
@@ -282,7 +282,7 @@ protected:
          *
          * @param url The global script function, or script#function.
          *
-         * @return The ScriptListener, or NULL if the function could not be loaded.
+         * @return The ScriptListener, or nullptr if the function could not be loaded.
          */
         static ScriptListener* create(const char* url);
 
@@ -359,7 +359,7 @@ private:
          * @param collisionObject The collision object that owns the motion state.
          * @param centerOfMassOffset The translation offset to the center of mass of the rigid body.
          */
-        PhysicsMotionState(Node* node, PhysicsCollisionObject* collisionObject, const Vector3* centerOfMassOffset = NULL);
+        PhysicsMotionState(Node* node, PhysicsCollisionObject* collisionObject, const Vector3* centerOfMassOffset = nullptr);
         
         /**
          * Destructor.

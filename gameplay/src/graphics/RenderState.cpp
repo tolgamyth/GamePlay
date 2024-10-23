@@ -25,11 +25,11 @@
 namespace gameplay
 {
 
-RenderState::StateBlock* RenderState::StateBlock::_defaultState = NULL;
+RenderState::StateBlock* RenderState::StateBlock::_defaultState = nullptr;
 std::vector<RenderState::AutoBindingResolver*> RenderState::_customAutoBindingResolvers;
 
 RenderState::RenderState()
-    : _nodeBinding(NULL), _state(NULL), _parent(NULL)
+    : _nodeBinding(nullptr), _state(nullptr), _parent(nullptr)
 {
 }
 
@@ -46,7 +46,7 @@ RenderState::~RenderState()
 
 void RenderState::initialize()
 {
-    if (StateBlock::_defaultState == NULL)
+    if (StateBlock::_defaultState == nullptr)
     {
         StateBlock::_defaultState = StateBlock::create();
     }
@@ -119,7 +119,7 @@ const char* autoBindingToString(RenderState::AutoBinding autoBinding)
     switch (autoBinding)
     {
     case RenderState::NONE:
-        return NULL;
+        return nullptr;
 
     case RenderState::VIEW_MATRIX:
         return "VIEW_MATRIX";
@@ -169,7 +169,7 @@ void RenderState::setParameterAutoBinding(const char* name, const char* autoBind
     assert(name);
     assert(autoBinding);
 
-    if (autoBinding == NULL)
+    if (autoBinding == nullptr)
     {
         // Remove an existing auto-binding
         std::map<std::string, std::string>::iterator itr = _autoBindings.find(name);
@@ -206,7 +206,7 @@ void RenderState::setStateBlock(StateBlock* state)
 
 RenderState::StateBlock* RenderState::getStateBlock() const
 {
-    if (_state == NULL)
+    if (_state == nullptr)
     {
         _state = StateBlock::create();
     }
@@ -380,7 +380,7 @@ const Vector4* RenderState::autoBindingGetMatrixPalette() const
         if (skin)
             return skin->getMatrixPalette();
     }
-    return NULL;
+    return nullptr;
 }
 
 unsigned int RenderState::autoBindingGetMatrixPaletteSize() const
@@ -397,7 +397,7 @@ unsigned int RenderState::autoBindingGetMatrixPaletteSize() const
 
 const Vector3& RenderState::autoBindingGetAmbientColor() const
 {
-    Scene* scene = _nodeBinding ? _nodeBinding->getScene() : NULL;
+    Scene* scene = _nodeBinding ? _nodeBinding->getScene() : nullptr;
     return scene ? scene->getAmbientColor() : Vector3::zero();
 }
 
@@ -421,7 +421,7 @@ void RenderState::bind(Pass* pass)
     StateBlock::restore(stateOverrideBits);
 
     // Apply parameter bindings and renderer state for the entire hierarchy, top-down.
-    rs = NULL;
+    rs = nullptr;
     Effect* effect = pass->getEffect();
     while ((rs = getTopmost(rs)))
     {
@@ -444,12 +444,12 @@ RenderState* RenderState::getTopmost(RenderState* below)
     if (rs == below)
     {
         // Nothing below ourself.
-        return NULL;
+        return nullptr;
     }
 
     while (rs)
     {
-        if (rs->_parent == below || rs->_parent == NULL)
+        if (rs->_parent == below || rs->_parent == nullptr)
         {
             // Stop traversing up here.
             return rs;
@@ -457,7 +457,7 @@ RenderState* RenderState::getTopmost(RenderState* below)
         rs = rs->_parent;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void RenderState::cloneInto(RenderState* renderState, NodeCloneContext& context) const

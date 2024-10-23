@@ -173,7 +173,7 @@ public:
      * 
      * @param properties The properties object defining the 
      *      particle emitter (must have namespace equal to 'particle').
-     * @return The newly created particle emitter, or <code>NULL</code> if the particle emitter failed to load.
+     * @return The newly created particle emitter, or <code>nullptr</code> if the particle emitter failed to load.
      * @script{create}
      */
     static ParticleEmitter* create(Properties* properties);

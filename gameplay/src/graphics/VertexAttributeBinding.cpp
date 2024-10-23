@@ -10,7 +10,7 @@ static GLuint __maxVertexAttribs = 0;
 static std::vector<VertexAttributeBinding*> __vertexAttributeBindingCache;
 
 VertexAttributeBinding::VertexAttributeBinding() :
-    _handle(0), _attributes(NULL), _mesh(NULL), _effect(NULL)
+    _handle(0), _attributes(nullptr), _mesh(nullptr), _effect(nullptr)
 {
 }
 
@@ -65,7 +65,7 @@ VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, Effect* effec
 
 VertexAttributeBinding* VertexAttributeBinding::create(const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect)
 {
-    return create(NULL, vertexFormat, vertexPointer, effect);
+    return create(nullptr, vertexFormat, vertexPointer, effect);
 }
 
 VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect)
@@ -82,7 +82,7 @@ VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, const VertexF
         if (__maxVertexAttribs <= 0)
         {
             GP_ERROR("The maximum number of vertex attributes supported by OpenGL on the current device is 0 or less.");
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -102,7 +102,7 @@ VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, const VertexF
         {
             GP_ERROR("Failed to create VAO handle.");
             SAFE_DELETE(b);
-            return NULL;
+            return nullptr;
         }
 
         // Bind the new VAO.

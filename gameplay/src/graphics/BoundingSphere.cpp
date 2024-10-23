@@ -260,7 +260,7 @@ void BoundingSphere::transform(const Matrix& matrix)
 
     // Scale the sphere's radius by the scale fo the matrix
     Vector3 scale;
-    matrix.decompose(&scale, NULL, NULL);
+    matrix.decompose(&scale, nullptr, nullptr);
     float r = radius * scale.x;
     r = max(r, radius * scale.y);
     r = max(r, radius * scale.z);

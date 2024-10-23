@@ -30,10 +30,10 @@ static Mesh* createTriangleMesh()
         VertexFormat::Element(VertexFormat::COLOR, 3)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
-        return NULL;
+        return nullptr;
     }
     mesh->setPrimitiveType(Mesh::TRIANGLES);
     mesh->setVertexData(vertices, 0, vertexCount);
@@ -41,7 +41,7 @@ static Mesh* createTriangleMesh()
 }
 
 TriangleSample::TriangleSample()
-    : _font(NULL), _model(NULL), _spinDirection(-1.0f)
+    : _font(nullptr), _model(nullptr), _spinDirection(-1.0f)
 {
     
 }

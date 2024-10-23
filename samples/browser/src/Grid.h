@@ -12,7 +12,7 @@ static const unsigned int DEFAULT_LINE_COUNT = 81;
  * 
  * @param lineCount The number of lines in the grid. (Rows or columns). Should be odd.
  * 
- * @return A new grid mesh or NULL if there was an error.
+ * @return A new grid mesh or nullptr if there was an error.
  */
 Mesh* createGridMesh(unsigned int lineCount = DEFAULT_LINE_COUNT);
 
@@ -21,7 +21,7 @@ Mesh* createGridMesh(unsigned int lineCount = DEFAULT_LINE_COUNT);
  * 
  * @param lineCount The number of lines in the grid. (Rows or columns). Should be odd.
  * 
- * @return A new model containing a grid mesh or NULL if there was an error.
+ * @return A new model containing a grid mesh or nullptr if there was an error.
  */
 Model* createGridModel(unsigned int lineCount = DEFAULT_LINE_COUNT);
 

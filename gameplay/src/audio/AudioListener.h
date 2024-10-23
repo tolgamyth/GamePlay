@@ -1,5 +1,4 @@
-#ifndef AUDIOLISTENER_H_
-#define AUDIOLISTENER_H_
+#pragma once
 
 #include "math/Vector3.h"
 #include "math/Transform.h"
@@ -172,5 +171,3 @@ private:
 };
 
 }
-
-#endif

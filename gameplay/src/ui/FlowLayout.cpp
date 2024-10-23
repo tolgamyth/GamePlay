@@ -14,7 +14,7 @@ FlowLayout::FlowLayout() : _horizontalSpacing(0), _verticalSpacing(0)
 
 FlowLayout::~FlowLayout()
 {
-    __instance = NULL;
+    __instance = nullptr;
 }
 
 FlowLayout* FlowLayout::create()

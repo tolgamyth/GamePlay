@@ -30,10 +30,10 @@ static Mesh* createTriangleMesh()
         VertexFormat::Element(VertexFormat::COLOR, 3)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
-        return NULL;
+        return nullptr;
     }
     mesh->setPrimitiveType(Mesh::TRIANGLES);
     mesh->setVertexData(vertices, 0, vertexCount);
@@ -72,10 +72,10 @@ static Mesh* createTriangleStripMesh()
         VertexFormat::Element(VertexFormat::COLOR, 3)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
-        return NULL;
+        return nullptr;
     }
     mesh->setPrimitiveType(Mesh::TRIANGLE_STRIP);
     // 
@@ -102,10 +102,10 @@ static Mesh* createLineStripMesh()
         VertexFormat::Element(VertexFormat::COLOR, 3)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
-        return NULL;
+        return nullptr;
     }
     mesh->setPrimitiveType(Mesh::LINE_STRIP);
     mesh->setVertexData(vertices, 0, vertexCount);
@@ -136,10 +136,10 @@ static Mesh* createLinesMesh()
         VertexFormat::Element(VertexFormat::COLOR, 3)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
-        return NULL;
+        return nullptr;
     }
     mesh->setPrimitiveType(Mesh::LINES);
     // 
@@ -149,7 +149,7 @@ static Mesh* createLinesMesh()
 
 
 MeshPrimitiveSample::MeshPrimitiveSample()
-    : _font(NULL), _triangles(NULL), _triangleStrip(NULL), _lineStrip(NULL), _lines(NULL), _points(NULL)
+    : _font(nullptr), _triangles(nullptr), _triangleStrip(nullptr), _lineStrip(nullptr), _lines(nullptr), _points(nullptr)
 {
 }
 

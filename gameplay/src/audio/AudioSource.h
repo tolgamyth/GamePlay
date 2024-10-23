@@ -44,7 +44,7 @@ public:
      * 
      * @param url The relative location on disk of the sound file or a URL specifying a Properties object defining an audio source.
      * @param streamed Don't read the entire audio buffer first before playing, instead play immediately from a stream that is read on demand.
-     * @return The newly created audio source, or NULL if an audio source cannot be created.
+     * @return The newly created audio source, or nullptr if an audio source cannot be created.
      * @script{create}
      */
     static AudioSource* create(const char* url, bool streamed = false);
@@ -53,7 +53,7 @@ public:
      * Create an audio source from the given properties object.
      * 
      * @param properties The properties object defining the audio source (must have namespace equal to 'audio').
-     * @return The newly created audio source, or <code>NULL</code> if the audio source failed to load.
+     * @return The newly created audio source, or <code>nullptr</code> if the audio source failed to load.
      * @script{create}
      */
     static AudioSource* create(Properties* properties);

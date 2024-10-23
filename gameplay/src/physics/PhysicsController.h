@@ -178,7 +178,7 @@ public:
      * @param b The second rigid body to constrain (optional).
      * @return Pointer to the created PhysicsFixedConstraint object.
      */
-    PhysicsFixedConstraint* createFixedConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b = NULL);
+    PhysicsFixedConstraint* createFixedConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b = nullptr);
 
     /**
      * Creates a generic constraint so that the rigid body (or bodies) is
@@ -189,7 +189,7 @@ public:
      * @param b The second rigid body to constrain (optional).
      * @return Pointer to the created PhysicsGenericConstraint object.
      */
-    PhysicsGenericConstraint* createGenericConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b = NULL);
+    PhysicsGenericConstraint* createGenericConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b = nullptr);
 
     /**
      * Creates a generic constraint.
@@ -208,7 +208,7 @@ public:
      * @return Pointer to the created PhysicsGenericConstraint object.
      */
     PhysicsGenericConstraint* createGenericConstraint(PhysicsRigidBody* a, const Quaternion& rotationOffsetA, const Vector3& translationOffsetA, 
-                                                      PhysicsRigidBody* b = NULL, const Quaternion& rotationOffsetB = Quaternion(), const Vector3& translationOffsetB = Vector3());
+                                                      PhysicsRigidBody* b = nullptr, const Quaternion& rotationOffsetB = Quaternion(), const Vector3& translationOffsetB = Vector3());
 
     /**
      * Creates a hinge constraint.
@@ -227,7 +227,7 @@ public:
      * @return Pointer to the created PhysicsHingeConstraint object.
      */
     PhysicsHingeConstraint* createHingeConstraint(PhysicsRigidBody* a, const Quaternion& rotationOffsetA, const Vector3& translationOffsetA,
-                                                  PhysicsRigidBody* b = NULL, const Quaternion& rotationOffsetB = Quaternion(), const Vector3& translationOffsetB = Vector3());
+                                                  PhysicsRigidBody* b = nullptr, const Quaternion& rotationOffsetB = Quaternion(), const Vector3& translationOffsetB = Vector3());
 
     /**
      * Creates a socket constraint so that the rigid body (or bodies) is
@@ -239,7 +239,7 @@ public:
      * @param b The second rigid body to constrain (optional).
      * @return Pointer to the created PhysicsSocketConstraint object.
      */
-    PhysicsSocketConstraint* createSocketConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b = NULL);
+    PhysicsSocketConstraint* createSocketConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b = nullptr);
 
     /**
      * Creates a socket constraint.
@@ -254,7 +254,7 @@ public:
      * @return Pointer to the created PhysicsSocketConstraint object.
      */
     PhysicsSocketConstraint* createSocketConstraint(PhysicsRigidBody* a, const Vector3& translationOffsetA,
-                                                    PhysicsRigidBody* b = NULL, const Vector3& translationOffsetB = Vector3());
+                                                    PhysicsRigidBody* b = nullptr, const Vector3& translationOffsetB = Vector3());
 
     /**
      * Creates a spring constraint so that the rigid body (or bodies) is
@@ -321,7 +321,7 @@ public:
      *
      * @return True if the ray test collided with a physics object, false otherwise.
      */
-    bool rayTest(const Ray& ray, float distance, PhysicsController::HitResult* result = NULL, PhysicsController::HitFilter* filter = NULL);
+    bool rayTest(const Ray& ray, float distance, PhysicsController::HitResult* result = nullptr, PhysicsController::HitFilter* filter = nullptr);
 
     /**
      * Performs a sweep test of the given collision object on the physics world.
@@ -339,7 +339,7 @@ public:
      * 
      * @return True if the object intersects any other physics objects, false otherwise.
      */
-    bool sweepTest(PhysicsCollisionObject* object, const Vector3& endPosition, PhysicsController::HitResult* result = NULL, PhysicsController::HitFilter* filter = NULL);
+    bool sweepTest(PhysicsCollisionObject* object, const Vector3& endPosition, PhysicsController::HitResult* result = nullptr, PhysicsController::HitFilter* filter = nullptr);
 
     /**
      * Destructor.

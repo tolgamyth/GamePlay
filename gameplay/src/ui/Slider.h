@@ -33,7 +33,7 @@ public:
      * @return The new slider.
      * @script{create}
      */
-    static Slider* create(const char* id, Theme::Style* style = NULL);
+    static Slider* create(const char* id, Theme::Style* style = nullptr);
 
     /**
      * Extends ScriptTarget::getTypeName() to return the type name of this class.
@@ -177,7 +177,7 @@ protected:
      *
      * @return The new slider.
      */
-    static Control* create(Theme::Style* style, Properties* properties = NULL);
+    static Control* create(Theme::Style* style, Properties* properties = nullptr);
 
     /**
      * @see Control::initialize

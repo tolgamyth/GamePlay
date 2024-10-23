@@ -85,7 +85,7 @@ private:
 	* @param properties A Properties object describing the control (optional).
 	* @return The new control.
 	*/
-    Control* createControl(const char* typeName, Theme::Style *style, Properties *properties = NULL);
+    Control* createControl(const char* typeName, Theme::Style *style, Properties *properties = nullptr);
 
     /**
 	 * Registers the standard (built-in) controls

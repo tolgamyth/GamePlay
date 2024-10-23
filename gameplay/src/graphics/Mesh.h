@@ -207,7 +207,7 @@ public:
      * If GPU is still working with the buffer object, mapVertexBuffer will not
      * return until GPU finishes its job with the corresponding buffer object.
      *
-     * To avoid waiting (idle), you can call first setVertexBuffer with NULL pointer,
+     * To avoid waiting (idle), you can call first setVertexBuffer with nullptr pointer,
      * then call mapVertexBuffer(). In this case, the previous data will be discarded
      * and mapVertexBuffer() returns a new allocated pointer immediately even if GPU is
      * still working with the previous data.

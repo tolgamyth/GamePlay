@@ -5,7 +5,7 @@
 namespace gameplay
 {
 
-CheckBox::CheckBox() : _checked(false), _image(NULL)
+CheckBox::CheckBox() : _checked(false), _image(nullptr)
 {
 }
 
@@ -18,7 +18,7 @@ CheckBox* CheckBox::create(const char* id, Theme::Style* style)
 {
     CheckBox* cb = new CheckBox();
     cb->_id = id ? id : "";
-    cb->initialize("CheckBox", style, NULL);
+    cb->initialize("CheckBox", style, nullptr);
     return cb;
 }
 

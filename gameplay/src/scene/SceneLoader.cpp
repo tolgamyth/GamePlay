@@ -17,7 +17,7 @@ namespace gameplay
 extern void calculateNamespacePath(const std::string& urlString, std::string& fileString, std::vector<std::string>& namespacePath);
 extern Properties* getPropertiesFromNamespacePath(Properties* properties, const std::vector<std::string>& namespacePath);
 
-SceneLoader::SceneLoader() : _scene(NULL)
+SceneLoader::SceneLoader() : _scene(nullptr)
 {
 }
 
@@ -36,10 +36,10 @@ Scene* SceneLoader::loadInternal(const char* url)
 
     // Load the scene properties from file.
     Properties* properties = Properties::create(url);
-    if (properties == NULL)
+    if (properties == nullptr)
     {
         GP_ERROR("Failed to load scene file '%s'.", url);
-        return NULL;
+        return nullptr;
     }
 
     // Check if the properties object is valid and has a valid namespace.
@@ -48,7 +48,7 @@ Scene* SceneLoader::loadInternal(const char* url)
     {
         GP_ERROR("Failed to load scene from properties object: must be non-null object and have namespace equal to 'scene'.");
         SAFE_DELETE(properties);
-        return NULL;
+        return nullptr;
     }
 
     // Get the path to the main GPB.
@@ -71,7 +71,7 @@ Scene* SceneLoader::loadInternal(const char* url)
         {
             GP_WARN("Failed to load main scene from bundle.");
             SAFE_DELETE(properties);
-            return NULL;
+            return nullptr;
         }
     }
     else
@@ -127,12 +127,12 @@ Scene* SceneLoader::loadInternal(const char* url)
     createAnimations();
 
     // Find the physics properties object.
-    Properties* physics = NULL;
+    Properties* physics = nullptr;
     sceneProperties->rewind();
     while (true)
     {
         Properties* ns = sceneProperties->getNextNamespace();
-        if (ns == NULL || strcmp(ns->getNamespace(), "physics") == 0)
+        if (ns == nullptr || strcmp(ns->getNamespace(), "physics") == 0)
         {
             physics = ns;
             break;
@@ -179,7 +179,7 @@ void SceneLoader::addSceneAnimation(const char* animationID, const char* targetI
     // If there is a file that needs to be loaded later, add an 
     // empty entry to the properties table to signify it.
     if (urlStr.length() > 0 && _properties.count(urlStr) == 0)
-        _properties[urlStr] = NULL;
+        _properties[urlStr] = nullptr;
 
     // Add the animation to the list of animations to be resolved later.
     _animations.push_back(SceneAnimation(animationID, targetID, urlStr));
@@ -198,7 +198,7 @@ void SceneLoader::addSceneNodeProperty(SceneNode& sceneNode, SceneNodeProperty::
         if (str.length() > 0 && str.find(".") != std::string::npos && str.find(".gpb") == std::string::npos && _properties.count(str) == 0)
         {
             isUrl = true;
-            _properties[str] = NULL;
+            _properties[str] = nullptr;
         }
     }
 
@@ -336,7 +336,7 @@ void SceneLoader::applyNodeProperty(SceneNode& sceneNode, Node* node, const Prop
             {
                 // If the scene file specifies a rigid body model, use it for creating the collision object.
                 Properties* np = sceneProperties->getNamespace(sceneNode._nodeID);
-                const char* name = NULL;
+                const char* name = nullptr;
 
                 // Allow both property names
                 if (np && !(name = np->getString("rigidBodyModel")))
@@ -354,7 +354,7 @@ void SceneLoader::applyNodeProperty(SceneNode& sceneNode, Node* node, const Prop
                     }
                     else
                     {
-                        if ( dynamic_cast<Model*>(modelNode->getDrawable()) == NULL)
+                        if ( dynamic_cast<Model*>(modelNode->getDrawable()) == nullptr)
                         {
                             GP_ERROR("Node '%s' does not have a model; attempting to use its model for collision object creation.", name);
                         }
@@ -456,7 +456,7 @@ void SceneLoader::applyNodeUrls()
     // the other node properties, the node is in the scene.
     for (size_t i = 0, count = _sceneNodes.size(); i < count; ++i)
     {
-        applyNodeUrls(_sceneNodes[i], NULL);
+        applyNodeUrls(_sceneNodes[i], nullptr);
     }
 }
 
@@ -624,7 +624,7 @@ void SceneLoader::buildReferenceTables(Properties* sceneProperties)
 {
     // Go through the child namespaces of the scene.
     Properties* ns;
-    while ((ns = sceneProperties->getNextNamespace()) != NULL)
+    while ((ns = sceneProperties->getNextNamespace()) != nullptr)
     {
         if (strcmp(ns->getNamespace(), "node") == 0)
         {
@@ -634,13 +634,13 @@ void SceneLoader::buildReferenceTables(Properties* sceneProperties)
                 continue;
             }
 
-            parseNode(ns, NULL, _path + "#" + ns->getId() + "/");
+            parseNode(ns, nullptr, _path + "#" + ns->getId() + "/");
         }
         else if (strcmp(ns->getNamespace(), "animations") == 0)
         {
             // Load all the animations.
             Properties* animation;
-            while ((animation = ns->getNextNamespace()) != NULL)
+            while ((animation = ns->getNextNamespace()) != nullptr)
             {
                 if (strcmp(animation->getNamespace(), "animation") == 0)
                 {
@@ -688,7 +688,7 @@ void SceneLoader::buildReferenceTables(Properties* sceneProperties)
 void SceneLoader::parseNode(Properties* ns, SceneNode* parent, const std::string& path)
 {
     std::string propertyUrl;
-    const char* name = NULL;
+    const char* name = nullptr;
 
     // Add a SceneNode to the end of the list.
     std::vector<SceneNode>& list = parent ? parent->_children : _sceneNodes;
@@ -698,7 +698,7 @@ void SceneLoader::parseNode(Properties* ns, SceneNode* parent, const std::string
 
     // Parse the node's sub-namespaces.
     Properties* subns;
-    while ((subns = ns->getNextNamespace()) != NULL)
+    while ((subns = ns->getNextNamespace()) != nullptr)
     {
         if (strcmp(subns->getNamespace(), "node") == 0)
         {
@@ -766,7 +766,7 @@ void SceneLoader::parseNode(Properties* ns, SceneNode* parent, const std::string
         }
         else if (strcmp(subns->getNamespace(), "tags") == 0)
         {
-            while ((name = subns->getNextProperty()) != NULL)
+            while ((name = subns->getNextProperty()) != nullptr)
             {
                 sceneNode._tags[name] = subns->getString();
             }
@@ -778,7 +778,7 @@ void SceneLoader::parseNode(Properties* ns, SceneNode* parent, const std::string
     }
 
     // Parse the node's attributes.
-    while ((name = ns->getNextProperty()) != NULL)
+    while ((name = ns->getNextProperty()) != nullptr)
     {
         if (strcmp(name, "url") == 0)
         {
@@ -898,7 +898,7 @@ PhysicsConstraint* SceneLoader::loadGenericConstraint(const Properties* constrai
     assert(rbA);
     assert(constraint);
     assert(Game::getInstance()->getPhysicsController());
-    PhysicsGenericConstraint* physicsConstraint = NULL;
+    PhysicsGenericConstraint* physicsConstraint = nullptr;
 
     // Create the constraint from the specified properties.
     Quaternion roA;
@@ -947,7 +947,7 @@ PhysicsConstraint* SceneLoader::loadHingeConstraint(const Properties* constraint
     assert(rbA);
     assert(constraint);
     assert(Game::getInstance()->getPhysicsController());
-    PhysicsHingeConstraint* physicsConstraint = NULL;
+    PhysicsHingeConstraint* physicsConstraint = nullptr;
 
     // Create the constraint from the specified properties.
     Quaternion roA;
@@ -1006,16 +1006,16 @@ Scene* SceneLoader::loadMainSceneData(const Properties* sceneProperties)
     if (!bundle)
     {
         GP_WARN("Failed to load scene GPB file '%s'.", _gpbPath.c_str());
-        return NULL;
+        return nullptr;
     }
 
     // TODO: Support loading a specific scene from a GPB file using the URL syntax (i.e. "res/scene.gpb#myscene").
-    Scene* scene = bundle->loadScene(NULL);
+    Scene* scene = bundle->loadScene(nullptr);
     if (!scene)
     {
         GP_WARN("Failed to load scene from '%s'.", _gpbPath.c_str());
         SAFE_RELEASE(bundle);
-        return NULL;
+        return nullptr;
     }
 
     SAFE_RELEASE(bundle);
@@ -1034,7 +1034,7 @@ void SceneLoader::loadPhysics(Properties* physics)
 
     Properties* constraint;
     const char* name;
-    while ((constraint = physics->getNextNamespace()) != NULL)
+    while ((constraint = physics->getNextNamespace()) != nullptr)
     {
         if (strcmp(constraint->getNamespace(), "constraint") == 0)
         {
@@ -1067,7 +1067,7 @@ void SceneLoader::loadPhysics(Properties* physics)
             // we check that below), but if the second rigid body is specified and it doesn't
             // load properly, then continue to the next constraint (error).
             name = constraint->getString("rigidBodyB");
-            PhysicsRigidBody* rbB = NULL;
+            PhysicsRigidBody* rbB = nullptr;
             if (name)
             {
                 Node* rbBNode = _scene->findNode(name);
@@ -1084,7 +1084,7 @@ void SceneLoader::loadPhysics(Properties* physics)
                 rbB = static_cast<PhysicsRigidBody*>(rbBNode->getCollisionObject());
             }
 
-            PhysicsConstraint* physicsConstraint = NULL;
+            PhysicsConstraint* physicsConstraint = nullptr;
 
             // Load the constraint based on its type.
             if (type == "FIXED")
@@ -1136,14 +1136,14 @@ void SceneLoader::loadReferencedFiles()
     std::map<std::string, Properties*>::iterator iter = _properties.begin();
     for (; iter != _properties.end(); ++iter)
     {
-        if (iter->second == NULL)
+        if (iter->second == nullptr)
         {
             std::string fileString;
             std::vector<std::string> namespacePath;
             calculateNamespacePath(iter->first, fileString, namespacePath);
 
             // Check if the referenced properties file has already been loaded.
-            Properties* properties = NULL;
+            Properties* properties = nullptr;
             std::map<std::string, Properties*>::iterator pffIter = _propertiesFromFile.find(fileString);
             if (pffIter != _propertiesFromFile.end() && pffIter->second)
             {
@@ -1152,7 +1152,7 @@ void SceneLoader::loadReferencedFiles()
             else
             {
                 properties = Properties::create(fileString.c_str());
-                if (properties == NULL)
+                if (properties == nullptr)
                 {
                     GP_WARN("Failed to load referenced properties file '%s'.", fileString.c_str());
                     continue;
@@ -1179,7 +1179,7 @@ PhysicsConstraint* SceneLoader::loadSocketConstraint(const Properties* constrain
     assert(constraint);
     assert(Game::getInstance()->getPhysicsController());
 
-    PhysicsSocketConstraint* physicsConstraint = NULL;
+    PhysicsSocketConstraint* physicsConstraint = nullptr;
     Vector3 toA;
     bool offsetSpecified = constraint->getVector3("translationOffsetA", &toA);
 
@@ -1214,10 +1214,10 @@ PhysicsConstraint* SceneLoader::loadSpringConstraint(const Properties* constrain
     if (!rbB)
     {
         GP_ERROR("Spring constraints require two rigid bodies.");
-        return NULL;
+        return nullptr;
     }
 
-    PhysicsSpringConstraint* physicsConstraint = NULL;
+    PhysicsSpringConstraint* physicsConstraint = nullptr;
 
     // Create the constraint from the specified properties.
     Quaternion roA, roB;
@@ -1314,7 +1314,7 @@ void splitURL(const std::string& url, std::string* file, std::string* id)
 }
 
 SceneLoader::SceneNode::SceneNode()
-    : _nodeID(""), _exactMatch(true), _namespace(NULL)
+    : _nodeID(""), _exactMatch(true), _namespace(nullptr)
 {
 }
 

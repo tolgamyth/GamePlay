@@ -147,7 +147,7 @@ PhysicsCollisionShape::Definition PhysicsCollisionShape::Definition::create(Node
     float width = -1.0f;
     float height = -1.0f;
     bool centerIsAbsolute = false;
-    const char* imagePath = NULL;
+    const char* imagePath = nullptr;
     float maxHeight = 0;
     float minHeight = 0;
     bool shapeSpecified = false;
@@ -289,8 +289,8 @@ PhysicsCollisionShape::Definition PhysicsCollisionShape::Definition::create(Node
     case SHAPE_MESH:
         {
             // Mesh is required on node.
-            Mesh* nodeMesh = node->getDrawable() ? dynamic_cast<Model*>(node->getDrawable())->getMesh() : NULL;
-            if (nodeMesh == NULL)
+            Mesh* nodeMesh = node->getDrawable() ? dynamic_cast<Model*>(node->getDrawable())->getMesh() : nullptr;
+            if (nodeMesh == nullptr)
             {
                 GP_ERROR("Cannot create mesh collision object for node without model/mesh.");
             }
@@ -315,10 +315,10 @@ PhysicsCollisionShape::Definition PhysicsCollisionShape::Definition::create(Node
 
     case SHAPE_HEIGHTFIELD:
         {
-            if (imagePath == NULL)
+            if (imagePath == nullptr)
             {
                 // Node requires a valid terrain
-                if (dynamic_cast<Terrain*>(node->getDrawable()) == NULL)
+                if (dynamic_cast<Terrain*>(node->getDrawable()) == nullptr)
                 {
                     GP_ERROR("Heightfield collision objects can only be specified on nodes that have a valid terrain, or that specify an image path.");
                 }
@@ -330,7 +330,7 @@ PhysicsCollisionShape::Definition PhysicsCollisionShape::Definition::create(Node
             else
             {
                 std::string ext = FileSystem::getExtension(imagePath);
-                HeightField* heightfield = NULL;
+                HeightField* heightfield = nullptr;
                 if (ext == ".PNG")
                     heightfield = HeightField::createFromImage(imagePath, minHeight, maxHeight);
                 else if (ext == ".RAW" || ext == ".R16")

@@ -56,7 +56,7 @@ public:
      *
      * @param partIndex The index of the mesh part whose Material to return (-1 for shared material).
      *
-     * @return The requested Material, or NULL if no Material is set.
+     * @return The requested Material, or nullptr if no Material is set.
      */
     Material* getMaterial(int partIndex = -1);
 
@@ -89,12 +89,12 @@ public:
      *
      * @param vshPath The path to the vertex shader file.
      * @param fshPath The path to the fragment shader file.
-     * @param defines A new-line delimited list of preprocessor defines. May be NULL.
+     * @param defines A new-line delimited list of preprocessor defines. May be nullptr.
      * @param partIndex The index of the mesh part to set the material for (-1 for shared material).
      *
-     * @return The newly created and bound Material, or NULL if the Material could not be created.
+     * @return The newly created and bound Material, or nullptr if the Material could not be created.
      */
-    Material* setMaterial(const char* vshPath, const char* fshPath, const char* defines = NULL, int partIndex = -1);
+    Material* setMaterial(const char* vshPath, const char* fshPath, const char* defines = nullptr, int partIndex = -1);
 
     /**
      * Sets a material to be used for drawing this Model.
@@ -110,7 +110,7 @@ public:
      * @param materialPath The path to the material file.
      * @param partIndex The index of the mesh part to set the material for (-1 for shared material).
      *
-     * @return The newly created and bound Material, or NULL if the Material could not be created.
+     * @return The newly created and bound Material, or nullptr if the Material could not be created.
      */
     Material* setMaterial(const char* materialPath, int partIndex = -1);
 
@@ -126,7 +126,7 @@ public:
     /**
      * Returns the MeshSkin.
      *
-     * @return The MeshSkin, or NULL if one is not set.
+     * @return The MeshSkin, or nullptr if one is not set.
      */
     MeshSkin* getSkin() const;
 

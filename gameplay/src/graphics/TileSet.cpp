@@ -7,9 +7,9 @@ namespace gameplay
 {
   
 TileSet::TileSet() : Drawable(),
-    _tiles(NULL), _tileWidth(0), _tileHeight(0),
+    _tiles(nullptr), _tileWidth(0), _tileHeight(0),
     _rowCount(0), _columnCount(0), _width(0), _height(0),
-    _opacity(1.0f), _color(Vector4::one()), _batch(NULL)
+    _opacity(1.0f), _color(Vector4::one()), _batch(nullptr)
 {
 }
 
@@ -57,15 +57,15 @@ TileSet* TileSet::create(Properties* properties)
     if (!properties || strcmp(properties->getNamespace(), "tileset") != 0)
     {
         GP_ERROR("Properties object must be non-null and have namespace equal to 'tileset'.");
-        return NULL;
+        return nullptr;
     }
 
     // Get image path.
     const char* imagePath = properties->getString("path");
-    if (imagePath == NULL || strlen(imagePath) == 0)
+    if (imagePath == nullptr || strlen(imagePath) == 0)
     {
         GP_ERROR("TileSet is missing required image file path.");
-        return NULL;
+        return nullptr;
     }
 
     // Get set size
@@ -73,13 +73,13 @@ TileSet* TileSet::create(Properties* properties)
     if (rows <= 0)
     {
         GP_ERROR("TileSet row count must be greater then zero.");
-        return NULL;
+        return nullptr;
     }
     int columns = properties->getInt("columns");
     if (columns <= 0)
     {
         GP_ERROR("TileSet column count must be greater then zero.");
-        return NULL;
+        return nullptr;
     }
 
     // Get tile size
@@ -87,13 +87,13 @@ TileSet* TileSet::create(Properties* properties)
     if (tileWidth <= 0)
     {
         GP_ERROR("TileSet tile width must be greater then zero.");
-        return NULL;
+        return nullptr;
     }
     float tileHeight = properties->getFloat("tileHeight");
     if (tileHeight <= 0)
     {
         GP_ERROR("TileSet tile height must be greater then zero.");
-        return NULL;
+        return nullptr;
     }
 
     // Create tile set
@@ -128,7 +128,7 @@ TileSet* TileSet::create(Properties* properties)
 
     // Get tile sources
     properties->rewind();
-    Properties* tileProperties = NULL;
+    Properties* tileProperties = nullptr;
     while ((tileProperties = properties->getNextNamespace()))
     {
         if (strcmp(tileProperties->getNamespace(), "tile") == 0)

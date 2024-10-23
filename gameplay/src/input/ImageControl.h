@@ -33,7 +33,7 @@ public:
      * @return The new image control.
      * @script{create}
      */
-    static ImageControl* create(const char* id, Theme::Style* style = NULL);
+    static ImageControl* create(const char* id, Theme::Style* style = nullptr);
 
     /**
      * Extends ScriptTarget::getTypeName() to return the type name of this class.
@@ -120,7 +120,7 @@ protected:
      * @script{create}
       * 
       */
-    static Control* create(Theme::Style* style, Properties* properties = NULL);
+    static Control* create(Theme::Style* style, Properties* properties = nullptr);
 
     void initialize(const char* typeName, Theme::Style* style, Properties* properties);
 

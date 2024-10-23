@@ -9,11 +9,11 @@ namespace gameplay
 
 unsigned int FrameBuffer::_maxRenderTargets = 0;
 std::vector<FrameBuffer*> FrameBuffer::_frameBuffers;
-FrameBuffer* FrameBuffer::_defaultFrameBuffer = NULL;
-FrameBuffer* FrameBuffer::_currentFrameBuffer = NULL;
+FrameBuffer* FrameBuffer::_defaultFrameBuffer = nullptr;
+FrameBuffer* FrameBuffer::_currentFrameBuffer = nullptr;
 
 FrameBuffer::FrameBuffer(const char* id, unsigned int width, unsigned int height, FrameBufferHandle handle) 
-    : _id(id ? id : ""), _handle(handle), _renderTargets(NULL), _renderTargetCount(0), _depthStencilTarget(NULL)
+    : _id(id ? id : ""), _handle(handle), _renderTargets(nullptr), _renderTargetCount(0), _depthStencilTarget(nullptr)
 {
 }
 
@@ -78,15 +78,15 @@ FrameBuffer* FrameBuffer::create(const char* id)
 
 FrameBuffer* FrameBuffer::create(const char* id, unsigned int width, unsigned int height, Texture::Format format)
 {
-    RenderTarget* renderTarget = NULL;
+    RenderTarget* renderTarget = nullptr;
     if (width > 0 && height > 0)
     {
         // Create a default RenderTarget with same ID.
         renderTarget = RenderTarget::create(id, width, height, format);
-        if (renderTarget == NULL)
+        if (renderTarget == nullptr)
         {
             GP_ERROR("Failed to create render target for frame buffer.");
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -124,7 +124,7 @@ FrameBuffer* FrameBuffer::getFrameBuffer(const char* id)
             return fb;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 const char* FrameBuffer::getId() const
@@ -134,7 +134,7 @@ const char* FrameBuffer::getId() const
 
 unsigned int FrameBuffer::getWidth() const
 {
-    if (_renderTargetCount > 0 && _renderTargets != NULL && _renderTargets[0] != NULL)
+    if (_renderTargetCount > 0 && _renderTargets != nullptr && _renderTargets[0] != nullptr)
         return _renderTargets[0]->getWidth();
 
     return 0;
@@ -142,7 +142,7 @@ unsigned int FrameBuffer::getWidth() const
 
 unsigned int FrameBuffer::getHeight() const
 {
-    if (_renderTargetCount > 0 && _renderTargets != NULL && _renderTargets[0] != NULL)
+    if (_renderTargetCount > 0 && _renderTargets != nullptr && _renderTargets[0] != nullptr)
         return _renderTargets[0]->getHeight();
 
     return 0;
@@ -204,7 +204,7 @@ void FrameBuffer::setRenderTarget(RenderTarget* target, unsigned int index, GLen
             glDrawBuffer(GL_NONE);
             glReadBuffer(GL_NONE);
 #elif defined(GL_ES_VERSION_3_0) && GL_ES_VERSION_3_0
-            glDrawBuffers(0, NULL);
+            glDrawBuffers(0, nullptr);
 #endif
         }
         else
@@ -231,7 +231,7 @@ RenderTarget* FrameBuffer::getRenderTarget(unsigned int index) const
     {
         return _renderTargets[index];
     }
-    return NULL;
+    return nullptr;
 }
 
 unsigned int FrameBuffer::getRenderTargetCount() const
@@ -313,7 +313,7 @@ void FrameBuffer::getScreenshot(Image* image)
 
 Image* FrameBuffer::createScreenshot(Image::Format format)
 {
-    Image* screenshot = Image::create(_currentFrameBuffer->getWidth(), _currentFrameBuffer->getHeight(), format, NULL);
+    Image* screenshot = Image::create(_currentFrameBuffer->getWidth(), _currentFrameBuffer->getHeight(), format, nullptr);
     getScreenshot(screenshot);
 
     return screenshot;

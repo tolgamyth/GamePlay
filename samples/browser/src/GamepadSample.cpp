@@ -4,7 +4,7 @@
     ADD_SAMPLE("Input", "Gamepads", GamepadSample, 3);
 #endif
 
-GamepadSample::GamepadSample() : _gamepad(NULL), _font(NULL)
+GamepadSample::GamepadSample() : _gamepad(nullptr), _font(nullptr)
 {
 }
 

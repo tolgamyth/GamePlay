@@ -4,7 +4,7 @@
 namespace gameplay
 {
 
-Label::Label() : _text(""), _font(NULL)
+Label::Label() : _text(""), _font(nullptr)
 {
 }
 
@@ -16,7 +16,7 @@ Label* Label::create(const char* id, Theme::Style* style)
 {
     Label* label = new Label();
     label->_id = id ? id : "";
-    label->initialize("Label", style, NULL);
+    label->initialize("Label", style, nullptr);
     return label;
 }
 
@@ -63,7 +63,7 @@ void Label::addListener(Control::Listener* listener, int eventFlags)
 
 void Label::setText(const char* text)
 {
-    if ((text == NULL && _text.length() > 0) || strcmp(text, _text.c_str()) != 0)
+    if ((text == nullptr && _text.length() > 0) || strcmp(text, _text.c_str()) != 0)
     {
         _text = text ? text : "";
         if (_autoSize != AUTO_SIZE_NONE)

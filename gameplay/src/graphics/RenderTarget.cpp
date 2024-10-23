@@ -7,7 +7,7 @@ namespace gameplay
 static std::vector<RenderTarget*> __renderTargets;
 
 RenderTarget::RenderTarget(const char* id)
-    : _id(id ? id : ""), _texture(NULL)
+    : _id(id ? id : ""), _texture(nullptr)
 {
 }
 
@@ -26,11 +26,11 @@ RenderTarget::~RenderTarget()
 RenderTarget* RenderTarget::create(const char* id, unsigned int width, unsigned int height, Texture::Format format)
 {
     // Create a new texture with the given width.
-    Texture* texture = Texture::create(format, width, height, NULL, false);
-    if (texture == NULL)
+    Texture* texture = Texture::create(format, width, height, nullptr, false);
+    if (texture == nullptr)
     {
         GP_ERROR("Failed to create texture for render target.");
-        return NULL;
+        return nullptr;
     }
 
     RenderTarget* rt = create(id, texture);
@@ -66,7 +66,7 @@ RenderTarget* RenderTarget::getRenderTarget(const char* id)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 const char* RenderTarget::getId() const

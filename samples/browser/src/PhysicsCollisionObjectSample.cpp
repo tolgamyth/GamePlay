@@ -6,7 +6,7 @@
 #endif
 
 PhysicsCollisionObjectSample::PhysicsCollisionObjectSample()
-    : _font(NULL), _scene(NULL), _lightNode(NULL), _form(NULL), _objectType(SPHERE), _throw(true), _drawDebug(0), _wireFrame(false)
+    : _font(nullptr), _scene(nullptr), _lightNode(nullptr), _form(nullptr), _objectType(SPHERE), _throw(true), _drawDebug(0), _wireFrame(false)
 {
     const char* paths[] = {"res/common/physics.physics#ball","res/common/physics.physics#box", "res/common/physics.physics#capsule", "res/common/physics.physics#duck"};
     _collisionObjectPaths.assign(paths, paths + 4);

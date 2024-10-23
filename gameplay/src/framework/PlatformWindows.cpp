@@ -567,8 +567,8 @@ bool createWindow(WindowCreationParams* params, HWND* hwnd, HDC* hdc)
     AdjustWindowRectEx(&rect, style, FALSE, styleEx);
 
     // Create the native Windows window.
-    *hwnd = CreateWindowEx(styleEx, L"gameplay", windowName.c_str(), style, 0, 0, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, __hinstance, NULL);
-    if (*hwnd == NULL)
+    *hwnd = CreateWindowEx(styleEx, L"gameplay", windowName.c_str(), style, 0, 0, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, __hinstance, nullptr);
+    if (*hwnd == nullptr)
     {
         GP_ERROR("Failed to create window.");
         return false;
@@ -576,7 +576,7 @@ bool createWindow(WindowCreationParams* params, HWND* hwnd, HDC* hdc)
 
     // Get the drawing context.
     *hdc = GetDC(*hwnd);
-    if (*hdc == NULL)
+    if (*hdc == nullptr)
     {
         GP_ERROR("Failed to get device context.");
         return false;
@@ -596,8 +596,8 @@ bool initializeGL(WindowCreationParams* params)
     // Create a temporary window and context to we can initialize GLEW and get access
     // to additional OpenGL extension functions. This is a neccessary evil since the
     // function for querying GL extensions is a GL extension itself.
-    HWND hwnd = NULL;
-    HDC hdc = NULL;
+    HWND hwnd = nullptr;
+    HDC hdc = nullptr;
 
     if (params)
     {
@@ -676,7 +676,7 @@ bool initializeGL(WindowCreationParams* params)
     __multiSampling = params && params->samples > 0;
 
     UINT numFormats;
-    if ( !wglChoosePixelFormatARB(hdc, attribList, NULL, 1, &pixelFormat, &numFormats) || numFormats == 0)
+    if ( !wglChoosePixelFormatARB(hdc, attribList, nullptr, 1, &pixelFormat, &numFormats) || numFormats == 0)
     {
         bool valid = false;
         if (params && params->samples > 0)
@@ -687,7 +687,7 @@ bool initializeGL(WindowCreationParams* params)
                 params->samples /= 2;
                 attribList[1] = params->samples;
                 attribList[3] = params->samples > 0 ? 1 : 0;
-                if (wglChoosePixelFormatARB(hdc, attribList, NULL, 1, &pixelFormat, &numFormats) && numFormats > 0)
+                if (wglChoosePixelFormatARB(hdc, attribList, nullptr, 1, &pixelFormat, &numFormats) && numFormats > 0)
                 {
                     valid = true;
                     GP_WARN("Found pixel format with WGL_SAMPLES_ARB == %d.", params->samples);
@@ -711,8 +711,8 @@ bool initializeGL(WindowCreationParams* params)
     if (params)
     {
         DestroyWindow(hwnd);
-        hwnd = NULL;
-        hdc = NULL;
+        hwnd = nullptr;
+        hdc = nullptr;
 
         if (!createWindow(params, &__hwnd, &__hdc))
         {
@@ -752,7 +752,7 @@ bool initializeGL(WindowCreationParams* params)
         GP_ERROR("Failed to make the window current.");
         return false;
     }
-    } else    // fallback to OpenGL 2.0 if wglChoosePixelFormatARB or wglCreateContextAttribsARB is NULL.
+    } else    // fallback to OpenGL 2.0 if wglChoosePixelFormatARB or wglCreateContextAttribsARB is nullptr.
     {
         // Context is already here, just use it.
         __hrc = tempContext;
@@ -803,7 +803,7 @@ Platform* Platform::create(Game* game)
     Platform* platform = new Platform(game);
 
     // Get the application module handle.
-    __hinstance = ::GetModuleHandle(NULL);
+    __hinstance = ::GetModuleHandle(nullptr);
 
     // Read window settings from config.
     WindowCreationParams params;
@@ -823,7 +823,7 @@ Platform* Platform::create(Game* game)
             const char* title = config->getString("title");
             if (title)
             {
-                int len = MultiByteToWideChar(CP_ACP, 0, title, -1, NULL, 0);
+                int len = MultiByteToWideChar(CP_ACP, 0, title, -1, nullptr, 0);
                 wchar_t* wtitle = new wchar_t[len];
                 MultiByteToWideChar(CP_ACP, 0, title, -1, wtitle, len);
                 params.windowName = wtitle;
@@ -874,7 +874,7 @@ Platform* Platform::create(Game* game)
         memset(&devMode, 0, sizeof(DEVMODE));
         devMode.dmSize = sizeof(DEVMODE);
         devMode.dmDriverExtra = 0;
-        while (EnumDisplaySettings(NULL, modeNum++, &devMode) != 0)
+        while (EnumDisplaySettings(nullptr, modeNum++, &devMode) != 0)
         {
             // Is mode supported?
             if (devMode.dmPelsWidth == width &&
@@ -905,11 +905,11 @@ Platform* Platform::create(Game* game)
     wc.cbClsExtra     = 0;
     wc.cbWndExtra     = 0;
     wc.hInstance      = __hinstance;
-    wc.hIcon          = LoadIcon(NULL, IDI_APPLICATION);
-    wc.hIconSm        = NULL;
-    wc.hCursor        = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground  = NULL;  // No brush - we are going to paint our own background
-    wc.lpszMenuName   = NULL;  // No default menu
+    wc.hIcon          = LoadIcon(nullptr, IDI_APPLICATION);
+    wc.hIconSm        = nullptr;
+    wc.hCursor        = LoadCursor(nullptr, IDC_ARROW);
+    wc.hbrBackground  = nullptr;  // No brush - we are going to paint our own background
+    wc.lpszMenuName   = nullptr;  // No default menu
     wc.lpszClassName  = L"gameplay";
 
     if (!::RegisterClassEx(&wc))
@@ -964,7 +964,7 @@ Platform* Platform::create(Game* game)
 error:
 
     exit(0);
-    return NULL;
+    return nullptr;
 }
 
 int Platform::enterMessagePump()
@@ -989,7 +989,7 @@ int Platform::enterMessagePump()
     MSG msg;
     while (true)
     {
-        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -1355,14 +1355,14 @@ void Platform::shutdownInternal()
 
 bool Platform::launchURL(const char* url)
 {
-    if (url == NULL || *url == '\0')
+    if (url == nullptr || *url == '\0')
         return false;
  
     // Success when result code > 32
-    int len = MultiByteToWideChar(CP_ACP, 0, url, -1, NULL, 0);
+    int len = MultiByteToWideChar(CP_ACP, 0, url, -1, nullptr, 0);
     wchar_t* wurl = new wchar_t[len];
     MultiByteToWideChar(CP_ACP, 0, url, -1, wurl, len);
-    int r = (int)ShellExecute(NULL, NULL, wurl, NULL, NULL, SW_SHOWNORMAL);
+    int r = (int)ShellExecute(nullptr, nullptr, wurl, nullptr, nullptr, SW_SHOWNORMAL);
     SAFE_DELETE_ARRAY(wurl);
     return (r > 32);
 }
@@ -1376,7 +1376,7 @@ std::string Platform::displayFileDialog(size_t mode, const char* title, const ch
     char currentDir[1024];
     char absPath[1024];
     std::string initialDirectoryStr;
-    if (initialDirectory == NULL)
+    if (initialDirectory == nullptr)
     {
         GetCurrentDirectoryA(1024, currentDir);
         initialDirectoryStr = currentDir;

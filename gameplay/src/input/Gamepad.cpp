@@ -12,7 +12,7 @@ namespace gameplay
 static std::vector<Gamepad*> __gamepads;
 
 Gamepad::Gamepad(const char* formPath)
-    : _handle((GamepadHandle)INT_MAX), _buttonCount(0), _joystickCount(0), _triggerCount(0), _form(NULL), _buttons(0)
+    : _handle((GamepadHandle)INT_MAX), _buttonCount(0), _joystickCount(0), _triggerCount(0), _form(nullptr), _buttons(0)
 {
     assert(formPath);
     _form = Form::create(formPath);
@@ -22,13 +22,13 @@ Gamepad::Gamepad(const char* formPath)
 
     for (int i = 0; i < 2; ++i)
     {
-        _uiJoysticks[i] = NULL;
+        _uiJoysticks[i] = nullptr;
         _triggers[i] = 0.0f;
     }
 
     for (int i = 0; i < 20; ++i)
     {
-        _uiButtons[i] = NULL;
+        _uiButtons[i] = nullptr;
     }
 
     bindGamepadControls(_form);
@@ -36,7 +36,7 @@ Gamepad::Gamepad(const char* formPath)
 
 Gamepad::Gamepad(GamepadHandle handle, unsigned int buttonCount, unsigned int joystickCount, unsigned int triggerCount, const char* name)
     : _handle(handle), _buttonCount(buttonCount), _joystickCount(joystickCount), _triggerCount(triggerCount),
-      _form(NULL), _buttons(0)
+      _form(nullptr), _buttons(0)
 {
     if (name)
     {
@@ -151,13 +151,13 @@ Gamepad* Gamepad::getGamepad(unsigned int index, bool preferPhysical)
 {
     unsigned int count = __gamepads.size();
     if (index >= count)
-        return NULL;
+        return nullptr;
 
     if (!preferPhysical)
         return __gamepads[index];
 
     // Virtual gamepads are guaranteed to come before physical gamepads in the vector.
-    Gamepad* backupVirtual = NULL;
+    Gamepad* backupVirtual = nullptr;
     if (index < count && __gamepads[index]->isVirtual())
     {
         backupVirtual = __gamepads[index];
@@ -189,7 +189,7 @@ Gamepad* Gamepad::getGamepad(GamepadHandle handle)
             return __gamepads[i];
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 Gamepad::ButtonMapping Gamepad::getButtonMappingFromString(const char* string)

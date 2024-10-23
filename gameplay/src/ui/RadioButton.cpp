@@ -5,7 +5,7 @@ namespace gameplay
 {
 static std::vector<RadioButton*> __radioButtons;
 
-RadioButton::RadioButton() : _selected(false), _image(NULL)
+RadioButton::RadioButton() : _selected(false), _image(nullptr)
 {
 }
 
@@ -23,7 +23,7 @@ RadioButton* RadioButton::create(const char* id, Theme::Style* style)
 {
     RadioButton* rb = new RadioButton();
     rb->_id = id ? id : "";
-    rb->initialize("RadioButton", style, NULL);
+    rb->initialize("RadioButton", style, nullptr);
 
     __radioButtons.push_back(rb);
 

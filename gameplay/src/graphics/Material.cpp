@@ -11,7 +11,7 @@ namespace gameplay
 {
 
 Material::Material() :
-    _currentTechnique(NULL)
+    _currentTechnique(nullptr)
 {
 }
 
@@ -27,17 +27,17 @@ Material::~Material()
 
 Material* Material::create(const char* url)
 {
-    return create(url, (PassCallback)NULL, NULL);
+    return create(url, (PassCallback)nullptr, nullptr);
 }
 
 Material* Material::create(const char* url, PassCallback callback, void* cookie)
 {
     // Load the material properties from file.
     Properties* properties = Properties::create(url);
-    if (properties == NULL)
+    if (properties == nullptr)
     {
         GP_WARN("Failed to create material from file: %s", url);
-        return NULL;
+        return nullptr;
     }
 
     Material* material = create((strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace(), callback, cookie);
@@ -48,7 +48,7 @@ Material* Material::create(const char* url, PassCallback callback, void* cookie)
 
 Material* Material::create(Properties* materialProperties)
 {
-    return create(materialProperties, (PassCallback)NULL, NULL);
+    return create(materialProperties, (PassCallback)nullptr, nullptr);
 }
 
 Material* Material::create(Properties* materialProperties, PassCallback callback, void* cookie)
@@ -57,7 +57,7 @@ Material* Material::create(Properties* materialProperties, PassCallback callback
     if (!materialProperties || !(strcmp(materialProperties->getNamespace(), "material") == 0))
     {
         GP_ERROR("Properties object must be non-null and have namespace equal to 'material'.");
-        return NULL;
+        return nullptr;
     }
 
     // Create new material from the file passed in.
@@ -67,7 +67,7 @@ Material* Material::create(Properties* materialProperties, PassCallback callback
     loadRenderState(material, materialProperties);
 
     // Go through all the material properties and create techniques under this material.
-    Properties* techniqueProperties = NULL;
+    Properties* techniqueProperties = nullptr;
     while ((techniqueProperties = materialProperties->getNextNamespace()))
     {
         if (strcmp(techniqueProperties->getNamespace(), "technique") == 0)
@@ -76,7 +76,7 @@ Material* Material::create(Properties* materialProperties, PassCallback callback
             {
                 GP_ERROR("Failed to load technique for material.");
                 SAFE_RELEASE(material);
-                return NULL;
+                return nullptr;
             }
         }
     }
@@ -100,10 +100,10 @@ Material* Material::create(Effect* effect)
     // Create a new material with a single technique and pass for the given effect.
     Material* material = new Material();
 
-    Technique* technique = new Technique(NULL, material);
+    Technique* technique = new Technique(nullptr, material);
     material->_techniques.push_back(technique);
 
-    Pass* pass = new Pass(NULL, technique);
+    Pass* pass = new Pass(nullptr, technique);
     pass->_effect = effect;
     technique->_passes.push_back(pass);
     effect->addRef();
@@ -121,16 +121,16 @@ Material* Material::create(const char* vshPath, const char* fshPath, const char*
     // Create a new material with a single technique and pass for the given effect
     Material* material = new Material();
 
-    Technique* technique = new Technique(NULL, material);
+    Technique* technique = new Technique(nullptr, material);
     material->_techniques.push_back(technique);
 
-    Pass* pass = new Pass(NULL, technique);
+    Pass* pass = new Pass(nullptr, technique);
     if (!pass->initialize(vshPath, fshPath, defines))
     {
         GP_WARN("Failed to create pass for material: vertexShader = %s, fragmentShader = %s, defines = %s", vshPath, fshPath, defines ? defines : "");
         SAFE_RELEASE(pass);
         SAFE_RELEASE(material);
-        return NULL;
+        return nullptr;
     }
     technique->_passes.push_back(pass);
 
@@ -163,7 +163,7 @@ Technique* Material::getTechnique(const char* id) const
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 Technique* Material::getTechnique() const
@@ -222,7 +222,7 @@ bool Material::loadTechnique(Material* material, Properties* techniqueProperties
 
     // Go through all the properties and create passes under this technique.
     techniqueProperties->rewind();
-    Properties* passProperties = NULL;
+    Properties* passProperties = nullptr;
     while ((passProperties = techniqueProperties->getNextNamespace()))
     {
         if (strcmp(passProperties->getNamespace(), "pass") == 0)
@@ -311,7 +311,7 @@ static bool isMaterialKeyword(const char* str)
 
 static Texture::Filter parseTextureFilterMode(const char* str, Texture::Filter defaultValue)
 {
-    if (str == NULL || strlen(str) == 0)
+    if (str == nullptr || strlen(str) == 0)
     {
         GP_ERROR("Texture filter mode string must be non-null and non-empty.");
         return defaultValue;
@@ -349,7 +349,7 @@ static Texture::Filter parseTextureFilterMode(const char* str, Texture::Filter d
 
 static Texture::Wrap parseTextureWrapMode(const char* str, Texture::Wrap defaultValue)
 {
-    if (str == NULL || strlen(str) == 0)
+    if (str == nullptr || strlen(str) == 0)
     {
         GP_ERROR("Texture wrap mode string must be non-null and non-empty.");
         return defaultValue;
@@ -392,7 +392,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
         case Properties::VECTOR2:
             {
                 Vector2 vector2;
-                if (properties->getVector2(NULL, &vector2))
+                if (properties->getVector2(nullptr, &vector2))
                 {
                     assert(renderState->getParameter(name));
                     renderState->getParameter(name)->setValue(vector2);
@@ -402,7 +402,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
         case Properties::VECTOR3:
             {
                 Vector3 vector3;
-                if (properties->getVector3(NULL, &vector3))
+                if (properties->getVector3(nullptr, &vector3))
                 {
                     assert(renderState->getParameter(name));
                     renderState->getParameter(name)->setValue(vector3);
@@ -412,7 +412,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
         case Properties::VECTOR4:
             {
                 Vector4 vector4;
-                if (properties->getVector4(NULL, &vector4))
+                if (properties->getVector4(nullptr, &vector4))
                 {
                     assert(renderState->getParameter(name));
                     renderState->getParameter(name)->setValue(vector4);
@@ -422,7 +422,7 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
         case Properties::MATRIX:
             {
                 Matrix matrix;
-                if (properties->getMatrix(NULL, &matrix))
+                if (properties->getMatrix(nullptr, &matrix))
                 {
                     assert(renderState->getParameter(name));
                     renderState->getParameter(name)->setValue(matrix);

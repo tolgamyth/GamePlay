@@ -10,12 +10,12 @@ namespace gameplay
 {
 
 Model::Model() : Drawable(),
-    _mesh(NULL), _material(NULL), _partCount(0), _partMaterials(NULL), _skin(NULL)
+    _mesh(nullptr), _material(nullptr), _partCount(0), _partMaterials(nullptr), _skin(nullptr)
 {
 }
 
 Model::Model(Mesh* mesh) : Drawable(),
-    _mesh(mesh), _material(NULL), _partCount(0), _partMaterials(NULL), _skin(NULL)
+    _mesh(mesh), _material(nullptr), _partCount(0), _partMaterials(nullptr), _skin(nullptr)
 {
     assert(mesh);
     _partCount = mesh->getPartCount();
@@ -58,19 +58,19 @@ Material* Model::getMaterial(int partIndex)
 {
     assert(partIndex == -1 || partIndex >= 0);
 
-    Material* m = NULL;
+    Material* m = nullptr;
 
     if (partIndex < 0)
         return _material;
     if (partIndex >= (int)_partCount)
-        return NULL;
+        return nullptr;
 
     // Look up explicitly specified part material.
     if (_partMaterials)
     {
         m = _partMaterials[partIndex];
     }
-    if (m == NULL)
+    if (m == nullptr)
     {
         // Return the shared material.
          m = _material;
@@ -83,7 +83,7 @@ void Model::setMaterial(Material* material, int partIndex)
 {
     assert(partIndex == -1 || (partIndex >= 0 && partIndex < (int)getMeshPartCount()));
 
-    Material* oldMaterial = NULL;
+    Material* oldMaterial = nullptr;
 
     if (partIndex == -1)
     {
@@ -109,7 +109,7 @@ void Model::setMaterial(Material* material, int partIndex)
         else
         {
             // Allocate part arrays for the first time.
-            if (_partMaterials == NULL)
+            if (_partMaterials == nullptr)
             {
                 _partMaterials = new Material*[_partCount];
                 memset(_partMaterials, 0, sizeof(Material*) * _partCount);
@@ -134,7 +134,7 @@ void Model::setMaterial(Material* material, int partIndex)
             for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
             {
                 assert(t->getPassByIndex(j));
-                t->getPassByIndex(j)->setVertexAttributeBinding(NULL);
+                t->getPassByIndex(j)->setVertexAttributeBinding(nullptr);
             }
         }
         SAFE_RELEASE(oldMaterial);
@@ -168,10 +168,10 @@ Material* Model::setMaterial(const char* vshPath, const char* fshPath, const cha
 {
     // Try to create a Material with the given parameters.
     Material* material = Material::create(vshPath, fshPath, defines);
-    if (material == NULL)
+    if (material == nullptr)
     {
         GP_ERROR("Failed to create material for model.");
-        return NULL;
+        return nullptr;
     }
 
     // Assign the material to us.
@@ -187,10 +187,10 @@ Material* Model::setMaterial(const char* materialPath, int partIndex)
 {
     // Try to create a Material from the specified material file.
     Material* material = Material::create(materialPath);
-    if (material == NULL)
+    if (material == nullptr)
     {
         GP_ERROR("Failed to create material for model.");
-        return NULL;
+        return nullptr;
     }
 
     // Assign the material to us
@@ -401,7 +401,7 @@ Drawable* Model::clone(NodeCloneContext& context)
     if (!model)
     {
         GP_ERROR("Failed to clone model.");
-        return NULL;
+        return nullptr;
     }
 
     if (getSkin())

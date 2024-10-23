@@ -42,7 +42,7 @@ public:
      * 
      * @param url The URL pointing to the Properties object defining the material.
      * 
-     * @return A new Material or NULL if there was an error.
+     * @return A new Material or nullptr if there was an error.
      * @script{create}
      */
     static Material* create(const char* url);
@@ -61,10 +61,10 @@ public:
      * @param callback Function pointer to be called during Pass creation.
      * @param cookie Optional custom parameter to be passed to the callback function.
      *
-     * @return A new Material or NULL if there was an error.
+     * @return A new Material or nullptr if there was an error.
      * @script{ignore}
      */
-    static Material* create(const char* url, PassCallback callback, void* cookie = NULL);
+    static Material* create(const char* url, PassCallback callback, void* cookie = nullptr);
 
     /**
      * Creates a material from the specified properties object.
@@ -102,7 +102,7 @@ public:
      * @return A new Material.
      * @script{create}
      */
-    static Material* create(const char* vshPath, const char* fshPath, const char* defines = NULL);
+    static Material* create(const char* vshPath, const char* fshPath, const char* defines = nullptr);
 
     /**
      * Returns the number of techniques in the material.

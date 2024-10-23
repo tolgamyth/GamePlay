@@ -10,7 +10,7 @@ namespace gameplay
 {
 
 MeshSkin::MeshSkin()
-    : _rootJoint(NULL), _rootNode(NULL), _matrixPalette(NULL), _model(NULL)
+    : _rootJoint(nullptr), _rootNode(nullptr), _matrixPalette(nullptr), _model(nullptr)
 {
 }
 
@@ -49,13 +49,13 @@ Joint* MeshSkin::getJoint(const char* id) const
     for (size_t i = 0, count = _joints.size(); i < count; ++i)
     {
         Joint* j = _joints[i];
-        if (j && j->getId() != NULL && strcmp(j->getId(), id) == 0)
+        if (j && j->getId() != nullptr && strcmp(j->getId(), id) == 0)
         {
             return j;
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 MeshSkin* MeshSkin::clone(NodeCloneContext &context) const
@@ -67,7 +67,7 @@ MeshSkin* MeshSkin::clone(NodeCloneContext &context) const
         const unsigned int jointCount = getJointCount();
         skin->setJointCount(jointCount);
 
-        assert(skin->_rootNode == NULL);
+        assert(skin->_rootNode == nullptr);
         
         // Check if the root node has already been cloned.
         if (Node* rootNode = context.findClonedNode(_rootNode))
@@ -80,7 +80,7 @@ MeshSkin* MeshSkin::clone(NodeCloneContext &context) const
             skin->_rootNode = _rootNode->cloneRecursive(context);
         }
         
-        Node* node = NULL;
+        Node* node = nullptr;
         if (strcmp(skin->_rootNode->getId(), _rootJoint->getId()) == 0)
         {
             node = skin->_rootNode;
@@ -114,11 +114,11 @@ void MeshSkin::setJointCount(unsigned int jointCount)
     // Erase the joints vector and release all joints.
     clearJoints();
 
-    // Resize the joints vector and initialize to NULL.
+    // Resize the joints vector and initialize to nullptr.
     _joints.resize(jointCount);
     for (unsigned int i = 0; i < jointCount; i++)
     {
-        _joints[i] = NULL;
+        _joints[i] = nullptr;
     }
 
     // Rebuild the matrix palette. Each matrix is 3 rows of Vector4.
@@ -204,9 +204,9 @@ void MeshSkin::setRootJoint(Joint* joint)
     if (newRootNode)
     {
         // Find the top level parent node of the root joint
-        for (Node* node = newRootNode->getParent(); node != NULL; node = node->getParent())
+        for (Node* node = newRootNode->getParent(); node != nullptr; node = node->getParent())
         {
-            if (node->getParent() == NULL)
+            if (node->getParent() == nullptr)
             {
                 newRootNode = node;
                 break;
@@ -263,7 +263,7 @@ void MeshSkin::setRootNode(Node* node)
 
 void MeshSkin::clearJoints()
 {
-    setRootJoint(NULL);
+    setRootJoint(nullptr);
 
     for (size_t i = 0, count = _joints.size(); i < count; ++i)
     {

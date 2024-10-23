@@ -6,7 +6,7 @@ namespace gameplay
 {
 
 AIController::AIController()
-    : _paused(false), _firstMessage(NULL), _firstAgent(NULL)
+    : _paused(false), _firstMessage(nullptr), _firstAgent(nullptr)
 {
 }
 
@@ -28,7 +28,7 @@ void AIController::finalize()
         agent = agent->_next;
         SAFE_RELEASE(temp);
     }
-    _firstAgent = NULL;
+    _firstAgent = nullptr;
 
     // Remove all messages
     AIMessage* message = _firstMessage;
@@ -38,7 +38,7 @@ void AIController::finalize()
         message = message->_next;
         AIMessage::destroy(temp);
     }
-    _firstMessage = NULL;
+    _firstMessage = nullptr;
 }
 
 void AIController::pause()
@@ -56,7 +56,7 @@ void AIController::sendMessage(AIMessage* message, float delay)
     if (delay <= 0)
     {
         // Send instantly
-        if (message->getReceiver() == NULL || strlen(message->getReceiver()) == 0)
+        if (message->getReceiver() == nullptr || strlen(message->getReceiver()) == 0)
         {
             // Broadcast message to all agents
             AIAgent* agent = _firstAgent;
@@ -101,7 +101,7 @@ void AIController::update(float elapsedTime)
     static Game* game = Game::getInstance();
 
     // Send all pending messages that have expired
-    AIMessage* prevMsg = NULL;
+    AIMessage* prevMsg = nullptr;
     AIMessage* msg = _firstMessage;
     while (msg)
     {
@@ -114,7 +114,7 @@ void AIController::update(float elapsedTime)
 
             AIMessage* temp = msg;
             msg = msg->_next;
-            temp->_next = NULL;
+            temp->_next = nullptr;
             sendMessage(temp);
         }
         else
@@ -148,7 +148,7 @@ void AIController::addAgent(AIAgent* agent)
 void AIController::removeAgent(AIAgent* agent)
 {
     // Search our linked list of agents and link this agent out.
-    AIAgent* prevAgent = NULL;
+    AIAgent* prevAgent = nullptr;
     AIAgent* itr = _firstAgent;
     while (itr)
     {
@@ -159,7 +159,7 @@ void AIController::removeAgent(AIAgent* agent)
             else
                 _firstAgent = agent->_next;
 
-            agent->_next = NULL;
+            agent->_next = nullptr;
             agent->release();
             break;
         }
@@ -182,7 +182,7 @@ AIAgent* AIController::findAgent(const char* id) const
         agent = agent->_next;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 }

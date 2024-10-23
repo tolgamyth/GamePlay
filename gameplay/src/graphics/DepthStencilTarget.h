@@ -50,7 +50,7 @@ public:
      *
      * @param id The ID of the DepthStencilTarget to search for.
      *
-     * @return The DepthStencilTarget with the specified ID, or NULL if one was not found.
+     * @return The DepthStencilTarget with the specified ID, or nullptr if one was not found.
      */
     static DepthStencilTarget* getDepthStencilTarget(const char* id);
 

@@ -32,7 +32,7 @@ static Vector3 randomColor()
 }
 
 MeshBatchSample::MeshBatchSample()
-    : _font(NULL), _meshBatch(NULL), _lastTriangleAdded(0)
+    : _font(nullptr), _meshBatch(nullptr), _lastTriangleAdded(0)
 {
     _vertices.push_back(Vertex(Vector3(0, 50, 0), randomColor()));
     _vertices.push_back(Vertex(Vector3(-50, -50, 0), randomColor()));

@@ -13,7 +13,7 @@
 namespace gameplay
 {
 
-static ControlFactory* __controlFactory = NULL;
+static ControlFactory* __controlFactory = nullptr;
 
 ControlFactory::ControlFactory() 
 {
@@ -35,7 +35,7 @@ void ControlFactory::finalize()
 
 ControlFactory* ControlFactory::getInstance() 
 {
-	if (__controlFactory == NULL)
+	if (__controlFactory == nullptr)
 		__controlFactory = new ControlFactory();
 	return __controlFactory;
 }
@@ -71,7 +71,7 @@ Control *ControlFactory::createControl(const char* typeName, Theme::Style* style
 
     std::map<std::string, ControlActivator>::iterator it = _registeredControls.find(upper);
     if (it == _registeredControls.end())
-		return NULL;
+		return nullptr;
 
     return (*it->second)(style, properties);
 }

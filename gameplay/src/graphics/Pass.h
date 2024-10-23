@@ -41,7 +41,7 @@ public:
      * When a mesh binding is set, the VertexAttributeBinding will be automatically
      * bound when the bind() method is called for the pass.
      *
-     * @param binding The VertexAttributeBinding to set (or NULL to remove an existing binding).
+     * @param binding The VertexAttributeBinding to set (or nullptr to remove an existing binding).
      */
     void setVertexAttributeBinding(VertexAttributeBinding* binding);
 

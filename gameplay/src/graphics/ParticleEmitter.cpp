@@ -15,7 +15,7 @@ namespace gameplay
 {
 
 ParticleEmitter::ParticleEmitter(unsigned int particleCountMax) : Drawable(),
-    _particleCountMax(particleCountMax), _particleCount(0), _particles(NULL),
+    _particleCountMax(particleCountMax), _particleCount(0), _particles(nullptr),
     _emissionRate(PARTICLE_EMISSION_RATE), _started(false), _ellipsoid(false),
     _sizeStartMin(1.0f), _sizeStartMax(1.0f), _sizeEndMin(1.0f), _sizeEndMax(1.0f),
     _energyMin(1000L), _energyMax(1000L),
@@ -26,7 +26,7 @@ ParticleEmitter::ParticleEmitter(unsigned int particleCountMax) : Drawable(),
     _rotationPerParticleSpeedMin(0.0f), _rotationPerParticleSpeedMax(0.0f),
     _rotationSpeedMin(0.0f), _rotationSpeedMax(0.0f),
     _rotationAxis(Vector3::zero()), _rotation(Matrix::identity()),
-    _spriteBatch(NULL), _spriteBlendMode(BLEND_ALPHA),  _spriteTextureWidth(0), _spriteTextureHeight(0), _spriteTextureWidthRatio(0), _spriteTextureHeightRatio(0), _spriteTextureCoords(NULL),
+    _spriteBatch(nullptr), _spriteBlendMode(BLEND_ALPHA),  _spriteTextureWidth(0), _spriteTextureHeight(0), _spriteTextureWidthRatio(0), _spriteTextureHeightRatio(0), _spriteTextureCoords(nullptr),
     _spriteAnimated(false),  _spriteLooped(false), _spriteFrameCount(1), _spriteFrameRandomOffset(0),_spriteFrameDuration(0L), _spriteFrameDurationSecs(0.0f), _spritePercentPerFrame(0.0f),
     _orbitPosition(false), _orbitVelocity(false), _orbitAcceleration(false),
     _timePerEmission(PARTICLE_EMISSION_RATE_TIME_INTERVAL), _emitTime(0), _lastUpdated(0)
@@ -49,7 +49,7 @@ ParticleEmitter* ParticleEmitter::create(const char* textureFile, BlendMode blen
     if (!texture)
     {
         GP_ERROR("Failed to create texture for particle emitter.");
-        return NULL;
+        return nullptr;
     }
     assert(texture->getWidth());
     assert(texture->getHeight());
@@ -75,7 +75,7 @@ ParticleEmitter* ParticleEmitter::create(const char* url)
     if (!properties)
     {
         GP_ERROR("Failed to create particle emitter from file.");
-        return NULL;
+        return nullptr;
     }
     
     ParticleEmitter* particle = create((strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace());
@@ -89,14 +89,14 @@ ParticleEmitter* ParticleEmitter::create(Properties* properties)
     if (!properties || strcmp(properties->getNamespace(), "particle") != 0)
     {
         GP_ERROR("Properties object must be non-null and have namespace equal to 'particle'.");
-        return NULL;
+        return nullptr;
     }
 
     Properties* sprite = properties->getNextNamespace();
     if (!sprite || strcmp(sprite->getNamespace(), "sprite") != 0)
     {
         GP_ERROR("Failed to load particle emitter: required namespace 'sprite' is missing.");
-        return NULL;
+        return nullptr;
     }
 
     // Load sprite properties.
@@ -105,12 +105,12 @@ ParticleEmitter* ParticleEmitter::create(Properties* properties)
     if (!sprite->getPath("path", &texturePath))
     {
         GP_ERROR("Failed to load particle emitter: required image file path ('path') is missing.");
-        return NULL;
+        return nullptr;
     }
 
     const char* blendModeString = sprite->getString("blendMode");
     // Check for the old naming
-    if (blendModeString == NULL)
+    if (blendModeString == nullptr)
         blendModeString = sprite->getString("blending");
     BlendMode blendMode = getBlendModeFromString(blendModeString);
     int spriteWidth = sprite->getInt("width");
@@ -181,7 +181,7 @@ ParticleEmitter* ParticleEmitter::create(Properties* properties)
     if (!emitter)
     {
         GP_ERROR("Failed to create particle emitter.");
-        return NULL;
+        return nullptr;
     }
     emitter->setEmissionRate(emissionRate);
     emitter->setEllipsoid(ellipsoid);
@@ -221,7 +221,7 @@ void ParticleEmitter::setTexture(Texture* texture, BlendMode blendMode)
 {
     // Create new batch before releasing old one, in case the same texture
     // is used for both (so it's not released before passing to the new batch).
-    SpriteBatch* batch =  SpriteBatch::create(texture, NULL, _particleCountMax);
+    SpriteBatch* batch =  SpriteBatch::create(texture, nullptr, _particleCountMax);
     batch->getSampler()->setFilterMode(Texture::LINEAR_MIPMAP_LINEAR, Texture::LINEAR);
 
     // Free existing batch
@@ -244,8 +244,8 @@ void ParticleEmitter::setTexture(Texture* texture, BlendMode blendMode)
 
 Texture* ParticleEmitter::getTexture() const
 {
-    Texture::Sampler* sampler = _spriteBatch ? _spriteBatch->getSampler() : NULL;
-    return sampler? sampler->getTexture() : NULL;
+    Texture::Sampler* sampler = _spriteBatch ? _spriteBatch->getSampler() : nullptr;
+    return sampler? sampler->getTexture() : nullptr;
 }
 
 void ParticleEmitter::setParticleCountMax(unsigned int max)

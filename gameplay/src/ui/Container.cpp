@@ -46,8 +46,8 @@ void Container::clearContacts()
 }
 
 Container::Container()
-    : _layout(NULL), _activeControl(NULL), _scrollBarTopCap(NULL), _scrollBarVertical(NULL), _scrollBarBottomCap(NULL),
-      _scrollBarLeftCap(NULL), _scrollBarHorizontal(NULL), _scrollBarRightCap(NULL),
+    : _layout(nullptr), _activeControl(nullptr), _scrollBarTopCap(nullptr), _scrollBarVertical(nullptr), _scrollBarBottomCap(nullptr),
+      _scrollBarLeftCap(nullptr), _scrollBarHorizontal(nullptr), _scrollBarRightCap(nullptr),
       _scroll(SCROLL_NONE), _scrollBarBounds(Rectangle::empty()), _scrollPosition(Vector2::zero()),
       _scrollBarsAutoHide(false), _scrollBarOpacity(1.0f), _scrolling(false),
       _scrollingVeryFirstX(0), _scrollingVeryFirstY(0), _scrollingFirstX(0), _scrollingFirstY(0), _scrollingLastX(0), _scrollingLastY(0),
@@ -55,7 +55,7 @@ Container::Container()
       _scrollingVelocity(Vector2::zero()), _scrollingFriction(1.0f), _scrollWheelSpeed(400.0f),
       _scrollingRight(false), _scrollingDown(false),
       _scrollingMouseVertically(false), _scrollingMouseHorizontally(false),
-      _scrollBarOpacityClip(NULL), _zIndexDefault(0),
+      _scrollBarOpacityClip(nullptr), _zIndexDefault(0),
       _selectButtonDown(false), _lastFrameTime(0), _totalWidth(0), _totalHeight(0),
       _initializedWithScroll(false), _scrollWheelRequiresFocus(false)
 {
@@ -78,7 +78,7 @@ Container* Container::create(const char* id, Theme::Style* style, Layout::Type l
     Container* container = new Container();
     container->_id = id ? id : "";
     container->_layout = createLayout(layout);
-    container->initialize("Container", style, NULL);
+    container->initialize("Container", style, nullptr);
     return container;
 }
 
@@ -145,7 +145,7 @@ void Container::initialize(const char* typeName, Theme::Style* style, Properties
 	}
 
     // Create a default layout if one does not yet exist
-    if (_layout == NULL)
+    if (_layout == nullptr)
         _layout = createLayout(Layout::LAYOUT_ABSOLUTE);
 }
 
@@ -155,7 +155,7 @@ void Container::addControls(Properties* properties)
 
     // Add all the controls to this container.
     Properties* controlSpace = properties->getNextNamespace();
-    while (controlSpace != NULL)
+    while (controlSpace != nullptr)
     {
         const char* controlName = controlSpace->getNamespace();
 
@@ -190,7 +190,7 @@ Layout* Container::getLayout()
 
 void Container::setLayout(Layout::Type type)
 {
-	if (_layout == NULL || _layout->getType() != type)
+	if (_layout == nullptr || _layout->getType() != type)
 	{
 		SAFE_RELEASE(_layout);
 
@@ -277,11 +277,11 @@ void Container::removeControl(unsigned int index)
     std::vector<Control*>::iterator it = _controls.begin() + index;
     Control* control = *it;
     _controls.erase(it);
-    control->_parent = NULL;
+    control->_parent = nullptr;
     setDirty(Control::DIRTY_BOUNDS);
 
     if (_activeControl == control)
-        _activeControl = NULL;
+        _activeControl = nullptr;
 
     Form::verifyRemovedControlState(control);
 
@@ -345,7 +345,7 @@ Control* Container::getControl(const char* id) const
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 unsigned int Container::getControlCount() const
@@ -433,7 +433,7 @@ Animation* Container::getAnimation(const char* id) const
 {
     std::vector<Control*>::const_iterator itr = _controls.begin();
     std::vector<Control*>::const_iterator end = _controls.end();
-    Control* control = NULL;
+    Control* control = nullptr;
     for (; itr != end; itr++)
     {
         control = *itr;
@@ -449,7 +449,7 @@ Animation* Container::getAnimation(const char* id) const
                 return animation;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 bool Container::getScrollWheelRequiresFocus() const
@@ -795,7 +795,7 @@ bool Container::moveFocusNextPrevious(Direction direction)
 {
     // Get the current control that has focus (either directly or indirectly) within this container
     Control* currentFocus = Form::getFocusControl();
-    Control* current = NULL;
+    Control* current = nullptr;
     if (currentFocus && currentFocus->isChild(this))
     {
         if (currentFocus->_parent == this)
@@ -817,7 +817,7 @@ bool Container::moveFocusNextPrevious(Direction direction)
         }
     }
 
-    Control* nextCtrl = NULL;
+    Control* nextCtrl = nullptr;
     int nextIndex = direction == NEXT ? INT_MAX : INT_MIN;
     bool moveFirst = false;
 
@@ -870,7 +870,7 @@ bool Container::moveFocusNextPrevious(Direction direction)
     if (moveFirst)
     {
         nextIndex = direction == NEXT ? INT_MAX : INT_MIN;
-        nextCtrl = NULL;
+        nextCtrl = nullptr;
         for (size_t i = 0, count = _controls.size(); i < count; ++i)
         {
             Control* ctrl = _controls[i];
@@ -899,12 +899,12 @@ bool Container::moveFocusNextPrevious(Direction direction)
 bool Container::moveFocusDirectional(Direction direction)
 {
 	Control* startControl = Form::getFocusControl();
-	if (startControl == NULL)
+	if (startControl == nullptr)
 		return false;
 
 	const Rectangle& startBounds = startControl->_absoluteBounds;
 
-	Control* next = NULL;
+	Control* next = nullptr;
 	Vector2 vStart, vNext;
 	float distance = FLT_MAX;
 
@@ -995,7 +995,7 @@ void Container::startScrolling(float x, float y, bool resetTime)
     if (_scrollBarOpacityClip && _scrollBarOpacityClip->isPlaying())
     {
         _scrollBarOpacityClip->stop();
-        _scrollBarOpacityClip = NULL;
+        _scrollBarOpacityClip = nullptr;
     }
 
     if (resetTime)
@@ -1228,7 +1228,7 @@ bool Container::touchEventScroll(Touch::TouchEvent evt, int x, int y, unsigned i
             if (_scrollBarOpacityClip && _scrollBarOpacityClip->isPlaying())
             {
                 _scrollBarOpacityClip->stop();
-                _scrollBarOpacityClip = NULL;
+                _scrollBarOpacityClip = nullptr;
             }
             _scrollBarOpacity = 1.0f;
             if (dirty)
@@ -1456,7 +1456,7 @@ bool Container::mouseEventScroll(Mouse::MouseEvent evt, int x, int y, int wheelD
             if (_scrollBarOpacityClip && _scrollBarOpacityClip->isPlaying())
             {
                 _scrollBarOpacityClip->stop();
-                _scrollBarOpacityClip = NULL;
+                _scrollBarOpacityClip = nullptr;
             }
             _scrollBarOpacity = 1.0f;
             setDirty(DIRTY_BOUNDS);

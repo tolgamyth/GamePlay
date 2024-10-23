@@ -60,9 +60,9 @@ SpaceshipGame game;
 #define CLAMP(x, min, max) (x < min ? min : (x > max ? max : x))
 
 SpaceshipGame::SpaceshipGame()
-    : _scene(NULL), _cameraNode(NULL), _shipGroupNode(NULL), _shipNode(NULL), _propulsionNode(NULL), _glowNode(NULL),
-      _stateBlock(NULL), _font(NULL), _throttle(0), _shipTilt(0), _finished(true), _finishedTime(0), _pushing(false), _time(0),
-       _glowDiffuseParameter(NULL), _shipSpecularParameter(NULL), _spaceshipSound(NULL)
+    : _scene(nullptr), _cameraNode(nullptr), _shipGroupNode(nullptr), _shipNode(nullptr), _propulsionNode(nullptr), _glowNode(nullptr),
+      _stateBlock(nullptr), _font(nullptr), _throttle(0), _shipTilt(0), _finished(true), _finishedTime(0), _pushing(false), _time(0),
+       _glowDiffuseParameter(nullptr), _shipSpecularParameter(nullptr), _spaceshipSound(nullptr)
 {
 }
 
@@ -74,7 +74,7 @@ void SpaceshipGame::initialize()
 {
     // TODO: Not working on iOS
     // Display the gameplay splash screen for at least 1 second.
-    displayScreen(this, &SpaceshipGame::drawSplash, NULL, 1000L);
+    displayScreen(this, &SpaceshipGame::drawSplash, nullptr, 1000L);
 
     // Create our render state block that will be reused across all materials
     _stateBlock = RenderState::StateBlock::create();

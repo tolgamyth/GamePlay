@@ -11,8 +11,8 @@
 static const char* keyString(int key);
 
 InputSample::InputSample()
-    :  _mouseString("No Mouse"), _font(NULL), _inputSampleControls(NULL), _mouseWheel(0), _crosshair(NULL),
-       _scene(NULL), _formNode(NULL), _formNodeParent(NULL)
+    :  _mouseString("No Mouse"), _font(nullptr), _inputSampleControls(nullptr), _mouseWheel(0), _crosshair(nullptr),
+       _scene(nullptr), _formNode(nullptr), _formNodeParent(nullptr)
 {
 }
 
@@ -235,7 +235,7 @@ bool InputSample::drawScene(Node* node)
 
 void InputSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
 {
-    TouchPoint* tp = NULL;
+    TouchPoint* tp = nullptr;
     // Not optimal, however we expect the list size to be very small (<10)
     for (std::list<TouchPoint>::iterator it = _touchPoints.begin(); it != _touchPoints.end(); ++it)
     {

@@ -7,7 +7,7 @@ namespace gameplay
 {
 
 HeightField::HeightField(unsigned int columns, unsigned int rows)
-    : _array(NULL), _cols(columns), _rows(rows)
+    : _array(nullptr), _cols(columns), _rows(rows)
 {
     _array = new float[columns * rows];
 }
@@ -52,7 +52,7 @@ HeightField* HeightField::create(const char* path, unsigned int width, unsigned 
 
     float heightScale = heightMax - heightMin;
 
-    HeightField* heightfield = NULL;
+    HeightField* heightfield = nullptr;
 
     // Load height data from image
     std::string ext = FileSystem::getExtension(path);
@@ -61,7 +61,7 @@ HeightField* HeightField::create(const char* path, unsigned int width, unsigned 
         // Normal image
         Image* image = Image::create(path);
         if (!image)
-            return NULL;
+            return nullptr;
 
         unsigned int pixelSize = 0;
         switch (image->getFormat())
@@ -75,7 +75,7 @@ HeightField* HeightField::create(const char* path, unsigned int width, unsigned 
             default:
                 SAFE_RELEASE(image);
                 GP_WARN("Unsupported pixel format for heightfield image: %s.", path);
-                return NULL;
+                return nullptr;
         }
 
         // Calculate the heights for each pixel.
@@ -100,16 +100,16 @@ HeightField* HeightField::create(const char* path, unsigned int width, unsigned 
         if (width < 2 || height < 2 || heightMax < 0)
         {
             GP_WARN("Invalid 'width', 'height' or 'heightMax' parameter for RAW heightfield image: %s.", path);
-            return NULL;
+            return nullptr;
         }
 
         // Load raw bytes
         int fileSize = 0;
         unsigned char* bytes = (unsigned char*)FileSystem::readAll(path, &fileSize);
-        if (bytes == NULL)
+        if (bytes == nullptr)
         {
             GP_WARN("Falied to read bytes from RAW heightfield image: %s.", path);
-            return NULL;
+            return nullptr;
         }
 
         // Determine if the RAW file is 8-bit or 16-bit based on file size.
@@ -118,7 +118,7 @@ HeightField* HeightField::create(const char* path, unsigned int width, unsigned 
         {
             GP_WARN("Invalid RAW file - must be 8-bit or 16-bit, but found neither: %s.", path);
             SAFE_DELETE_ARRAY(bytes);
-            return NULL;
+            return nullptr;
         }
 
         heightfield = HeightField::create(width, height);

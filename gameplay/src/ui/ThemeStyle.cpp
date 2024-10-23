@@ -34,7 +34,7 @@ Theme::Style::Style(const Style& copy)
         if (copy._overlays[i])
             _overlays[i] = new Theme::Style::Overlay(*copy._overlays[i]);
         else
-            _overlays[i] = NULL;
+            _overlays[i] = nullptr;
     }
 }
 
@@ -97,12 +97,12 @@ Theme::Style::Overlay* Theme::Style::Overlay::create()
 }
 
 Theme::Style::Overlay::Overlay()
-    : _skin(NULL), _cursor(NULL), _imageList(NULL), _font(NULL),
+    : _skin(nullptr), _cursor(nullptr), _imageList(nullptr), _font(nullptr),
     _fontSize(0), _alignment(Font::ALIGN_TOP_LEFT), _textRightToLeft(false), _textColor(Vector4::one()), _opacity(1.0f)
 {
 }
 
-Theme::Style::Overlay::Overlay(const Overlay& copy) : _skin(NULL), _cursor(NULL), _imageList(NULL), _font(NULL)
+Theme::Style::Overlay::Overlay(const Overlay& copy) : _skin(nullptr), _cursor(nullptr), _imageList(nullptr), _font(nullptr)
 {
     if (copy._skin)
     {

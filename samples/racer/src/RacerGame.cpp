@@ -31,10 +31,10 @@ RacerGame game;
 #define STEERING_RESPONSE (7.0f)
 
 RacerGame::RacerGame()
-    : _scene(NULL), _font(NULL), _menu(NULL), _overlay(NULL), _keyFlags(0), _mouseFlags(0), _steering(0),
-    _gamepad(NULL), _physicalGamepad(NULL), _virtualGamepad(NULL), _virtualGamepadClip(NULL),
-    _carVehicle(NULL), _upsetTimer(0),
-    _backgroundMusic(NULL), _engineSound(NULL), _brakingSound(NULL)
+    : _scene(nullptr), _font(nullptr), _menu(nullptr), _overlay(nullptr), _keyFlags(0), _mouseFlags(0), _steering(0),
+    _gamepad(nullptr), _physicalGamepad(nullptr), _virtualGamepad(nullptr), _virtualGamepadClip(nullptr),
+    _carVehicle(nullptr), _upsetTimer(0),
+    _backgroundMusic(nullptr), _engineSound(nullptr), _brakingSound(nullptr)
 {
 }
 
@@ -45,7 +45,7 @@ void RacerGame::initialize()
     _font = Font::create("res/ui/arial.gpb");
 
     // Display the gameplay splash screen during loading, for at least 1 second.
-    displayScreen(this, &RacerGame::drawSplash, NULL, 1000L);
+    displayScreen(this, &RacerGame::drawSplash, nullptr, 1000L);
 
     // Create the menu and start listening to its controls.
     _menu = Form::create("res/common/menu.form");
@@ -75,7 +75,7 @@ void RacerGame::initialize()
 
     // Load and initialize game script
     getScriptController()->loadScript("res/common/racer.lua");
-    getScriptController()->executeFunction<void>("setScene", "<Scene>", NULL, _scene);
+    getScriptController()->executeFunction<void>("setScene", "<Scene>", nullptr, _scene);
 
     Node* carNode = _scene->findNode("carbody");
     if (carNode && carNode->getCollisionObject()->getType() == PhysicsCollisionObject::VEHICLE)
@@ -426,7 +426,7 @@ void RacerGame::keyEvent(Keyboard::KeyEvent evt, int key)
             break;
         case Keyboard::KEY_F:
             __flythruCamera = !__flythruCamera;
-            getScriptController()->executeFunction<void>("toggleCamera", NULL);
+            getScriptController()->executeFunction<void>("toggleCamera", nullptr);
             break;
         case Keyboard::KEY_B:
             __drawDebug = !__drawDebug;
@@ -557,7 +557,7 @@ void RacerGame::gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad)
         if (gamepad == _physicalGamepad)
         {
             _gamepad = _virtualGamepad;
-            _physicalGamepad = NULL;
+            _physicalGamepad = nullptr;
 
             _virtualGamepadClip->setSpeed(-1.0f);
             _virtualGamepadClip->play();

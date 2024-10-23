@@ -191,7 +191,7 @@ public:
          * @return The added event.
          * @see ScriptController::executeFunction
          */
-        const Event* addEvent(const char* name, const char* args = NULL);
+        const Event* addEvent(const char* name, const char* args = nullptr);
 
         /**
          * Returns the number of registered script events.
@@ -212,7 +212,7 @@ public:
          * Returns the event that matches the given name.
          *
          * @param name The name of the event to search for.
-         * @return The matching event, or NULL if no such event exists.
+         * @return The matching event, or nullptr if no such event exists.
          */
         const Event* getEvent(const char* name) const;
 
@@ -237,7 +237,7 @@ public:
      * variables with the same name to be used without colliding with other scripts.
      *
      * @param path Path to the script.
-     * @return A pointer to the successfully loaded script, or NULL if unsuccessful.
+     * @return A pointer to the successfully loaded script, or nullptr if unsuccessful.
      */
     Script* addScript(const char* path);
 
@@ -299,7 +299,7 @@ public:
      * Gets the event object for the given event name, if it exists.
      *
      * @param eventName Name of the event.
-     * @return The event object for the given name, or NULL if no such event exists.
+     * @return The event object for the given name, or nullptr if no such event exists.
      */
     const Event* getScriptEvent(const char* eventName) const;
 
@@ -337,7 +337,7 @@ protected:
          * Constructor.
          * @param registry The event registry.
          */
-        RegistryEntry(EventRegistry* registry) : registry(registry), next(NULL), prev(NULL) { }
+        RegistryEntry(EventRegistry* registry) : registry(registry), next(nullptr), prev(nullptr) { }
     };
 
     /**
@@ -357,7 +357,7 @@ protected:
          *
          * @param script The script to create an entry for.
          */
-        ScriptEntry(Script* script) : script(script), next(NULL), prev(NULL) { }
+        ScriptEntry(Script* script) : script(script), next(nullptr), prev(nullptr) { }
     };
 
     /**
@@ -365,7 +365,7 @@ protected:
      */
     struct CallbackFunction
     {
-        /** The script the callback belongs to (or NULL if the callback is a global function) */
+        /** The script the callback belongs to (or nullptr if the callback is a global function) */
         Script* script;
         /** The function within the script to call. */
         std::string function;

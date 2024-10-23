@@ -67,7 +67,7 @@ public:
      * @param id The ID for the new node.
      * @script{create}
      */
-    static Node* create(const char* id = NULL);
+    static Node* create(const char* id = nullptr);
 
     /**
      * Extends ScriptTarget::getTypeName() to return the type name of this class.
@@ -167,7 +167,7 @@ public:
      * @param exactMatch true if only nodes whose ID exactly matches the specified ID are returned,
      *        or false if nodes that start with the given ID are returned.
      *
-     * @return The Node found or NULL if not found.
+     * @return The Node found or nullptr if not found.
      */
     Node* findNode(const char* id, bool recursive = true, bool exactMatch = true) const;
 
@@ -200,7 +200,7 @@ public:
      * a scene are transparent. This tag can then be read during rendering to sort
      * transparent and opaque objects for correct drawing order.
      *
-     * Setting a tag to NULL removes the tag from the Node.
+     * Setting a tag to nullptr removes the tag from the Node.
      *
      * @param name Name of the tag to set.
      * @param value Optional value of the tag (empty string by default).
@@ -212,7 +212,7 @@ public:
      *
      * @param name Name of the tag to return.
      *
-     * @return The value of the given tag, or NULL if the tag is not set.
+     * @return The value of the given tag, or nullptr if the tag is not set.
      */
     const char* getTag(const char* name) const;
 
@@ -408,10 +408,10 @@ public:
     /**
      * Gets the first animation in the node hierarchy with the specified ID.
      *
-     * @param id The ID of the animation to get. Returns the first animation if ID is NULL.
+     * @param id The ID of the animation to get. Returns the first animation if ID is nullptr.
      * @return The first animation with the specified ID.
      */
-    Animation* getAnimation(const char* id = NULL) const;
+    Animation* getAnimation(const char* id = nullptr) const;
 
     /**
      * Gets the drawable object attached to this node.
@@ -428,7 +428,7 @@ public:
      * This will increase the reference count of the new drawble and decrease
      * the reference count of the old drawable.
      *
-     * @param drawable The new drawable component. May be NULL.
+     * @param drawable The new drawable component. May be nullptr.
      */
     void setDrawable(Drawable* drawable);
 
@@ -445,7 +445,7 @@ public:
      * This will increase the reference count of the new camera and decrease
      * the reference count of the old camera.
      *
-     * @param camera The new camera. May be NULL.
+     * @param camera The new camera. May be nullptr.
      */
     void setCamera(Camera* camera);
 
@@ -462,7 +462,7 @@ public:
      * This will increase the reference count of the new light and decrease
      * the reference count of the old light.
      *
-     * @param light The new light. May be NULL.
+     * @param light The new light. May be nullptr.
      */
     void setLight(Light* light);
 
@@ -479,7 +479,7 @@ public:
      * This will increase the reference count of the new audio source and decrease
      * the reference count of the old audio source.
      *
-     * @param audio The new audio source. May be NULL.
+     * @param audio The new audio source. May be nullptr.
      */
     void setAudioSource(AudioSource* audio);
 
@@ -532,13 +532,13 @@ public:
      * @param rigidBodyParameters If type is PhysicsCollisionObject::RIGID_BODY or
      *        PhysicsCollisionObject::VEHICLE, this must point to a valid rigid body
      *        parameters object containing information about the rigid body;
-     *        otherwise, this parameter may be NULL.
+     *        otherwise, this parameter may be nullptr.
      * @param group Group identifier of the object for collision filtering.
      * @param mask Bitmask to filter groups of objects to collide with this one.
      */
     PhysicsCollisionObject* setCollisionObject(PhysicsCollisionObject::Type type,
                                                const PhysicsCollisionShape::Definition& shape = PhysicsCollisionShape::box(),
-                                               PhysicsRigidBody::Parameters* rigidBodyParameters = NULL,
+                                               PhysicsRigidBody::Parameters* rigidBodyParameters = nullptr,
                                                int group = PHYSICS_COLLISION_GROUP_DEFAULT,
                                                int mask = PHYSICS_COLLISION_MASK_DEFAULT);
     /**
@@ -678,7 +678,7 @@ protected:
      *        or false if nodes that start with the given ID are returned.
      * @param skipSkin Set true to skip skin hierarchy, initial find may set false to include skin hierarchy.
      *
-     * @return The Node found or NULL if not found.
+     * @return The Node found or nullptr if not found.
      */
     Node* findNode(const char* id, bool recursive, bool exactMatch, bool skipSkin) const;
 
@@ -773,11 +773,11 @@ public:
     ~NodeCloneContext();
 
     /**
-     * Finds the cloned animation of the given animation or NULL if this animation was not registered with this context.
+     * Finds the cloned animation of the given animation or nullptr if this animation was not registered with this context.
      *
      * @param animation The animation to search for the cloned copy of.
      *
-     * @return The cloned animation or NULL if not found.
+     * @return The cloned animation or nullptr if not found.
      */
     Animation* findClonedAnimation(const Animation* animation);
 
@@ -790,11 +790,11 @@ public:
     void registerClonedAnimation(const Animation* original, Animation* clone);
 
     /**
-     * Finds the cloned node of the given node or NULL if this node was not registered with this context.
+     * Finds the cloned node of the given node or nullptr if this node was not registered with this context.
      *
      * @param node The node to search for the cloned copy of.
      *
-     * @return The cloned node or NULL if not found.
+     * @return The cloned node or nullptr if not found.
      */
     Node* findClonedNode(const Node* node);
 

@@ -73,7 +73,7 @@ public:
      *
      * @param id The ID of the state to return.
      *
-     * @return The state with the given ID, or NULL if no such state exists.
+     * @return The state with the given ID, or nullptr if no such state exists.
      */
     AIState* getState(const char* id) const;
 
@@ -92,7 +92,7 @@ public:
      *
      * @param id The ID of the new state.
      *
-     * @return The new state, or NULL if no matching state could be found.
+     * @return The new state, or nullptr if no matching state could be found.
      */
     AIState* setState(const char* id);
 

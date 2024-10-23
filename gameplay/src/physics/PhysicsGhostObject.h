@@ -63,7 +63,7 @@ protected:
      * @param node The node to create a ghost object for; note that the node must have
      *      a model attached to it prior to creating a ghost object for it.
      * @param properties The properties object defining the ghost object (must have namespace equal to 'ghost').
-     * @return The newly created ghost object, or <code>NULL</code> if the ghost object failed to load.
+     * @return The newly created ghost object, or <code>nullptr</code> if the ghost object failed to load.
      */
     static PhysicsGhostObject* create(Node* node, Properties* properties);
 

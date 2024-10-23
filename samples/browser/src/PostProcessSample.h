@@ -27,7 +27,7 @@ public:
     /**
      * Compositing blitter with a specified material/technique applied from a source buffer into the destination buffer.
      *
-     * If destination buffer is NULL then it composites to the default frame buffer.
+     * If destination buffer is nullptr then it composites to the default frame buffer.
      *
      * Requried uniforms:
      * sampler2d u_texture - The input texture sampler

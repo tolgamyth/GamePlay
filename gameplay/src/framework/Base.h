@@ -51,8 +51,8 @@ using std::modf;
 using std::atoi;
 
 // Common
-#ifndef NULL
-#define NULL     0
+#ifndef nullptr
+#define nullptr     0
 #endif
 
 namespace gameplay
@@ -128,14 +128,14 @@ extern int strcmpnocase(const char* s1, const char* s2);
 #define SAFE_DELETE(x) \
     { \
         delete x; \
-        x = NULL; \
+        x = nullptr; \
     }
 
 // Array deletion macro
 #define SAFE_DELETE_ARRAY(x) \
     { \
         delete[] x; \
-        x = NULL; \
+        x = nullptr; \
     }
 
 // Ref cleanup macro
@@ -143,7 +143,7 @@ extern int strcmpnocase(const char* s1, const char* s2);
     if (x) \
     { \
         (x)->release(); \
-        x = NULL; \
+        x = nullptr; \
     }
 
 // Math

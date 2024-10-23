@@ -100,7 +100,7 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
         }
     }
 
-    Texture* texture = NULL;
+    Texture* texture = nullptr;
 
     // Filter loading based on file extension.
     const char* ext = strrchr(FileSystem::resolvePath(path), '.');
@@ -142,7 +142,7 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
     }
 
     GP_ERROR("Failed to load texture from file '%s'.", path);
-    return NULL;
+    return nullptr;
 }
 
 Texture* Texture::create(Image* image, bool generateMipmaps)
@@ -157,7 +157,7 @@ Texture* Texture::create(Image* image, bool generateMipmaps)
         return create(Texture::RGBA, image->getWidth(), image->getHeight(), image->getData(), generateMipmaps);
     default:
         GP_ERROR("Unsupported image format (%d).", image->getFormat());
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -268,13 +268,13 @@ Texture* Texture::create(Format format, unsigned int width, unsigned int height,
         {
             glDeleteTextures(1, &textureId);
             GP_ERROR("Failed to determine texture size because format is UNKNOWN.");
-            return NULL;
+            return nullptr;
         }
         textureSize *= bpp;
         // Texture Cube
         for (unsigned int i = 0; i < 6; i++)
         {
-            const unsigned char* texturePtr = (data == NULL) ? NULL : &data[i * textureSize];
+            const unsigned char* texturePtr = (data == nullptr) ? nullptr : &data[i * textureSize];
             GL_ASSERT( glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat, width, height, 0, internalFormat, texelType, texturePtr) );
         }
     }
@@ -411,10 +411,10 @@ static unsigned int computePVRTCDataSize(int width, int height, int bpp)
 Texture* Texture::createCompressedPVRTC(const char* path)
 {
     std::unique_ptr<Stream> stream(FileSystem::open(path));
-    if (stream.get() == NULL || !stream->canRead())
+    if (stream.get() == nullptr || !stream->canRead())
     {
         GP_ERROR("Failed to load file '%s'.", path);
-        return NULL;
+        return nullptr;
     }
 
     // Read first 4 bytes to determine PVRTC format.
@@ -424,20 +424,20 @@ Texture* Texture::createCompressedPVRTC(const char* path)
     if (read != 1)
     {
         GP_ERROR("Failed to read PVR version.");
-        return NULL;
+        return nullptr;
     }
 
     // Rewind to start of header.
     if (stream->seek(0, SEEK_SET) == false)
     {
         GP_ERROR("Failed to seek backwards to beginning of file after reading PVR version.");
-        return NULL;
+        return nullptr;
     }
 
     // Read texture data.
     GLsizei width, height;
     GLenum format;
-    GLubyte* data = NULL;
+    GLubyte* data = nullptr;
     unsigned int mipMapCount;
     unsigned int faceCount;
     GLenum faces[6] = { GL_TEXTURE_2D };
@@ -452,10 +452,10 @@ Texture* Texture::createCompressedPVRTC(const char* path)
         // Legacy PVR file format.
         data = readCompressedPVRTCLegacy(path, stream.get(), &width, &height, &format, &mipMapCount, &faceCount, faces);
     }
-    if (data == NULL)
+    if (data == nullptr)
     {
         GP_ERROR("Failed to read texture data from PVR file '%s'.", path);
-        return NULL;
+        return nullptr;
     }
     stream->close();
 
@@ -547,14 +547,14 @@ GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei*
     if (read != 1)
     {
         GP_ERROR("Failed to read PVR header data for file '%s'.", path);
-        return NULL;
+        return nullptr;
     }
 
     if (header.pixelFormat[1] != 0)
     {
         // Unsupported pixel format.
         GP_ERROR("Unsupported pixel format in PVR file '%s'. (MSB == %d != 0)", path, header.pixelFormat[1]);
-        return NULL;
+        return nullptr;
     }
 
     int bpp;
@@ -579,7 +579,7 @@ GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei*
     default:
         // Unsupported format.
         GP_ERROR("Unsupported pixel format value (%d) in PVR file '%s'.", header.pixelFormat[0], path);
-        return NULL;
+        return nullptr;
     }
 
     *width = (GLsizei)header.width;
@@ -599,7 +599,7 @@ GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei*
             if (read != 1)
             {
                 GP_ERROR("Failed to read PVR metadata header data for file '%s'.", path);
-                return NULL;
+                return nullptr;
             }
             remainingMetadata -= sizeof(pvrtc_metadata) + mdHeader.dataSize;
 
@@ -614,7 +614,7 @@ GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei*
                 if (stream->seek(mdHeader.dataSize, SEEK_CUR) == false)
                 {
                     GP_ERROR("Failed to seek to next meta data header in PVR file '%s'.", path);
-                    return NULL;
+                    return nullptr;
                 }
                 continue;
             }
@@ -626,7 +626,7 @@ GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei*
             if (read != sizeof(faceOrder))
             {
                 GP_ERROR("Failed to read cubemap face order meta data for file '%s'.", path);
-                return NULL;
+                return nullptr;
             }
             for (unsigned int face = 0; face < (*faceCount); ++face)
             {
@@ -655,7 +655,7 @@ GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei*
         if (stream->seek(header.metaDataSize, SEEK_CUR) == false)
         {
             GP_ERROR("Failed to seek past header meta data in PVR file '%s'.", path);
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -677,7 +677,7 @@ GLubyte* Texture::readCompressedPVRTC(const char* path, Stream* stream, GLsizei*
     {
         SAFE_DELETE_ARRAY(data);
         GP_ERROR("Failed to read texture data from PVR file '%s'.", path);
-        return NULL;
+        return nullptr;
     }
 
     return data;
@@ -711,7 +711,7 @@ GLubyte* Texture::readCompressedPVRTCLegacy(const char* path, Stream* stream, GL
     if (read != size)
     {
         GP_ERROR("Failed to read file header for pvrtc file '%s'.", path);
-        return NULL;
+        return nullptr;
     }
 
     // Proper file header identifier.
@@ -721,7 +721,7 @@ GLubyte* Texture::readCompressedPVRTCLegacy(const char* path, Stream* stream, GL
         PVRTCIdentifier[3] != (char)((header.pvrtcTag >> 24) & 0xff))
      {
         GP_ERROR("Failed to load pvrtc file '%s': invalid header.", path);
-        return NULL;
+        return nullptr;
     }
 
     // Format flags for GLenum format.
@@ -736,7 +736,7 @@ GLubyte* Texture::readCompressedPVRTCLegacy(const char* path, Stream* stream, GL
     else
     {
         GP_ERROR("Failed to load pvrtc file '%s': invalid pvrtc compressed texture format flags.", path);
-        return NULL;
+        return nullptr;
     }
 
     *width = (GLsizei)header.width;
@@ -758,7 +758,7 @@ GLubyte* Texture::readCompressedPVRTCLegacy(const char* path, Stream* stream, GL
     {
         // Volume texture
         GP_ERROR("Failed to load pvrtc file '%s': volume texture is not supported.", path);
-        return NULL;
+        return nullptr;
     }
 
     unsigned int totalSize = header.dataSize; // Docs say dataSize is the size of the whole surface, or one face of a texture cube. But this does not appear to be the case with the latest PVRTexTool
@@ -768,7 +768,7 @@ GLubyte* Texture::readCompressedPVRTCLegacy(const char* path, Stream* stream, GL
     {
         SAFE_DELETE_ARRAY(data);
         GP_ERROR("Failed to load texture data for pvrtc file '%s'.", path);
-        return NULL;
+        return nullptr;
     }
 
     return data;
@@ -834,14 +834,14 @@ Texture* Texture::createCompressedDDS(const char* path)
         GLsizei size;
     };
 
-    Texture* texture = NULL;
+    Texture* texture = nullptr;
 
     // Read DDS file.
     std::unique_ptr<Stream> stream(FileSystem::open(path));
-    if (stream.get() == NULL || !stream->canRead())
+    if (stream.get() == nullptr || !stream->canRead())
     {
         GP_ERROR("Failed to open file '%s'.", path);
-        return NULL;
+        return nullptr;
     }
 
     // Validate DDS magic number.
@@ -849,7 +849,7 @@ Texture* Texture::createCompressedDDS(const char* path)
     if (stream->read(code, 1, 4) != 4 || strncmp(code, "DDS ", 4) != 0)
     {
         GP_ERROR("Failed to read DDS file '%s': invalid DDS magic number.", path);
-        return NULL;
+        return nullptr;
     }
 
     // Read DDS header.
@@ -857,7 +857,7 @@ Texture* Texture::createCompressedDDS(const char* path)
     if (stream->read(&header, sizeof(dds_header), 1) != 1)
     {
         GP_ERROR("Failed to read header for DDS file '%s'.", path);
-        return NULL;
+        return nullptr;
     }
 
     if ((header.dwFlags & 0x20000/*DDSD_MIPMAPCOUNT*/) == 0)
@@ -886,7 +886,7 @@ Texture* Texture::createCompressedDDS(const char* path)
     {
         // Volume textures unsupported.
         GP_ERROR("Failed to create texture from DDS file '%s': volume textures are unsupported.", path);
-        return NULL;
+        return nullptr;
     }
 
     // Allocate mip level structures.
@@ -939,7 +939,7 @@ Texture* Texture::createCompressedDDS(const char* path)
         default:
             GP_ERROR("Unsupported compressed texture format (%d) for DDS file '%s'.", header.ddspf.dwFourCC, path);
             SAFE_DELETE_ARRAY(mipLevels);
-            return NULL;
+            return nullptr;
         }
 
         for (unsigned int face = 0; face < facecount; ++face)
@@ -1015,7 +1015,7 @@ Texture* Texture::createCompressedDDS(const char* path)
         {
             GP_ERROR("Failed to create texture from uncompressed DDS file '%s': Unsupported color format (must be one of R8G8B8, A8R8G8B8, A8B8G8R8, X8R8G8B8, X8B8G8R8.", path);
             SAFE_DELETE_ARRAY(mipLevels);
-            return NULL;
+            return nullptr;
         }
 
         // Read data.
@@ -1098,7 +1098,7 @@ Texture* Texture::createCompressedDDS(const char* path)
         // Unsupported.
         GP_ERROR("Failed to create texture from DDS file '%s': unsupported flags (%d).", path, header.ddspf.dwFlags);
         SAFE_DELETE_ARRAY(mipLevels);
-        return NULL;
+        return nullptr;
     }
 
     // Close file.
@@ -1233,7 +1233,7 @@ Texture::Sampler* Texture::Sampler::create(Texture* texture)
 Texture::Sampler* Texture::Sampler::create(const char* path, bool generateMipmaps)
 {
     Texture* texture = Texture::create(path, generateMipmaps);
-    return texture ? new Sampler(texture) : NULL;
+    return texture ? new Sampler(texture) : nullptr;
 }
 
 void Texture::Sampler::setWrapMode(Wrap wrapS, Wrap wrapT, Wrap wrapR)

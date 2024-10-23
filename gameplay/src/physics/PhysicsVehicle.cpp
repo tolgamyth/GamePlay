@@ -107,7 +107,7 @@ PhysicsVehicle* PhysicsVehicle::create(Node* node, Properties* properties)
     // Load the defined vehicle parameters.
     properties->rewind();
     const char* name;
-    while ((name = properties->getNextProperty()) != NULL)
+    while ((name = properties->getNextProperty()) != nullptr)
     {
         if (strcmp(name, "steeringGain") == 0)
         {

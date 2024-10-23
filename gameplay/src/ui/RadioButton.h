@@ -33,7 +33,7 @@ public:
      * @return The new radio button.
      * @script{create}
      */
-    static RadioButton* create(const char* id, Theme::Style* style = NULL);
+    static RadioButton* create(const char* id, Theme::Style* style = nullptr);
 
     /**
      * Extends ScriptTarget::getTypeName() to return the type name of this class.
@@ -102,7 +102,7 @@ protected:
      *
      * @return The new radio button.
      */
-    static Control* create(Theme::Style* style, Properties* properties = NULL);
+    static Control* create(Theme::Style* style, Properties* properties = nullptr);
 
     /**
      * @see Control::initialize

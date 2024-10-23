@@ -20,9 +20,9 @@ CharacterGame game;
 #define BUTTON_2 1
 
 CharacterGame::CharacterGame()
-    : _font(NULL), _scene(NULL), _character(NULL), _characterNode(NULL), _characterMeshNode(NULL), _characterShadowNode(NULL), _basketballNode(NULL),
-      _animation(NULL), _currentClip(NULL), _jumpClip(NULL), _kickClip(NULL), _rotateX(0), _materialParameterAlpha(NULL),
-      _keyFlags(0), _physicsDebug(false), _wireframe(false), _hasBall(false), _applyKick(false), _gamepad(NULL)
+    : _font(nullptr), _scene(nullptr), _character(nullptr), _characterNode(nullptr), _characterMeshNode(nullptr), _characterShadowNode(nullptr), _basketballNode(nullptr),
+      _animation(nullptr), _currentClip(nullptr), _jumpClip(nullptr), _kickClip(nullptr), _rotateX(0), _materialParameterAlpha(nullptr),
+      _keyFlags(0), _physicsDebug(false), _wireframe(false), _hasBall(false), _applyKick(false), _gamepad(nullptr)
 {
     _buttonPressed = new bool[2];
 }
@@ -33,7 +33,7 @@ void CharacterGame::initialize()
     setMultiTouch(true);
 
     // Display the gameplay splash screen for at least 1 second.
-    displayScreen(this, &CharacterGame::drawSplash, NULL, 1000L);
+    displayScreen(this, &CharacterGame::drawSplash, nullptr, 1000L);
 
     // Load the font.
     _font = Font::create("res/ui/arial.gpb");
@@ -332,7 +332,7 @@ void CharacterGame::update(float elapsedTime)
     // Project the character's shadow node onto the surface directly below him.
     PhysicsController::HitResult hitResult;
     Vector3 v = _character->getNode()->getTranslationWorld();
-    if (getPhysicsController()->rayTest(Ray(Vector3(v.x, v.y + 1.0f, v.z), Vector3(0, -1, 0)), 100.0f, &hitResult, NULL))
+    if (getPhysicsController()->rayTest(Ray(Vector3(v.x, v.y + 1.0f, v.z), Vector3(0, -1, 0)), 100.0f, &hitResult, nullptr))
     {
         _characterShadowNode->setTranslation(Vector3(hitResult.point.x, hitResult.point.y + 0.1f, hitResult.point.z));
     }
@@ -541,7 +541,7 @@ void CharacterGame::adjustCamera(float elapsedTime)
     Vector3 oldPosition = cameraNode->getTranslationWorld();
 
     PhysicsController::HitResult result;
-    PhysicsCollisionObject* occlusion = NULL;
+    PhysicsCollisionObject* occlusion = nullptr;
     do
     {
         // Perform a ray test to check for camera collisions
@@ -572,12 +572,12 @@ void CharacterGame::adjustCamera(float elapsedTime)
     {
         float d = _scene->getActiveCamera()->getNode()->getTranslationWorld().distance(_characterNode->getTranslationWorld());
         float alpha = d < 10 ? (d * 0.1f) : 1.0f;
-        _characterMeshNode->setTag("transparent", alpha < 1.0f ? "true" : NULL);
+        _characterMeshNode->setTag("transparent", alpha < 1.0f ? "true" : nullptr);
         _materialParameterAlpha->setValue(alpha);
     }
     else
     {
-        _characterMeshNode->setTag("transparent", NULL);
+        _characterMeshNode->setTag("transparent", nullptr);
         _materialParameterAlpha->setValue(1.0f);
     }
 }

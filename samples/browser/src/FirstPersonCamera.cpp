@@ -1,7 +1,7 @@
 #include "FirstPersonCamera.h"
 
 FirstPersonCamera::FirstPersonCamera()
-    : _pitchNode(NULL), _rootNode(NULL)
+    : _pitchNode(nullptr), _rootNode(nullptr)
 {
     
 }
@@ -36,7 +36,7 @@ Camera* FirstPersonCamera::getCamera()
 {
     if (_pitchNode)
         return _pitchNode->getCamera();
-    return NULL;
+    return nullptr;
 }
 
 void FirstPersonCamera::setPosition(const Vector3& position)

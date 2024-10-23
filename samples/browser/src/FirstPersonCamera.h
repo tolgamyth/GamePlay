@@ -28,16 +28,16 @@ public:
     void initialize(float nearPlane = 1.0f, float farPlane = 1000.0f, float fov = 45.0f);
 
     /**
-     * Gets root node. May be NULL if not initialized.
+     * Gets root node. May be nullptr if not initialized.
      * 
-     * @return Root node or NULL.
+     * @return Root node or nullptr.
      */
     Node* getRootNode();
 
     /**
-     * Gets the camera. May be NULL.
+     * Gets the camera. May be nullptr.
      * 
-     * @return Camera or NULL.
+     * @return Camera or nullptr.
      */
     Camera* getCamera();
 

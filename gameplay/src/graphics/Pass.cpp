@@ -8,7 +8,7 @@ namespace gameplay
 {
 
 Pass::Pass(const char* id, Technique* technique) :
-    _id(id ? id : ""), _technique(technique), _effect(NULL), _vaBinding(NULL)
+    _id(id ? id : ""), _technique(technique), _effect(nullptr), _vaBinding(nullptr)
 {
     RenderState::_parent = _technique;
 }
@@ -29,7 +29,7 @@ bool Pass::initialize(const char* vshPath, const char* fshPath, const char* defi
 
     // Attempt to create/load the effect.
     _effect = Effect::createFromFile(vshPath, fshPath, defines);
-    if (_effect == NULL)
+    if (_effect == nullptr)
     {
         GP_WARN("Failed to create effect for pass. vertexShader = %s, fragmentShader = %s, defines = %s", vshPath, fshPath, defines ? defines : "");
         return false;

@@ -82,7 +82,7 @@ public:
     /**
      * Sets a listener to dispatch state events to.
      * 
-     * @param listener Listener to dispatch state events to, or NULL to disable event dispatching.
+     * @param listener Listener to dispatch state events to, or nullptr to disable event dispatching.
      */
     void setListener(Listener* listener);
 

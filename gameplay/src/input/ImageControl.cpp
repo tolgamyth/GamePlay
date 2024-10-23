@@ -5,7 +5,7 @@ namespace gameplay
 {
 
 ImageControl::ImageControl() :
-    _srcRegion(Rectangle::empty()), _dstRegion(Rectangle::empty()), _batch(NULL),
+    _srcRegion(Rectangle::empty()), _dstRegion(Rectangle::empty()), _batch(nullptr),
     _tw(0.0f), _th(0.0f), _uvs(Theme::UVs::full())
 {
 }
@@ -19,7 +19,7 @@ ImageControl* ImageControl::create(const char* id, Theme::Style* style)
 {
     ImageControl* imageControl = new ImageControl();
     imageControl->_id = id ? id : "";
-    imageControl->initialize("Image", style, NULL);
+    imageControl->initialize("Image", style, nullptr);
     return imageControl;
 }
 

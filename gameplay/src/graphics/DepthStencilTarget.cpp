@@ -102,7 +102,7 @@ DepthStencilTarget* DepthStencilTarget::getDepthStencilTarget(const char* id)
             return dst;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 const char* DepthStencilTarget::getId() const

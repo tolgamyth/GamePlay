@@ -64,7 +64,7 @@ public:
      * When a call to log is made with the given level, the specified C function will
      * be called to handle the request.
      *
-     * Passing NULL for logFunction restores the default log behavior for this level.
+     * Passing nullptr for logFunction restores the default log behavior for this level.
      *
      * @param level Log level to set logging callback for.
      * @param logFunction Pointer to a C function to call for each log request at the given log level.
@@ -78,7 +78,7 @@ public:
      * When a call to log is made with the given level, the specified 
      * Lua function will be called to handle the request.
      *
-     * Passing NULL for logFunction restores the default log behavior for this level.
+     * Passing nullptr for logFunction restores the default log behavior for this level.
      *
      * @param level Log level.
      * @param logFunction The Lua function to call for each log request at the given log level.

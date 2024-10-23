@@ -48,10 +48,10 @@ static Mesh* createCubeMesh(float size = 1.0f)
         VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
     };
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), vertexCount, false);
-    if (mesh == NULL)
+    if (mesh == nullptr)
     {
         GP_ERROR("Failed to create mesh.");
-        return NULL;
+        return nullptr;
     }
     mesh->setVertexData(vertices, 0, vertexCount);
     MeshPart* meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
@@ -60,7 +60,7 @@ static Mesh* createCubeMesh(float size = 1.0f)
 }
 
 SceneCreateSample::SceneCreateSample()
-    : _font(NULL), _scene(NULL), _cubeNode(NULL)
+    : _font(nullptr), _scene(nullptr), _cubeNode(nullptr)
 {
 }
 

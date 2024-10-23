@@ -11,7 +11,6 @@
 #include "animation/AnimationController.h"
 #include "physics/PhysicsController.h"
 #include "ai/AIController.h"
-#include "audio/AudioListener.h"
 #include "graphics/Rectangle.h"
 #include "math/Vector4.h"
 #include "utils/TimeListener.h"
@@ -269,13 +268,6 @@ public:
      * @return The script controller for this game.
      */
     inline ScriptController* getScriptController() const;
-
-    /**
-     * Gets the audio listener for 3D audio.
-     * 
-     * @return The audio listener for this game.
-     */
-    AudioListener* getAudioListener();
     
     /**
      * Shows or hides the virtual keyboard (if supported).
@@ -764,7 +756,6 @@ private:
     std::unique_ptr<AudioController> _audioController;          // Controls audio sources that are playing in the game.
     std::unique_ptr<PhysicsController> _physicsController;      // Controls the simulation of a physics scene and entities.
     std::unique_ptr<AIController> _aiController;                // Controls AI simulation.
-    std::unique_ptr<AudioListener> _audioListener;              // The audio listener in 3D space.
     std::priority_queue<TimeEvent, std::vector<TimeEvent>, std::less<TimeEvent> >* _timeEvents;     // Contains the scheduled time events.
     std::unique_ptr<ScriptController> _scriptController;            // Controls the scripting engine.
     std::unique_ptr<ScriptTarget> _scriptTarget;                // Script target for the game

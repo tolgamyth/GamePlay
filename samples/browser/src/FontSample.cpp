@@ -26,8 +26,8 @@ std::string _fontFiles[] =
 };
 
 FontSample::FontSample()
-    : _form(NULL), _stateBlock(NULL), _size(18), _wrap(true), _ignoreClip(false), _useViewport(true), _rightToLeft(false), _simple(false), _alignment(Font::ALIGN_LEFT),
-      _fontsCount(FONT_COUNT), _fontIndex(0), _font(NULL), _viewport(250, 100, 512, 200)
+    : _form(nullptr), _stateBlock(nullptr), _size(18), _wrap(true), _ignoreClip(false), _useViewport(true), _rightToLeft(false), _simple(false), _alignment(Font::ALIGN_LEFT),
+      _fontsCount(FONT_COUNT), _fontIndex(0), _font(nullptr), _viewport(250, 100, 512, 200)
 {
 }
 

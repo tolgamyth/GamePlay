@@ -7,15 +7,15 @@ namespace gameplay
 {
 
 PhysicsGenericConstraint::PhysicsGenericConstraint()
-    : PhysicsConstraint(NULL, NULL), _rotationOffsetA(NULL), _rotationOffsetB(NULL),
-    _translationOffsetA(NULL), _translationOffsetB(NULL)
+    : PhysicsConstraint(nullptr, nullptr), _rotationOffsetA(nullptr), _rotationOffsetB(nullptr),
+    _translationOffsetA(nullptr), _translationOffsetB(nullptr)
 {
     // Not used.
 }
 
 PhysicsGenericConstraint::PhysicsGenericConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
-    : PhysicsConstraint(a, b), _rotationOffsetA(NULL), _rotationOffsetB(NULL),
-    _translationOffsetA(NULL), _translationOffsetB(NULL)
+    : PhysicsConstraint(a, b), _rotationOffsetA(nullptr), _rotationOffsetB(nullptr),
+    _translationOffsetA(nullptr), _translationOffsetB(nullptr)
 {
     assert(a && a->_body && a->getNode());
 
@@ -33,7 +33,7 @@ PhysicsGenericConstraint::PhysicsGenericConstraint(PhysicsRigidBody* a, PhysicsR
 
 PhysicsGenericConstraint::PhysicsGenericConstraint(PhysicsRigidBody* a, const Quaternion& rotationOffsetA, const Vector3& translationOffsetA,
     PhysicsRigidBody* b, const Quaternion& rotationOffsetB, const Vector3& translationOffsetB)
-    : PhysicsConstraint(a, b), _rotationOffsetA(NULL), _rotationOffsetB(NULL), _translationOffsetA(NULL), _translationOffsetB(NULL)
+    : PhysicsConstraint(a, b), _rotationOffsetA(nullptr), _rotationOffsetB(nullptr), _translationOffsetA(nullptr), _translationOffsetB(nullptr)
 {
     assert(a && a->_body && a->getNode());
 

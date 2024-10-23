@@ -37,7 +37,7 @@ struct CollidesWithCallback : public btCollisionWorld::ContactResultCallback
 };
 
 PhysicsCollisionObject::PhysicsCollisionObject(Node* node, int group, int mask)
-    : _node(node), _collisionShape(NULL), _enabled(true), _scriptListeners(NULL), _motionState(NULL), _group(group), _mask(mask)
+    : _node(node), _collisionShape(nullptr), _enabled(true), _scriptListeners(nullptr), _motionState(nullptr), _group(group), _mask(mask)
 {
 }
 
@@ -282,7 +282,7 @@ void PhysicsCollisionObject::PhysicsMotionState::setCenterOfMassOffset(const Vec
 }
 
 PhysicsCollisionObject::ScriptListener::ScriptListener()
-    : script(NULL)
+    : script(nullptr)
 {
 }
 
@@ -302,14 +302,14 @@ PhysicsCollisionObject::ScriptListener* PhysicsCollisionObject::ScriptListener::
         scriptPath = "";
     }
 
-    Script* script = NULL;
+    Script* script = nullptr;
     if (!scriptPath.empty())
     {
         script = Game::getInstance()->getScriptController()->loadScript(scriptPath.c_str(), Script::GLOBAL);
         if (!script)
         {
             // Failed to load script
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -325,7 +325,7 @@ void PhysicsCollisionObject::ScriptListener::collisionEvent(PhysicsCollisionObje
 {
     Game::getInstance()->getScriptController()->executeFunction<void>(function.c_str(), 
         "[PhysicsCollisionObject::CollisionListener::EventType]<PhysicsCollisionObject::CollisionPair><Vector3><Vector3>",
-        NULL,
+        nullptr,
         type, &collisionPair, &contactPointA, &contactPointB);
 }
 

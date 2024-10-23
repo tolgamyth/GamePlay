@@ -28,10 +28,10 @@ const int PhysicsController::REGISTERED    = 0x04;
 const int PhysicsController::REMOVE        = 0x08;
 
 PhysicsController::PhysicsController()
-  : _isUpdating(false), _collisionConfiguration(NULL), _dispatcher(NULL),
-    _overlappingPairCache(NULL), _solver(NULL), _world(NULL), _ghostPairCallback(NULL),
-    _debugDrawer(NULL), _status(PhysicsController::Listener::DEACTIVATED), _listeners(NULL),
-    _gravity(btScalar(0.0), btScalar(-9.8), btScalar(0.0)), _collisionCallback(NULL)
+  : _isUpdating(false), _collisionConfiguration(nullptr), _dispatcher(nullptr),
+    _overlappingPairCache(nullptr), _solver(nullptr), _world(nullptr), _ghostPairCallback(nullptr),
+    _debugDrawer(nullptr), _status(PhysicsController::Listener::DEACTIVATED), _listeners(nullptr),
+    _gravity(btScalar(0.0), btScalar(-9.8), btScalar(0.0)), _collisionCallback(nullptr)
 {
     GP_REGISTER_SCRIPT_EVENTS();
 
@@ -193,7 +193,7 @@ bool PhysicsController::rayTest(const Ray& ray, float distance, PhysicsControlle
 
             btCollisionObject* co = reinterpret_cast<btCollisionObject*>(proxy0->m_clientObject);
             PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(co->getUserPointer());
-            if (object == NULL)
+            if (object == nullptr)
                 return false;
 
             return filter ? !filter->filter(object) : true;
@@ -204,7 +204,7 @@ bool PhysicsController::rayTest(const Ray& ray, float distance, PhysicsControlle
             assert(rayResult.m_collisionObject);
             PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(rayResult.m_collisionObject->getUserPointer());
 
-            if (object == NULL)
+            if (object == nullptr)
                 return 1.0f; // ignore
 
             float result = btCollisionWorld::ClosestRayResultCallback::addSingleResult(rayResult, normalInWorldSpace);
@@ -268,7 +268,7 @@ bool PhysicsController::sweepTest(PhysicsCollisionObject* object, const Vector3&
 
             btCollisionObject* co = reinterpret_cast<btCollisionObject*>(proxy0->m_clientObject);
             PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(co->getUserPointer());
-            if (object == NULL || object == me)
+            if (object == nullptr || object == me)
                 return false;
 
             return filter ? !filter->filter(object) : true;
@@ -279,7 +279,7 @@ bool PhysicsController::sweepTest(PhysicsCollisionObject* object, const Vector3&
             assert(convexResult.m_hitCollisionObject);
             PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(convexResult.m_hitCollisionObject->getUserPointer());
 
-            if (object == NULL)
+            if (object == nullptr)
                 return 1.0f;
 
             float result = ClosestConvexResultCallback::addSingleResult(convexResult, normalInWorldSpace);
@@ -386,7 +386,7 @@ btScalar PhysicsController::CollisionCallback::addSingleResult(btManifoldPoint& 
         collisionInfo = &_pc->_collisionStatus[pair];
 
         // Add the appropriate listeners.
-        PhysicsCollisionObject::CollisionPair p1(pair.objectA, NULL);
+        PhysicsCollisionObject::CollisionPair p1(pair.objectA, nullptr);
         if (_pc->_collisionStatus.count(p1) > 0)
         {
             const CollisionInfo& ci = _pc->_collisionStatus[p1];
@@ -397,7 +397,7 @@ btScalar PhysicsController::CollisionCallback::addSingleResult(btManifoldPoint& 
                 collisionInfo->_listeners.push_back(*iter);
             }
         }
-        PhysicsCollisionObject::CollisionPair p2(pair.objectB, NULL);
+        PhysicsCollisionObject::CollisionPair p2(pair.objectB, nullptr);
         if (_pc->_collisionStatus.count(p2) > 0)
         {
             const CollisionInfo& ci = _pc->_collisionStatus[p2];
@@ -556,7 +556,7 @@ void PhysicsController::update(float elapsedTime)
                 size_t size = iter->second._listeners.size();
                 for (size_t i = 0; i < size; i++)
                 {
-                    PhysicsCollisionObject::CollisionPair cp(iter->first.objectA, NULL);
+                    PhysicsCollisionObject::CollisionPair cp(iter->first.objectA, nullptr);
                     iter->second._listeners[i]->collisionEvent(PhysicsCollisionObject::CollisionListener::NOT_COLLIDING, cp);
                 }
             }
@@ -720,7 +720,7 @@ static void getBoundingBox(Node* node, BoundingBox* out, bool merge = false)
     assert(out);
 
     Model* model = dynamic_cast<Model*>(node->getDrawable());
-    if (model != NULL)
+    if (model != nullptr)
     {
         assert(model->getMesh());
 
@@ -747,7 +747,7 @@ static void getBoundingSphere(Node* node, BoundingSphere* out, bool merge = fals
     assert(out);
 
     Model* model = dynamic_cast<Model*>(node->getDrawable());
-    if (model != NULL)
+    if (model != nullptr)
     {
         assert(model->getMesh());
 
@@ -784,7 +784,7 @@ PhysicsCollisionShape* PhysicsController::createShape(Node* node, const PhysicsC
 {
     assert(node);
 
-    PhysicsCollisionShape* collisionShape = NULL;
+    PhysicsCollisionShape* collisionShape = nullptr;
 
     // Get the node's world scale (we need to apply this during creation since rigid bodies don't scale dynamically).
     Vector3 scale;
@@ -894,7 +894,7 @@ PhysicsCollisionShape* PhysicsController::createShape(Node* node, const PhysicsC
             else
             {
                 // Build the heightfield from an attached terrain's height array
-                if (dynamic_cast<Terrain*>(node->getDrawable()) == NULL)
+                if (dynamic_cast<Terrain*>(node->getDrawable()) == nullptr)
                     GP_ERROR("Empty heightfield collision shapes can only be used on nodes that have an attached Terrain.");
                 else
                     collisionShape = createHeightfield(node, dynamic_cast<Terrain*>(node->getDrawable())->_heightfield, centerOfMassOffset);
@@ -1040,7 +1040,7 @@ PhysicsCollisionShape* PhysicsController::createHeightfield(Node* node, HeightFi
 
     // If the node has a terrain, apply the terrain's local scale to the world scale
     Terrain* terrain = dynamic_cast<Terrain*>(node->getDrawable());
-    if (terrain != NULL)
+    if (terrain != nullptr)
     {
         const Vector3& tScale = terrain->_localScale;
         scale.set(scale.x * tScale.x, scale.y * tScale.y, scale.z * tScale.z);
@@ -1083,7 +1083,7 @@ PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& 
     if (strlen(mesh->getUrl()) == 0)
     {
         GP_ERROR("Cannot create mesh rigid body for mesh without valid URL.");
-        return NULL;
+        return nullptr;
     }
 
     if (!dynamic)
@@ -1111,21 +1111,21 @@ PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& 
         if (!triMesh)
         {
             GP_ERROR("Mesh rigid bodies are currently only supported on meshes with TRIANGLES primitive type.");
-            return NULL;
+            return nullptr;
         }
     }
 
     // Read mesh data from URL
     Bundle::MeshData* data = Bundle::readMeshData(mesh->getUrl());
-    if (data == NULL)
+    if (data == nullptr)
     {
         GP_ERROR("Failed to load mesh data from url '%s'.", mesh->getUrl());
-        return NULL;
+        return nullptr;
     }
 
     // Create mesh data to be populated and store in returned collision shape.
     PhysicsCollisionShape::MeshData* shapeMeshData = new PhysicsCollisionShape::MeshData();
-    shapeMeshData->vertexData = NULL;
+    shapeMeshData->vertexData = nullptr;
 
     // Copy the scaled vertex position data to the rigid body's local buffer.
     Matrix m;
@@ -1143,8 +1143,8 @@ PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& 
         memcpy(&(shapeMeshData->vertexData[i * 3]), &v, sizeof(float) * 3);
     }
 
-    btCollisionShape* collisionShape = NULL;
-    btTriangleIndexVertexArray* meshInterface = NULL;
+    btCollisionShape* collisionShape = nullptr;
+    btTriangleIndexVertexArray* meshInterface = nullptr;
 
     if (dynamic)
     {
@@ -1169,7 +1169,7 @@ PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& 
         {
             PHY_ScalarType indexType = PHY_UCHAR;
             int indexStride = 0;
-            Bundle::MeshPartData* meshPart = NULL;
+            Bundle::MeshPartData* meshPart = nullptr;
             for (size_t i = 0; i < partCount; i++)
             {
                 meshPart = data->parts[i];
@@ -1195,13 +1195,13 @@ PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& 
                     SAFE_DELETE_ARRAY(shapeMeshData->vertexData);
                     SAFE_DELETE(shapeMeshData);
                     SAFE_DELETE(data);
-                    return NULL;
+                    return nullptr;
                 }
 
                 // Move the index data into the rigid body's local buffer.
-                // Set it to NULL in the MeshPartData so it is not released when the data is freed.
+                // Set it to nullptr in the MeshPartData so it is not released when the data is freed.
                 shapeMeshData->indexData.push_back(meshPart->indexData);
-                meshPart->indexData = NULL;
+                meshPart->indexData = nullptr;
 
                 // Create a btIndexedMesh object for the current mesh part.
                 btIndexedMesh indexedMesh;
@@ -1331,7 +1331,7 @@ void PhysicsController::removeConstraint(PhysicsConstraint* constraint)
 
 PhysicsController::DebugDrawer::DebugDrawer()
     : _mode(btIDebugDraw::DBG_DrawAabb | btIDebugDraw::DBG_DrawConstraintLimits | btIDebugDraw::DBG_DrawConstraints | 
-       btIDebugDraw::DBG_DrawContactPoints | btIDebugDraw::DBG_DrawWireframe), _meshBatch(NULL), _lineCount(0)
+       btIDebugDraw::DBG_DrawContactPoints | btIDebugDraw::DBG_DrawWireframe), _meshBatch(nullptr), _lineCount(0)
 {
     // Vertex shader for drawing colored lines.
     const char* vs_str = 

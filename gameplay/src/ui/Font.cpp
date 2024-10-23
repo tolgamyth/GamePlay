@@ -15,10 +15,10 @@ namespace gameplay
 
 static std::vector<Font*> __fontCache;
 
-static Effect* __fontEffect = NULL;
+static Effect* __fontEffect = nullptr;
 
 Font::Font() :
-    _format(BITMAP), _style(PLAIN), _size(0), _spacing(0.0f), _glyphs(NULL), _glyphCount(0), _texture(NULL), _batch(NULL), _cutoffParam(NULL)
+    _format(BITMAP), _style(PLAIN), _size(0), _spacing(0.0f), _glyphs(nullptr), _glyphCount(0), _texture(nullptr), _batch(nullptr), _cutoffParam(nullptr)
 {
 }
 
@@ -51,7 +51,7 @@ Font* Font::create(const char* path, const char* id)
     {
         Font* f = __fontCache[i];
         assert(f);
-        if (f->_path == path && (id == NULL || f->_id == id))
+        if (f->_path == path && (id == nullptr || f->_id == id))
         {
             // Found a match.
             f->addRef();
@@ -61,21 +61,21 @@ Font* Font::create(const char* path, const char* id)
 
     // Load the bundle.
     Bundle* bundle = Bundle::create(path);
-    if (bundle == NULL)
+    if (bundle == nullptr)
     {
         GP_WARN("Failed to load font bundle '%s'.", path);
-        return NULL;
+        return nullptr;
     }
 
-    Font* font = NULL;
-    if (id == NULL)
+    Font* font = nullptr;
+    if (id == nullptr)
     {
         // Get the ID of the first object in the bundle (assume it's a Font).
         const char* id;
-        if ((id = bundle->getObjectId(0)) == NULL)
+        if ((id = bundle->getObjectId(0)) == nullptr)
         {
             GP_WARN("Failed to load font without explicit id; the first object in the font bundle has a null id.");
-            return NULL;
+            return nullptr;
         }
 
         // Load the font using the ID of the first object in the bundle.
@@ -105,17 +105,17 @@ Font* Font::create(const char* family, Style style, unsigned int size, Glyph* gl
     assert(texture);
 
     // Create the effect for the font's sprite batch.
-    if (__fontEffect == NULL)
+    if (__fontEffect == nullptr)
     {
-        const char* defines = NULL;
+        const char* defines = nullptr;
         if (format == DISTANCE_FIELD)
             defines = "DISTANCE_FIELD";
         __fontEffect = Effect::createFromFile(FONT_VSH, FONT_FSH, defines);
-        if (__fontEffect == NULL)
+        if (__fontEffect == nullptr)
         {
             GP_WARN("Failed to create effect for font.");
             SAFE_RELEASE(texture);
-            return NULL;
+            return nullptr;
         }
     }
     else
@@ -129,10 +129,10 @@ Font* Font::create(const char* family, Style style, unsigned int size, Glyph* gl
     // Release __fontEffect since the SpriteBatch keeps a reference to it
     SAFE_RELEASE(__fontEffect);
 
-    if (batch == NULL)
+    if (batch == nullptr)
     {
         GP_WARN("Failed to create batch for font.");
-        return NULL;
+        return nullptr;
     }
 
     // Add linear filtering for better font quality.
@@ -266,7 +266,7 @@ void Font::drawText(const char* text, int x, int y, const Vector4& color, unsign
 
     float scale = (float)size / _size;
     int spacing = (int)(size * _spacing);
-    const char* cursor = NULL;
+    const char* cursor = nullptr;
 
     if (rightToLeft)
     {
@@ -363,7 +363,7 @@ void Font::drawText(const char* text, int x, int y, const Vector4& color, unsign
 
                     if (getFormat() == DISTANCE_FIELD )
                     {
-                        if (_cutoffParam == NULL)
+                        if (_cutoffParam == nullptr)
                             _cutoffParam = _batch->getMaterial()->getParameter("u_cutoff");
                         // TODO: Fix me so that smaller font are much smoother
                         _cutoffParam->setVector2(Vector2(1.0, 1.0));
@@ -527,7 +527,7 @@ void Font::drawText(const char* text, const Rectangle& area, const Vector4& colo
                     {
                         if (getFormat() == DISTANCE_FIELD)
                         {
-                            if (_cutoffParam == NULL)
+                            if (_cutoffParam == nullptr)
                                 _cutoffParam = _batch->getMaterial()->getParameter("u_cutoff");
                             // TODO: Fix me so that smaller font are much smoother
                             _cutoffParam->setVector2(Vector2(1.0, 1.0));
@@ -1101,7 +1101,7 @@ void Font::getMeasurementInfo(const char* text, const Rectangle& area, unsigned 
                     delimiter = token[0];
                 }
 
-                if (reachedEOF || token == NULL)
+                if (reachedEOF || token == nullptr)
                 {
                     break;
                 }
@@ -1288,7 +1288,7 @@ int Font::getIndexOrLocation(const char* text, const Rectangle& area, unsigned i
         }
         else
         {
-            result = handleDelimiters(&token, size, iteration, area.x, &xPos, &yPos, &delimLength, &xPositionsIt, xPositions.end(), &charIndex, NULL, charIndex, destIndex);
+            result = handleDelimiters(&token, size, iteration, area.x, &xPos, &yPos, &delimLength, &xPositionsIt, xPositions.end(), &charIndex, nullptr, charIndex, destIndex);
         }
 
         currentLineLength += delimLength;

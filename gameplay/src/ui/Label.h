@@ -30,7 +30,7 @@ public:
      * @return The new label.
      * @script{create}
      */
-    static Label* create(const char* id, Theme::Style* style = NULL);
+    static Label* create(const char* id, Theme::Style* style = nullptr);
 
     /**
      * Extends ScriptTarget::getTypeName() to return the type name of this class.

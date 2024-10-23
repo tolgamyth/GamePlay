@@ -16,7 +16,7 @@ namespace gameplay
 {
 
 Animation::Animation(const char* id, AnimationTarget* target, int propertyId, unsigned int keyCount, unsigned int* keyTimes, float* keyValues, unsigned int type)
-    : _controller(Game::getInstance()->getAnimationController()), _id(id), _duration(0L), _defaultClip(NULL), _clips(NULL)
+    : _controller(Game::getInstance()->getAnimationController()), _id(id), _duration(0L), _defaultClip(nullptr), _clips(nullptr)
 {
     createChannel(target, propertyId, keyCount, keyTimes, keyValues, type);
 
@@ -26,7 +26,7 @@ Animation::Animation(const char* id, AnimationTarget* target, int propertyId, un
 }
 
 Animation::Animation(const char* id, AnimationTarget* target, int propertyId, unsigned int keyCount, unsigned int* keyTimes, float* keyValues, float* keyInValue, float* keyOutValue, unsigned int type)
-    : _controller(Game::getInstance()->getAnimationController()), _id(id), _duration(0L), _defaultClip(NULL), _clips(NULL)
+    : _controller(Game::getInstance()->getAnimationController()), _id(id), _duration(0L), _defaultClip(nullptr), _clips(nullptr)
 {
     createChannel(target, propertyId, keyCount, keyTimes, keyValues, keyInValue, keyOutValue, type);
     // Release the animation because a newly created animation has a ref count of 1 and the channels hold the ref to animation.
@@ -35,7 +35,7 @@ Animation::Animation(const char* id, AnimationTarget* target, int propertyId, un
 }
 
 Animation::Animation(const char* id)
-    : _controller(Game::getInstance()->getAnimationController()), _id(id), _duration(0L), _defaultClip(NULL), _clips(NULL)
+    : _controller(Game::getInstance()->getAnimationController()), _id(id), _duration(0L), _defaultClip(nullptr), _clips(nullptr)
 {
 }
 
@@ -147,10 +147,10 @@ AnimationClip* Animation::createClip(const char* id, unsigned long begin, unsign
 
 AnimationClip* Animation::getClip(const char* id)
 {
-    // If id is NULL return the default clip.
-    if (id == NULL)
+    // If id is nullptr return the default clip.
+    if (id == nullptr)
     {
-        if (_defaultClip == NULL)
+        if (_defaultClip == nullptr)
             createDefaultClip();
 
         return _defaultClip;
@@ -166,7 +166,7 @@ AnimationClip* Animation::getClip(unsigned int index) const
     if (_clips)
         return _clips->at(index);
 
-    return NULL;
+    return nullptr;
 }
 
 unsigned int Animation::getClipCount() const
@@ -176,10 +176,10 @@ unsigned int Animation::getClipCount() const
 
 void Animation::play(const char* clipId)
 {
-    // If id is NULL, play the default clip.
-    if (clipId == NULL)
+    // If id is nullptr, play the default clip.
+    if (clipId == nullptr)
     {
-        if (_defaultClip == NULL)
+        if (_defaultClip == nullptr)
             createDefaultClip();
 
         _defaultClip->play();
@@ -188,15 +188,15 @@ void Animation::play(const char* clipId)
     {
         // Find animation clip and play.
         AnimationClip* clip = findClip(clipId);
-        if (clip != NULL)
+        if (clip != nullptr)
             clip->play();
     }
 }
 
 void Animation::stop(const char* clipId)
 {
-    // If id is NULL, play the default clip.
-    if (clipId == NULL)
+    // If id is nullptr, play the default clip.
+    if (clipId == nullptr)
     {
         if (_defaultClip)
             _defaultClip->stop();
@@ -205,14 +205,14 @@ void Animation::stop(const char* clipId)
     {
         // Find animation clip and play.
         AnimationClip* clip = findClip(clipId);
-        if (clip != NULL)
+        if (clip != nullptr)
             clip->stop();
     }
 }
 
 void Animation::pause(const char * clipId)
 {
-    if (clipId == NULL)
+    if (clipId == nullptr)
     {
         if (_defaultClip)
             _defaultClip->pause();
@@ -220,7 +220,7 @@ void Animation::pause(const char * clipId)
     else
     {
         AnimationClip* clip = findClip(clipId);
-        if (clip != NULL)
+        if (clip != nullptr)
             clip->pause();
     }
 }
@@ -250,7 +250,7 @@ void Animation::createClips(Properties* animationProperties, unsigned int frameC
 
     Properties* pClip = animationProperties->getNextNamespace();
 
-    while (pClip != NULL && std::strcmp(pClip->getNamespace(), "clip") == 0)
+    while (pClip != nullptr && std::strcmp(pClip->getNamespace(), "clip") == 0)
     {
         int begin = pClip->getInt("begin");
         int end = pClip->getInt("end");
@@ -288,7 +288,7 @@ void Animation::createClips(Properties* animationProperties, unsigned int frameC
 
 void Animation::addClip(AnimationClip* clip)
 {
-    if (_clips == NULL)
+    if (_clips == nullptr)
         _clips = new std::vector<AnimationClip*>;
 
     assert(clip);
@@ -310,7 +310,7 @@ AnimationClip* Animation::findClip(const char* id) const
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 Animation::Channel* Animation::createChannel(AnimationTarget* target, int propertyId, unsigned int keyCount, unsigned int* keyTimes, float* keyValues, unsigned int type)

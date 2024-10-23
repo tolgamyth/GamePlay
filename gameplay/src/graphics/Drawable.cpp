@@ -7,7 +7,7 @@ namespace gameplay
 {
 
 Drawable::Drawable()
-    : _node(NULL)
+    : _node(nullptr)
 {
 }
 

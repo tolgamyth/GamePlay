@@ -75,7 +75,7 @@ void Ref::printLeaks()
     else
     {
         print("[memory] WARNING: %d Ref objects still active in memory.\n", __refAllocationCount);
-        for (RefAllocationRecord* rec = __refAllocations; rec != NULL; rec = rec->next)
+        for (RefAllocationRecord* rec = __refAllocations; rec != nullptr; rec = rec->next)
         {
             Ref* ref = rec->ref;
             assert(ref);

@@ -22,10 +22,10 @@
 namespace gameplay
 {
 
-static Effect* __spriteEffect = NULL;
+static Effect* __spriteEffect = nullptr;
 
 SpriteBatch::SpriteBatch()
-    : _batch(NULL), _sampler(NULL), _textureWidthRatio(0.0f), _textureHeightRatio(0.0f)
+    : _batch(nullptr), _sampler(nullptr), _textureWidthRatio(0.0f), _textureHeightRatio(0.0f)
 {
 }
 
@@ -38,7 +38,7 @@ SpriteBatch::~SpriteBatch()
         if (__spriteEffect && __spriteEffect->getRefCount() == 1)
         {
             __spriteEffect->release();
-            __spriteEffect = NULL;
+            __spriteEffect = nullptr;
         }
         else
         {
@@ -57,20 +57,20 @@ SpriteBatch* SpriteBatch::create(const char* texturePath, Effect* effect, unsign
 
 SpriteBatch* SpriteBatch::create(Texture* texture,  Effect* effect, unsigned int initialCapacity)
 {
-    assert(texture != NULL);
+    assert(texture != nullptr);
     assert(texture->getType() == Texture::TEXTURE_2D);
 
-    bool customEffect = (effect != NULL);
+    bool customEffect = (effect != nullptr);
     if (!customEffect)
     {
         // Create our static sprite effect.
-        if (__spriteEffect == NULL)
+        if (__spriteEffect == nullptr)
         {
             __spriteEffect = Effect::createFromFile(SPRITE_VSH, SPRITE_FSH);
-            if (__spriteEffect == NULL)
+            if (__spriteEffect == nullptr)
             {
                 GP_ERROR("Unable to load sprite effect.");
-                return NULL;
+                return nullptr;
             }
             effect = __spriteEffect;
         }
@@ -82,7 +82,7 @@ SpriteBatch* SpriteBatch::create(Texture* texture,  Effect* effect, unsigned int
     }
 
     // Search for the first sampler uniform in the effect.
-    Uniform* samplerUniform = NULL;
+    Uniform* samplerUniform = nullptr;
     for (unsigned int i = 0, count = effect->getUniformCount(); i < count; ++i)
     {
         Uniform* uniform = effect->getUniform(i);
@@ -96,7 +96,7 @@ SpriteBatch* SpriteBatch::create(Texture* texture,  Effect* effect, unsigned int
     {
         GP_ERROR("No uniform of type GL_SAMPLER_2D found in sprite effect.");
         SAFE_RELEASE(effect);
-        return NULL;
+        return nullptr;
     }
 
     // Wrap the effect in a material

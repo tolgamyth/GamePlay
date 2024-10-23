@@ -45,7 +45,7 @@ Scene* Joint::getScene() const
     // Overrides Node::getScene() to search the node our skins.
     for (const SkinReference* itr = &_skin; itr && itr->skin; itr = itr->next)
     {
-        Model* model = itr->skin ? itr->skin->getModel() : NULL;
+        Model* model = itr->skin ? itr->skin->getModel() : nullptr;
         if (model)
         {
             Node* node = model->getNode();
@@ -124,7 +124,7 @@ void Joint::removeSkin(MeshSkin* skin)
     if (_skin.skin == skin)
     {
         // Skin is our root referenced skin
-        _skin.skin = NULL;
+        _skin.skin = nullptr;
 
         // Shift the next skin reference down to the root
         if (_skin.next)
@@ -132,7 +132,7 @@ void Joint::removeSkin(MeshSkin* skin)
             SkinReference* tmp = _skin.next;
             _skin.skin = tmp->skin;
             _skin.next = tmp->next;
-            tmp->next = NULL; // prevent deletion
+            tmp->next = nullptr; // prevent deletion
             SAFE_DELETE(tmp);
         }
     }
@@ -146,7 +146,7 @@ void Joint::removeSkin(MeshSkin* skin)
             {
                 // Link this refernce out
                 ref->next = tmp->next;
-                tmp->next = NULL; // prevent deletion
+                tmp->next = nullptr; // prevent deletion
                 SAFE_DELETE(tmp);
                 break;
             }
@@ -156,7 +156,7 @@ void Joint::removeSkin(MeshSkin* skin)
 }
 
 Joint::SkinReference::SkinReference()
-    : skin(NULL), next(NULL)
+    : skin(nullptr), next(nullptr)
 {
 }
 

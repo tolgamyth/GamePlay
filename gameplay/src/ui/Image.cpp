@@ -8,7 +8,7 @@ namespace gameplay
 static void readStream(png_structp png, png_bytep data, png_size_t length)
 {
     Stream* stream = reinterpret_cast<Stream*>(png_get_io_ptr(png));
-    if (stream == NULL || stream->read(data, 1, length) != length)
+    if (stream == nullptr || stream->read(data, 1, length) != length)
     {
         png_error(png, "Error reading PNG.");
     }
@@ -20,10 +20,10 @@ Image* Image::create(const char* path)
 
     // Open the file.
     std::unique_ptr<Stream> stream(FileSystem::open(path));
-    if (stream.get() == NULL || !stream->canRead())
+    if (stream.get() == nullptr || !stream->canRead())
     {
         GP_ERROR("Failed to open image file '%s'.", path);
-        return NULL;
+        return nullptr;
     }
 
     // Verify PNG signature.
@@ -31,32 +31,32 @@ Image* Image::create(const char* path)
     if (stream->read(sig, 1, 8) != 8 || png_sig_cmp(sig, 0, 8) != 0)
     {
         GP_ERROR("Failed to load file '%s'; not a valid PNG.", path);
-        return NULL;
+        return nullptr;
     }
 
-    // Initialize png read struct (last three parameters use stderr+longjump if NULL).
-    png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (png == NULL)
+    // Initialize png read struct (last three parameters use stderr+longjump if nullptr).
+    png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
+    if (png == nullptr)
     {
         GP_ERROR("Failed to create PNG structure for reading PNG file '%s'.", path);
-        return NULL;
+        return nullptr;
     }
 
     // Initialize info struct.
     png_infop info = png_create_info_struct(png);
-    if (info == NULL)
+    if (info == nullptr)
     {
         GP_ERROR("Failed to create PNG info structure for PNG file '%s'.", path);
-        png_destroy_read_struct(&png, NULL, NULL);
-        return NULL;
+        png_destroy_read_struct(&png, nullptr, nullptr);
+        return nullptr;
     }
 
     // Set up error handling (required without using custom error handlers above).
     if (setjmp(png_jmpbuf(png)))
     {
         GP_ERROR("Failed to set up error handling for reading PNG file '%s'.", path);
-        png_destroy_read_struct(&png, &info, NULL);
-        return NULL;
+        png_destroy_read_struct(&png, &info, nullptr);
+        return nullptr;
     }
 
     // Initialize file io.
@@ -66,7 +66,7 @@ Image* Image::create(const char* path)
     png_set_sig_bytes(png, 8);
 
     // Read the entire image into memory.
-    png_read_png(png, info, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND | PNG_TRANSFORM_GRAY_TO_RGB, NULL);
+    png_read_png(png, info, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND | PNG_TRANSFORM_GRAY_TO_RGB, nullptr);
 
     Image* image = new Image();
     image->_width = png_get_image_width(png, info);
@@ -85,8 +85,8 @@ Image* Image::create(const char* path)
 
     default:
         GP_ERROR("Unsupported PNG color type (%d) for image file '%s'.", (int)colorType, path);
-        png_destroy_read_struct(&png, &info, NULL);
-        return NULL;
+        png_destroy_read_struct(&png, &info, nullptr);
+        return nullptr;
     }
 
     size_t stride = png_get_rowbytes(png, info);
@@ -102,7 +102,7 @@ Image* Image::create(const char* path)
     }
 
     // Clean up.
-    png_destroy_read_struct(&png, &info, NULL);
+    png_destroy_read_struct(&png, &info, nullptr);
 
     return image;
 }
@@ -137,7 +137,7 @@ Image* Image::create(unsigned int width, unsigned int height, Image::Format form
     return image;
 }
 
-Image::Image() : _data(NULL), _format(RGB), _width(0), _height(0)
+Image::Image() : _data(nullptr), _format(RGB), _width(0), _height(0)
 {
 }
 

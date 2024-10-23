@@ -14,7 +14,7 @@ AbsoluteLayout::AbsoluteLayout()
 
 AbsoluteLayout::~AbsoluteLayout()
 {
-    __instance = NULL;
+    __instance = nullptr;
 }
 
 AbsoluteLayout* AbsoluteLayout::create()

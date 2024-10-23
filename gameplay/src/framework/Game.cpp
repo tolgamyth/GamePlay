@@ -17,7 +17,7 @@ ALenum __al_error_code = AL_NO_ERROR;
 namespace gameplay
 {
 
-static Game* __gameInstance = NULL;
+static Game* __gameInstance = nullptr;
 double Game::_pausedTimeLast = 0.0;
 double Game::_pausedTimeTotal = 0.0;
 
@@ -62,9 +62,9 @@ public:
 Game::Game()
     : _initialized(false), _state(UNINITIALIZED), _pausedCount(0),
       _frameLastFPS(0), _frameCount(0), _frameRate(0), _width(0), _height(0),
-      _clearDepth(1.0f), _clearStencil(0), _timeEvents(NULL)
+      _clearDepth(1.0f), _clearStencil(0), _timeEvents(nullptr)
 {
-    assert(__gameInstance == NULL);
+    assert(__gameInstance == nullptr);
 
     __gameInstance = this;
     _timeEvents = new std::priority_queue<TimeEvent, std::vector<TimeEvent>, std::less<TimeEvent> >();
@@ -80,7 +80,7 @@ Game::~Game()
     printMemoryLeaks();
 #endif
 
-    __gameInstance = NULL;
+    __gameInstance = nullptr;
 }
 
 Game* Game::getInstance()
@@ -437,7 +437,7 @@ void Game::frame()
 
 void Game::renderOnce(const char* function)
 {
-    _scriptController->executeFunction<void>(function, NULL);
+    _scriptController->executeFunction<void>(function, nullptr);
     Platform::swapBuffers();
 }
 
@@ -515,15 +515,6 @@ void Game::clear(ClearFlags flags, const Vector4& clearColor, float clearDepth, 
 void Game::clear(ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil)
 {
     clear(flags, Vector4(red, green, blue, alpha), clearDepth, clearStencil);
-}
-
-AudioListener* Game::getAudioListener()
-{
-    if (_audioListener)
-    {
-        _audioListener = std::make_unique<AudioListener>();
-    }
-    return _audioListener.get();
 }
 
 void Game::keyEvent(Keyboard::KeyEvent evt, int key)
@@ -742,7 +733,7 @@ bool Game::TimeEvent::operator<(const TimeEvent& v) const
 
 Properties* Game::getConfig() const
 {
-    if (_properties == NULL)
+    if (_properties == nullptr)
         const_cast<Game*>(this)->loadConfig();
 
     return _properties;
@@ -750,7 +741,7 @@ Properties* Game::getConfig() const
 
 void Game::loadConfig()
 {
-    if (_properties == NULL)
+    if (_properties == nullptr)
     {
         // Try to load custom config from file.
         if (FileSystem::fileExists("game.config"))
@@ -781,7 +772,7 @@ void Game::loadGamepads()
         // If there are, create and initialize them.
         _properties->rewind();
         Properties* inner = _properties->getNextNamespace();
-        while (inner != NULL)
+        while (inner != nullptr)
         {
             std::string spaceName(inner->getNamespace());
             // This namespace was accidentally named "gamepads" originally but we'll keep this check

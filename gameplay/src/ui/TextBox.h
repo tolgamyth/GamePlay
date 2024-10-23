@@ -49,7 +49,7 @@ public:
      * @return The new textbox.
      * @script{create}
      */
-    static TextBox* create(const char* id, Theme::Style* style = NULL);
+    static TextBox* create(const char* id, Theme::Style* style = nullptr);
 
     /**
      * Extends ScriptTarget::getTypeName() to return the type name of this class.
@@ -137,7 +137,7 @@ protected:
      *
      * @return The new text box.
      */
-    static Control* create(Theme::Style* style, Properties* properties = NULL);
+    static Control* create(Theme::Style* style, Properties* properties = nullptr);
 
     /**
      * @see Control::initialize

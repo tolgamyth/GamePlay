@@ -39,7 +39,7 @@ public:
      *
      * @param id ID of the agent to find.
      *
-     * @return The first agent matching the specified ID, or NULL if no matching agent could be found.
+     * @return The first agent matching the specified ID, or nullptr if no matching agent could be found.
      */
     AIAgent* findAgent(const char* id) const;
 

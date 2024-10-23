@@ -9,8 +9,8 @@ namespace gameplay
 
 Control::Control()
     : _id(""), _boundsBits(0), _dirtyBits(DIRTY_BOUNDS | DIRTY_STATE), _consumeInputEvents(true), _alignment(ALIGN_TOP_LEFT),
-    _autoSize(AUTO_SIZE_BOTH), _listeners(NULL), _style(NULL), _visible(true), _opacity(0.0f), _zIndex(-1),
-    _contactIndex(INVALID_CONTACT_INDEX), _focusIndex(-1), _canFocus(false), _state(NORMAL), _parent(NULL), _styleOverridden(false), _skin(NULL)
+    _autoSize(AUTO_SIZE_BOTH), _listeners(nullptr), _style(nullptr), _visible(true), _opacity(0.0f), _zIndex(-1),
+    _contactIndex(INVALID_CONTACT_INDEX), _focusIndex(-1), _canFocus(false), _state(NORMAL), _parent(nullptr), _styleOverridden(false), _skin(nullptr)
 {
     GP_REGISTER_SCRIPT_EVENTS();
 }
@@ -43,7 +43,7 @@ Control::~Control()
 
 Control::AutoSize Control::parseAutoSize(const char* str)
 {
-    if (str == NULL)
+    if (str == nullptr)
         return _autoSize;
     if (strcmpnocase(str, "AUTO_SIZE_WIDTH") == 0 )
         return AUTO_SIZE_WIDTH;
@@ -200,7 +200,7 @@ void Control::initialize(const char* typeName, Theme::Style* style, Properties* 
 
 		// Override themed properties on specific states.
 		Properties* innerSpace = properties->getNextNamespace();
-		while (innerSpace != NULL)
+		while (innerSpace != nullptr)
 		{
 			std::string spaceName(innerSpace->getNamespace());
 			std::transform(spaceName.begin(), spaceName.end(), spaceName.begin(), (int(*)(int))toupper);
@@ -874,7 +874,7 @@ void Control::setStyle(Theme::Style* style)
 
 Theme* Control::getTheme() const
 {
-    return _style ? _style->getTheme() : NULL;
+    return _style ? _style->getTheme() : nullptr;
 }
 
 Control::State Control::getState() const
@@ -982,7 +982,7 @@ void Control::addListener(Control::Listener* listener, int eventFlags)
 
 void Control::removeListener(Control::Listener* listener)
 {
-    if (_listeners == NULL || listener == NULL)
+    if (_listeners == nullptr || listener == nullptr)
         return;
 
     for (std::map<Control::Listener::EventType, std::list<Control::Listener*>*>::iterator itr = _listeners->begin(); itr != _listeners->end();)
@@ -1448,7 +1448,7 @@ Control::State Control::getState(const char* state)
 
 Theme::ThemeImage* Control::getImage(const char* id, State state)
 {
-    Theme::ThemeImage* image = NULL;
+    Theme::ThemeImage* image = nullptr;
 
     Theme::Style::Overlay* overlay = getOverlay(state);
     if (overlay)
@@ -1494,7 +1494,7 @@ Form* Control::getTopLevelForm() const
             return static_cast<Form*>(container);
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // Implementation of AnimationHandler
@@ -1622,7 +1622,7 @@ Theme::Style::Overlay* Control::getOverlay(State state) const
 {
     assert(_style);
 
-    Theme::Style::Overlay* overlay = NULL;
+    Theme::Style::Overlay* overlay = nullptr;
 
     switch (state)
     {
@@ -1676,9 +1676,9 @@ void Control::overrideThemedProperties(Properties* properties, unsigned char sta
     assert(_style);
     assert(_style->_theme);
 
-    Theme::ImageList* imageList = NULL;
-    Theme::ThemeImage* cursor = NULL;
-    Theme::Skin* skin = NULL;
+    Theme::ImageList* imageList = nullptr;
+    Theme::ThemeImage* cursor = nullptr;
+    Theme::Skin* skin = nullptr;
     _style->_theme->lookUpSprites(properties, &imageList, &cursor, &skin);
 
     if (imageList)
@@ -1857,7 +1857,7 @@ Control::Alignment Control::getAlignment(const char* alignment)
 float Control::parseCoord(const char* s, bool* isPercentage)
 {
     const char* p;
-    if ((p = strchr(s, '%')) != NULL)
+    if ((p = strchr(s, '%')) != nullptr)
     {
         std::string value(s, (std::string::size_type)(p - s));
         *isPercentage = true;
@@ -1871,7 +1871,7 @@ bool Control::parseCoordPair(const char* s, float* v1, float* v2, bool* v1Percen
 {
     size_t len = strlen(s);
     const char* s2 = strchr(s, ',');
-    if (s2 == NULL)
+    if (s2 == nullptr)
         return false;
     std::string v1Str(s, (std::string::size_type)(s2 - s));
     std::string v2Str(s2 + 1);

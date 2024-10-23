@@ -368,9 +368,9 @@ public:
      * Gets the values and in/out tangent value at a spedified point.
      *
      * @param index The index of the point.
-     * @param value The value at the specified index. Ignored if NULL.
-     * @param inValue The tangent inValue at the specified index. Ignored if NULL.
-     * @param outValue The tangent outValue at the specified index. Ignored if NULL.
+     * @param value The value at the specified index. Ignored if nullptr.
+     * @param inValue The tangent inValue at the specified index. Ignored if nullptr.
+     * @param outValue The tangent outValue at the specified index. Ignored if nullptr.
      */
     void getPointValues(unsigned int index, float* value, float* inValue, float* outValue) const;
 

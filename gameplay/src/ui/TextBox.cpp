@@ -4,7 +4,7 @@
 namespace gameplay
 {
 
-TextBox::TextBox() : _caretLocation(0), _lastKeypress(0), _fontSize(0), _caretImage(NULL), _passwordChar('*'), _inputMode(TEXT), _ctrlPressed(false), _shiftPressed(false)
+TextBox::TextBox() : _caretLocation(0), _lastKeypress(0), _fontSize(0), _caretImage(nullptr), _passwordChar('*'), _inputMode(TEXT), _ctrlPressed(false), _shiftPressed(false)
 {
     _canFocus = true;
 }
@@ -17,7 +17,7 @@ TextBox* TextBox::create(const char* id, Theme::Style* style)
 {
     TextBox* textBox = new TextBox();
     textBox->_id = id ? id : "";
-    textBox->initialize("TextBox", style, NULL);
+    textBox->initialize("TextBox", style, nullptr);
     return textBox;
 }
 

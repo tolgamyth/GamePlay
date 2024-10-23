@@ -63,7 +63,7 @@ public:
      * 
      * @param id The ID of the joint to search for.
      * 
-     * @return The joint, or NULL if not found.
+     * @return The joint, or nullptr if not found.
      */
     Joint* getJoint(const char* id) const;
 
@@ -166,7 +166,7 @@ private:
     /**
      * Sets the root node of this mesh skin.
      * 
-     * @param node The node to set as the root node, may be NULL.
+     * @param node The node to set as the root node, may be nullptr.
      */
     void setRootNode(Node* node);
 

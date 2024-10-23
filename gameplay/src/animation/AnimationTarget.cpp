@@ -11,7 +11,7 @@ namespace gameplay
 {
 
 AnimationTarget::AnimationTarget()
-    : _targetType(SCALAR), _animationChannels(NULL)
+    : _targetType(SCALAR), _animationChannels(nullptr)
 {
 }
 
@@ -120,14 +120,14 @@ Animation* AnimationTarget::createAnimation(const char* id, Properties* animatio
     if (std::strcmp(animationProperties->getNamespace(), "animation") != 0)
     {
         GP_ERROR("Invalid animation namespace '%s'.", animationProperties->getNamespace());
-        return NULL;
+        return nullptr;
     }
 
     const char* propertyIdStr = animationProperties->getString("property");
-    if (propertyIdStr == NULL)
+    if (propertyIdStr == nullptr)
     {
         GP_ERROR("Attribute 'property' must be specified for an animation.");
-        return NULL;
+        return nullptr;
     }
 
     // Get animation target property id
@@ -135,35 +135,35 @@ Animation* AnimationTarget::createAnimation(const char* id, Properties* animatio
     if (propertyId == -1)
     {
         GP_ERROR("Property ID is invalid.");
-        return NULL;
+        return nullptr;
     }
 
     unsigned int keyCount = animationProperties->getInt("keyCount");
     if (keyCount == 0)
     {
         GP_ERROR("Attribute 'keyCount' must be specified for an animation.");
-        return NULL;
+        return nullptr;
     }
 
     const char* keyTimesStr = animationProperties->getString("keyTimes");
-    if (keyTimesStr == NULL)
+    if (keyTimesStr == nullptr)
     {
         GP_ERROR("Attribute 'keyTimes' must be specified for an animation.");
-        return NULL;
+        return nullptr;
     }
 
     const char* keyValuesStr = animationProperties->getString("keyValues");
-    if (keyValuesStr == NULL)
+    if (keyValuesStr == nullptr)
     {
         GP_ERROR("Attribute 'keyValues' must be specified for an animation.");
-        return NULL;
+        return nullptr;
     }
 
     const char* curveStr = animationProperties->getString("curve");
-    if (curveStr == NULL)
+    if (curveStr == nullptr)
     {
         GP_ERROR("Attribute 'curve' must be specified for an animation.");
-        return NULL;
+        return nullptr;
     }
 
     char delimeter = ' ';
@@ -176,11 +176,11 @@ Animation* AnimationTarget::createAnimation(const char* id, Properties* animatio
         endOffset = static_cast<std::string>(keyTimesStr).find_first_of(delimeter, startOffset);
         if (endOffset != std::string::npos)
         {
-            keyTimes[i] = std::strtoul(static_cast<std::string>(keyTimesStr).substr(startOffset, endOffset - startOffset).c_str(), NULL, 0);
+            keyTimes[i] = std::strtoul(static_cast<std::string>(keyTimesStr).substr(startOffset, endOffset - startOffset).c_str(), nullptr, 0);
         }
         else
         {
-            keyTimes[i] = std::strtoul(static_cast<std::string>(keyTimesStr).substr(startOffset, static_cast<std::string>(keyTimesStr).length()).c_str(), NULL, 0);
+            keyTimes[i] = std::strtoul(static_cast<std::string>(keyTimesStr).substr(startOffset, static_cast<std::string>(keyTimesStr).length()).c_str(), nullptr, 0);
         }
         startOffset = endOffset + 1;
     }
@@ -209,7 +209,7 @@ Animation* AnimationTarget::createAnimation(const char* id, Properties* animatio
     }
 
     const char* keyInStr = animationProperties->getString("keyIn");
-    float* keyIn = NULL;
+    float* keyIn = nullptr;
     if (keyInStr)
     {
         keyIn = new float[components];
@@ -231,7 +231,7 @@ Animation* AnimationTarget::createAnimation(const char* id, Properties* animatio
     }
 
     const char* keyOutStr = animationProperties->getString("keyOut");
-    float* keyOut = NULL;
+    float* keyOut = nullptr;
     if (keyOutStr)
     {
         keyOut = new float[components];
@@ -254,7 +254,7 @@ Animation* AnimationTarget::createAnimation(const char* id, Properties* animatio
 
     int curve = Curve::getInterpolationType(curveStr);
 
-    Animation* animation = NULL;
+    Animation* animation = nullptr;
     if (keyIn && keyOut)
     {
         animation = createAnimation(id, propertyId, keyCount, keyTimes, keyValues, keyIn, keyOut, (Curve::InterpolationType)curve);
@@ -303,7 +303,7 @@ void AnimationTarget::destroyAnimation(const char* id)
 {
     // Find the animation with the specified ID.
     Animation::Channel* channel = getChannel(id);
-    if (channel == NULL)
+    if (channel == nullptr)
         return;
 
     // Remove this target's channel from animation, and from the target's list of channels.
@@ -321,10 +321,10 @@ Animation* AnimationTarget::getAnimation(const char* id) const
         std::vector<Animation::Channel*>::iterator itr = _animationChannels->begin();
         assert(*itr);
 
-        if (id == NULL)
+        if (id == nullptr)
             return (*itr)->_animation;
 
-        Animation::Channel* channel = NULL;
+        Animation::Channel* channel = nullptr;
         for (; itr != _animationChannels->end(); itr++)
         {
             channel = (Animation::Channel*)(*itr);
@@ -337,7 +337,7 @@ Animation* AnimationTarget::getAnimation(const char* id) const
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 int AnimationTarget::getPropertyId(TargetType type, const char* propertyIdStr)
@@ -404,7 +404,7 @@ int AnimationTarget::getPropertyId(TargetType type, const char* propertyIdStr)
 
 void AnimationTarget::addChannel(Animation::Channel* channel)
 {
-    if (_animationChannels == NULL)
+    if (_animationChannels == nullptr)
         _animationChannels = new std::vector<Animation::Channel*>;
 
     assert(channel);
@@ -438,10 +438,10 @@ Animation::Channel* AnimationTarget::getChannel(const char* id) const
     {
         std::vector<Animation::Channel*>::iterator itr = _animationChannels->begin();
 
-        if (id == NULL)
+        if (id == nullptr)
             return (*itr);
 
-        Animation::Channel* channel = NULL;
+        Animation::Channel* channel = nullptr;
         for (; itr != _animationChannels->end(); itr++)
         {
             channel = (Animation::Channel*)(*itr);
@@ -453,7 +453,7 @@ Animation::Channel* AnimationTarget::getChannel(const char* id) const
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void AnimationTarget::cloneInto(AnimationTarget* target, NodeCloneContext &context) const
@@ -467,7 +467,7 @@ void AnimationTarget::cloneInto(AnimationTarget* target, NodeCloneContext &conte
             assert(channel->_animation);
 
             Animation* animation = context.findClonedAnimation(channel->_animation);
-            if (animation != NULL)
+            if (animation != nullptr)
             {
                 Animation::Channel* channelCopy = new Animation::Channel(*channel, animation, target);
                 animation->addChannel(channelCopy);

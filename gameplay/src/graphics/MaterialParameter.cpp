@@ -6,7 +6,7 @@ namespace gameplay
 {
 
 MaterialParameter::MaterialParameter(const char* name) :
-_type(MaterialParameter::NONE), _count(1), _dynamic(false), _name(name ? name : ""), _uniform(NULL), _loggerDirtyBits(0)
+_type(MaterialParameter::NONE), _count(1), _dynamic(false), _name(name ? name : ""), _uniform(nullptr), _loggerDirtyBits(0)
 {
     clearValue();
 }
@@ -86,7 +86,7 @@ Texture::Sampler* MaterialParameter::getSampler(unsigned int index) const
         return const_cast<Texture::Sampler*>(_value.samplerValue);
     if (_type == MaterialParameter::SAMPLER_ARRAY && index < _count)
         return const_cast<Texture::Sampler*>(_value.samplerArrayValue[index]);
-    return NULL;
+    return nullptr;
 }
 
 void MaterialParameter::setValue(float value)
@@ -198,7 +198,7 @@ void MaterialParameter::setValue(const Vector4* values, unsigned int count)
 void MaterialParameter::setValue(const Matrix& value)
 {
     // If this parameter is already storing a single dynamic matrix, no need to clear it.
-    if (!(_dynamic && _count == 1 && _type == MaterialParameter::MATRIX && _value.floatPtrValue != NULL))
+    if (!(_dynamic && _count == 1 && _type == MaterialParameter::MATRIX && _value.floatPtrValue != nullptr))
     {
         clearValue();
 

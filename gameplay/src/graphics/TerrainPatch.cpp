@@ -30,7 +30,7 @@ static TerrainAutoBindingResolver __autoBindingResolver;
 static int __currentPatchIndex = -1;
 
 TerrainPatch::TerrainPatch() :
-    _terrain(NULL), _row(0), _column(0), _camera(NULL), _level(0), _bits(TERRAINPATCH_DIRTY_ALL)
+    _terrain(nullptr), _row(0), _column(0), _camera(nullptr), _level(0), _bits(TERRAINPATCH_DIRTY_ALL)
 {
 }
 
@@ -49,7 +49,7 @@ TerrainPatch::~TerrainPatch()
         deleteLayer(*_layers.begin());
     }
     
-    if (_camera != NULL)
+    if (_camera != nullptr)
     {
     	_camera->removeListener(this);
     	SAFE_RELEASE(_camera);
@@ -92,8 +92,8 @@ Material* TerrainPatch::getMaterial(int index) const
 {
     if (index == -1)
     {
-        Scene* scene = _terrain->_node ? _terrain->_node->getScene() : NULL;
-        Camera* camera = scene ? scene->getActiveCamera() : NULL;
+        Scene* scene = _terrain->_node ? _terrain->_node->getScene() : nullptr;
+        Camera* camera = scene ? scene->getActiveCamera() : nullptr;
         if (!camera)
         {
             _level = const_cast<TerrainPatch*>(this)->computeLOD(camera, getBoundingBox(true));
@@ -401,7 +401,7 @@ int TerrainPatch::addSampler(const char* path)
     {
         Texture::Sampler* sampler = _samplers[i];
 
-        if (sampler == NULL && firstAvailableIndex == -1)
+        if (sampler == nullptr && firstAvailableIndex == -1)
         {
             firstAvailableIndex = (int)i;
         }
@@ -572,8 +572,8 @@ void TerrainPatch::updateNodeBindings()
 
 unsigned int TerrainPatch::draw(bool wireframe)
 {
-    Scene* scene = _terrain->_node ? _terrain->_node->getScene() : NULL;
-    Camera* camera = scene ? scene->getActiveCamera() : NULL;
+    Scene* scene = _terrain->_node ? _terrain->_node->getScene() : nullptr;
+    Camera* camera = scene ? scene->getActiveCamera() : nullptr;
     if (!camera)
         return 0;
 
@@ -623,7 +623,7 @@ unsigned int TerrainPatch::computeLOD(Camera* camera, const BoundingBox& worldBo
 {
     if (camera != _camera)
     {
-        if (_camera != NULL)
+        if (_camera != nullptr)
         {
             _camera->removeListener(this);
             _camera->release();
@@ -680,7 +680,7 @@ unsigned int TerrainPatch::computeLOD(Camera* camera, const BoundingBox& worldBo
 
 const Vector3& TerrainPatch::getAmbientColor() const
 {
-    Scene* scene = _terrain->_node ? _terrain->_node->getScene() : NULL;
+    Scene* scene = _terrain->_node ? _terrain->_node->getScene() : nullptr;
     return scene ? scene->getAmbientColor() : Vector3::zero();
 }
 
@@ -703,7 +703,7 @@ TerrainPatch::Layer::~Layer()
 {
 }
 
-TerrainPatch::Level::Level() : model(NULL)
+TerrainPatch::Level::Level() : model(nullptr)
 {
 }
 
@@ -727,7 +727,7 @@ bool TerrainAutoBindingResolver::resolveAutoBinding(const char* autoBinding, Nod
                     return terrain->_patches[__currentPatchIndex];
                 }
             }
-            return NULL;
+            return nullptr;
         }
     };
 

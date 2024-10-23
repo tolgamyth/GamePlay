@@ -5,8 +5,8 @@
 #endif
 
 AudioSample::AudioSample()
-    :  _formBackground(NULL), _formEngine(NULL), _formBraking(NULL),
-       _audioBackground(NULL), _audioEngine(NULL), _audioBraking(NULL)
+    :  _formBackground(nullptr), _formEngine(nullptr), _formBraking(nullptr),
+       _audioBackground(nullptr), _audioEngine(nullptr), _audioBraking(nullptr)
 {
 }
 

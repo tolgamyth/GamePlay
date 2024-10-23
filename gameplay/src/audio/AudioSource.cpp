@@ -10,7 +10,7 @@ namespace gameplay
 {
 
 AudioSource::AudioSource(AudioBuffer* buffer, ALuint source) 
-    : _alSource(source), _buffer(buffer), _looped(false), _gain(1.0f), _pitch(1.0f), _node(NULL)
+    : _alSource(source), _buffer(buffer), _looped(false), _gain(1.0f), _pitch(1.0f), _node(nullptr)
 {
     assert(buffer);
 
@@ -52,10 +52,10 @@ AudioSource* AudioSource::create(const char* url, bool streamed)
     if (pathStr.find(".audio") != std::string::npos)
     {
         Properties* properties = Properties::create(url);
-        if (properties == NULL)
+        if (properties == nullptr)
         {
             GP_ERROR("Failed to create audio source from .audio file.");
-            return NULL;
+            return nullptr;
         }
 
         AudioSource* audioSource = create((strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace());
@@ -65,8 +65,8 @@ AudioSource* AudioSource::create(const char* url, bool streamed)
 
     // Create an audio buffer from this URL.
     AudioBuffer* buffer = AudioBuffer::create(url, streamed);
-    if (buffer == NULL)
-        return NULL;
+    if (buffer == nullptr)
+        return nullptr;
 
     // Load the audio source.
     ALuint alSource = 0;
@@ -76,7 +76,7 @@ AudioSource* AudioSource::create(const char* url, bool streamed)
     {
         SAFE_RELEASE(buffer);
         GP_ERROR("Error generating audio source.");
-        return NULL;
+        return nullptr;
     }
     
     return new AudioSource(buffer, alSource);
@@ -89,14 +89,14 @@ AudioSource* AudioSource::create(Properties* properties)
     if (!properties || !(strcmp(properties->getNamespace(), "audio") == 0))
     {
         GP_ERROR("Failed to load audio source from properties object: must be non-null object and have namespace equal to 'audio'.");
-        return NULL;
+        return nullptr;
     }
 
     std::string path;
     if (!properties->getPath("path", &path))
     {
         GP_ERROR("Audio file failed to load; the file path was not specified.");
-        return NULL;
+        return nullptr;
     }
 
     bool streamed = false;
@@ -107,10 +107,10 @@ AudioSource* AudioSource::create(Properties* properties)
 
     // Create the audio source.
     AudioSource* audio = AudioSource::create(path.c_str(), streamed);
-    if (audio == NULL)
+    if (audio == nullptr)
     {
         GP_ERROR("Audio file '%s' failed to load properly.", path.c_str());
-        return NULL;
+        return nullptr;
     }
 
     // Set any properties that the user specified in the .audio file.
@@ -302,7 +302,7 @@ AudioSource* AudioSource::clone(NodeCloneContext& context)
     if (AL_LAST_ERROR())
     {
         GP_ERROR("Unable to cloning audio.");
-        return NULL;
+        return nullptr;
     }
     AudioSource* audioClone = new AudioSource(_buffer, alSource);
 

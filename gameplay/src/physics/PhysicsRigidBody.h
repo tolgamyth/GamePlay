@@ -361,7 +361,7 @@ public:
      * @param force The force to be applied.
      * @param relativePosition The relative position from which to apply the force.
      */
-    void applyForce(const Vector3& force, const Vector3* relativePosition = NULL);
+    void applyForce(const Vector3& force, const Vector3* relativePosition = nullptr);
 
     /**
      * Applies the given force impulse to the rigid body (optionally, from the given relative position).
@@ -369,7 +369,7 @@ public:
      * @param impulse The force impulse to be applied.
      * @param relativePosition The relative position from which to apply the force.
      */
-    void applyImpulse(const Vector3& impulse, const Vector3* relativePosition = NULL);
+    void applyImpulse(const Vector3& impulse, const Vector3* relativePosition = nullptr);
 
     /**
      * Applies the given torque to the rigid body.
@@ -422,7 +422,7 @@ private:
      * @param node The node to create a rigid body for; note that the node must have a model attached to it prior to creating a rigid body for it.
      * @param properties The properties object defining the rigid body.
      * @param nspace The namespace expected (default is "RIGID_BODY").
-     * @return The newly created rigid body, or <code>NULL</code> if the rigid body failed to load.
+     * @return The newly created rigid body, or <code>nullptr</code> if the rigid body failed to load.
      */
     static PhysicsRigidBody* create(Node* node, Properties* properties, const char* nspace = "RIGID_BODY");
 

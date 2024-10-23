@@ -25,7 +25,7 @@ static inline char lowercase(char c)
 // Returns true if 'str' ends with 'suffix'; false otherwise.
 static bool endsWith(const char* str, const char* suffix, bool ignoreCase)
 {
-  if (str == NULL || suffix == NULL)
+  if (str == nullptr || suffix == nullptr)
     return false;
   size_t length = strlen(str);
   size_t suffixLength = strlen(suffix);
@@ -60,8 +60,8 @@ static bool endsWith(const char* str, const char* suffix, bool ignoreCase)
 
 
 Scene::Scene()
-  : _id(""), _activeCamera(NULL), _firstNode(NULL), _lastNode(NULL), _nodeCount(0), _bindAudioListenerToCamera(true), 
-    _nextItr(NULL), _nextReset(true)
+  : _id(""), _activeCamera(nullptr), _firstNode(nullptr), _lastNode(nullptr), _nodeCount(0), _bindAudioListenerToCamera(true), 
+    _nextItr(nullptr), _nextReset(true)
 {
   __sceneList.push_back(this);
 }
@@ -74,7 +74,7 @@ Scene::~Scene()
     AudioListener* audioListener = AudioListener::getInstance();
     if (audioListener && (audioListener->getCamera() == _activeCamera))
     {
-      audioListener->setCamera(NULL);
+      audioListener->setCamera(nullptr);
     }
 
     SAFE_RELEASE(_activeCamera);
@@ -100,7 +100,7 @@ Scene* Scene::load(const char* filePath)
 {
   if (endsWith(filePath, ".gpb", true))
   {
-    Scene* scene = NULL;
+    Scene* scene = nullptr;
     Bundle* bundle = Bundle::create(filePath);
     if (bundle)
     {
@@ -114,8 +114,8 @@ Scene* Scene::load(const char* filePath)
 
 Scene* Scene::getScene(const char* id)
 {
-  if (id == NULL)
-    return __sceneList.size() ? __sceneList[0] : NULL;
+  if (id == nullptr)
+    return __sceneList.size() ? __sceneList[0] : nullptr;
 
   for (size_t i = 0, count = __sceneList.size(); i < count; ++i)
   {
@@ -123,7 +123,7 @@ Scene* Scene::getScene(const char* id)
       return __sceneList[i];
   }
 
-  return NULL;
+  return nullptr;
 }
 
 
@@ -142,7 +142,7 @@ Node* Scene::findNode(const char* id, bool recursive, bool exactMatch) const
   assert(id);
 
   // Search immediate children first.
-  for (Node* child = getFirstNode(); child != NULL; child = child->getNextSibling())
+  for (Node* child = getFirstNode(); child != nullptr; child = child->getNextSibling())
   {
     // Does this child's ID match?
     if ((exactMatch && child->_id == id) || (!exactMatch && child->_id.find(id) == 0))
@@ -154,7 +154,7 @@ Node* Scene::findNode(const char* id, bool recursive, bool exactMatch) const
   // Recurse.
   if (recursive)
   {
-    for (Node* child = getFirstNode(); child != NULL; child = child->getNextSibling())
+    for (Node* child = getFirstNode(); child != nullptr; child = child->getNextSibling())
     {
       Node* match = child->findNode(id, true, exactMatch);
       if (match)
@@ -163,7 +163,7 @@ Node* Scene::findNode(const char* id, bool recursive, bool exactMatch) const
       }
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 unsigned int Scene::findNodes(const char* id, std::vector<Node*>& nodes, bool recursive, bool exactMatch) const
@@ -173,7 +173,7 @@ unsigned int Scene::findNodes(const char* id, std::vector<Node*>& nodes, bool re
   unsigned int count = 0;
 
   // Search immediate children first.
-  for (Node* child = getFirstNode(); child != NULL; child = child->getNextSibling())
+  for (Node* child = getFirstNode(); child != nullptr; child = child->getNextSibling())
   {
     // Does this child's ID match?
     if ((exactMatch && child->_id == id) || (!exactMatch && child->_id.find(id) == 0))
@@ -186,7 +186,7 @@ unsigned int Scene::findNodes(const char* id, std::vector<Node*>& nodes, bool re
   // Recurse.
   if (recursive)
   {
-    for (Node* child = getFirstNode(); child != NULL; child = child->getNextSibling())
+    for (Node* child = getFirstNode(); child != nullptr; child = child->getNextSibling())
     {
       count += child->findNodes(id, nodes, true, exactMatch);
     }
@@ -215,7 +215,7 @@ void Scene::visitNode(Node* node, const char* visitMethod)
   }
 
   // Recurse for all children.
-  for (Node* child = node->getFirstChild(); child != NULL; child = child->getNextSibling())
+  for (Node* child = node->getFirstChild(); child != nullptr; child = child->getNextSibling())
   {
     visitNode(child, visitMethod);
   }
@@ -274,7 +274,7 @@ void Scene::addNode(Node* node)
   ++_nodeCount;
 
   // If we don't have an active camera set, then check for one and set it.
-  if (_activeCamera == NULL)
+  if (_activeCamera == nullptr)
   {
     Camera* camera = node->getCamera();
     if (camera)
@@ -301,7 +301,7 @@ void Scene::removeNode(Node* node)
   }
 
   node->remove();
-  node->_scene = NULL;
+  node->_scene = nullptr;
 
   SAFE_RELEASE(node);
 
@@ -343,7 +343,7 @@ void Scene::setActiveCamera(Camera* camera)
       // Unbind the active camera from the audio listener
       if (audioListener && (audioListener->getCamera() == _activeCamera))
       {
-        audioListener->setCamera(NULL);
+        audioListener->setCamera(nullptr);
       }
 
       SAFE_RELEASE(_activeCamera);
@@ -371,7 +371,7 @@ void Scene::bindAudioListenerToCamera(bool bind)
 
     if (AudioListener::getInstance())
     {
-      AudioListener::getInstance()->setCamera(bind ? _activeCamera : NULL);
+      AudioListener::getInstance()->setCamera(bind ? _activeCamera : nullptr);
     }
   }
 }
@@ -388,7 +388,7 @@ void Scene::setAmbientColor(float red, float green, float blue)
 
 void Scene::update(float elapsedTime)
 {
-  for (Node* node = _firstNode; node != NULL; node = node->_nextSibling)
+  for (Node* node = _firstNode; node != nullptr; node = node->_nextSibling)
   {
     if (node->isEnabled())
       node->update(elapsedTime);
@@ -397,7 +397,7 @@ void Scene::update(float elapsedTime)
 
 void Scene::reset()
 {
-  _nextItr = NULL;
+  _nextItr = nullptr;
   _nextReset = true;
 }
 
@@ -411,10 +411,10 @@ Node* Scene::getNext()
   else if (_nextItr)
   {
     Node* node = findNextVisibleSibling(_nextItr->getFirstChild());
-    if (node == NULL)
+    if (node == nullptr)
     {
       node = findNextVisibleSibling(_nextItr->getNextSibling());
-      if (node == NULL)
+      if (node == nullptr)
       {
         // Find first parent with a sibling
         node = _nextItr->getParent();
@@ -436,7 +436,7 @@ Node* Scene::getNext()
 
 Node* Scene::findNextVisibleSibling(Node* node)
 {
-  while (node != NULL && !isNodeVisible(node))
+  while (node != nullptr && !isNodeVisible(node))
   {
     node = node->getNextSibling();
   }

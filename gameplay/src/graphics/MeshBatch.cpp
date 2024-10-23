@@ -7,7 +7,7 @@ namespace gameplay
 
 MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primitiveType, Material* material, bool indexed, unsigned int initialCapacity, unsigned int growSize)
     : _vertexFormat(vertexFormat), _primitiveType(primitiveType), _material(material), _indexed(indexed), _capacity(0), _growSize(growSize),
-    _vertexCapacity(0), _indexCapacity(0), _vertexCount(0), _indexCount(0), _vertices(NULL), _verticesPtr(NULL), _indices(NULL), _indicesPtr(NULL), _started(false)
+    _vertexCapacity(0), _indexCapacity(0), _vertexCount(0), _indexCount(0), _vertices(nullptr), _verticesPtr(nullptr), _indices(nullptr), _indicesPtr(nullptr), _started(false)
 {
     resize(initialCapacity);
 }
@@ -22,10 +22,10 @@ MeshBatch::~MeshBatch()
 MeshBatch* MeshBatch::create(const VertexFormat& vertexFormat, Mesh::PrimitiveType primitiveType, const char* materialPath, bool indexed, unsigned int initialCapacity, unsigned int growSize)
 {
     Material* material = Material::create(materialPath);
-    if (material == NULL)
+    if (material == nullptr)
     {
         GP_ERROR("Failed to create material for mesh batch from file '%s'.", materialPath);
-        return NULL;
+        return nullptr;
     }
     MeshBatch* batch = create(vertexFormat, primitiveType, material, indexed, initialCapacity, growSize);
     SAFE_RELEASE(material); // batch now owns the material

@@ -212,7 +212,7 @@ public:
      *
      * @param id The style ID.
      *
-     * @return The style with the specified ID, or NULL if it does not exist.
+     * @return The style with the specified ID, or nullptr if it does not exist.
      */
     Theme::Style* getStyle(const char* id) const;
 

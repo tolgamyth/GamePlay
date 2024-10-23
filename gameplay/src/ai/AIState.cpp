@@ -7,10 +7,10 @@
 namespace gameplay
 {
 
-AIState* AIState::_empty = NULL;
+AIState* AIState::_empty = nullptr;
 
 AIState::AIState(const char* id)
-    : _id(id), _listener(NULL)
+    : _id(id), _listener(nullptr)
 {
 }
 

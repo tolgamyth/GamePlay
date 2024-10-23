@@ -8,7 +8,7 @@ namespace gameplay
 {
 
 PhysicsConstraint::PhysicsConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
-    : _a(a), _b(b), _constraint(NULL)
+    : _a(a), _b(b), _constraint(nullptr)
 {
 }
 

@@ -6,34 +6,34 @@
 #endif
 
 LightSample::LightSample()
-    : _font(NULL), 
-	  _scene(NULL), 
-      _modelNode(NULL),
-	  _directionalLightNode(NULL), 
-	  _pointLightNode(NULL), 
-	  _spotLightNode(NULL),
-	  _usedForMoving(NULL),
-	  _model(NULL),
-	  _directionalLightQuadModel(NULL),
-	  _spotLightQuadModel(NULL),
-	  _pointLightQuadModel(NULL),
-	  _unlitMaterial(NULL),
-	  _texturedMaterial(NULL),
-	  _bumpedMaterial(NULL),
-	  _bumpedSpecularMaterial(NULL),
-	  _lighting(NULL),
-	  _noLight(NULL),
-	  _directional(NULL),
-	  _spot(NULL),
-	  _point(NULL),
-      _properties(NULL),
-      _redSlider(NULL),
-      _greenSlider(NULL),
-      _blueSlider(NULL),
-      _specularSlider(NULL),
-      _addSpecular(NULL),
-      _addBumped(NULL),
-      _form(NULL),
+    : _font(nullptr), 
+	  _scene(nullptr), 
+      _modelNode(nullptr),
+	  _directionalLightNode(nullptr), 
+	  _pointLightNode(nullptr), 
+	  _spotLightNode(nullptr),
+	  _usedForMoving(nullptr),
+	  _model(nullptr),
+	  _directionalLightQuadModel(nullptr),
+	  _spotLightQuadModel(nullptr),
+	  _pointLightQuadModel(nullptr),
+	  _unlitMaterial(nullptr),
+	  _texturedMaterial(nullptr),
+	  _bumpedMaterial(nullptr),
+	  _bumpedSpecularMaterial(nullptr),
+	  _lighting(nullptr),
+	  _noLight(nullptr),
+	  _directional(nullptr),
+	  _spot(nullptr),
+	  _point(nullptr),
+      _properties(nullptr),
+      _redSlider(nullptr),
+      _greenSlider(nullptr),
+      _blueSlider(nullptr),
+      _specularSlider(nullptr),
+      _addSpecular(nullptr),
+      _addBumped(nullptr),
+      _form(nullptr),
       _touched(false),
       _touchX(0),
       _touchY(0)
@@ -211,7 +211,7 @@ void LightSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int c
 			}
 			else
 			{
-				_usedForMoving = NULL;
+				_usedForMoving = nullptr;
 			}
 		}
 		break;
@@ -221,7 +221,7 @@ void LightSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int c
 			_touched = false;
 			_touchX = 0;
 			_touchY = 0;
-			_usedForMoving = NULL;
+			_usedForMoving = nullptr;
 		}
 		break;
 

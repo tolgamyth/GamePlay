@@ -6,7 +6,7 @@ namespace gameplay
 {
 
 AIAgent::AIAgent()
-    : _stateMachine(NULL), _node(NULL), _enabled(true), _listener(NULL), _next(NULL)
+    : _stateMachine(nullptr), _node(nullptr), _enabled(true), _listener(nullptr), _next(nullptr)
 {
     _stateMachine = new AIStateMachine(this);
 }

@@ -66,10 +66,10 @@ const ScriptTarget::Event* ScriptTarget::EventRegistry::getEvent(const char* nam
             return _events[i];
     }
 
-    return NULL;
+    return nullptr;
 }
 
-ScriptTarget::ScriptTarget() : _scriptRegistries(NULL), _scripts(NULL), _scriptCallbacks(NULL)
+ScriptTarget::ScriptTarget() : _scriptRegistries(nullptr), _scripts(nullptr), _scriptCallbacks(nullptr)
 {
 }
 
@@ -129,7 +129,7 @@ Script* ScriptTarget::addScript(const char* path)
     // Load the script
     Script* script = sc->loadScript(path, Script::PROTECTED);
     if (!script)
-        return NULL;
+        return nullptr;
 
     // Attach the script
     ScriptEntry* se = new ScriptEntry(script);
@@ -168,7 +168,7 @@ Script* ScriptTarget::addScript(const char* path)
     // Automatically call the 'attached' event if it is defined within the script
     if (sc->functionExists("attached", script))
     {
-        sc->executeFunction<void>(script, "attached", "<ScriptTarget>", NULL, (void*)this);
+        sc->executeFunction<void>(script, "attached", "<ScriptTarget>", nullptr, (void*)this);
     }
 
     return script;
@@ -248,7 +248,7 @@ void ScriptTarget::addScriptCallback(const Event* event, const char* function)
 
     // Have we already loaded this global script?
     bool loaded = true;
-    Script* script = NULL;
+    Script* script = nullptr;
     if (!scriptPath.empty())
     {
         loaded = false;
@@ -315,7 +315,7 @@ void ScriptTarget::removeScriptCallback(const Event* event, const char* function
     }
 
     // Find the script entry for this callback
-    ScriptEntry* scriptEntry = NULL;
+    ScriptEntry* scriptEntry = nullptr;
     if (!scriptPath.empty())
     {
         ScriptEntry* se = _scripts;
@@ -329,7 +329,7 @@ void ScriptTarget::removeScriptCallback(const Event* event, const char* function
             se = se->next;
         }
     }
-    Script* script = scriptEntry ? scriptEntry->script : NULL;
+    Script* script = scriptEntry ? scriptEntry->script : nullptr;
 
     // Remove any registered callback functions that match the specified one
     int removedCallbacks = 0;
@@ -386,11 +386,11 @@ const ScriptTarget::Event* ScriptTarget::getScriptEvent(const char* eventName) c
     assert(eventName);
 
     // Lookup the event for this name
-    const Event* event = NULL;
+    const Event* event = nullptr;
     RegistryEntry* re = _scriptRegistries;
     while (re)
     {
-        if ((event = re->registry->getEvent(eventName)) != NULL)
+        if ((event = re->registry->getEvent(eventName)) != nullptr)
             break;
         re = re->next;
     }
@@ -433,7 +433,7 @@ template<> void ScriptTarget::fireScriptEvent<void>(const Event* event, ...)
         for (size_t i = 0, count = callbacks.size(); i < count; ++i)
         {
             CallbackFunction& cb = callbacks[i];
-            sc->executeFunction<void>(cb.script, cb.function.c_str(), event->args.c_str(), NULL, &list);
+            sc->executeFunction<void>(cb.script, cb.function.c_str(), event->args.c_str(), nullptr, &list);
         }
     }
 

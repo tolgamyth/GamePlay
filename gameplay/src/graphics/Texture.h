@@ -177,7 +177,7 @@ public:
      * @param path The image resource path.
      * @param generateMipmaps true to auto-generate a full mipmap chain, false otherwise.
      * 
-     * @return The new texture, or NULL if the texture could not be loaded/created.
+     * @return The new texture, or nullptr if the texture could not be loaded/created.
      * @script{create}
      */
     static Texture* create(const char* path, bool generateMipmaps = false);
@@ -188,7 +188,7 @@ public:
      * @param image The image containing the texture data.
      * @param generateMipmaps True to generate a full mipmap chain, false otherwise.
      *
-     * @return The new texture, or NULL if the image is not of a supported texture format.
+     * @return The new texture, or nullptr if the image is not of a supported texture format.
      * @script{create}
      */
     static Texture* create(Image* image, bool generateMipmaps = false);

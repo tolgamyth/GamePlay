@@ -101,15 +101,15 @@ ScriptUtil::LuaArray<T> ScriptUtil::getObjectPointer(int index, const char* type
     {
         if (nonNull)
         {
-            GP_WARN("Attempting to pass NULL for required non-NULL parameter at index %d (likely a reference or by-value parameter).", index);
+            GP_WARN("Attempting to pass nullptr for required non-nullptr parameter at index %d (likely a reference or by-value parameter).", index);
         }
         else
         {
-            // NULL values allowed
+            // nullptr values allowed
             *success = true;
         }
 
-        return LuaArray<T>((T*)NULL);
+        return LuaArray<T>((T*)nullptr);
     }
 
     // Was a Lua table passed?
@@ -126,7 +126,7 @@ ScriptUtil::LuaArray<T> ScriptUtil::getObjectPointer(int index, const char* type
         if (size <= 0)
         {
             // Array of size zero
-            return LuaArray<T>((T*)NULL);
+            return LuaArray<T>((T*)nullptr);
         }
 
         LuaArray<T> arr(size);
@@ -148,10 +148,10 @@ ScriptUtil::LuaArray<T> ScriptUtil::getObjectPointer(int index, const char* type
 
     // Type is not nil and not a table, so it should be USERDATA.
     void* p = getUserDataObjectPointer(index, type);
-    if (p == NULL && nonNull)
+    if (p == nullptr && nonNull)
     {
-        GP_WARN("Attempting to pass NULL for required non-NULL parameter at index %d (likely a reference or by-value parameter).", index);
-        return LuaArray<T>((T*)NULL);
+        GP_WARN("Attempting to pass nullptr for required non-nullptr parameter at index %d (likely a reference or by-value parameter).", index);
+        return LuaArray<T>((T*)nullptr);
     }
     else
     {
@@ -163,15 +163,15 @@ ScriptUtil::LuaArray<T> ScriptUtil::getObjectPointer(int index, const char* type
 
 template<typename T> bool ScriptController::executeFunction(const char* func, T* out)
 {
-    return executeFunction<T>((Script*)NULL, func, out);
+    return executeFunction<T>((Script*)nullptr, func, out);
 }
 
 template<typename T> bool ScriptController::executeFunction(Script* script, const char* func, T* out)
 {
     // Userdata / object type expected - all other return types have template specializations.
-    // Non-userdata types will return NULL.
+    // Non-userdata types will return nullptr.
     int top = lua_gettop(_lua);
-    bool success = executeFunctionHelper(1, func, NULL, NULL, script);
+    bool success = executeFunctionHelper(1, func, nullptr, nullptr, script);
     if (out && success)
         *out = (T)((ScriptUtil::LuaObject*)lua_touserdata(_lua, -1))->instance;
     lua_settop(_lua, top);
@@ -182,7 +182,7 @@ template<typename T> bool ScriptController::executeFunction(const char* func, co
 {
     va_list list;
     va_start(list, out);
-    bool success = executeFunction<T>((Script*)NULL, func, args, out, list);
+    bool success = executeFunction<T>((Script*)nullptr, func, args, out, list);
     va_end(list);
     return success;
 }
@@ -199,9 +199,9 @@ template<typename T> bool ScriptController::executeFunction(Script* script, cons
 template<typename T> bool ScriptController::executeFunction(const char* func, const char* args, T* out, va_list* list)
 {
     // Userdata / object type expected - all other return types have template specializations.
-    // Non-userdata types will return NULL.
+    // Non-userdata types will return nullptr.
     int top = lua_gettop(_lua);
-    bool success = executeFunctionHelper(1, func, args, list, (Script*)NULL);
+    bool success = executeFunctionHelper(1, func, args, list, (Script*)nullptr);
     if (out && success)
         *out = (T)((ScriptUtil::LuaObject*)lua_touserdata(_lua, -1))->instance;
     lua_settop(_lua, top);
@@ -211,7 +211,7 @@ template<typename T> bool ScriptController::executeFunction(const char* func, co
 template<typename T> bool ScriptController::executeFunction(Script* script, const char* func, const char* args, T* out, va_list* list)
 {
     // Userdata / object type expected - all other return types have template specializations.
-    // Non-userdata types will return NULL.
+    // Non-userdata types will return nullptr.
     int top = lua_gettop(_lua);
     bool success = executeFunctionHelper(1, func, args, list, script);
     if (out && success)

@@ -28,7 +28,7 @@ AnimationValue& AnimationValue::operator=(const AnimationValue& v)
 {
     if (this != &v)
     {
-        if (_value == NULL || _componentSize != v._componentSize || _componentCount != v._componentCount)
+        if (_value == nullptr || _componentSize != v._componentSize || _componentCount != v._componentCount)
         {
             _componentSize = v._componentSize;
             _componentCount = v._componentCount;

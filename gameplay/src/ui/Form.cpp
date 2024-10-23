@@ -25,7 +25,7 @@ namespace gameplay
 {
 
 static std::vector<Form*> __forms;
-static Control* __focusControl = NULL;
+static Control* __focusControl = nullptr;
 static Control* __activeControl[Touch::MAX_TOUCH_POINTS];
 static bool __shiftKeyDown = false;
 
@@ -65,7 +65,7 @@ Form* Form::create(const char* url)
     if (!properties)
     {
         GP_WARN("Failed to load properties file for Form.");
-        return NULL;
+        return nullptr;
     }
     // Check if the Properties is valid and has a valid namespace.
     Properties* formProperties = (strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace();
@@ -73,12 +73,12 @@ Form* Form::create(const char* url)
     {
         GP_WARN("Invalid properties file for form: %s", url);
         SAFE_DELETE(properties);
-        return NULL;
+        return nullptr;
     }
 
     // Load the form's theme style.
-    Theme* theme = NULL;
-    Theme::Style* style = NULL;
+    Theme* theme = nullptr;
+    Theme::Style* style = nullptr;
     if (formProperties->exists("theme"))
     {
         std::string themeFile;
@@ -122,7 +122,7 @@ Form* Form::create(const char* id, Theme::Style* style, Layout::Type layoutType)
 	Form* form = new Form();
 	form->_id = id ? id : "";
 	form->_layout = createLayout(layoutType);
-	form->initialize("Form", style, NULL);
+	form->initialize("Form", style, nullptr);
 	return form;
 }
 
@@ -149,13 +149,13 @@ Form* Form::getForm(const char* id)
             return f;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 Control* Form::getActiveControl(unsigned int touchPoint)
 {
     if (touchPoint >= Touch::MAX_TOUCH_POINTS)
-        return NULL;
+        return nullptr;
 
     return __activeControl[touchPoint];
 }
@@ -167,7 +167,7 @@ Control* Form::getFocusControl()
 
 void Form::clearFocus()
 {
-    setFocusControl(NULL);
+    setFocusControl(nullptr);
 }
 
 const char* Form::getTypeName() const
@@ -279,7 +279,7 @@ unsigned int Form::draw(bool wireframe)
 Drawable* Form::clone(NodeCloneContext& context)
 {
     // TODO:
-    return NULL;
+    return nullptr;
 }
 
 bool Form::isBatchingEnabled() const
@@ -360,18 +360,18 @@ Control* Form::findInputControl(int* x, int* y, bool focus, unsigned int contact
         // If the form consumes input events and the point intersects the form,
         // don't traverse other forms below it.
         if (form->_consumeInputEvents && form->_absoluteClipBounds.contains(formX, formY))
-            return NULL;
+            return nullptr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 Control* Form::findInputControl(Control* control, int x, int y, bool focus, unsigned int contactIndex)
 {
     if (!(control->_visible && control->isEnabled()))
-        return NULL;
+        return nullptr;
 
-    Control* result = NULL;
+    Control* result = nullptr;
 
     // Does the passed in control's bounds intersect the specified coordinates - and 
     // does the control support the specified input state?
@@ -400,9 +400,9 @@ Control* Form::findInputControl(Control* control, int x, int y, bool focus, unsi
 Control* Form::handlePointerPressRelease(int* x, int* y, bool pressed, unsigned int contactIndex)
 {
     if (contactIndex >= Touch::MAX_TOUCH_POINTS)
-        return NULL;
+        return nullptr;
 
-    Control* ctrl = NULL;
+    Control* ctrl = nullptr;
 
     int newX = *x;
     int newY = *y;
@@ -410,7 +410,7 @@ Control* Form::handlePointerPressRelease(int* x, int* y, bool pressed, unsigned 
     if (pressed)
     {
         // Update active state changes
-        if ((ctrl = findInputControl(&newX, &newY, false, contactIndex)) != NULL)
+        if ((ctrl = findInputControl(&newX, &newY, false, contactIndex)) != nullptr)
         {
             if (__activeControl[contactIndex] != ctrl || ctrl->_state != ACTIVE)
             {
@@ -430,7 +430,7 @@ Control* Form::handlePointerPressRelease(int* x, int* y, bool pressed, unsigned 
     }
     else // !pressed
     {
-        Control* active = (__activeControl[contactIndex] && __activeControl[contactIndex]->_state == ACTIVE) ? __activeControl[contactIndex] : NULL;
+        Control* active = (__activeControl[contactIndex] && __activeControl[contactIndex]->_state == ACTIVE) ? __activeControl[contactIndex] : nullptr;
 
         if (active)
         {
@@ -445,7 +445,7 @@ Control* Form::handlePointerPressRelease(int* x, int* y, bool pressed, unsigned 
             // No longer any active control
             active->setDirty(DIRTY_STATE);
             active->_state = NORMAL;
-            __activeControl[contactIndex] = NULL;
+            __activeControl[contactIndex] = nullptr;
         }
         else
         {
@@ -475,7 +475,7 @@ Control* Form::handlePointerPressRelease(int* x, int* y, bool pressed, unsigned 
                 {
                     __activeControl[contactIndex]->setDirty(Control::DIRTY_STATE);
                     __activeControl[contactIndex]->_state = NORMAL;
-                    __activeControl[contactIndex] = NULL;
+                    __activeControl[contactIndex] = nullptr;
                 }
             }
         }
@@ -508,9 +508,9 @@ Control* Form::handlePointerPressRelease(int* x, int* y, bool pressed, unsigned 
 Control* Form::handlePointerMove(int* x, int* y, unsigned int contactIndex)
 {
     if (contactIndex >= Touch::MAX_TOUCH_POINTS)
-        return NULL;
+        return nullptr;
 
-    Control* ctrl = NULL;
+    Control* ctrl = nullptr;
 
     // Handle hover control changes on move, only if there is no currently active control
     // (i.e. when the mouse or a finger is not down).
@@ -547,7 +547,7 @@ Control* Form::handlePointerMove(int* x, int* y, unsigned int contactIndex)
             {
                 __activeControl[contactIndex]->setDirty(DIRTY_STATE);
                 __activeControl[contactIndex]->_state = NORMAL;
-                __activeControl[contactIndex] = NULL;
+                __activeControl[contactIndex] = nullptr;
             }
         }
     }
@@ -559,7 +559,7 @@ void Form::verifyRemovedControlState(Control* control)
 {
     if (__focusControl == control)
     {
-        __focusControl = NULL;
+        __focusControl = nullptr;
     }
 
     if (control->_state == ACTIVE || control->_state == HOVER)
@@ -568,7 +568,7 @@ void Form::verifyRemovedControlState(Control* control)
         {
             if (__activeControl[i] == control)
             {
-                __activeControl[i] = NULL;
+                __activeControl[i] = nullptr;
             }
         }
         control->_state = NORMAL;
@@ -590,7 +590,7 @@ bool Form::pointerEventInternal(bool mouse, int evt, int x, int y, int param)
     // Is this a press event (TOUCH_PRESS has the same value as MOUSE_PRESS_LEFT_BUTTON)
     bool pressEvent = evt == Touch::TOUCH_PRESS || (mouse && (evt == Mouse::MOUSE_PRESS_MIDDLE_BUTTON || evt == Mouse::MOUSE_PRESS_RIGHT_BUTTON));
 
-    Control* ctrl = NULL;
+    Control* ctrl = nullptr;
     int formX = x;
     int formY = y;
     unsigned int contactIndex = mouse ? 0 : param;
@@ -610,7 +610,7 @@ bool Form::pointerEventInternal(bool mouse, int evt, int x, int y, int param)
     }
 
     // Dispatch input events to all controls that intersect this point
-    if (ctrl == NULL)
+    if (ctrl == nullptr)
     {
         formX = x;
         formY = y;
@@ -626,10 +626,10 @@ bool Form::pointerEventInternal(bool mouse, int evt, int x, int y, int param)
             while (focusControl && !focusControl->setFocus())
                 focusControl = focusControl->_parent;
 
-            if (focusControl == NULL)
+            if (focusControl == nullptr)
             {
                 // Nothing got focus on this press, so remove current focused control
-                setFocusControl(NULL);
+                setFocusControl(nullptr);
             }
         }
 
@@ -703,7 +703,7 @@ bool Form::pointerEventInternal(bool mouse, int evt, int x, int y, int param)
         // If this was a press event, remove all focus
         if (pressEvent)
         {
-            setFocusControl(NULL);
+            setFocusControl(nullptr);
         }
     }
 
@@ -796,17 +796,17 @@ bool Form::pollGamepad(Gamepad* gamepad)
         return false;
 
     // Get parent container
-    Container* parentContainer = NULL;
+    Container* parentContainer = nullptr;
     if (__focusControl->_parent)
         parentContainer = __focusControl->_parent;
 
     // Get scroll container
-    Container* scrollContainer = NULL;
+    Container* scrollContainer = nullptr;
     if (__focusControl->isContainer())
     {
         scrollContainer = static_cast<Container*>(__focusControl);
         if (scrollContainer->_scroll == SCROLL_NONE)
-            scrollContainer = NULL;
+            scrollContainer = nullptr;
     }
     if (!scrollContainer && parentContainer && parentContainer->_scroll != SCROLL_NONE)
         scrollContainer = parentContainer;
@@ -926,7 +926,7 @@ bool Form::gamepadButtonEventInternal(Gamepad* gamepad)
         {
             if (__activeControl[i] == __focusControl)
             {
-                __activeControl[i] = NULL;
+                __activeControl[i] = nullptr;
             }
         }
 
@@ -1045,7 +1045,7 @@ void Form::controlDisabled(Control* control)
 {
     if (__focusControl && (__focusControl == control || __focusControl->isChild(control)))
     {
-        setFocusControl(NULL);
+        setFocusControl(nullptr);
     }
 
     if (control->_state == ACTIVE || control->_state == HOVER)
@@ -1054,7 +1054,7 @@ void Form::controlDisabled(Control* control)
         {
             if (__activeControl[i] == control)
             {
-                __activeControl[i] = NULL;
+                __activeControl[i] = nullptr;
             }
         }
     }
@@ -1080,7 +1080,7 @@ void Form::setFocusControl(Control* control)
         __focusControl->notifyListeners(Control::Listener::FOCUS_GAINED);
 
         // Set the activeControl property of the control's parent container
-        Container* parent = NULL;
+        Container* parent = nullptr;
         if (__focusControl->_parent)
         {
             parent = __focusControl->_parent;

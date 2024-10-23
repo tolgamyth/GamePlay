@@ -33,7 +33,7 @@ public:
     /**
      * Creates a new SpriteBatch for drawing sprites with the given texture.
      *
-     * If the effect parameter is NULL, a default effect is used which
+     * If the effect parameter is nullptr, a default effect is used which
      * applies an orthographic projection for the currently bound viewport.
      * A custom projection matrix can be used with the default effect by passing
      * a new projection matrix into the SpriteBatch via the setProjectionMatrix
@@ -55,12 +55,12 @@ public:
      * @return A new SpriteBatch for drawing sprites using the given texture.
      * @script{create}
      */
-    static SpriteBatch* create(const char* texturePath, Effect* effect = NULL, unsigned int initialCapacity = 0);
+    static SpriteBatch* create(const char* texturePath, Effect* effect = nullptr, unsigned int initialCapacity = 0);
 
     /**
      * Creates a new SpriteBatch for drawing sprites with the given texture.
      *
-     * If the effect parameter is NULL, a default effect is used which
+     * If the effect parameter is nullptr, a default effect is used which
      * applies an orthographic projection for the currently bound viewport.
      * A custom projection matrix can be used with the default effect by passing
      * a new projection matrix into the SpriteBatch via the setProjectionMatrix
@@ -82,7 +82,7 @@ public:
      * @return A new SpriteBatch for drawing sprites using the given texture.
      * @script{create}
      */
-    static SpriteBatch* create(Texture* texture, Effect* effect = NULL, unsigned int initialCapacity = 0);
+    static SpriteBatch* create(Texture* texture, Effect* effect = nullptr, unsigned int initialCapacity = 0);
 
     /**
      * Destructor.
@@ -338,7 +338,7 @@ public:
      * Sets a custom projection matrix to use with the sprite batch.
      *
      * When the default effect is used with a SpriteBatch (i.e. when
-     * NULL is passed into the 'effect' parameter of SpriteBatch::create),
+     * nullptr is passed into the 'effect' parameter of SpriteBatch::create),
      * this method sets a custom projection matrix to be used instead
      * of the default orthographic projection.
      *

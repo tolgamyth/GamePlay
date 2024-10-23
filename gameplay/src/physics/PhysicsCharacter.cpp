@@ -53,7 +53,7 @@ PhysicsCharacter::PhysicsCharacter(Node* node, const PhysicsCollisionShape::Defi
     : PhysicsGhostObject(node, shape, group, mask), _moveVelocity(0,0,0), _forwardVelocity(0.0f), _rightVelocity(0.0f),
     _verticalVelocity(0, 0, 0), _currentVelocity(0,0,0), _normalizedVelocity(0,0,0),
     _colliding(false), _collisionNormal(0,0,0), _currentPosition(0,0,0), _stepHeight(0.1f),
-    _slopeAngle(0.0f), _cosSlopeAngle(1.0f), _physicsEnabled(true), _mass(mass), _actionInterface(NULL)
+    _slopeAngle(0.0f), _cosSlopeAngle(1.0f), _physicsEnabled(true), _mass(mass), _actionInterface(nullptr)
 {
     setMaxSlopeAngle(45.0f);
 
@@ -82,7 +82,7 @@ PhysicsCharacter* PhysicsCharacter::create(Node* node, Properties* properties)
     if (!properties || !(strcmp(properties->getNamespace(), "collisionObject") == 0))
     {
         GP_ERROR("Failed to load physics character from properties object: must be non-null object and have namespace equal to 'collisionObject'.");
-        return NULL;
+        return nullptr;
     }
 
     // Check that the type is specified and correct.
@@ -90,12 +90,12 @@ PhysicsCharacter* PhysicsCharacter::create(Node* node, Properties* properties)
     if (!type)
     {
         GP_ERROR("Failed to load physics character from properties object; required attribute 'type' is missing.");
-        return NULL;
+        return nullptr;
     }
     if (strcmp(type, "CHARACTER") != 0)
     {
         GP_ERROR("Failed to load physics character from properties object; attribute 'type' must be equal to 'CHARACTER'.");
-        return NULL;
+        return nullptr;
     }
 
     // Load the physics collision shape definition.
@@ -103,7 +103,7 @@ PhysicsCharacter* PhysicsCharacter::create(Node* node, Properties* properties)
     if (shape.isEmpty())
     {
         GP_ERROR("Failed to create collision shape during physics character creation.");
-        return NULL;
+        return nullptr;
     }
 
     // Load the character's parameters.
@@ -111,8 +111,8 @@ PhysicsCharacter* PhysicsCharacter::create(Node* node, Properties* properties)
     float mass = 1.0f;
     float maxStepHeight = 0.1f;
     float maxSlopeAngle = 0.0f;
-    const char* name = NULL;
-    while ((name = properties->getNextProperty()) != NULL)
+    const char* name = nullptr;
+    while ((name = properties->getNextProperty()) != nullptr)
     {
         if (strcmp(name, "mass") == 0)
         {

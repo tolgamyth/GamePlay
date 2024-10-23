@@ -135,7 +135,7 @@ private:
         void* funcPtr;
         unsigned int order;
 
-        SampleRecord() : funcPtr(NULL), order(0) { }
+        SampleRecord() : funcPtr(nullptr), order(0) { }
         SampleRecord(std::string title, void* funcPtr, unsigned int order) : title(title), funcPtr(funcPtr), order(order) { }
 
         SampleRecord& operator = (const SampleRecord& copy)

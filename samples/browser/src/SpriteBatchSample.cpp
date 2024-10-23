@@ -7,7 +7,7 @@
 
 
 SpriteBatchSample::SpriteBatchSample()
-    : _font(NULL), _spriteBatch(NULL)
+    : _font(nullptr), _spriteBatch(nullptr)
 {
 }
 

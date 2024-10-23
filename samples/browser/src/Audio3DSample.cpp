@@ -16,7 +16,7 @@ static const float MOVE_SPEED = 15.0f;
 static const float UP_DOWN_SPEED = 10.0f;
 
 Audio3DSample::Audio3DSample()
-    : _font(NULL), _scene(NULL), _cubeNode(NULL), _gamepad(NULL), _moveFlags(0), _prevX(0), _prevY(0), _buttonPressed(false)
+    : _font(nullptr), _scene(nullptr), _cubeNode(nullptr), _gamepad(nullptr), _moveFlags(0), _prevX(0), _prevY(0), _buttonPressed(false)
 {
 }
 
@@ -279,7 +279,7 @@ void Audio3DSample::addSound(const std::string& file)
     std::string path("res/common/");
     path.append(file);
 
-    Node* node = NULL;
+    Node* node = nullptr;
     std::map<std::string, Node*>::iterator it = _audioNodes.find(path);
     if (it != _audioNodes.end())
     {

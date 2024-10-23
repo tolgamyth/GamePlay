@@ -14,11 +14,11 @@ static const unsigned int BUFFER_SIZE = 512;
 static const float WATER_OFFSET = 0.55f;
 
 WaterSample::WaterSample()
-    : _font(NULL), _scene(NULL), _cameraNode(NULL),
-    _reflectCameraNode(NULL), _inputMask(0u), _prevX(0),
+    : _font(nullptr), _scene(nullptr), _cameraNode(nullptr),
+    _reflectCameraNode(nullptr), _inputMask(0u), _prevX(0),
      _prevY(0), _waterHeight(0.f), 
-     _refractBuffer(NULL), _refractBatch(NULL), _reflectBuffer(NULL), _reflectBatch(NULL), 
-     _showBuffers(false), _gamepad(NULL)
+     _refractBuffer(nullptr), _refractBatch(nullptr), _reflectBuffer(nullptr), _reflectBatch(nullptr), 
+     _showBuffers(false), _gamepad(nullptr)
 {
 }
 

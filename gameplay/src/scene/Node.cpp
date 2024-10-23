@@ -25,8 +25,8 @@ namespace gameplay
 {
 
 Node::Node(const char* id)
-    : _scene(NULL), _firstChild(NULL), _nextSibling(NULL), _prevSibling(NULL), _parent(NULL), _childCount(0), _enabled(true), _tags(NULL),
-    _drawable(NULL), _camera(NULL), _light(NULL), _audioSource(NULL), _collisionObject(NULL), _agent(NULL), _userObject(NULL),
+    : _scene(nullptr), _firstChild(nullptr), _nextSibling(nullptr), _prevSibling(nullptr), _parent(nullptr), _childCount(0), _enabled(true), _tags(nullptr),
+    _drawable(nullptr), _camera(nullptr), _light(nullptr), _audioSource(nullptr), _collisionObject(nullptr), _agent(nullptr), _userObject(nullptr),
       _dirtyBits(NODE_DIRTY_ALL)
 {
     GP_REGISTER_SCRIPT_EVENTS();
@@ -40,9 +40,9 @@ Node::~Node()
 {
     removeAllChildren();
     if (_drawable)
-        _drawable->setNode(NULL);
+        _drawable->setNode(nullptr);
     if (_audioSource)
-        _audioSource->setNode(NULL);
+        _audioSource->setNode(nullptr);
     Ref* ref = dynamic_cast<Ref*>(_drawable);
     SAFE_RELEASE(ref);
     SAFE_RELEASE(_camera);
@@ -51,7 +51,7 @@ Node::~Node()
     SAFE_DELETE(_collisionObject);
     SAFE_RELEASE(_userObject);
     SAFE_DELETE(_tags);
-    setAgent(NULL);
+    setAgent(nullptr);
 }
 
 Node* Node::create(const char* id)
@@ -131,7 +131,7 @@ void Node::addChild(Node* child)
 
 void Node::removeChild(Node* child)
 {
-    if (child == NULL || child->_parent != this)
+    if (child == nullptr || child->_parent != this)
     {
         // The child is not in our hierarchy.
         return;
@@ -173,9 +173,9 @@ void Node::remove()
         }
         --parent->_childCount;
     }
-    _nextSibling = NULL;
-    _prevSibling = NULL;
-    _parent = NULL;
+    _nextSibling = nullptr;
+    _prevSibling = nullptr;
+    _parent = nullptr;
 
     if (parent && parent->_dirtyBits & NODE_DIRTY_HIERARCHY)
     {
@@ -231,11 +231,11 @@ Node* Node::findNode(const char* id, bool recursive, bool exactMatch, bool skipS
     if (!skipSkin)
     {
         // If the drawable is a model with a mesh skin, search the skin's hierarchy as well.
-        Node* rootNode = NULL;
+        Node* rootNode = nullptr;
         Model* model = dynamic_cast<Model*>(_drawable);
         if (model)
         {
-            if (model->getSkin() != NULL && (rootNode = model->getSkin()->_rootNode) != NULL)
+            if (model->getSkin() != nullptr && (rootNode = model->getSkin()->_rootNode) != nullptr)
             {
                 if ((exactMatch && rootNode->_id == id) || (!exactMatch && rootNode->_id.find(id) == 0))
                     return rootNode;
@@ -249,7 +249,7 @@ Node* Node::findNode(const char* id, bool recursive, bool exactMatch, bool skipS
         }
     }
     // Search immediate children first.
-    for (Node* child = getFirstChild(); child != NULL; child = child->getNextSibling())
+    for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
         // Does this child's ID match?
         if ((exactMatch && child->_id == id) || (!exactMatch && child->_id.find(id) == 0))
@@ -260,7 +260,7 @@ Node* Node::findNode(const char* id, bool recursive, bool exactMatch, bool skipS
     // Recurse.
     if (recursive)
     {
-        for (Node* child = getFirstChild(); child != NULL; child = child->getNextSibling())
+        for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
         {
             Node* match = child->findNode(id, true, exactMatch, skipSkin);
             if (match)
@@ -269,7 +269,7 @@ Node* Node::findNode(const char* id, bool recursive, bool exactMatch, bool skipS
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 unsigned int Node::findNodes(const char* id, std::vector<Node*>& nodes, bool recursive, bool exactMatch) const
@@ -286,11 +286,11 @@ unsigned int Node::findNodes(const char* id, std::vector<Node*>& nodes, bool rec
 
     if (!skipSkin)
     {
-        Node* rootNode = NULL;
+        Node* rootNode = nullptr;
         Model* model = dynamic_cast<Model*>(_drawable);
         if (model)
         {
-            if (model->getSkin() != NULL && (rootNode = model->getSkin()->_rootNode) != NULL)
+            if (model->getSkin() != nullptr && (rootNode = model->getSkin()->_rootNode) != nullptr)
             {
                 if ((exactMatch && rootNode->_id == id) || (!exactMatch && rootNode->_id.find(id) == 0))
                 {
@@ -303,7 +303,7 @@ unsigned int Node::findNodes(const char* id, std::vector<Node*>& nodes, bool rec
     }
 
     // Search immediate children first.
-    for (Node* child = getFirstChild(); child != NULL; child = child->getNextSibling())
+    for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
         // Does this child's ID match?
         if ((exactMatch && child->_id == id) || (!exactMatch && child->_id.find(id) == 0))
@@ -315,7 +315,7 @@ unsigned int Node::findNodes(const char* id, std::vector<Node*>& nodes, bool rec
     // Recurse.
     if (recursive)
     {
-        for (Node* child = getFirstChild(); child != NULL; child = child->getNextSibling())
+        for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
         {
             count += child->findNodes(id, nodes, recursive, exactMatch, skipSkin);
         }
@@ -336,7 +336,7 @@ Scene* Node::getScene() const
         if (scene)
             return scene;
     }
-    return NULL;
+    return nullptr;
 }
 
 bool Node::hasTag(const char* name) const
@@ -350,17 +350,17 @@ const char* Node::getTag(const char* name) const
     assert(name);
 
     if (!_tags)
-        return NULL;
+        return nullptr;
 
     std::map<std::string, std::string>::const_iterator itr = _tags->find(name);
-    return (itr == _tags->end() ? NULL : itr->second.c_str());
+    return (itr == _tags->end() ? nullptr : itr->second.c_str());
 }
 
 void Node::setTag(const char* name, const char* value)
 {
     assert(name);
 
-    if (value == NULL)
+    if (value == nullptr)
     {
         // Removing tag
         if (_tags)
@@ -375,7 +375,7 @@ void Node::setTag(const char* name, const char* value)
     else
     {
         // Setting tag
-        if (_tags == NULL)
+        if (_tags == nullptr)
         {
             _tags = new std::map<std::string, std::string>();
         }
@@ -419,7 +419,7 @@ bool Node::isEnabledInHierarchy() const
 
 void Node::update(float elapsedTime)
 {
-    for (Node* node = _firstChild; node != NULL; node = node->_nextSibling)
+    for (Node* node = _firstChild; node != nullptr; node = node->_nextSibling)
     {
         if (node->isEnabled())
         {
@@ -458,7 +458,7 @@ const Matrix& Node::getWorldMatrix() const
 
             // Our world matrix was just updated, so call getWorldMatrix() on all child nodes
             // to force their resolved world matrices to be updated.
-            for (Node* child = getFirstChild(); child != NULL; child = child->getNextSibling())
+            for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
             {
                 child->getWorldMatrix();
             }
@@ -495,7 +495,7 @@ const Matrix& Node::getInverseTransposeWorldMatrix() const
 const Matrix& Node::getViewMatrix() const
 {
     Scene* scene = getScene();
-    Camera* camera = scene ? scene->getActiveCamera() : NULL;
+    Camera* camera = scene ? scene->getActiveCamera() : nullptr;
     if (camera)
     {
         return camera->getViewMatrix();
@@ -509,7 +509,7 @@ const Matrix& Node::getViewMatrix() const
 const Matrix& Node::getInverseViewMatrix() const
 {
     Scene* scene = getScene();
-    Camera* camera = scene ? scene->getActiveCamera() : NULL;
+    Camera* camera = scene ? scene->getActiveCamera() : nullptr;
     if (camera)
     {
         return camera->getInverseViewMatrix();
@@ -523,7 +523,7 @@ const Matrix& Node::getInverseViewMatrix() const
 const Matrix& Node::getProjectionMatrix() const
 {
     Scene* scene = getScene();
-    Camera* camera = scene ? scene->getActiveCamera() : NULL;
+    Camera* camera = scene ? scene->getActiveCamera() : nullptr;
     if (camera)
     {
         return camera->getProjectionMatrix();
@@ -537,7 +537,7 @@ const Matrix& Node::getProjectionMatrix() const
 const Matrix& Node::getViewProjectionMatrix() const
 {
     Scene* scene = getScene();
-    Camera* camera = scene ? scene->getActiveCamera() : NULL;
+    Camera* camera = scene ? scene->getActiveCamera() : nullptr;
     if (camera)
     {
         return camera->getViewProjectionMatrix();
@@ -551,7 +551,7 @@ const Matrix& Node::getViewProjectionMatrix() const
 const Matrix& Node::getInverseViewProjectionMatrix() const
 {
     Scene* scene = getScene();
-    Camera* camera = scene ? scene->getActiveCamera() : NULL;
+    Camera* camera = scene ? scene->getActiveCamera() : nullptr;
     if (camera)
     {
         return camera->getInverseViewProjectionMatrix();
@@ -661,7 +661,7 @@ void Node::transformChanged()
     _dirtyBits |= NODE_DIRTY_WORLD | NODE_DIRTY_BOUNDS;
 
     // Notify our children that their transform has also changed (since transforms are inherited).
-    for (Node* n = getFirstChild(); n != NULL; n = n->getNextSibling())
+    for (Node* n = getFirstChild(); n != nullptr; n = n->getNextSibling())
     {
         if (Transform::isTransformChangedSuspended())
         {
@@ -740,14 +740,14 @@ Animation* Node::getAnimation(const char* id) const
     }
 
     // Look through this node's children for an animation with the specified ID.
-    for (Node* child = getFirstChild(); child != NULL; child = child->getNextSibling())
+    for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
         animation = child->getAnimation(id);
         if (animation)
             return animation;
     }
     
-    return NULL;
+    return nullptr;
 }
 
 Camera* Node::getCamera() const
@@ -762,7 +762,7 @@ void Node::setCamera(Camera* camera)
 
     if (_camera)
     {
-        _camera->setNode(NULL);
+        _camera->setNode(nullptr);
         SAFE_RELEASE(_camera);
     }
 
@@ -787,7 +787,7 @@ void Node::setLight(Light* light)
 
     if (_light)
     {
-        _light->setNode(NULL);
+        _light->setNode(nullptr);
         SAFE_RELEASE(_light);
     }
 
@@ -813,7 +813,7 @@ void Node::setDrawable(Drawable* drawable)
     {
         if (_drawable)
         {
-            _drawable->setNode(NULL);
+            _drawable->setNode(nullptr);
             Ref* ref = dynamic_cast<Ref*>(_drawable);
             if (ref)
                 ref->release();
@@ -922,7 +922,7 @@ const BoundingSphere& Node::getBoundingSphere() const
         }
 
         // Merge this world-space bounding sphere with our childrens' bounding volumes.
-        for (Node* n = getFirstChild(); n != NULL; n = n->getNextSibling())
+        for (Node* n = getFirstChild(); n != nullptr; n = n->getNextSibling())
         {
             const BoundingSphere& childSphere = n->getBoundingSphere();
             if (!childSphere.isEmpty())
@@ -963,7 +963,7 @@ Node* Node::cloneRecursive(NodeCloneContext &context) const
     assert(copy);
 
     // Add child nodes
-    for (Node* child = getFirstChild(); child != NULL; child = child->getNextSibling())
+    for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
         Node* childCopy = child->cloneRecursive(context);
         assert(childCopy);
@@ -1035,7 +1035,7 @@ void Node::setAudioSource(AudioSource* audio)
 
     if (_audioSource)
     {
-        _audioSource->setNode(NULL);
+        _audioSource->setNode(nullptr);
         SAFE_RELEASE(_audioSource);
     }
         
@@ -1109,10 +1109,10 @@ PhysicsCollisionObject* Node::setCollisionObject(const char* url)
 {
     // Load the collision object properties from file.
     Properties* properties = Properties::create(url);
-    if (properties == NULL)
+    if (properties == nullptr)
     {
         GP_ERROR("Failed to load collision object file: %s", url);
-        return NULL;
+        return nullptr;
     }
 
     PhysicsCollisionObject* collisionObject = setCollisionObject((strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace());
@@ -1129,7 +1129,7 @@ PhysicsCollisionObject* Node::setCollisionObject(Properties* properties)
     if (!properties || !(strcmp(properties->getNamespace(), "collisionObject") == 0))
     {
         GP_ERROR("Failed to load collision object from properties object: must be non-null object and have namespace equal to 'collisionObject'.");
-        return NULL;
+        return nullptr;
     }
 
     if (const char* type = properties->getString("type"))
@@ -1166,13 +1166,13 @@ PhysicsCollisionObject* Node::setCollisionObject(Properties* properties)
         else
         {
             GP_ERROR("Unsupported collision object type '%s'.", type);
-            return NULL;
+            return nullptr;
         }
     }
     else
     {
         GP_ERROR("Failed to load collision object from properties object; required attribute 'type' is missing.");
-        return NULL;
+        return nullptr;
     }
 
     return _collisionObject;
@@ -1201,7 +1201,7 @@ void Node::setAgent(AIAgent* agent)
     if (_agent)
     {
         Game::getInstance()->getAIController()->removeAgent(_agent);
-        _agent->setNode(NULL);
+        _agent->setNode(nullptr);
         SAFE_RELEASE(_agent);
     }
 
@@ -1238,7 +1238,7 @@ Animation* NodeCloneContext::findClonedAnimation(const Animation* animation)
     assert(animation);
 
     std::map<const Animation*, Animation*>::iterator it = _clonedAnimations.find(animation);
-    return it != _clonedAnimations.end() ? it->second : NULL;
+    return it != _clonedAnimations.end() ? it->second : nullptr;
 }
 
 void NodeCloneContext::registerClonedAnimation(const Animation* original, Animation* clone)
@@ -1254,7 +1254,7 @@ Node* NodeCloneContext::findClonedNode(const Node* node)
     assert(node);
 
     std::map<const Node*, Node*>::iterator it = _clonedNodes.find(node);
-    return it != _clonedNodes.end() ? it->second : NULL;
+    return it != _clonedNodes.end() ? it->second : nullptr;
 }
 
 void NodeCloneContext::registerClonedNode(const Node* original, Node* clone)

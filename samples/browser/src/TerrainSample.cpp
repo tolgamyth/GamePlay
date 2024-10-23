@@ -22,9 +22,9 @@ struct TerrainHitFilter : public PhysicsController::HitFilter
 };
 
 TerrainSample::TerrainSample()
-	: _font(NULL), _scene(NULL), _terrain(NULL), _sky(NULL), _form(NULL), _formVisible(true),
+	: _font(nullptr), _scene(nullptr), _terrain(nullptr), _sky(nullptr), _form(nullptr), _formVisible(true),
 	  _wireframe(false), _debugPhysics(false), _snapToGround(true), _vsync(true),
-      _mode(MODE_LOOK), _sphere(NULL), _box(NULL), _directionalLight(NULL)
+      _mode(MODE_LOOK), _sphere(nullptr), _box(nullptr), _directionalLight(nullptr)
 {
 }
 
@@ -238,7 +238,7 @@ void TerrainSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int
             TerrainHitFilter hitFilter(_terrain);
             if (Game::getInstance()->getPhysicsController()->rayTest(pickRay, 1000000, &hitResult, &hitFilter) && hitResult.object == _terrain->getNode()->getCollisionObject())
             {
-                Node* clone = NULL;
+                Node* clone = nullptr;
                 PhysicsCollisionShape::Definition rbShape;
 
                 switch (_mode)
@@ -270,7 +270,7 @@ void TerrainSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int
                     _shapes.push_back(clone);
 
                     _mode = MODE_LOOK;
-                    setMessage(NULL);
+                    setMessage(nullptr);
                 }
             }
         }
@@ -331,7 +331,7 @@ void TerrainSample::controlEvent(Control* control, EventType evt)
         if (_mode == MODE_DROP_SPHERE)
         {
             _mode = MODE_LOOK;
-            setMessage(NULL);
+            setMessage(nullptr);
         }
         else
         {
@@ -344,7 +344,7 @@ void TerrainSample::controlEvent(Control* control, EventType evt)
         if (_mode == MODE_DROP_BOX)
         {
             _mode = MODE_LOOK;
-            setMessage(NULL);
+            setMessage(nullptr);
         }
         else
         {

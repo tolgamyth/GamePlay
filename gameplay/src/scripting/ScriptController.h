@@ -34,7 +34,7 @@ public:
      * @param forceReload Whether the script should be reloaded if it has already been loaded
      *      (applicable for GLOBAL scripts only).
      *
-     * @return The loaded script, or NULL if the script could not be loaded.
+     * @return The loaded script, or nullptr if the script could not be loaded.
      */
     Script* loadScript(const char* path, Script::Scope scope = Script::GLOBAL, bool forceReload = false);
 
@@ -42,7 +42,7 @@ public:
      * Calls a zero-parameter global function.
      * 
      * @param func The name of the function to call.
-     * @param out Pointer to populate with the return value if the function succeeds, or NULL.
+     * @param out Pointer to populate with the return value if the function succeeds, or nullptr.
      *
      * @return True if the function is successfully executed, false otherwise.
      *
@@ -53,9 +53,9 @@ public:
     /**
      * Calls a zero-parameter function.
      * 
-     * @param script The script to execute the function on, or NULL for the global script environment.
+     * @param script The script to execute the function on, or nullptr for the global script environment.
      * @param func The name of the function to call.
-     * @param out Pointer to populate with the return value if the function succeeds, or NULL.
+     * @param out Pointer to populate with the return value if the function succeeds, or nullptr.
      *
      * @return True if the function is successfully executed, false otherwise.
      *
@@ -83,7 +83,7 @@ public:
      *      - 'p' - pointer
      *      - '<object-type>' - a <b>pointer</b> to an object of the given type (where the qualified type name is enclosed by angle brackets).
      *      - '[enum-type]' - an enumerated value of the given type (where the qualified type name is enclosed by square brackets).
-     * @param out Pointer to populate with the return value if the function succeeds, or NULL.
+     * @param out Pointer to populate with the return value if the function succeeds, or nullptr.
      * @param ... Parameters to pass to the script fucntion, as specified by the args parameter.
      *
      * @return True if the function is successfully executed, false otherwise.
@@ -95,7 +95,7 @@ public:
     /**
      * Calls the a function from the specified script, using the given parameters.
      * 
-     * @param script The script to execute the function on, or NULL for the global script environment.
+     * @param script The script to execute the function on, or nullptr for the global script environment.
      * @param func The name of the function to call.
      * @param args The argument signature of the function. Of the form 'xxx', where each 'x' is a parameter type and must be one of:
      *      - 'b' - bool
@@ -113,7 +113,7 @@ public:
      *      - 'p' - pointer
      *      - '<object-type>' - a <b>pointer</b> to an object of the given type (where the qualified type name is enclosed by angle brackets).
      *      - '[enum-type]' - an enumerated value of the given type (where the qualified type name is enclosed by square brackets).
-     * @param out Pointer to populate with the return value if the function succeeds, or NULL.
+     * @param out Pointer to populate with the return value if the function succeeds, or nullptr.
      * @param ... Parameters to pass to the script fucntion, as specified by the args parameter.
      * 
      * @return True if the function is successfully executed, false otherwise.
@@ -142,8 +142,8 @@ public:
      *      - 'p' - pointer
      *      - '<object-type>' - a <b>pointer</b> to an object of the given type (where the qualified type name is enclosed by angle brackets).
      *      - '[enum-type]' - an enumerated value of the given type (where the qualified type name is enclosed by square brackets).
-     * @param out Pointer to populate with the return value if the function succeeds, or NULL.
-     * @param list The variable argument list containing the function's parameters, or NULL for an empty parameter list.
+     * @param out Pointer to populate with the return value if the function succeeds, or nullptr.
+     * @param list The variable argument list containing the function's parameters, or nullptr for an empty parameter list.
      *
      * @return True if the function is successfully executed, false otherwise.
      *
@@ -154,7 +154,7 @@ public:
     /**
      * Calls the specified global Lua function using the given parameters.
      * 
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * @param func The name of the function to call.
      * @param args The optional argument signature of the function. Of the form 'xxx', where each 'x' is a parameter type and must be one of:
      *      - 'b' - bool
@@ -172,8 +172,8 @@ public:
      *      - 'p' - pointer
      *      - '<object-type>' - a <b>pointer</b> to an object of the given type (where the qualified type name is enclosed by angle brackets).
      *      - '[enum-type]' - an enumerated value of the given type (where the qualified type name is enclosed by square brackets).
-     * @param out Pointer to populate with the return value if the function succeeds, or NULL.
-     * @param list The variable argument list containing the function's parameters, or NULL for an empty parameter list.
+     * @param out Pointer to populate with the return value if the function succeeds, or nullptr.
+     * @param list The variable argument list containing the function's parameters, or nullptr for an empty parameter list.
      *
      * @return True if the function is successfully executed, false otherwise.
      *
@@ -186,143 +186,143 @@ public:
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a bool.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      *
      * @return The global boolean script variable.
      * 
      * @script{ignore}
      */
-    bool getBool(const char* name, bool defaultValue = false, Script* script = NULL);
+    bool getBool(const char* name, bool defaultValue = false, Script* script = nullptr);
 
     /**
      * Gets the global char script variable with the given name.
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a number.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global char script variable.
      * 
      * @script{ignore}
      */
-    char getChar(const char* name, char defaultValue = 0, Script* script = NULL);
+    char getChar(const char* name, char defaultValue = 0, Script* script = nullptr);
 
     /**
      * Gets the global short script variable with the given name.
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a number.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global short script variable.
      * 
      * @script{ignore}
      */
-    short getShort(const char* name, short defaultValue = 0, Script* script = NULL);
+    short getShort(const char* name, short defaultValue = 0, Script* script = nullptr);
 
     /**
      * Gets the global int script variable with the given name.
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a number.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global int script variable.
      * 
      * @script{ignore}
      */
-    int getInt(const char* name, int defaultValue = 0, Script* script = NULL);
+    int getInt(const char* name, int defaultValue = 0, Script* script = nullptr);
 
     /**
      * Gets the global long script variable with the given name.
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a number.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global long script variable.
      * 
      * @script{ignore}
      */
-    long getLong(const char* name, long defaultValue = 0, Script* script = NULL);
+    long getLong(const char* name, long defaultValue = 0, Script* script = nullptr);
 
     /**
      * Gets the global unsigned char script variable with the given name.
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a number.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global unsigned char script variable.
      * 
      * @script{ignore}
      */
-    unsigned char getUnsignedChar(const char* name, unsigned char defaultValue = 0, Script* script = NULL);
+    unsigned char getUnsignedChar(const char* name, unsigned char defaultValue = 0, Script* script = nullptr);
 
     /**
      * Gets the global unsigned short script variable with the given name.
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a number.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global unsigned short script variable.
      * 
      * @script{ignore}
      */
-    unsigned short getUnsignedShort(const char* name, unsigned short defaultValue = 0, Script* script = NULL);
+    unsigned short getUnsignedShort(const char* name, unsigned short defaultValue = 0, Script* script = nullptr);
 
     /**
      * Gets the global unsigned int script variable with the given name.
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a number.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global unsigned int script variable.
      * 
      * @script{ignore}
      */
-    unsigned int getUnsignedInt(const char* name, unsigned int defaultValue = 0, Script* script = NULL);
+    unsigned int getUnsignedInt(const char* name, unsigned int defaultValue = 0, Script* script = nullptr);
 
     /**
      * Gets the global unsigned long script variable with the given name.
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a number.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global unsigned long script variable.
      * 
      * @script{ignore}
      */
-    unsigned long getUnsignedLong(const char* name, unsigned long defaultValue = 0, Script* script = NULL);
+    unsigned long getUnsignedLong(const char* name, unsigned long defaultValue = 0, Script* script = nullptr);
 
     /**
      * Gets the global float script variable with the given name.
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a number.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global float script variable.
      * 
      * @script{ignore}
      */
-    float getFloat(const char* name, float defaultValue = 0, Script* script = NULL);
+    float getFloat(const char* name, float defaultValue = 0, Script* script = nullptr);
 
     /**
      * Gets the global double script variable with the given name.
      * 
      * @param name The name of the variable.
      * @param defaultValue The default value to return if the variable is not a number.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global double script variable.
      * 
      * @script{ignore}
      */
-    double getDouble(const char* name, double defaultValue = 0, Script* script = NULL);
+    double getDouble(const char* name, double defaultValue = 0, Script* script = nullptr);
 
     /**
      * Gets the global string variable with the given name.
@@ -332,158 +332,158 @@ public:
      * required, it should be copied into another string for storage.
      *
      * @param name The name of the variable.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
-     * @return The string variable or NULL if the variable is not a string.
+     * @return The string variable or nullptr if the variable is not a string.
      * 
      * @script{ignore}
      */
-    const char* getString(const char* name, Script* script = NULL);
+    const char* getString(const char* name, Script* script = nullptr);
 
     /**
      * Gets the global pointer script variable of the given type with the given name.
      * 
      * @param type The type of the variable in Lua.
      * @param name The name of the variable.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @return The global pointer script variable.
      * 
      * @script{ignore}
      */
-    void* getObjectPointer(const char* type, const char* name, Script* script = NULL);
+    void* getObjectPointer(const char* type, const char* name, Script* script = nullptr);
 
     /**
      * Sets the global boolean script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The boolean value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setBool(const char* name, bool v, Script* script = NULL);
+    void setBool(const char* name, bool v, Script* script = nullptr);
 
     /**
      * Sets the global char script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The char value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setChar(const char* name, char v, Script* script = NULL);
+    void setChar(const char* name, char v, Script* script = nullptr);
 
     /**
      * Sets the global short script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The short value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setShort(const char* name, short v, Script* script = NULL);
+    void setShort(const char* name, short v, Script* script = nullptr);
 
     /**
      * Sets the global int script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The int value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setInt(const char* name, int v, Script* script = NULL);
+    void setInt(const char* name, int v, Script* script = nullptr);
 
     /**
      * Sets the global long script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The long value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setLong(const char* name, long v, Script* script = NULL);
+    void setLong(const char* name, long v, Script* script = nullptr);
 
     /**
      * Gets the global unsigned char script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The unsigned char value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setUnsignedChar(const char* name, unsigned char v, Script* script = NULL);
+    void setUnsignedChar(const char* name, unsigned char v, Script* script = nullptr);
 
     /**
      * Sets the global unsigned short script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The unsigned short value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setUnsignedShort(const char* name, unsigned short v, Script* script = NULL);
+    void setUnsignedShort(const char* name, unsigned short v, Script* script = nullptr);
 
     /**
      * Sets the global unsigned int script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The unsigned int value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setUnsignedInt(const char* name, unsigned int v, Script* script = NULL);
+    void setUnsignedInt(const char* name, unsigned int v, Script* script = nullptr);
 
     /**
      * Sets the global unsigned long script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The unsigned long value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setUnsignedLong(const char* name, unsigned long v, Script* script = NULL);
+    void setUnsignedLong(const char* name, unsigned long v, Script* script = nullptr);
 
     /**
      * Sets the global float script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The float value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setFloat(const char* name, float v, Script* script = NULL);
+    void setFloat(const char* name, float v, Script* script = nullptr);
 
     /**
      * Sets the global double script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The double value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setDouble(const char* name, double v, Script* script = NULL);
+    void setDouble(const char* name, double v, Script* script = nullptr);
 
     /**
      * Sets the global string script variable with the given name to the given value.
      * 
      * @param name The name of the script variable.
      * @param v The string value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setString(const char* name, const char* v, Script* script = NULL);
+    void setString(const char* name, const char* v, Script* script = nullptr);
 
     /**
      * Sets the global pointer script variable of the given type with the given name to the given value.
@@ -497,21 +497,21 @@ public:
      * @param type The type of the object point value being set.
      * @param name The name of the variable.
      * @param v The pointer value.
-     * @param script Optional script to use, or NULL for the global script environment.
+     * @param script Optional script to use, or nullptr for the global script environment.
      * 
      * @script{ignore}
      */
-    void setObjectPointer(const char* type, const char* name, void* v, Script* script = NULL);
+    void setObjectPointer(const char* type, const char* name, void* v, Script* script = nullptr);
 
     /**
      * Determines if there exists a function with the specified name in the given script environment.
      *
      * @param name The name of the function to check.
-     * @param script Optional script to inspect, or NULL to inspect the global script environment.
+     * @param script Optional script to inspect, or nullptr to inspect the global script environment.
      *
      * @return True if the specified function exists, false otherwise.
      */
-    bool functionExists(const char* name, const Script* script = NULL) const;
+    bool functionExists(const char* name, const Script* script = nullptr) const;
 
     /**
      * Returns the currently executing script.
@@ -520,7 +520,7 @@ public:
      * which is not guaranteed to be valid unless the returned script's
      * reference count is increased while the caller holds onto it.
      *
-     * @return The currently executing script, or NULL if either there is no currently
+     * @return The currently executing script, or nullptr if either there is no currently
      *      executing script or the global script environment is current.
      */
     Script* getCurrentScript() const;
@@ -650,10 +650,10 @@ private:
      *      - '<object-type>' - a <b>pointer</b> to an object of the given type (where the qualified type name is enclosed by angle brackets).
      *      - '[enum-type]' - an enumerated value of the given type (where the qualified type name is enclosed by square brackets).
      * @param list The variable argument list.
-     * @param script Optional script to execute the function in, or NULL for to execute it in the global environment.
+     * @param script Optional script to execute the function in, or nullptr for to execute it in the global environment.
      * @return True if the function is executed and results were pushed, false if an error occurred (in which case nothing is pushed).
      */
-    bool executeFunctionHelper(int resultCount, const char* func, const char* args, va_list* list, Script* script = NULL);
+    bool executeFunctionHelper(int resultCount, const char* func, const char* args, va_list* list, Script* script = nullptr);
 
     /**
      * Converts a Gameplay userdata value to the type with the given class name.
@@ -950,7 +950,7 @@ public:
 
         struct Data
         {
-            Data() : value(NULL), refCount(0) { }
+            Data() : value(nullptr), refCount(0) { }
             T* value;
             int refCount;
         };
@@ -1125,7 +1125,7 @@ public:
      * @param success An out parameter that is set to true if the Lua parameter was successfully
      *      converted to a valid object, or false if it was unable to perform a valid conversion.
      * 
-     * @return The object pointer or <code>NULL</code> if the data at the stack index
+     * @return The object pointer or <code>nullptr</code> if the data at the stack index
      *      is not an object or if the object is not derived from the given type.
      */
     template <typename T>
@@ -1136,12 +1136,12 @@ public:
      *
      * This method requires that the type at the specified stack index is of type userdata
      * and is in the inheritence chain of the given type. If either of these are not true,
-     * NULL will be returned.
+     * nullptr will be returned.
      *
      * @param index The stack index.
      * @param type The type of object pointer to retrieve.
      *
-     * @return The raw pointer or <code>NULL</code> if the data at the stack index
+     * @return The raw pointer or <code>nullptr</code> if the data at the stack index
      *        is not an object of the given type.
      */
     static void* getUserDataObjectPointer(int index, const char* type);
@@ -1152,7 +1152,7 @@ public:
      * @param index The stack index.
      * @param isStdString Whether the string being retrieved is a std::string object or not.
      * 
-     * @return The string or <code>NULL</code>.
+     * @return The string or <code>nullptr</code>.
      */
     static const char* getString(int index, bool isStdString);
 

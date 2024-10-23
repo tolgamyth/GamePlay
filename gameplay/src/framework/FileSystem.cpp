@@ -193,7 +193,7 @@ FileSystem::~FileSystem()
 
 void FileSystem::setResourcePath(const char* path)
 {
-    __resourcePath = path == NULL ? "" : path;
+    __resourcePath = path == nullptr ? "" : path;
 }
 
 const char* FileSystem::getResourcePath()
@@ -207,7 +207,7 @@ void FileSystem::loadResourceAliases(const char* aliasFilePath)
     if (properties)
     {
         Properties* aliases;
-        while ((aliases = properties->getNextNamespace()) != NULL)
+        while ((aliases = properties->getNextNamespace()) != nullptr)
         {
             loadResourceAliases(aliases);
         }
@@ -220,7 +220,7 @@ void FileSystem::loadResourceAliases(Properties* properties)
     assert(properties);
 
     const char* name;
-    while ((name = properties->getNextProperty()) != NULL)
+    while ((name = properties->getNextProperty()) != nullptr)
     {
         __aliases[name] = properties->getString();
     }
@@ -293,9 +293,9 @@ bool FileSystem::listFiles(const char* dirPath, std::vector<std::string>& files)
 
     struct dirent* dp;
     DIR* dir = opendir(path.c_str());
-    if (dir != NULL)
+    if (dir != nullptr)
     {
-        while ((dp = readdir(dir)) != NULL)
+        while ((dp = readdir(dir)) != nullptr)
         {
             std::string filepath(path);
             filepath.append("/");
@@ -318,11 +318,11 @@ bool FileSystem::listFiles(const char* dirPath, std::vector<std::string>& files)
 #ifdef __ANDROID__
     // List the files that are in the android APK at this path
     AAssetDir* assetDir = AAssetManager_openDir(__assetManager, dirPath);
-    if (assetDir != NULL)
+    if (assetDir != nullptr)
     {
         AAssetDir_rewind(assetDir);
-        const char* file = NULL;
-        while ((file = AAssetDir_getNextFileName(assetDir)) != NULL)
+        const char* file = nullptr;
+        while ((file = AAssetDir_getNextFileName(assetDir)) != nullptr)
         {
             std::string filename(file);
             // Check if this file was already added to the list because it was copied to the SD card.
@@ -429,10 +429,10 @@ char* FileSystem::readAll(const char* filePath, int* fileSize)
 
     // Open file for reading.
     std::unique_ptr<Stream> stream(open(filePath));
-    if (stream.get() == NULL)
+    if (stream.get() == nullptr)
     {
         GP_ERROR("Failed to load file: %s", filePath);
-        return NULL;
+        return nullptr;
     }
     size_t size = stream->length();
 
@@ -443,10 +443,10 @@ char* FileSystem::readAll(const char* filePath, int* fileSize)
     {
         GP_ERROR("Failed to read complete contents of file '%s' (amount read vs. file size: %u < %u).", filePath, read, size);
         SAFE_DELETE_ARRAY(buffer);
-        return NULL;
+        return nullptr;
     }
 
-    // Force the character buffer to be NULL-terminated.
+    // Force the character buffer to be nullptr-terminated.
     buffer[size] = '\0';
 
     if (fileSize)
@@ -508,7 +508,7 @@ void FileSystem::createFileFromAsset(const char* path)
             const void* data = AAsset_getBuffer(asset);
             int length = AAsset_getLength(asset);
             FILE* file = fopen(fullPath.c_str(), "wb");
-            if (file != NULL)
+            if (file != nullptr)
             {
                 int ret = fwrite(data, sizeof(unsigned char), length, file);
                 if (fclose(file) != 0)
@@ -536,14 +536,14 @@ void FileSystem::createFileFromAsset(const char* path)
 
 std::string FileSystem::getDirectoryName(const char* path)
 {
-    if (path == NULL || strlen(path) == 0)
+    if (path == nullptr || strlen(path) == 0)
     {
         return "";
     }
 #ifdef WIN32
     char drive[_MAX_DRIVE];
     char dir[_MAX_DIR];
-    _splitpath(path, drive, dir, NULL, NULL);
+    _splitpath(path, drive, dir, nullptr, nullptr);
     std::string dirname;
     size_t driveLength = strlen(drive);
     if (driveLength > 0)
@@ -578,7 +578,7 @@ std::string FileSystem::getDirectoryName(const char* path)
 std::string FileSystem::getExtension(const char* path)
 {
     const char* str = strrchr(path, '.');
-    if (str == NULL)
+    if (str == nullptr)
         return "";
 
     std::string ext;
@@ -612,7 +612,7 @@ FileStream* FileStream::create(const char* filePath, const char* mode)
     {
         FileStream* stream = new FileStream(file);
         const char* s = mode;
-        while (s != NULL && *s != '\0')
+        while (s != nullptr && *s != '\0')
         {
             if (*s == 'r')
                 stream->_canRead = true;
@@ -623,7 +623,7 @@ FileStream* FileStream::create(const char* filePath, const char* mode)
 
         return stream;
     }
-    return NULL;
+    return nullptr;
 }
 
 bool FileStream::canRead()
@@ -638,14 +638,14 @@ bool FileStream::canWrite()
 
 bool FileStream::canSeek()
 {
-    return _file != NULL;
+    return _file != nullptr;
 }
 
 void FileStream::close()
 {
     if (_file)
         fclose(_file);
-    _file = NULL;
+    _file = nullptr;
 }
 
 size_t FileStream::read(void* ptr, size_t size, size_t count)
@@ -738,7 +738,7 @@ FileStreamAndroid* FileStreamAndroid::create(const char* filePath, const char* m
         FileStreamAndroid* stream = new FileStreamAndroid(asset);
         return stream;
     }
-    return NULL;
+    return nullptr;
 }
 
 bool FileStreamAndroid::canRead()
@@ -760,7 +760,7 @@ void FileStreamAndroid::close()
 {
     if (_asset)
         AAsset_close(_asset);
-    _asset = NULL;
+    _asset = nullptr;
 }
 
 size_t FileStreamAndroid::read(void* ptr, size_t size, size_t count)
@@ -772,7 +772,7 @@ size_t FileStreamAndroid::read(void* ptr, size_t size, size_t count)
 char* FileStreamAndroid::readLine(char* str, int num)
 {
     if (num <= 0)
-        return NULL;
+        return nullptr;
     char c = 0;
     size_t maxCharsToRead = num - 1;
     for (size_t i = 0; i < maxCharsToRead; ++i)

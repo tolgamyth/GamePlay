@@ -80,7 +80,7 @@ AudioBuffer* AudioBuffer::create(const char* path, bool streamed)
 {
     assert(path);
 
-    AudioBuffer* buffer = NULL;
+    AudioBuffer* buffer = nullptr;
     if (!streamed)
     {
         unsigned int bufferCount = (unsigned int)__buffers.size();
@@ -108,7 +108,7 @@ AudioBuffer* AudioBuffer::create(const char* path, bool streamed)
         {
             GP_ERROR("Failed to create OpenAL buffer; alGenBuffers error: %d", AL_LAST_ERROR());
             AL_CHECK(alDeleteBuffers(1, &alBuffer[i]));
-            return NULL;
+            return nullptr;
         }
     }
     
@@ -117,7 +117,7 @@ AudioBuffer* AudioBuffer::create(const char* path, bool streamed)
 
     // Load sound file.
     std::unique_ptr<Stream> stream(FileSystem::open(path));
-    if (stream.get() == NULL || !stream->canRead())
+    if (stream.get() == nullptr || !stream->canRead())
     {
         GP_ERROR("Failed to load audio file %s.", path);
         goto cleanup;
@@ -179,7 +179,7 @@ cleanup:
         if (alBuffer[i])
             AL_CHECK(alDeleteBuffers(1, &alBuffer[i]));
     }
-    return NULL;
+    return nullptr;
 }
 
 bool AudioBuffer::loadWav(Stream* stream, ALuint buffer, bool streamed, AudioStreamStateWav* streamState)
@@ -399,7 +399,7 @@ bool AudioBuffer::loadOgg(Stream* stream, ALuint buffer, bool streamed, AudioStr
     callbacks.close_func = closeStream;
     callbacks.tell_func = tellStream;
 
-    if ((result = ov_open_callbacks(stream, &streamState->oggFile, NULL, 0, callbacks)) < 0)
+    if ((result = ov_open_callbacks(stream, &streamState->oggFile, nullptr, 0, callbacks)) < 0)
     {
         GP_ERROR("Failed to open ogg file.");
         return false;

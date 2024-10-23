@@ -106,11 +106,11 @@ public:
     Animation* createAnimationFromBy(const char* id, int propertyId, float* from, float* by, Curve::InterpolationType type, unsigned long duration);
 
     /**
-     * Destroys the animation with the specified ID. Destroys the first animation if ID is NULL.
+     * Destroys the animation with the specified ID. Destroys the first animation if ID is nullptr.
      *
      * @param id The ID of the animation to destroy.
      */
-    void destroyAnimation(const char* id = NULL);
+    void destroyAnimation(const char* id = nullptr);
 
     /**
      * Abstract method to return the property component count of the given property ID on the AnimationTarget.
@@ -139,11 +139,11 @@ public:
     virtual void setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight = 1.0f) = 0;
 
     /**
-     * Gets the animation with the specified ID. If the ID is NULL, this function will return the first animation it finds.
+     * Gets the animation with the specified ID. If the ID is nullptr, this function will return the first animation it finds.
      *
      * @param id The name of the animation to get.
      */
-    Animation* getAnimation(const char* id = NULL) const;
+    Animation* getAnimation(const char* id = nullptr) const;
 
 protected:
 

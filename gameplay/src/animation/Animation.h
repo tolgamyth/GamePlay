@@ -60,19 +60,19 @@ public:
      * @param begin The begin time (in milliseconds) or keyframe(for keyframe animations).
      * @param end The end time (in milliseconds) or keyframe (for keyframe animations).
      *
-     * @return The newly created AnimationClip; NULL if an AnimationClip already exists with the same ID.
+     * @return The newly created AnimationClip; nullptr if an AnimationClip already exists with the same ID.
      * @script{create}
      */
     AnimationClip* createClip(const char* id, unsigned long begin, unsigned long end);
 
     /**
-     * Finds the AnimationClip with the specified name. If NULL, gets the default clip.
+     * Finds the AnimationClip with the specified name. If nullptr, gets the default clip.
      *
      * @param clipId The ID of the AnimationClip to get.
      *
-     * @return The AnimationClip with the specified ID; NULL if an AnimationClip with the given ID is not found.
+     * @return The AnimationClip with the specified ID; nullptr if an AnimationClip with the given ID is not found.
      */
-    AnimationClip* getClip(const char* clipId = NULL);
+    AnimationClip* getClip(const char* clipId = nullptr);
 
     /**
      * Returns the AnimationClip at the given index.
@@ -89,23 +89,23 @@ public:
     /**
      * Plays the AnimationClip with the specified name.
      *
-     * @param clipId The ID of the AnimationClip to play. If NULL, plays the default clip.
+     * @param clipId The ID of the AnimationClip to play. If nullptr, plays the default clip.
      */
-    void play(const char* clipId = NULL);
+    void play(const char* clipId = nullptr);
 
     /**
      * Stops the AnimationClip with the specified name.
      *
-     * @param clipId The ID of the AnimationClip to stop. If NULL, stops the default clip.
+     * @param clipId The ID of the AnimationClip to stop. If nullptr, stops the default clip.
      */
-    void stop(const char* clipId = NULL);
+    void stop(const char* clipId = nullptr);
 
     /**
      * Pauses the AnimationClip with the specified name.
      *
-     * @param clipId The ID of the AnimationClip to pause. If NULL, pauses the default clip.
+     * @param clipId The ID of the AnimationClip to pause. If nullptr, pauses the default clip.
      */
-    void pause(const char* clipId = NULL);
+    void pause(const char* clipId = nullptr);
 
     /**
      * Returns true if this animation targets the given AnimationTarget.
