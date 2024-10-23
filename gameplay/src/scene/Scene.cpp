@@ -357,7 +357,7 @@ void Scene::setActiveCamera(Camera* camera)
 
       if (audioListener && _bindAudioListenerToCamera)
       {
-        audioListener->setCamera(_activeCamera);
+        audioListener->setCamera(std::make_unique<Camera>(*_activeCamera));
       }
     }
   }
@@ -371,7 +371,7 @@ void Scene::bindAudioListenerToCamera(bool bind)
 
     if (AudioListener::getInstance())
     {
-      AudioListener::getInstance()->setCamera(bind ? _activeCamera : nullptr);
+      AudioListener::getInstance()->setCamera(bind ? std::make_unique<Camera>(*_activeCamera) : nullptr);
     }
   }
 }

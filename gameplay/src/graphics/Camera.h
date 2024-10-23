@@ -318,8 +318,6 @@ public:
      */
     void removeListener(Camera::Listener* listener);
 
-private:
-
     /**
      * Constructor.
      */
@@ -334,6 +332,8 @@ private:
      * Destructor.
      */
     virtual ~Camera();
+
+private:
 
     /**
      * Hidden copy assignment operator.
