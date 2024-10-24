@@ -15,7 +15,7 @@ namespace gameplay
 
   static std::vector<Font*> __fontCache;
 
-  static Effect* __fontEffect = nullptr;
+  static std::shared_ptr<Effect> __fontEffect = nullptr;
 
   Font::Font() :
     _format(BITMAP), _style(PLAIN), _size(0), _spacing(0.0f), _glyphs(nullptr), _glyphCount(0), _texture(nullptr), _batch(nullptr), _cutoffParam(nullptr)
@@ -110,7 +110,7 @@ namespace gameplay
       const char* defines = nullptr;
       if (format == DISTANCE_FIELD)
         defines = "DISTANCE_FIELD";
-      __fontEffect = Effect::createFromFile(FONT_VSH, FONT_FSH, defines);
+      __fontEffect = std::move(Effect::createFromFile(FONT_VSH, FONT_FSH, defines));
       if (__fontEffect == nullptr)
       {
         GP_WARN("Failed to create effect for font.");
@@ -118,16 +118,9 @@ namespace gameplay
         return nullptr;
       }
     }
-    else
-    {
-      __fontEffect->addRef();
-    }
 
     // Create batch for the font.
     SpriteBatch* batch = SpriteBatch::create(texture, __fontEffect, 128);
-
-    // Release __fontEffect since the SpriteBatch keeps a reference to it
-    SAFE_RELEASE(__fontEffect);
 
     if (batch == nullptr)
     {

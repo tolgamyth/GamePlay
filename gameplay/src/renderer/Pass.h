@@ -106,7 +106,7 @@ private:
 
     std::string _id;
     Technique* _technique;
-    Effect* _effect;
+    std::shared_ptr<Effect> _effect;
     VertexAttributeBinding* _vaBinding;
 };
 

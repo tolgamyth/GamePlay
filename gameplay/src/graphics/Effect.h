@@ -10,21 +10,31 @@
 namespace gameplay
 {
 
-class Uniform;
+  class Uniform;
 
-/**
- * Defines an effect which can be applied during rendering.
- *
- * An effect essentially wraps an OpenGL program object, which includes the
- * vertex and fragment shader.
- *
- * In the future, this class may be extended to support additional logic that
- * typical effect systems support, such as GPU render state management,
- * techniques and passes.
- */
-class Effect: public Ref
-{
-public:
+  /**
+   * Defines an effect which can be applied during rendering.
+   *
+   * An effect essentially wraps an OpenGL program object, which includes the
+   * vertex and fragment shader.
+   *
+   * In the future, this class may be extended to support additional logic that
+   * typical effect systems support, such as GPU render state management,
+   * techniques and passes.
+   */
+  class Effect : public std::enable_shared_from_this<Effect>
+  {
+  public:
+
+    /**
+     * Hidden constructor (use createEffect instead).
+     */
+    Effect();
+
+    /**
+     * Hidden destructor (use destroyEffect instead).
+     */
+    ~Effect();
 
     /**
      * Creates an effect using the specified vertex and fragment shader.
@@ -32,10 +42,10 @@ public:
      * @param vshPath The path to the vertex shader file.
      * @param fshPath The path to the fragment shader file.
      * @param defines A new-line delimited list of preprocessor defines. May be nullptr.
-     * 
+     *
      * @return The created effect.
      */
-    static Effect* createFromFile(const char* vshPath, const char* fshPath, const char* defines = nullptr);
+    static std::shared_ptr<Effect> createFromFile(const char* vshPath, const char* fshPath, const char* defines = nullptr);
 
     /**
      * Creates an effect from the given vertex and fragment shader source code.
@@ -43,10 +53,10 @@ public:
      * @param vshSource The vertex shader source code.
      * @param fshSource The fragment shader source code.
      * @param defines A new-line delimited list of preprocessor defines. May be nullptr.
-     * 
+     *
      * @return The created effect.
      */
-    static Effect* createFromSource(const char* vshSource, const char* fshSource, const char* defines = nullptr);
+    static std::shared_ptr<Effect> createFromSource(const char* vshSource, const char* fshSource, const char* defines = nullptr);
 
     /**
      * Returns the unique string identifier for the effect, which is a concatenation of
@@ -58,7 +68,7 @@ public:
      * Returns the vertex attribute handle for the vertex attribute with the specified name.
      *
      * @param name The name of the vertex attribute to return.
-     * 
+     *
      * @return The vertex attribute, or -1 if no such vertex attribute exists.
      */
     VertexAttribute getVertexAttribute(const char* name) const;
@@ -67,23 +77,23 @@ public:
      * Returns the uniform handle for the uniform with the specified name.
      *
      * @param name The name of the uniform to return.
-     * 
+     *
      * @return The uniform, or nullptr if no such uniform exists.
      */
     Uniform* getUniform(const char* name) const;
 
     /**
      * Returns the specified active uniform.
-     * 
+     *
      * @param index The index of the uniform to return.
-     * 
+     *
      * @return The uniform, or nullptr if index is invalid.
      */
     Uniform* getUniform(unsigned int index) const;
 
     /**
      * Returns the number of active uniforms in this effect.
-     * 
+     *
      * @return The number of active uniforms.
      */
     unsigned int getUniformCount() const;
@@ -219,53 +229,43 @@ public:
      *
      * @return The currently bound effect, or nullptr if no effect is currently bound.
      */
-    static Effect* getCurrentEffect();
+    static std::shared_ptr<Effect> getCurrentEffect();
 
-private:
-
-    /**
-     * Hidden constructor (use createEffect instead).
-     */
-    Effect();
-
-    /**
-     * Hidden destructor (use destroyEffect instead).
-     */
-    ~Effect();
+  private:
 
     /**
      * Hidden copy assignment operator.
      */
     Effect& operator=(const Effect&);
 
-    static Effect* createFromSource(const char* vshPath, const char* vshSource, const char* fshPath, const char* fshSource, const char* defines = nullptr);
+    static std::shared_ptr<Effect> createFromSource(const char* vshPath, const char* vshSource, const char* fshPath, const char* fshSource, const char* defines = nullptr);
 
     GLuint _program;
     std::string _id;
     std::map<std::string, VertexAttribute> _vertexAttributes;
     mutable std::map<std::string, Uniform*> _uniforms;
     static Uniform _emptyUniform;
-};
+  };
 
-/**
- * Represents a uniform variable within an effect.
- */
-class Uniform
-{
+  /**
+   * Represents a uniform variable within an effect.
+   */
+  class Uniform
+  {
     friend class Effect;
 
-public:
+  public:
 
     /**
      * Returns the name of this uniform.
-     * 
+     *
      * @return The name of the uniform.
      */
     const char* getName() const;
 
     /**
      * Returns the OpenGL uniform type.
-     * 
+     *
      * @return The OpenGL uniform type.
      */
     const GLenum getType() const;
@@ -277,7 +277,7 @@ public:
      */
     Effect* getEffect() const;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -304,6 +304,6 @@ private:
     GLenum _type;
     unsigned int _index;
     Effect* _effect;
-};
+  };
 
 }

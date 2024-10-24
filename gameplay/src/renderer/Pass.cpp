@@ -15,7 +15,6 @@ Pass::Pass(const char* id, Technique* technique) :
 
 Pass::~Pass()
 {
-    SAFE_RELEASE(_effect);
     SAFE_RELEASE(_vaBinding);
 }
 
@@ -24,7 +23,6 @@ bool Pass::initialize(const char* vshPath, const char* fshPath, const char* defi
     assert(vshPath);
     assert(fshPath);
 
-    SAFE_RELEASE(_effect);
     SAFE_RELEASE(_vaBinding);
 
     // Attempt to create/load the effect.
@@ -45,7 +43,7 @@ const char* Pass::getId() const
 
 Effect* Pass::getEffect() const
 {
-    return _effect;
+    return _effect.get();
 }
 
 void Pass::setVertexAttributeBinding(VertexAttributeBinding* binding)
@@ -93,7 +91,6 @@ void Pass::unbind()
 Pass* Pass::clone(Technique* technique, NodeCloneContext &context) const
 {
     assert(_effect);
-    _effect->addRef();
 
     Pass* pass = new Pass(getId(), technique);
     pass->_effect = _effect;

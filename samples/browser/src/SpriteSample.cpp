@@ -65,9 +65,9 @@ void SpriteSample::initialize()
 
 
     // Custom Effect in sprite
-    Effect* waterEffect = Effect::createFromFile("res/shaders/sprite.vert", "res/common/sprites/water2d.frag");
+    std::shared_ptr<Effect> waterEffect = Effect::createFromFile("res/shaders/sprite.vert", "res/common/sprites/water2d.frag");
     Sprite* waterSprite = Sprite::create("res/common/sprites/water2d.png", getWidth() * 5, getHeight() / 3, waterEffect);
-    SAFE_RELEASE(waterEffect);
+
     waterSprite->setAnchor(Vector2::zero());
     waterSprite->setOpacity(0.5f);
     _scene->findNode("water")->setDrawable(waterSprite);

@@ -93,7 +93,7 @@ Material* Material::create(Properties* materialProperties, PassCallback callback
     return material;
 }
 
-Material* Material::create(Effect* effect)
+Material* Material::create(std::shared_ptr<Effect> effect)
 {
     assert(effect);
 
@@ -106,7 +106,6 @@ Material* Material::create(Effect* effect)
     Pass* pass = new Pass(nullptr, technique);
     pass->_effect = effect;
     technique->_passes.push_back(pass);
-    effect->addRef();
 
     material->_currentTechnique = technique;
 

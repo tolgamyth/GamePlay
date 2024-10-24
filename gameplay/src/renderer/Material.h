@@ -86,7 +86,7 @@ public:
      * @return A new Material.
      * @script{create}
      */
-    static Material* create(Effect* effect);
+    static Material* create(std::shared_ptr<Effect> effect);
 
     /**
      * Creates a material using the specified vertex and fragment shader.

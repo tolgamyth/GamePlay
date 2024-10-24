@@ -9,8 +9,8 @@ namespace gameplay
 {
 
 // Cache of unique effects.
-static std::map<std::string, Effect*> __effectCache;
-static Effect* __currentEffect = nullptr;
+static std::map<std::string, std::shared_ptr<Effect>> __effectCache;
+static std::shared_ptr<Effect> __currentEffect = nullptr;
 
 Effect::Effect() : _program(0)
 {
@@ -30,7 +30,7 @@ Effect::~Effect()
     if (_program)
     {
         // If our program object is currently bound, unbind it before we're destroyed.
-        if (__currentEffect == this)
+        if (__currentEffect.get() == this)
         {
             GL_ASSERT( glUseProgram(0) );
             __currentEffect = nullptr;
@@ -41,7 +41,7 @@ Effect::~Effect()
     }
 }
 
-Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const char* defines)
+std::shared_ptr<Effect> Effect::createFromFile(const char* vshPath, const char* fshPath, const char* defines)
 {
     assert(vshPath);
     assert(fshPath);
@@ -55,12 +55,11 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
     {
         uniqueId += defines;
     }
-    std::map<std::string, Effect*>::const_iterator itr = __effectCache.find(uniqueId);
+    const auto itr = __effectCache.find(uniqueId);
     if (itr != __effectCache.end())
     {
         // Found an exiting effect with this id, so increase its ref count and return it.
         assert(itr->second);
-        itr->second->addRef();
         return itr->second;
     }
 
@@ -79,7 +78,7 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
         return nullptr;
     }
 
-    Effect* effect = createFromSource(vshPath, vshSource, fshPath, fshSource, defines);
+    std::shared_ptr<Effect> effect = createFromSource(vshPath, vshSource, fshPath, fshSource, defines);
     
     SAFE_DELETE_ARRAY(vshSource);
     SAFE_DELETE_ARRAY(fshSource);
@@ -98,7 +97,7 @@ Effect* Effect::createFromFile(const char* vshPath, const char* fshPath, const c
     return effect;
 }
 
-Effect* Effect::createFromSource(const char* vshSource, const char* fshSource, const char* defines)
+std::shared_ptr<Effect> Effect::createFromSource(const char* vshSource, const char* fshSource, const char* defines)
 {
     return createFromSource(nullptr, vshSource, nullptr, fshSource, defines);
 }
@@ -226,7 +225,7 @@ static void writeShaderToErrorFile(const char* filePath, const char* source)
     }
 }
 
-Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, const char* fshPath, const char* fshSource, const char* defines)
+std::shared_ptr<Effect> Effect::createFromSource(const char* vshPath, const char* vshSource, const char* fshPath, const char* fshSource, const char* defines)
 {
     assert(vshSource);
     assert(fshSource);
@@ -363,7 +362,7 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
     }
 
     // Create and return the new Effect.
-    Effect* effect = new Effect();
+    std::shared_ptr<Effect> effect = std::make_shared<Effect>();
     effect->_program = program;
 
     // Query and store vertex attribute meta-data from the program.
@@ -435,7 +434,7 @@ Effect* Effect::createFromSource(const char* vshPath, const char* vshSource, con
                 GL_ASSERT( uniformLocation = glGetUniformLocation(program, uniformName) );
 
                 Uniform* uniform = new Uniform();
-                uniform->_effect = effect;
+                uniform->_effect = effect.get();
                 uniform->_name = uniformName;
                 uniform->_location = uniformLocation;
                 uniform->_type = uniformType;
@@ -649,10 +648,10 @@ void Effect::bind()
 {
    GL_ASSERT( glUseProgram(_program) );
 
-    __currentEffect = this;
+    __currentEffect = shared_from_this();
 }
 
-Effect* Effect::getCurrentEffect()
+std::shared_ptr<Effect> Effect::getCurrentEffect()
 {
     return __currentEffect;
 }

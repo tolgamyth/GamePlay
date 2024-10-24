@@ -100,7 +100,7 @@ namespace gameplay
      * @return The new sprite.
      */
     static Sprite* create(const char* imagePath, float width = -1, float height = -1,
-      Effect* effect = nullptr);
+      std::shared_ptr<Effect> = nullptr);
 
     /**
      * Creates a sprite from a user specified source region within the image.
@@ -118,7 +118,7 @@ namespace gameplay
      */
     static Sprite* create(const char* imagePath, float width, float height,
       const Rectangle& source, unsigned int frameCount = 1,
-      Effect* effect = nullptr);
+      std::shared_ptr<Effect> = nullptr);
 
     /**
      * Creates a sprite from properties.

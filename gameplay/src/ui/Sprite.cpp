@@ -23,13 +23,13 @@ Sprite& Sprite::operator=(const Sprite& sprite)
     return *this;
 }
     
-Sprite* Sprite::create(const char* imagePath, float width, float height, Effect* effect)
+Sprite* Sprite::create(const char* imagePath, float width, float height, std::shared_ptr<Effect> effect)
 {
     return Sprite::create(imagePath, width, height, Rectangle(0, 0, -1, -1), 1, effect);
 }
     
 Sprite* Sprite::create(const char* imagePath, float width, float height,
-                       const Rectangle& source, unsigned int frameCount, Effect* effect)
+                       const Rectangle& source, unsigned int frameCount, std::shared_ptr<Effect> effect)
 {
     assert(imagePath != nullptr);
     assert(width >= -1 && height >= -1);
@@ -237,7 +237,7 @@ Sprite* Sprite::create(Properties* properties)
     }
 
     // Don't support loading custom effects
-    Effect* effect = nullptr;
+    std::shared_ptr<Effect> effect = nullptr;
 
     // Get width and height
     float width = -1.0f;

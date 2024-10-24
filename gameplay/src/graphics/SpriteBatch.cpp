@@ -22,7 +22,7 @@
 namespace gameplay
 {
 
-static Effect* __spriteEffect = nullptr;
+static std::shared_ptr<Effect> __spriteEffect = nullptr;
 
 SpriteBatch::SpriteBatch()
     : _batch(nullptr), _sampler(nullptr), _textureWidthRatio(0.0f), _textureHeightRatio(0.0f)
@@ -33,21 +33,9 @@ SpriteBatch::~SpriteBatch()
 {
     SAFE_DELETE(_batch);
     SAFE_RELEASE(_sampler);
-    if (!_customEffect)
-    {
-        if (__spriteEffect && __spriteEffect->getRefCount() == 1)
-        {
-            __spriteEffect->release();
-            __spriteEffect = nullptr;
-        }
-        else
-        {
-            __spriteEffect->release();
-        }
-    }
 }
 
-SpriteBatch* SpriteBatch::create(const char* texturePath, Effect* effect, unsigned int initialCapacity)
+SpriteBatch* SpriteBatch::create(const char* texturePath, std::shared_ptr<Effect> effect, unsigned int initialCapacity)
 {
     Texture* texture = Texture::create(texturePath);
     SpriteBatch* batch = SpriteBatch::create(texture, effect, initialCapacity);
@@ -55,7 +43,7 @@ SpriteBatch* SpriteBatch::create(const char* texturePath, Effect* effect, unsign
     return batch;
 }
 
-SpriteBatch* SpriteBatch::create(Texture* texture,  Effect* effect, unsigned int initialCapacity)
+SpriteBatch* SpriteBatch::create(Texture* texture, std::shared_ptr<Effect> effect, unsigned int initialCapacity)
 {
     assert(texture != nullptr);
     assert(texture->getType() == Texture::TEXTURE_2D);
@@ -77,7 +65,6 @@ SpriteBatch* SpriteBatch::create(Texture* texture,  Effect* effect, unsigned int
         else
         {
             effect = __spriteEffect;
-            __spriteEffect->addRef();
         }
     }
 
@@ -95,7 +82,6 @@ SpriteBatch* SpriteBatch::create(Texture* texture,  Effect* effect, unsigned int
     if (!samplerUniform)
     {
         GP_ERROR("No uniform of type GL_SAMPLER_2D found in sprite effect.");
-        SAFE_RELEASE(effect);
         return nullptr;
     }
 

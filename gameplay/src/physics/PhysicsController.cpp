@@ -1358,7 +1358,7 @@ PhysicsController::DebugDrawer::DebugDrawer()
         "}"
     };
 
-    Effect* effect = Effect::createFromSource(vs_str, fs_str);
+    std::shared_ptr<Effect> effect = Effect::createFromSource(vs_str, fs_str);
     Material* material = Material::create(effect);
     assert(material && material->getStateBlock());
     material->getStateBlock()->setDepthTest(true);
@@ -1371,7 +1371,6 @@ PhysicsController::DebugDrawer::DebugDrawer()
     };
     _meshBatch = MeshBatch::create(VertexFormat(elements, 2), Mesh::LINES, material, false, 4096, 4096);
     SAFE_RELEASE(material);
-    SAFE_RELEASE(effect);
 }
 
 PhysicsController::DebugDrawer::~DebugDrawer()
