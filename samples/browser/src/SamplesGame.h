@@ -1,5 +1,4 @@
-#ifndef SAMPLESGAME_H_
-#define SAMPLESGAME_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -172,5 +171,3 @@ private:
     Font* _font;
     Form* _sampleSelectForm;
 };
-
-#endif

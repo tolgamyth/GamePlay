@@ -1,15 +1,14 @@
-#ifndef NODE_H_
-#define NODE_H_
+#pragma once
 
 #include "math/Transform.h"
 #include "scripting/ScriptTarget.h"
 #include "graphics/Model.h"
 #include "graphics/Sprite.h"
 #include "graphics/TileSet.h"
-#include "graphics/Text.h"
+#include "renderer/Text.h"
 #include "ui/Form.h"
 #include "graphics/ParticleEmitter.h"
-#include "graphics/Camera.h"
+#include "renderer/Camera.h"
 #include "graphics/Light.h"
 #include "physics/PhysicsRigidBody.h"
 #include "physics/PhysicsCollisionObject.h"
@@ -75,26 +74,26 @@ public:
      * @return The type name of this class: "Node"
      * @see ScriptTarget::getTypeName()
      */
-    const char* getTypeName() const;
+    const char* getTypeName() const { return "Node"; }
 
     /**
      * Gets the identifier for the node.
      *
      * @return The node identifier.
      */
-    const char* getId() const;
+    const char* getId() const { return _id.c_str(); }
 
     /**
      * Sets the identifier for the node.
      *
      * @param id The identifier to set for the node.
      */
-    void setId(const char* id);
+    void setId(const char* id) { if (id) _id = id; }
 
     /**
      * Returns the type of the node.
      */
-    virtual Node::Type getType() const;
+    virtual Node::Type getType() const { return Node::NODE; }
 
     /**
      * Adds a child node.
@@ -120,35 +119,35 @@ public:
      *
      * @return The first child.
      */
-    Node* getFirstChild() const;
+    Node* getFirstChild() const { return _firstChild; }
 
     /**
      * Returns the first sibling of this node.
      *
      * @return The first sibling.
      */
-    Node* getNextSibling() const;
+    Node* getNextSibling() const { return _nextSibling; }
 
     /**
      * Returns the previous sibling to this node.
      *
      * @return The previous sibling.
      */
-    Node* getPreviousSibling() const;
+    Node* getPreviousSibling() const { return _prevSibling; }
 
     /**
      * Returns the parent of this node.
      *
      * @return The parent.
      */
-    Node* getParent() const;
+    Node* getParent() const { return _parent; }
 
     /**
      * Returns the number of direct children of this item.
      *
      * @return The number of children.
      */
-    unsigned int getChildCount() const;
+    unsigned int getChildCount() const { return _childCount; }
 
     /**
      * Gets the top level node in this node's parent hierarchy.
@@ -418,7 +417,7 @@ public:
      *
      * @return The drawable component attached to this node.
      */
-    Drawable* getDrawable() const;
+    Drawable* getDrawable() const { return _drawable; }
 
     /**
      * Set the drawable object to be attached to this node
@@ -437,7 +436,7 @@ public:
      *
      * @return Gets the camera attached to this node.
      */
-    Camera* getCamera() const;
+    Camera* getCamera() const { return _camera; }
 
     /**
      * Attaches a camera to this node.
@@ -454,7 +453,7 @@ public:
      *
      * @return The light attached to this node.
      */
-    Light* getLight() const;
+    Light* getLight() const { return _light; }
 
     /**
      * Attaches a light to this node.
@@ -471,7 +470,7 @@ public:
      *
      * @return The audio source attached to this node.
      */
-    AudioSource* getAudioSource() const;
+    AudioSource* getAudioSource() const { return _audioSource; }
 
     /**
      * Attaches an audio source to this node.
@@ -491,7 +490,7 @@ public:
      *
      * @return The pointer to this node's physics collision object.
      */
-    PhysicsCollisionObject* getCollisionObject() const;
+    PhysicsCollisionObject* getCollisionObject() const { return _collisionObject; }
 
     /**
      * Sets (or disables) the physics collision object for this node.
@@ -569,14 +568,14 @@ public:
      *
      * @return The user object assigned object to this node.
      */
-    Ref* getUserObject() const;
+    Ref* getUserObject() const { return _userObject; }
 
     /**
     * Sets a user object to be assigned object to this node.
     *
     * @param obj The user object assigned object to this node.
     */
-    void setUserObject(Ref* obj);
+    void setUserObject(Ref* obj) { _userObject = obj; }
 
     /**
      * Returns the bounding sphere for the Node, in world space.
@@ -823,5 +822,3 @@ private:
 };
 
 }
-
-#endif

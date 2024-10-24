@@ -1,5 +1,4 @@
-#ifndef PHYSICSCHARACTER_H_
-#define PHYSICSCHARACTER_H_
+#pragma once
 
 #include "scene/Node.h"
 #include "physics/PhysicsGhostObject.h"
@@ -277,5 +276,3 @@ private:
 };
 
 }
-
-#endif

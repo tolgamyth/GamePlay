@@ -1,12 +1,11 @@
-#ifndef EFFECT_H_
-#define EFFECT_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "math/Vector2.h"
 #include "math/Vector3.h"
 #include "math/Vector4.h"
 #include "math/Matrix.h"
-#include "graphics/Texture.h"
+#include "renderer/Texture.h"
 
 namespace gameplay
 {
@@ -308,5 +307,3 @@ private:
 };
 
 }
-
-#endif

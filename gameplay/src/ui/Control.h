@@ -1,5 +1,4 @@
-#ifndef CONTROL_H_
-#define CONTROL_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "graphics/Rectangle.h"
@@ -1510,5 +1509,3 @@ private:
 };
 
 }
-
-#endif

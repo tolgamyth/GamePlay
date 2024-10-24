@@ -1,5 +1,4 @@
-#ifndef QUATERNION_H_
-#define QUATERNION_H_
+#pragma once
 
 #include "math/Vector3.h"
 #include "math/Matrix.h"
@@ -418,5 +417,3 @@ private:
 }
 
 #include "math/Quaternion.inl"
-
-#endif

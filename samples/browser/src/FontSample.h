@@ -1,5 +1,4 @@
-#ifndef FONTSAMPLE_H_
-#define FONTSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -44,5 +43,3 @@ private:
     std::string _sampleString;
 
 };
-
-#endif

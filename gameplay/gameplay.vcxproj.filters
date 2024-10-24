@@ -52,6 +52,9 @@
     <Filter Include="src\scripting">
       <UniqueIdentifier>{9271f307-eecb-48a5-8716-fa59a13448fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\renderer">
+      <UniqueIdentifier>{a3d36c38-3849-42c5-afd1-c00f8c94725e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\colored.frag">
@@ -247,22 +250,13 @@
     <ClCompile Include="src\graphics\BoundingSphere.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Camera.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\Curve.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\DepthStencilTarget.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Drawable.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Effect.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\FrameBuffer.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Frustum.cpp">
@@ -272,12 +266,6 @@
       <Filter>src\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Light.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\Material.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\MaterialParameter.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Mesh.cpp">
@@ -298,9 +286,6 @@
     <ClCompile Include="src\graphics\ParticleEmitter.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Pass.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\Plane.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
@@ -310,16 +295,7 @@
     <ClCompile Include="src\graphics\Rectangle.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\RenderState.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\RenderTarget.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\SpriteBatch.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\Technique.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Terrain.cpp">
@@ -328,19 +304,7 @@
     <ClCompile Include="src\graphics\TerrainPatch.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Text.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\Texture.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\TileSet.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\VertexAttributeBinding.cpp">
-      <Filter>src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\VertexFormat.cpp">
       <Filter>src\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\input\Gamepad.cpp">
@@ -401,9 +365,6 @@
       <Filter>src\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\FlowLayout.cpp">
-      <Filter>src\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\Font.cpp">
       <Filter>src\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\Form.cpp">
@@ -505,6 +466,48 @@
     <ClCompile Include="src\scripting\ScriptTarget.cpp">
       <Filter>src\scripting</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\Camera.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\DepthStencilTarget.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\FrameBuffer.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\Material.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\MaterialParameter.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\Pass.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\Technique.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\Text.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\Texture.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\VertexAttributeBinding.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\VertexFormat.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\RenderState.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\RenderTarget.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\Font.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ai\AIAgent.h">
@@ -576,22 +579,13 @@
     <ClInclude Include="src\graphics\BoundingSphere.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\Camera.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\Curve.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\DepthStencilTarget.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Drawable.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Effect.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\FrameBuffer.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Frustum.h">
@@ -601,12 +595,6 @@
       <Filter>src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Light.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Material.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\MaterialParameter.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Mesh.h">
@@ -627,9 +615,6 @@
     <ClInclude Include="src\graphics\ParticleEmitter.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\Pass.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\Plane.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
@@ -639,19 +624,10 @@
     <ClInclude Include="src\graphics\Rectangle.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\RenderState.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\RenderTarget.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\Sprite.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\SpriteBatch.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Technique.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Terrain.h">
@@ -660,19 +636,7 @@
     <ClInclude Include="src\graphics\TerrainPatch.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\Text.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Texture.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\TileSet.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\VertexAttributeBinding.h">
-      <Filter>src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\VertexFormat.h">
       <Filter>src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\input\Gamepad.h">
@@ -745,9 +709,6 @@
       <Filter>src\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\FlowLayout.h">
-      <Filter>src\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ui\Font.h">
       <Filter>src\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\Form.h">
@@ -851,6 +812,48 @@
     </ClInclude>
     <ClInclude Include="src\utils\TimeListener.h">
       <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\Camera.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\DepthStencilTarget.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\FrameBuffer.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\Material.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\MaterialParameter.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\Pass.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\Technique.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\Text.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\Texture.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\VertexAttributeBinding.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\VertexFormat.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\RenderState.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\RenderTarget.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\Font.h">
+      <Filter>src\renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

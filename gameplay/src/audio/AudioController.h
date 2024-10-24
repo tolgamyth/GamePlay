@@ -1,5 +1,4 @@
-#ifndef AUDIOCONTROLLER_H_
-#define AUDIOCONTROLLER_H_
+#pragma once
 
 namespace gameplay
 {
@@ -72,5 +71,3 @@ private:
 };
 
 }
-
-#endif

@@ -57,14 +57,14 @@ using std::atoi;
 
 namespace gameplay
 {
-/**
- * Print logging (implemented per platform).
- * @script{ignore}
- */
-extern void print(const char* format, ...);
+  /**
+   * Print logging (implemented per platform).
+   * @script{ignore}
+   */
+  extern void print(const char* format, ...);
 
-// Define a platform-independent case-insensitive ASCII string comparison function.
-extern int strcmpnocase(const char* s1, const char* s2);
+  // Define a platform-independent case-insensitive ASCII string comparison function.
+  extern int strcmpnocase(const char* s1, const char* s2);
 }
 
 // Current function macro.
@@ -104,15 +104,15 @@ extern int strcmpnocase(const char* s1, const char* s2);
     } while (0)
 
 #if defined(WIN32)
-    #pragma warning( disable : 4005 )
-    #pragma warning( disable : 4172 )
-    #pragma warning( disable : 4244 )
-    #pragma warning( disable : 4267 )
-    #pragma warning( disable : 4311 )
-    #pragma warning( disable : 4316 )
-    #pragma warning( disable : 4390 )
-    #pragma warning( disable : 4800 )
-    #pragma warning( disable : 4996 )
+#pragma warning( disable : 4005 )
+#pragma warning( disable : 4172 )
+#pragma warning( disable : 4244 )
+#pragma warning( disable : 4267 )
+#pragma warning( disable : 4311 )
+#pragma warning( disable : 4316 )
+#pragma warning( disable : 4390 )
+#pragma warning( disable : 4800 )
+#pragma warning( disable : 4996 )
 #endif
 
 // Bullet Physics
@@ -168,25 +168,25 @@ extern int strcmpnocase(const char* s1, const char* s2);
 
 // NOMINMAX makes sure that windef.h doesn't add macros min and max
 #ifdef WIN32
-    #define NOMINMAX
+#define NOMINMAX
 #endif
 
 // Audio (OpenAL)
 #ifdef __ANDROID__
-    #include <AL/al.h>
-    #include <AL/alc.h>
-    #define AL_ALEXT_PROTOTYPES
-    #include <AL/alext.h>
+#include <AL/al.h>
+#include <AL/alc.h>
+#define AL_ALEXT_PROTOTYPES
+#include <AL/alext.h>
 #elif WIN32
-    #define AL_LIBTYPE_STATIC
-    #include <AL/al.h>
-    #include <AL/alc.h>
+#define AL_LIBTYPE_STATIC
+#include <AL/al.h>
+#include <AL/alc.h>
 #elif __linux__
-    #include <AL/al.h>
-    #include <AL/alc.h>
+#include <AL/al.h>
+#include <AL/alc.h>
 #elif __APPLE__
-    #include <OpenAL/al.h>
-    #include <OpenAL/alc.h>
+#include <OpenAL/al.h>
+#include <OpenAL/alc.h>
 #endif
 
 // Compressed Media
@@ -203,56 +203,56 @@ using std::va_list;
 
 // Graphics (OpenGL)
 #ifdef __ANDROID__
-    #include <EGL/egl.h>
-    #include <GLES2/gl2.h>
-    #include <GLES2/gl2ext.h>
-    extern PFNGLBINDVERTEXARRAYOESPROC glBindVertexArray;
-    extern PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArrays;
-    extern PFNGLGENVERTEXARRAYSOESPROC glGenVertexArrays;
-    extern PFNGLISVERTEXARRAYOESPROC glIsVertexArray;
-    extern PFNGLMAPBUFFEROESPROC glMapBuffer;
-    extern PFNGLUNMAPBUFFEROESPROC glUnmapBuffer;
-    #define GL_WRITE_ONLY GL_WRITE_ONLY_OES
-    #define GL_DEPTH24_STENCIL8 GL_DEPTH24_STENCIL8_OES
-    #define glClearDepth glClearDepthf
-    #define OPENGL_ES
-    #define GP_USE_VAO
+#include <EGL/egl.h>
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+extern PFNGLBINDVERTEXARRAYOESPROC glBindVertexArray;
+extern PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArrays;
+extern PFNGLGENVERTEXARRAYSOESPROC glGenVertexArrays;
+extern PFNGLISVERTEXARRAYOESPROC glIsVertexArray;
+extern PFNGLMAPBUFFEROESPROC glMapBuffer;
+extern PFNGLUNMAPBUFFEROESPROC glUnmapBuffer;
+#define GL_WRITE_ONLY GL_WRITE_ONLY_OES
+#define GL_DEPTH24_STENCIL8 GL_DEPTH24_STENCIL8_OES
+#define glClearDepth glClearDepthf
+#define OPENGL_ES
+#define GP_USE_VAO
 #elif WIN32
-        #define WIN32_LEAN_AND_MEAN
-        #define GLEW_STATIC
-        #include <GL/glew.h>
-        #define GP_USE_VAO
+#define WIN32_LEAN_AND_MEAN
+#define GLEW_STATIC
+#include <GL/glew.h>
+#define GP_USE_VAO
 #elif __linux__
-        #define GLEW_STATIC
-        #include <GL/glew.h>
-        #define GP_USE_VAO
+#define GLEW_STATIC
+#include <GL/glew.h>
+#define GP_USE_VAO
 #elif __APPLE__
-    #include "TargetConditionals.h"
-    #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-        #include <OpenGLES/ES2/gl.h>
-        #include <OpenGLES/ES2/glext.h>
-        #define glBindVertexArray glBindVertexArrayOES
-        #define glDeleteVertexArrays glDeleteVertexArraysOES
-        #define glGenVertexArrays glGenVertexArraysOES
-        #define glIsVertexArray glIsVertexArrayOES
-        #define glMapBuffer glMapBufferOES
-        #define glUnmapBuffer glUnmapBufferOES
-        #define GL_WRITE_ONLY GL_WRITE_ONLY_OES
-        #define GL_DEPTH24_STENCIL8 GL_DEPTH24_STENCIL8_OES
-        #define glClearDepth glClearDepthf
-        #define OPENGL_ES
-        #define GP_USE_VAO
-    #elif TARGET_OS_MAC
-        #include <OpenGL/gl.h>
-        #include <OpenGL/glext.h>
-        #define glBindVertexArray glBindVertexArrayAPPLE
-        #define glDeleteVertexArrays glDeleteVertexArraysAPPLE
-        #define glGenVertexArrays glGenVertexArraysAPPLE
-        #define glIsVertexArray glIsVertexArrayAPPLE
-        #define GP_USE_VAO
-    #else
-        #error "Unsupported Apple Device"
-    #endif
+#include "TargetConditionals.h"
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+#define glBindVertexArray glBindVertexArrayOES
+#define glDeleteVertexArrays glDeleteVertexArraysOES
+#define glGenVertexArrays glGenVertexArraysOES
+#define glIsVertexArray glIsVertexArrayOES
+#define glMapBuffer glMapBufferOES
+#define glUnmapBuffer glUnmapBufferOES
+#define GL_WRITE_ONLY GL_WRITE_ONLY_OES
+#define GL_DEPTH24_STENCIL8 GL_DEPTH24_STENCIL8_OES
+#define glClearDepth glClearDepthf
+#define OPENGL_ES
+#define GP_USE_VAO
+#elif TARGET_OS_MAC
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
+#define glBindVertexArray glBindVertexArrayAPPLE
+#define glDeleteVertexArrays glDeleteVertexArraysAPPLE
+#define glGenVertexArrays glGenVertexArraysAPPLE
+#define glIsVertexArray glIsVertexArrayAPPLE
+#define GP_USE_VAO
+#else
+#error "Unsupported Apple Device"
+#endif
 #endif
 
 // Graphics (GLSL)
@@ -268,24 +268,24 @@ using std::va_list;
 // Hardware buffer
 namespace gameplay
 {
-/** Vertex attribute. */
-typedef GLint VertexAttribute;
-/** Vertex buffer handle. */
-typedef GLuint VertexBufferHandle;
-/** Index buffer handle. */
-typedef GLuint IndexBufferHandle;
-/** Texture handle. */
-typedef GLuint TextureHandle;
-/** Frame buffer handle. */
-typedef GLuint FrameBufferHandle;
-/** Render buffer handle. */
-typedef GLuint RenderBufferHandle;
+  /** Vertex attribute. */
+  typedef GLint VertexAttribute;
+  /** Vertex buffer handle. */
+  typedef GLuint VertexBufferHandle;
+  /** Index buffer handle. */
+  typedef GLuint IndexBufferHandle;
+  /** Texture handle. */
+  typedef GLuint TextureHandle;
+  /** Frame buffer handle. */
+  typedef GLuint FrameBufferHandle;
+  /** Render buffer handle. */
+  typedef GLuint RenderBufferHandle;
 
-/** Gamepad handle */
+  /** Gamepad handle */
 #ifdef __ANDROID__
-typedef unsigned int GamepadHandle;
+  typedef unsigned int GamepadHandle;
 #else
-typedef unsigned long GamepadHandle;
+  typedef unsigned long GamepadHandle;
 #endif
 }
 
@@ -308,8 +308,8 @@ typedef unsigned long GamepadHandle;
     } while(0)
 #endif
 
-/** Global variable to hold GL errors
- * @script{ignore} */
+ /** Global variable to hold GL errors
+  * @script{ignore} */
 extern GLenum __gl_error_code;
 
 /**
@@ -330,8 +330,8 @@ extern GLenum __gl_error_code;
         } \
     } while(0)
 
-/** Global variable to hold AL errors
- * @script{ignore} */
+ /** Global variable to hold AL errors
+  * @script{ignore} */
 extern ALenum __al_error_code;
 
 /**

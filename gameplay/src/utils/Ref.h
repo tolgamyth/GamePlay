@@ -1,5 +1,4 @@
-#ifndef REF_H_
-#define REF_H_
+#pragma once
 
 namespace gameplay
 {
@@ -75,5 +74,3 @@ private:
 };
 
 }
-
-#endif

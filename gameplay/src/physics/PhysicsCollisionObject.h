@@ -1,5 +1,4 @@
-#ifndef PHYSICSCOLLISIONOBJECT_H_
-#define PHYSICSCOLLISIONOBJECT_H_
+#pragma once
 
 #include "scripting/Script.h"
 #include "math/Vector3.h"
@@ -407,5 +406,3 @@ private:
 };
 
 }
-
-#endif

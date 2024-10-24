@@ -1,5 +1,4 @@
-#ifndef PARTICLESSAMPLE_H_
-#define PARTICLESSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -164,5 +163,3 @@ private:
     CheckBox* _vsync;
     std::string _url;
 };
-
-#endif

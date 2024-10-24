@@ -2,7 +2,7 @@
 
 #include "math/Vector3.h"
 #include "math/Transform.h"
-#include "graphics/Camera.h"
+#include "renderer/Camera.h"
 
 namespace gameplay
 {

@@ -1,8 +1,7 @@
-#ifndef BUNDLE_H_
-#define BUNDLE_H_
+#pragma once
 
 #include "graphics/Mesh.h"
-#include "ui/Font.h"
+#include "renderer/Font.h"
 #include "scene/Node.h"
 #include "framework/Game.h"
 #include "graphics/MeshSkin.h"
@@ -462,5 +461,3 @@ private:
 };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef CONTAINER_H_
-#define CONTAINER_H_
+#pragma once
 
 #include "ui/Control.h"
 #include "ui/Layout.h"
@@ -597,5 +596,3 @@ private:
 };
 
 }
-
-#endif

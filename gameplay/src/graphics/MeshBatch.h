@@ -1,5 +1,4 @@
-#ifndef MESHBATCH_H_
-#define MESHBATCH_H_
+#pragma once
 
 #include "graphics/Mesh.h"
 
@@ -185,5 +184,3 @@ private:
 }
 
 #include "graphics/MeshBatch.inl"
-
-#endif

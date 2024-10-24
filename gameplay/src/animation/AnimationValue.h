@@ -1,5 +1,4 @@
-#ifndef ANIMATIONVALUE_H_
-#define ANIMATIONVALUE_H_
+#pragma once
 
 #include "animation/Animation.h"
 
@@ -84,5 +83,3 @@ private:
 };
 
 }
-
-#endif

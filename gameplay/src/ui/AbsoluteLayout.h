@@ -1,21 +1,20 @@
-#ifndef ABSOLUTELAYOUT_H_
-#define ABSOLUTELAYOUT_H_
+#pragma once
 
 #include "ui/Layout.h"
 
 namespace gameplay
 {
 
-/**
- * Defines a Layout for forms and containers that requires the user
- * to specify absolute positions for all contained controls.
- */
-class AbsoluteLayout : public Layout
-{
+  /**
+   * Defines a Layout for forms and containers that requires the user
+   * to specify absolute positions for all contained controls.
+   */
+  class AbsoluteLayout : public Layout
+  {
     friend class Form;
     friend class Container;
 
-public:
+  public:
 
     /**
      * Get the type of this Layout.
@@ -24,7 +23,7 @@ public:
      */
     Layout::Type getType();
 
-protected:
+  protected:
 
     /**
      * Update the controls contained by the specified container.
@@ -36,18 +35,18 @@ protected:
      */
     void update(const Container* container);
 
-private:
-    
+  private:
+
     /*
      * Constructor.
      */
     AbsoluteLayout();
-    
+
     /*
      * Constructor.
      */
     AbsoluteLayout(const AbsoluteLayout& copy);
-    
+
     /*
      * Destructor.
      */
@@ -60,8 +59,6 @@ private:
      */
     static AbsoluteLayout* create();
 
-};
+  };
 
 }
-
-#endif

@@ -1,26 +1,27 @@
-#ifndef AISTATE_H_
-#define AISTATE_H_
+#pragma once
+
+#include <string>
 
 #include "utils/Ref.h"
 
 namespace gameplay
 {
 
-class AIAgent;
-class AIStateMachine;
+  class AIAgent;
+  class AIStateMachine;
 
-/**
- * Defines a single state in an AIStateMachine.
- *
- * An AIState encapsulates a state and unit of work within an AI
- * state machine. Events can be programmed or scripted when the
- * state is entered, exited and each frame/tick in its update event.
- */
-class AIState : public Ref
-{
+  /**
+   * Defines a single state in an AIStateMachine.
+   *
+   * An AIState encapsulates a state and unit of work within an AI
+   * state machine. Events can be programmed or scripted when the
+   * state is entered, exited and each frame/tick in its update event.
+   */
+  class AIState : public Ref
+  {
     friend class AIStateMachine;
 
-public:
+  public:
 
     /**
      * Interface for listening to AIState events.
@@ -29,37 +30,37 @@ public:
     {
     public:
 
-        /**
-         * Virtual destructor.
-         */
-        virtual ~Listener();
+      /**
+       * Virtual destructor.
+       */
+      virtual ~Listener();
 
-        /** 
-         * Called when a state is entered.
-         *
-         * @param agent The AIAgent this state event is for.
-         * @param state The state that was entered.
-         */
-        virtual void stateEnter(AIAgent* agent, AIState* state);
+      /**
+       * Called when a state is entered.
+       *
+       * @param agent The AIAgent this state event is for.
+       * @param state The state that was entered.
+       */
+      virtual void stateEnter(AIAgent* agent, AIState* state);
 
-        /**
-         * Called when a state is exited.
-         *
-         * @param agent The AIAgent this state event is for.
-         * @param state The state that was exited.
-         */
-        virtual void stateExit(AIAgent* agent, AIState* state);
+      /**
+       * Called when a state is exited.
+       *
+       * @param agent The AIAgent this state event is for.
+       * @param state The state that was exited.
+       */
+      virtual void stateExit(AIAgent* agent, AIState* state);
 
-        /**
-         * Called once per frame when for a state when it is active.
-         *
-         * This method is normally where the logic for a state is implemented.
-         *
-         * @param agent The AIAgent this state event is for.
-         * @param state The active AIState.
-         * @param elapsedTime The elapsed time, in milliseconds.
-         */
-        virtual void stateUpdate(AIAgent* agent, AIState* state, float elapsedTime);
+      /**
+       * Called once per frame when for a state when it is active.
+       *
+       * This method is normally where the logic for a state is implemented.
+       *
+       * @param agent The AIAgent this state event is for.
+       * @param state The active AIState.
+       * @param elapsedTime The elapsed time, in milliseconds.
+       */
+      virtual void stateUpdate(AIAgent* agent, AIState* state, float elapsedTime);
     };
 
     /**
@@ -81,12 +82,12 @@ public:
 
     /**
      * Sets a listener to dispatch state events to.
-     * 
+     *
      * @param listener Listener to dispatch state events to, or nullptr to disable event dispatching.
      */
     void setListener(Listener* listener);
 
-private:
+  private:
 
     /**
      * Constructs a new AIState.
@@ -129,8 +130,5 @@ private:
     // The default/empty state.
     static AIState* _empty;
 
-};
-
+  };
 }
-
-#endif

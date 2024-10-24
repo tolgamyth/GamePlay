@@ -1,5 +1,4 @@
-#ifndef PHYSICSSPRINGCONSTRAINT_H_
-#define PHYSICSSPRINGCONSTRAINT_H_
+#pragma once
 
 #include "physics/PhysicsGenericConstraint.h"
 
@@ -192,5 +191,3 @@ private:
 }
 
 #include "physics/PhysicsSpringConstraint.inl"
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef PHYSICSVEHICLEWHEEL_H_
-#define PHYSICSVEHICLEWHEEL_H_
+#pragma once
 
 #include "physics/PhysicsCollisionObject.h"
 #include "physics/PhysicsRigidBody.h"
@@ -365,5 +364,3 @@ private:
 };
 
 }
-
-#endif

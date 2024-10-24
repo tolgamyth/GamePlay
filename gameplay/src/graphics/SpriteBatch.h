@@ -1,12 +1,11 @@
-#ifndef SPRITEBATCH_H_
-#define SPRITEBATCH_H_
+#pragma once
 
-#include "graphics/Texture.h"
+#include "renderer/Texture.h"
 #include "graphics/Effect.h"
 #include "graphics/Mesh.h"
 #include "graphics/Rectangle.h"
 #include "math/Matrix.h"
-#include "graphics/RenderState.h"
+#include "renderer/RenderState.h"
 #include "graphics/MeshBatch.h"
 
 namespace gameplay
@@ -411,5 +410,3 @@ private:
 };
 
 }
-
-#endif

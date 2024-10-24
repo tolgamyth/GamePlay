@@ -1,5 +1,4 @@
-#ifndef SPRITEBATCHSAMPLE_H_
-#define SPRITEBATCHSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -33,5 +32,3 @@ private:
     SpriteBatch* _spriteBatch;
     Matrix _worldViewProjectionMatrix;
 };
-
-#endif

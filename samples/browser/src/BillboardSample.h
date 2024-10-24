@@ -1,5 +1,4 @@
-#ifndef BILLBOARDSAMPLE_H_
-#define BILLBOARDSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -55,5 +54,3 @@ private:
     int _prevY;
     bool _buttonPressed;
 };
-
-#endif

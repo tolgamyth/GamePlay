@@ -1,5 +1,4 @@
-#ifndef CURVE_H_
-#define CURVE_H_
+#pragma once
 
 #include "utils/Ref.h"
 
@@ -549,5 +548,3 @@ private:
 };
 
 }
-
-#endif

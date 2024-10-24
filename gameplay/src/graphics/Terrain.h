@@ -1,12 +1,11 @@
-#ifndef TERRAIN_H_
-#define TERRAIN_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "graphics/Drawable.h"
 #include "math/Transform.h"
 #include "scene/Properties.h"
 #include "graphics/HeightField.h"
-#include "graphics/Texture.h"
+#include "renderer/Texture.h"
 #include "graphics/BoundingBox.h"
 #include "graphics/TerrainPatch.h"
 
@@ -341,5 +340,3 @@ private:
 };
 
 }
-
-#endif

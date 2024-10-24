@@ -1,5 +1,4 @@
-#ifndef PROPERTIES_H_
-#define PROPERTIES_H_
+#pragma once
 
 #include "framework/Base.h"
 #include "math/Matrix.h"
@@ -569,5 +568,3 @@ private:
 };
 
 }
-
-#endif

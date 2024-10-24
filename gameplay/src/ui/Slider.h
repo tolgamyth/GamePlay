@@ -1,5 +1,4 @@
-#ifndef SLIDER_H_
-#define SLIDER_H_
+#pragma once
 
 #include "framework/Base.h"
 #include "ui/Theme.h"
@@ -309,5 +308,3 @@ private:
 };
 
 }
-
-#endif

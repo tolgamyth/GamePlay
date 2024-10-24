@@ -1,34 +1,33 @@
-#ifndef THEMESTYLE_H_
-#define THEMESTYLE_H_
+#pragma once
 
 #include "framework/Base.h"
 #include "utils/Ref.h"
-#include "ui/Font.h"
+#include "renderer/Font.h"
 #include "graphics/Rectangle.h"
-#include "graphics/Texture.h"
+#include "renderer/Texture.h"
 #include "scene/Properties.h"
 #include "ui/Theme.h"
 
 namespace gameplay
 {
 
-/**
- * Defines the style of a control.  
- *
- * A style can have padding and margin values,
- * as well as overlays for each of the control's states.  
- * Each overlay in turn can reference other theme classes to determine
- * the border, background, cursor, and image settings to use for
- * a particular state, as well as color and font settings, etcetera.
- */
-class Theme::Style
-{
+  /**
+   * Defines the style of a control.
+   *
+   * A style can have padding and margin values,
+   * as well as overlays for each of the control's states.
+   * Each overlay in turn can reference other theme classes to determine
+   * the border, background, cursor, and image settings to use for
+   * a particular state, as well as color and font settings, etcetera.
+   */
+  class Theme::Style
+  {
     friend class Theme;
     friend class Control;
     friend class Container;
     friend class Form;
 
-public:
+  public:
 
     /**
      * Get the theme this style belongs to.
@@ -37,19 +36,19 @@ public:
      */
     Theme* getTheme() const;
 
-private:
+  private:
 
     /**
      * A style has one overlay for each possible control state.
      */
     enum OverlayType
     {
-        OVERLAY_NORMAL,
-        OVERLAY_FOCUS,
-        OVERLAY_ACTIVE,
-        OVERLAY_DISABLED,
-        OVERLAY_HOVER,
-        OVERLAY_MAX
+      OVERLAY_NORMAL,
+      OVERLAY_FOCUS,
+      OVERLAY_ACTIVE,
+      OVERLAY_DISABLED,
+      OVERLAY_HOVER,
+      OVERLAY_MAX
     };
 
     /**
@@ -57,133 +56,133 @@ private:
      */
     class Overlay : public Ref, public AnimationTarget
     {
-        friend class Theme;
-        friend class Theme::Style;
-        friend class Control;
-        friend class Container;
-        friend class Form;
+      friend class Theme;
+      friend class Theme::Style;
+      friend class Control;
+      friend class Container;
+      friend class Form;
 
     private:
 
-        static const int ANIMATE_OPACITY = 1;
+      static const int ANIMATE_OPACITY = 1;
 
-        Overlay();
-            
-        Overlay(const Overlay& copy);
-            
-        ~Overlay();
+      Overlay();
 
-        /**
-         * Hidden copy assignment operator.
-         */
-        Overlay& operator=(const Overlay&);
+      Overlay(const Overlay& copy);
 
-        static Overlay* create();
+      ~Overlay();
 
-        OverlayType getType();
+      /**
+       * Hidden copy assignment operator.
+       */
+      Overlay& operator=(const Overlay&);
 
-        float getOpacity() const;
+      static Overlay* create();
 
-        void setOpacity(float opacity);
+      OverlayType getType();
 
-        void setBorder(float top, float bottom, float left, float right);
+      float getOpacity() const;
 
-        const Theme::Border& getBorder() const;
+      void setOpacity(float opacity);
 
-        void setSkinColor(const Vector4& color);
+      void setBorder(float top, float bottom, float left, float right);
 
-        const Vector4& getSkinColor() const;
+      const Theme::Border& getBorder() const;
 
-        void setSkinRegion(const Rectangle& region, float tw, float th);
+      void setSkinColor(const Vector4& color);
 
-        const Rectangle& getSkinRegion() const;
+      const Vector4& getSkinColor() const;
 
-        const Theme::UVs& getSkinUVs(Theme::Skin::SkinArea area) const;
+      void setSkinRegion(const Rectangle& region, float tw, float th);
 
-        Font* getFont() const;
+      const Rectangle& getSkinRegion() const;
 
-        void setFont(Font* font);
+      const Theme::UVs& getSkinUVs(Theme::Skin::SkinArea area) const;
 
-        unsigned int getFontSize() const;
+      Font* getFont() const;
 
-        void setFontSize(unsigned int fontSize);
+      void setFont(Font* font);
 
-        Font::Justify getTextAlignment() const;
+      unsigned int getFontSize() const;
 
-        void setTextAlignment(Font::Justify alignment);
-            
-        bool getTextRightToLeft() const;
+      void setFontSize(unsigned int fontSize);
 
-        void setTextRightToLeft(bool rightToLeft);
+      Font::Justify getTextAlignment() const;
 
-        const Vector4& getTextColor() const;
+      void setTextAlignment(Font::Justify alignment);
 
-        void setTextColor(const Vector4& color); 
+      bool getTextRightToLeft() const;
 
-        const Rectangle& getImageRegion(const char* id) const;
+      void setTextRightToLeft(bool rightToLeft);
 
-        void setImageRegion(const char* id, const Rectangle& region, float tw, float th);
+      const Vector4& getTextColor() const;
 
-        const Vector4& getImageColor(const char* id) const;
+      void setTextColor(const Vector4& color);
 
-        void setImageColor(const char* id, const Vector4& color);
+      const Rectangle& getImageRegion(const char* id) const;
 
-        const Theme::UVs& getImageUVs(const char* id) const;
+      void setImageRegion(const char* id, const Rectangle& region, float tw, float th);
 
-        const Rectangle& getCursorRegion() const;
+      const Vector4& getImageColor(const char* id) const;
 
-        void setCursorRegion(const Rectangle& region, float tw, float th);
+      void setImageColor(const char* id, const Vector4& color);
 
-        const Vector4& getCursorColor() const;
+      const Theme::UVs& getImageUVs(const char* id) const;
 
-        void setCursorColor(const Vector4& color);
+      const Rectangle& getCursorRegion() const;
 
-        const Theme::UVs& getCursorUVs() const;
+      void setCursorRegion(const Rectangle& region, float tw, float th);
 
-        /**
-         * @see AnimationTarget::getAnimationPropertyComponentCount
-         */
-        unsigned int getAnimationPropertyComponentCount(int propertyId) const;
+      const Vector4& getCursorColor() const;
 
-        /**
-         * @see AnimationTarget::getAnimationProperty
-         */
-        void getAnimationPropertyValue(int propertyId, AnimationValue* value);
+      void setCursorColor(const Vector4& color);
 
-        /**
-         * @see AnimationTarget::setAnimationProperty
-         */
-        void setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight = 1.0f);
-       
-        void setSkin(Theme::Skin* Skin);
+      const Theme::UVs& getCursorUVs() const;
 
-        Theme::Skin* getSkin() const;
+      /**
+       * @see AnimationTarget::getAnimationPropertyComponentCount
+       */
+      unsigned int getAnimationPropertyComponentCount(int propertyId) const;
 
-        void setCursor(Theme::ThemeImage* cursor);
-            
-        Theme::ThemeImage* getCursor() const;
-            
-        void setImageList(Theme::ImageList* imageList);
-            
-        Theme::ImageList* getImageList() const;
-        
-        Skin* _skin;
-        Theme::ThemeImage* _cursor;
-        Theme::ImageList* _imageList;
-        Font* _font;
-        unsigned int _fontSize;
-        Font::Justify _alignment;
-        bool _textRightToLeft;
-        Vector4 _textColor;
-        float _opacity;
+      /**
+       * @see AnimationTarget::getAnimationProperty
+       */
+      void getAnimationPropertyValue(int propertyId, AnimationValue* value);
+
+      /**
+       * @see AnimationTarget::setAnimationProperty
+       */
+      void setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight = 1.0f);
+
+      void setSkin(Theme::Skin* Skin);
+
+      Theme::Skin* getSkin() const;
+
+      void setCursor(Theme::ThemeImage* cursor);
+
+      Theme::ThemeImage* getCursor() const;
+
+      void setImageList(Theme::ImageList* imageList);
+
+      Theme::ImageList* getImageList() const;
+
+      Skin* _skin;
+      Theme::ThemeImage* _cursor;
+      Theme::ImageList* _imageList;
+      Font* _font;
+      unsigned int _fontSize;
+      Font::Justify _alignment;
+      bool _textRightToLeft;
+      Vector4 _textColor;
+      float _opacity;
     };
 
     /**
      * Constructor.
      */
     Style(Theme* theme, const char* id, float tw, float th,
-          const Theme::Margin& margin, const Theme::Padding& padding,
-          Overlay* normal, Overlay* focus, Overlay* active, Overlay* disabled, Overlay* hover);
+      const Theme::Margin& margin, const Theme::Padding& padding,
+      Overlay* normal, Overlay* focus, Overlay* active, Overlay* disabled, Overlay* hover);
 
     /**
      * Constructor.
@@ -233,7 +232,7 @@ private:
      * The margin is used by Layouts other than AbsoluteLayout to put space between Controls.
      */
     void setMargin(float top, float bottom, float left, float right);
-    
+
     Theme* _theme;
     std::string _id;
     float _tw;
@@ -241,8 +240,6 @@ private:
     Theme::Margin _margin;
     Theme::Padding _padding;
     Overlay* _overlays[OVERLAY_MAX];
-};
+  };
 
 }
-
-#endif

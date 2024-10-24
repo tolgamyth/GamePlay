@@ -1,5 +1,4 @@
-#ifndef JOINT_H_
-#define JOINT_H_
+#pragma once
 
 #include "scene/Node.h"
 
@@ -145,5 +144,3 @@ private:
 };
 
 }
-
-#endif

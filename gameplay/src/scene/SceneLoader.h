@@ -1,5 +1,4 @@
-#ifndef SCENELOADER_H_
-#define SCENELOADER_H_
+#pragma once
 
 #include "framework/Base.h"
 #include "graphics/Mesh.h"
@@ -148,5 +147,3 @@ private:
 void splitURL(const std::string& url, std::string* file, std::string* id);
 
 }
-
-#endif

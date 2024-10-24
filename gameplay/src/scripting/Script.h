@@ -1,5 +1,4 @@
-#ifndef SCRIPT_H_
-#define SCRIPT_H_
+#pragma once
 
 #include "framework/Base.h"
 #include "utils/Ref.h"
@@ -115,5 +114,3 @@ private:
 };
 
 }
-
-#endif

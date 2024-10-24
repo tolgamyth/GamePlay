@@ -1,5 +1,4 @@
-#ifndef BUTTON_H_
-#define BUTTON_H_
+#pragma once
 
 #include "ui/Container.h"
 #include "ui/Label.h"
@@ -97,5 +96,3 @@ private:
 };
 
 }
-
-#endif

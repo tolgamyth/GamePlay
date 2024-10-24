@@ -1,5 +1,4 @@
-#ifndef FIRSTPERSONCAMERA_H_
-#define FIRSTPERSONCAMERA_H_
+#pragma once
 
 #include "gameplay.h"
 
@@ -85,5 +84,3 @@ private:
     Node* _pitchNode;
     Node* _rootNode;
 };
-
-#endif

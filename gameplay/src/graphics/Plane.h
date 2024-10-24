@@ -1,5 +1,4 @@
-#ifndef PLANE_H_
-#define PLANE_H_
+#pragma once
 
 #include "math/Matrix.h"
 
@@ -244,5 +243,3 @@ inline const Plane operator*(const Matrix& matrix, const Plane& plane);
 }
 
 #include "graphics/Plane.inl"
-
-#endif

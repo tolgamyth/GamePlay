@@ -1,5 +1,4 @@
-#ifndef VERTEXFORMAT_H_
-#define VERTEXFORMAT_H_
+#pragma once
 
 namespace gameplay
 {
@@ -152,5 +151,3 @@ private:
 };
 
 }
-
-#endif

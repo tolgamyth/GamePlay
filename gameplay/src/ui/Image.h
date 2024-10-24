@@ -1,5 +1,4 @@
-#ifndef IMAGE_H__
-#define IMAGE_H__
+#pragma once
 
 #include "utils/Ref.h"
 
@@ -100,5 +99,3 @@ private:
 }
 
 #include "Image.inl"
-
-#endif

@@ -1,6 +1,6 @@
 #include "framework/Base.h"
 #include "graphics/MeshBatch.h"
-#include "graphics/Material.h"
+#include "renderer/Material.h"
 
 namespace gameplay
 {

@@ -1,5 +1,4 @@
-#ifndef TEXTURE_H_
-#define TEXTURE_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "framework/Stream.h"
@@ -356,5 +355,3 @@ private:
 };
 
 }
-
-#endif

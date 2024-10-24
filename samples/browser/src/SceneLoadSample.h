@@ -1,5 +1,4 @@
-#ifndef SCENELOADSAMPLE_H_
-#define SCENELOADSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -39,5 +38,3 @@ private:
     Scene* _scene;
     bool _wireFrame;
 };
-
-#endif

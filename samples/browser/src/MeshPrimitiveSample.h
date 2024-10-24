@@ -1,5 +1,4 @@
-#ifndef MESHPRIMITIVESAMPLE_H_
-#define MESHPRIMITIVESAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -44,5 +43,3 @@ private:
     Vector2 _tilt;
     std::list<Text*> _text;
 };
-
-#endif

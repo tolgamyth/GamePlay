@@ -1,6 +1,5 @@
 
-#ifndef KEYBOARD_H_
-#define KEYBOARD_H_
+#pragma once
 
 namespace gameplay
 {
@@ -196,5 +195,3 @@ private:
 };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef TRIANGLESAMPLE_H_
-#define TRIANGLESAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -34,5 +33,3 @@ private:
     float _spinDirection;
     Matrix _worldViewProjectionMatrix;
 };
-
-#endif

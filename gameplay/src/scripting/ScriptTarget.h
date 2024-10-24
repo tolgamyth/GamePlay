@@ -1,5 +1,4 @@
-#ifndef SCRIPTTARGET_H_
-#define SCRIPTTARGET_H_
+#pragma once
 
 #include "scripting/Script.h"
 
@@ -438,5 +437,3 @@ template<> void ScriptTarget::fireScriptEvent<void>(const Event* evt, ...);
 template<> bool ScriptTarget::fireScriptEvent<bool>(const Event* evt, ...);
 
 }
-
-#endif

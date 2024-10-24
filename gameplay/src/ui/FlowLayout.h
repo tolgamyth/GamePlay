@@ -1,22 +1,21 @@
-#ifndef FLOWLAYOUT_H_
-#define FLOWLAYOUT_H_
+#pragma once
 
 #include "ui/Layout.h"
 
 namespace gameplay
 {
 
-/**
- * Defines a flow layout.
- *
- * A flow layout arranges controls in order, left-to-right, row by row and wraps.
- */
-class FlowLayout : public Layout
-{
+  /**
+   * Defines a flow layout.
+   *
+   * A flow layout arranges controls in order, left-to-right, row by row and wraps.
+   */
+  class FlowLayout : public Layout
+  {
     friend class Form;
     friend class Container;
 
-public:
+  public:
 
     /**
      * Get the type of this Layout.
@@ -47,7 +46,7 @@ public:
      */
     void setSpacing(int horizontalSpacing, int verticalSpacing);
 
-protected:
+  protected:
 
     /**
      * Update the controls contained by the specified container.
@@ -66,7 +65,7 @@ protected:
      */
     int _verticalSpacing;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -90,8 +89,6 @@ private:
      */
     static FlowLayout* create();
 
-};
+  };
 
 }
-
-#endif

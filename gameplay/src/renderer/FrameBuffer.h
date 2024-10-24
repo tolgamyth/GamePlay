@@ -1,9 +1,8 @@
-#ifndef FRAMEBUFFER_H_
-#define FRAMEBUFFER_H_
+#pragma once
 
 #include "framework/Base.h"
-#include "graphics/RenderTarget.h"
-#include "graphics/DepthStencilTarget.h"
+#include "renderer/RenderTarget.h"
+#include "renderer/DepthStencilTarget.h"
 #include "ui/Image.h"
 
 namespace gameplay
@@ -230,5 +229,3 @@ private:
 };
 
 }
-
-#endif

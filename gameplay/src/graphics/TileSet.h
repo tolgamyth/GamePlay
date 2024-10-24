@@ -1,5 +1,4 @@
-#ifndef TILESET_H__
-#define TILESET_H__
+#pragma once
 
 #include "utils/Ref.h"
 #include "graphics/Drawable.h"
@@ -189,5 +188,3 @@ private:
 };
     
 }
-
-#endif

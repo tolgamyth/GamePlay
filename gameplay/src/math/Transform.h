@@ -1,5 +1,4 @@
-#ifndef TRANSFORM_H_
-#define TRANSFORM_H_
+#pragma once
 
 #include "scripting/ScriptTarget.h"
 #include "math/Vector3.h"
@@ -900,5 +899,3 @@ private:
 };
 
 }
-
-#endif

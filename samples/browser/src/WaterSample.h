@@ -1,5 +1,4 @@
-#ifndef WATERSAMPLE_H_
-#define WATERSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -78,5 +77,3 @@ private:
     Gamepad* _gamepad;
     bool drawScene(Node* node, bool drawWater);
 };
-
-#endif

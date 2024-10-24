@@ -6,7 +6,7 @@
 #include "graphics/Terrain.h"
 #include "graphics/ParticleEmitter.h"
 #include "graphics/Sprite.h"
-#include "graphics/Text.h"
+#include "renderer/Text.h"
 #include "graphics/TileSet.h"
 #include "graphics/Light.h"
 

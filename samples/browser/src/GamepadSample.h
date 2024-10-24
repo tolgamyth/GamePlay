@@ -1,5 +1,4 @@
-#ifndef GAMEPADSAMPLE_H_
-#define GAMEPADSAMPLE_H_
+#pragma once
 
 #include "SamplesGame.h"
 #include "input/Gamepad.h"
@@ -34,5 +33,3 @@ private:
     Font* _font;
     std::string _status;
 };
-
-#endif

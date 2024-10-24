@@ -1,5 +1,4 @@
-#ifndef ANIMATIONCONTROLLER_H_
-#define ANIMATIONCONTROLLER_H_
+#pragma once
 
 #include "animation/AnimationClip.h"
 #include "animation/Animation.h"
@@ -101,6 +100,4 @@ private:
 };
 
 }
-
-#endif
 

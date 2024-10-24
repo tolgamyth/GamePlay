@@ -1,5 +1,5 @@
 #include "framework/Base.h"
-#include "graphics/RenderTarget.h"
+#include "renderer/RenderTarget.h"
 
 namespace gameplay
 {

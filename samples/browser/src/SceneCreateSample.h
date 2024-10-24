@@ -1,5 +1,4 @@
-#ifndef SCENECREATESAMPLE_H_
-#define SCENECREATESAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -35,5 +34,3 @@ private:
     Scene* _scene;
     Node* _cubeNode;
 };
-
-#endif

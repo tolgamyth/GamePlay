@@ -1,5 +1,4 @@
-#ifndef CAMERA_H_
-#define CAMERA_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "math/Transform.h"
@@ -10,25 +9,25 @@
 namespace gameplay
 {
 
-class Node;
-class NodeCloneContext;
+  class Node;
+  class NodeCloneContext;
 
-/**
- * Defines a camera which acts as a view of a scene to be rendered.
- */
-class Camera : public Ref, public Transform::Listener
-{
+  /**
+   * Defines a camera which acts as a view of a scene to be rendered.
+   */
+  class Camera : public Ref, public Transform::Listener
+  {
     friend class Node;
 
-public:
+  public:
 
     /**
      * The type of camera.
      */
     enum Type
     {
-        PERSPECTIVE = 1,
-        ORTHOGRAPHIC = 2
+      PERSPECTIVE = 1,
+      ORTHOGRAPHIC = 2
     };
 
     /**
@@ -38,14 +37,14 @@ public:
     {
     public:
 
-        virtual ~Listener() { }
+      virtual ~Listener() { }
 
-        /**
-         * Handles when an camera settings change or the transform changed for the node its attached to.
-         *
-         * @param camera The camera that was changed.
-         */
-        virtual void cameraChanged(Camera* camera) = 0;
+      /**
+       * Handles when an camera settings change or the transform changed for the node its attached to.
+       *
+       * @param camera The camera that was changed.
+       */
+      virtual void cameraChanged(Camera* camera) = 0;
     };
 
     /**
@@ -333,7 +332,7 @@ public:
      */
     virtual ~Camera();
 
-private:
+  private:
 
     /**
      * Hidden copy assignment operator.
@@ -375,8 +374,6 @@ private:
     mutable int _bits;
     Node* _node;
     std::list<Camera::Listener*>* _listeners;
-};
+  };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef DEBUGNEW_H_
-#define DEBUGNEW_H_
+#pragma once
 
 /**
  * Global overrides of the new and delete operators for memory tracking.
@@ -207,6 +206,4 @@ void setTrackStackTrace(bool trackStackTrace);
  * Toggles stack trace tracking on memory allocations.
  */
 void toggleTrackStackTrace();
-#endif
-
 #endif

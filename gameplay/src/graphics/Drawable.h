@@ -1,5 +1,4 @@
-#ifndef DRAWABLE_H_
-#define DRAWABLE_H_
+#pragma once
 
 namespace gameplay
 {
@@ -66,5 +65,3 @@ protected:
 };
 
 }
-
-#endif

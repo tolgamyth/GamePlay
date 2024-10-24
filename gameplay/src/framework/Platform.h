@@ -11,16 +11,16 @@
 namespace gameplay
 {
 
-class Game;
+  class Game;
 
-/**
- * Defines a platform abstraction.
- *
- * This class has only a few public methods for creating a platform
- */
-class Platform
-{
-public:
+  /**
+   * Defines a platform abstraction.
+   *
+   * This class has only a few public methods for creating a platform
+   */
+  class Platform
+  {
+  public:
 
     friend class Game;
     friend class Gamepad;
@@ -60,7 +60,7 @@ public:
      */
     static void swapBuffers();
 
-private:
+  private:
 
     /**
      * This method informs the platform that the game is shutting down
@@ -133,9 +133,9 @@ private:
      */
     static void setMultiSampling(bool enabled);
 
-   /**
-    * Is multi-sampling mode enabled.
-    */
+    /**
+     * Is multi-sampling mode enabled.
+     */
     static bool isMultiSampling();
 
     /**
@@ -146,9 +146,9 @@ private:
      */
     static void setMultiTouch(bool enabled);
 
-   /**
-    * Is multi-touch mode enabled.
-    */
+    /**
+     * Is multi-touch mode enabled.
+     */
     static bool isMultiTouch();
 
     /**
@@ -292,7 +292,7 @@ private:
      */
     Platform(const Platform& copy);
 
-public:
+  public:
 
     /**
      * Internal method used only from static code in various platform implementation.
@@ -308,11 +308,11 @@ public:
      */
     static void keyEventInternal(Keyboard::KeyEvent evt, int key);
 
-   /**
-     * Internal method used only from static code in various platform implementation.
-     *
-     * @script{ignore}
-     */
+    /**
+      * Internal method used only from static code in various platform implementation.
+      *
+      * @script{ignore}
+      */
     static bool mouseEventInternal(Mouse::MouseEvent evt, int x, int y, int wheelDelta);
 
     /**
@@ -341,21 +341,21 @@ public:
      *
      * @script{ignore}
      */
-	static void gestureLongTapEventInternal(int x, int y, float duration);
+    static void gestureLongTapEventInternal(int x, int y, float duration);
 
     /**
      * Internal method used only from static code in various platform implementation.
      *
      * @script{ignore}
      */
-	static void gestureDragEventInternal(int x, int y);
+    static void gestureDragEventInternal(int x, int y);
 
     /**
      * Internal method used only from static code in various platform implementation.
      *
      * @script{ignore}
      */
-	static void gestureDropEventInternal(int x, int y);
+    static void gestureDropEventInternal(int x, int y);
 
     /**
      * Internal method used only from static code in various platform implementation.
@@ -410,7 +410,7 @@ public:
      * Internal method used to poll the platform for the updated Gamepad
      * states such as buttons, joytick and trigger values.
      *
-     * Some platforms require to poll the gamepad system to get deltas. 
+     * Some platforms require to poll the gamepad system to get deltas.
      *
      * @param gamepad The gamepad to be returned with the latest polled values populated.
      * @script{ignore}
@@ -438,10 +438,10 @@ public:
      */
     static void shutdownInternal();
 
-private:
+  private:
 
     Game* _game;                // The game this platform is interfacing with.
-};
+  };
 
 }
 

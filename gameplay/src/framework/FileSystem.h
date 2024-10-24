@@ -6,14 +6,14 @@
 namespace gameplay
 {
 
-class Properties;
+  class Properties;
 
-/**
- * Defines a set of functions for interacting with the device file system.
- */
-class FileSystem
-{
-public:
+  /**
+   * Defines a set of functions for interacting with the device file system.
+   */
+  class FileSystem
+  {
+  public:
 
     /**
      * Mode flags for opening a stream.
@@ -22,8 +22,8 @@ public:
      */
     enum StreamMode
     {
-        READ = 1,
-        WRITE = 2
+      READ = 1,
+      WRITE = 2
     };
 
     /**
@@ -33,8 +33,8 @@ public:
      */
     enum DialogMode
     {
-        OPEN,
-        SAVE 
+      OPEN,
+      SAVE
     };
 
     /**
@@ -47,14 +47,14 @@ public:
      *
      * Once set, all resource/file loading will load from the given path.
      * The default resource path is "./".
-     * 
+     *
      * @param path The path to the root of the resources folder.
      */
     static void setResourcePath(const char* path);
 
     /**
      * Returns the currently set resource path.
-     * 
+     *
      * @return The currently set resource path.
      */
     static const char* getResourcePath();
@@ -72,7 +72,7 @@ public:
      * to the alias name instead of the actual hard file name.
      *
      * @param aliasFilePath Path to a properties file containing filesystem aliases.
-     * 
+     *
      * @see Properties
      */
     static void loadResourceAliases(const char* aliasFilePath);
@@ -90,7 +90,7 @@ public:
      * to the alias name instead of the actual hard file name.
      *
      * @param properties Properties object containing filesystem aliases.
-     * 
+     *
      * @see Properties
      */
     static void loadResourceAliases(Properties* properties);
@@ -119,28 +119,28 @@ public:
      * absolute filesystem path.
      *
      * @param path Path to resolve.
-     * 
+     *
      * @return The resolved file path.
      */
     static const char* resolvePath(const char* path);
 
     /**
      * Lists the files in the specified directory and adds the files to the vector. Excludes directories.
-     * 
+     *
      * @param dirPath Directory path relative to the path set in <code>setResourcePath(const char*)</code>.
      * @param files The vector to append the files to.
-     * 
+     *
      * @return True if successful, false if error.
-     * 
+     *
      * @script{ignore}
      */
     static bool listFiles(const char* dirPath, std::vector<std::string>& files);
 
     /**
      * Checks if the file at the given path exists.
-     * 
+     *
      * @param filePath The path to the file.
-     * 
+     *
      * @return <code>true</code> if the file exists; <code>false</code> otherwise.
      */
     static bool fileExists(const char* filePath);
@@ -153,7 +153,7 @@ public:
      *
      * @param path The path to the resource to be opened, relative to the currently set resource path.
      * @param streamMode The stream mode used to open the file.
-     * 
+     *
      * @return A stream that can be used to read or write to the file depending on the mode.
      *         Returns nullptr if there was an error. (Request mode not supported).
      *
@@ -169,9 +169,9 @@ public:
      *
      * @param filePath The path to the file to be opened, relative to the currently set resource path.
      * @param mode The mode used to open the file, passed directly to fopen.
-     * 
+     *
      * @return A pointer to a FILE object that can be used to identify the stream or nullptr on error.
-     * 
+     *
      * @see setResourcePath(const char*)
      * @script{ignore}
      */
@@ -185,7 +185,7 @@ public:
      *
      * @param filePath The path to the file to be read.
      * @param fileSize The size of the file in bytes (optional).
-     * 
+     *
      * @return A newly allocated (nullptr-terminated) character array containing the
      *      contents of the file, or nullptr if the file could not be read.
      */
@@ -193,9 +193,9 @@ public:
 
     /**
      * Determines if the file path is an absolute path for the current platform.
-     * 
+     *
      * @param filePath The file path to test.
-     * 
+     *
      * @return True if the path is an absolute path or false otherwise.
      */
     static bool isAbsolutePath(const char* filePath);
@@ -219,23 +219,23 @@ public:
 
     /**
      * Creates a file on the file system from the specified asset (Android-specific).
-     * 
+     *
      * @param path The path to the file.
      */
     static void createFileFromAsset(const char* path);
 
     /**
      * Returns the directory name up to and including the trailing '/'.
-     * 
+     *
      * This is a lexical method so it does not verify that the directory exists.
      * Back slashes will be converted to forward slashes.
-     * 
+     *
      * - "res/image.png" will return "res/"
      * - "image.png" will return ""
      * - "c:\foo\bar\image.png" will return "c:/foo/bar/"
-     * 
+     *
      * @param path The file path. May be relative or absolute, forward or back slashes. May be nullptr.
-     * 
+     *
      * @return The directory name with the trailing '/'. Returns "" if path is nullptr or the path does not contain a directory.
      */
     static std::string getDirectoryName(const char* path);
@@ -247,19 +247,19 @@ public:
      * in the file path. The extension is returned as all uppercase.
      *
      * If the path does not contain an extension, an empty string is returned.
-     * 
+     *
      * @param path File path.
      *
      * @return The file extension, all uppercase, including the '.'.
      */
     static std::string getExtension(const char* path);
 
-private:
+  private:
 
     /**
      * Constructor.
      */
     FileSystem();
-};
+  };
 
 }

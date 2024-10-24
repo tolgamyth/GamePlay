@@ -1,5 +1,4 @@
-#ifndef ANIMATION_H_
-#define ANIMATION_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "scene/Properties.h"
@@ -237,5 +236,3 @@ private:
 };
 
 }
-
-#endif

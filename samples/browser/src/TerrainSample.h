@@ -1,5 +1,4 @@
-#ifndef TERRAINSAMPLE_H_
-#define TERRAINSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -70,5 +69,3 @@ private:
     Light* _directionalLight;
 
 };
-
-#endif

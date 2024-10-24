@@ -1,5 +1,4 @@
-#ifndef FRUSTUM_H_
-#define FRUSTUM_H_
+#pragma once
 
 #include "math/Matrix.h"
 #include "graphics/Ray.h"
@@ -224,5 +223,3 @@ private:
 };
 
 }
-
-#endif

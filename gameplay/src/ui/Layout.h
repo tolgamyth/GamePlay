@@ -1,5 +1,4 @@
-#ifndef LAYOUT_H_
-#define LAYOUT_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "input/Touch.h"
@@ -83,5 +82,3 @@ protected:
 };
 
 }
-
-#endif

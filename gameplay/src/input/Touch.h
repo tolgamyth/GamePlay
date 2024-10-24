@@ -1,5 +1,4 @@
-#ifndef TOUCH_H_
-#define TOUCH_H_
+#pragma once
 
 namespace gameplay
 {
@@ -35,5 +34,3 @@ private:
 };
 
 }
-
-#endif

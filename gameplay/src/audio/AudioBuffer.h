@@ -1,5 +1,4 @@
-#ifndef AUDIOBUFFER_H_
-#define AUDIOBUFFER_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "framework/Stream.h"
@@ -80,5 +79,3 @@ private:
 };
 
 }
-
-#endif

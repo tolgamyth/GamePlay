@@ -1,5 +1,4 @@
-#ifndef TEXTURESAMPLE_H_
-#define TEXTURESAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -35,5 +34,3 @@ private:
     Scene* _scene;
     float _zOffset;
 };
-
-#endif

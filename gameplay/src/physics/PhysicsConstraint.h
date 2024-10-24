@@ -1,5 +1,4 @@
-#ifndef PHYSICSCONSTRAINT_H_
-#define PHYSICSCONSTRAINT_H_
+#pragma once
 
 #include "framework/Base.h"
 #include "math/Vector3.h"
@@ -122,5 +121,3 @@ protected:
 }
 
 #include "physics/PhysicsConstraint.inl"
-
-#endif

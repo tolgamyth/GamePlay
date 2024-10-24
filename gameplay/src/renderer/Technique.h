@@ -1,7 +1,6 @@
-#ifndef TECHNIQUE_H_
-#define TECHNIQUE_H_
+#pragma once
 
-#include "graphics/Pass.h"
+#include "renderer/Pass.h"
 
 namespace gameplay
 {
@@ -90,5 +89,3 @@ private:
 };
 
 }
-
-#endif

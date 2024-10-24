@@ -1,8 +1,7 @@
-#ifndef RENDERTARGET_H_
-#define RENDERTARGET_H_
+#pragma once
 
 #include "framework/Base.h"
-#include "graphics/Texture.h"
+#include "renderer/Texture.h"
 
 namespace gameplay
 {
@@ -105,5 +104,3 @@ private:
 };
 
 }
-
-#endif

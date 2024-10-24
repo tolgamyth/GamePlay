@@ -1,10 +1,9 @@
-#ifndef TEXT_H__
-#define TEXT_H__
+#pragma once
 
 #include "utils/Ref.h"
 #include "animation/AnimationTarget.h"
 #include "scene/Properties.h"
-#include "ui/Font.h"
+#include "renderer/Font.h"
 #include "math/Vector2.h"
 #include "math/Vector4.h"
 #include "graphics/Effect.h"
@@ -268,5 +267,3 @@ private:
 };
     
 }
-
-#endif

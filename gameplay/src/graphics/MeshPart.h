@@ -1,5 +1,4 @@
-#ifndef MESHPART_H_
-#define MESHPART_H_
+#pragma once
 
 #include "graphics/Mesh.h"
 
@@ -140,5 +139,3 @@ private:
 };
 
 }
-
-#endif

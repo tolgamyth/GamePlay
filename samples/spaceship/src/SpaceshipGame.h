@@ -1,5 +1,4 @@
-#ifndef SPACESHIPGAME_H_
-#define SPACESHIPGAME_H_
+#pragma once
 
 #include "gameplay.h"
 
@@ -148,5 +147,3 @@ private:
 
     bool _hitSomething;
 };
-
-#endif

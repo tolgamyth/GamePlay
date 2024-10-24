@@ -1,5 +1,4 @@
-#ifndef RENDERSTATE_H_
-#define RENDERSTATE_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "math/Vector3.h"
@@ -686,6 +685,4 @@ protected:
 
 // Include MaterialParameter after the Pass class declaration
 // to avoid an erroneous circular dependency during compilation.
-#include "graphics/MaterialParameter.h"
-
-#endif
+#include "renderer/MaterialParameter.h"

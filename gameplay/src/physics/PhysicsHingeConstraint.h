@@ -1,5 +1,4 @@
-#ifndef PHYSICSHINGECONSTRAINT_H_
-#define PHYSICSHINGECONSTRAINT_H_
+#pragma once
 
 #include "physics/PhysicsConstraint.h"
 #include "physics/PhysicsRigidBody.h"
@@ -61,5 +60,3 @@ private:
 };
 
 }
-
-#endif

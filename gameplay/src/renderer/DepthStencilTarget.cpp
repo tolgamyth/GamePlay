@@ -1,5 +1,5 @@
 #include "framework/Base.h"
-#include "graphics/DepthStencilTarget.h"
+#include "renderer/DepthStencilTarget.h"
 
 #ifndef GL_DEPTH24_STENCIL8_OES
 #define GL_DEPTH24_STENCIL8_OES 0x88F0

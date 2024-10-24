@@ -1,5 +1,4 @@
-#ifndef PHYSICSCONTROLLER_H_
-#define PHYSICSCONTROLLER_H_
+#pragma once
 
 #include "physics/PhysicsConstraint.h"
 #include "physics/PhysicsFixedConstraint.h"
@@ -560,5 +559,3 @@ private:
 };
 
 }
-
-#endif

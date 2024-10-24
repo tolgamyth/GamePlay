@@ -1,11 +1,10 @@
-#ifndef THEME_H_
-#define THEME_H_
+#pragma once
 
 #include "framework/Base.h"
 #include "utils/Ref.h"
-#include "ui/Font.h"
+#include "renderer/Font.h"
 #include "graphics/Rectangle.h"
-#include "graphics/Texture.h"
+#include "renderer/Texture.h"
 #include "scene/Properties.h"
 
 namespace gameplay
@@ -389,5 +388,3 @@ private:
 };
 
 }
-
-#endif

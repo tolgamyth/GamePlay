@@ -1,5 +1,4 @@
-#ifndef MESHSKIN_H_
-#define MESHSKIN_H_
+#pragma once
 
 #include "math/Matrix.h"
 #include "math/Transform.h"
@@ -193,5 +192,3 @@ private:
 };
 
 }
-
-#endif

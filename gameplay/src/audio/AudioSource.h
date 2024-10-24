@@ -1,5 +1,4 @@
-#ifndef AUDIOSOURCE_H_
-#define AUDIOSOURCE_H_
+#pragma once
 
 #include "math/Vector3.h"
 #include "utils/Ref.h"
@@ -216,5 +215,3 @@ private:
 };
 
 }
-
-#endif

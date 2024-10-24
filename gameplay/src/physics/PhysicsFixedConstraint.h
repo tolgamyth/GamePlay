@@ -1,5 +1,4 @@
-#ifndef PHYSICSFIXEDCONSTRAINT_H_
-#define PHYSICSFIXEDCONSTRAINT_H_
+#pragma once
 
 #include "physics/PhysicsGenericConstraint.h"
 
@@ -59,5 +58,3 @@ protected:
 }
 
 #include "physics/PhysicsFixedConstraint.inl"
-
-#endif

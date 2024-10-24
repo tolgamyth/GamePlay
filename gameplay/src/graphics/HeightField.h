@@ -1,5 +1,4 @@
-#ifndef HEIGHTFIELD_H_
-#define HEIGHTFIELD_H_
+#pragma once
 
 #include "utils/Ref.h"
 
@@ -136,5 +135,3 @@ namespace gameplay
     };
 
 }
-
-#endif

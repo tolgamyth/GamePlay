@@ -1,5 +1,4 @@
-#ifndef JOYSTICKCONTROL_H_
-#define JOYSTICKCONTROL_H_
+#pragma once
 
 #include "ui/Control.h"
 
@@ -235,5 +234,3 @@ private:
 };
 
 }
-
-#endif

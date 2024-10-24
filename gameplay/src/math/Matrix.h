@@ -1,5 +1,4 @@
-#ifndef MATRIX_H_
-#define MATRIX_H_
+#pragma once
 
 #include "math/Vector3.h"
 #include "math/Vector4.h"
@@ -977,5 +976,3 @@ inline const Vector4 operator*(const Matrix& m, const Vector4& v);
 }
 
 #include "math/Matrix.inl"
-
-#endif

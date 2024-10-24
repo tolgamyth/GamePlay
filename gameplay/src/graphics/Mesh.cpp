@@ -3,7 +3,7 @@
 #include "graphics/MeshPart.h"
 #include "graphics/Effect.h"
 #include "graphics/Model.h"
-#include "graphics/Material.h"
+#include "renderer/Material.h"
 
 namespace gameplay
 {

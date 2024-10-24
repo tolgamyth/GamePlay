@@ -1,5 +1,4 @@
-#ifndef TEMPLATEGAME_H_
-#define TEMPLATEGAME_H_
+#pragma once
 
 #include "gameplay.h"
 
@@ -134,5 +133,3 @@ private:
     AudioSource* _engineSound;
     AudioSource* _brakingSound;
 };
-
-#endif

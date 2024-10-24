@@ -1,8 +1,7 @@
-#ifndef MATERIAL_H_
-#define MATERIAL_H_
+#pragma once
 
-#include "graphics/RenderState.h"
-#include "graphics/Technique.h"
+#include "renderer/RenderState.h"
+#include "renderer/Technique.h"
 #include "scene/Properties.h"
 
 namespace gameplay
@@ -200,5 +199,3 @@ private:
 };
 
 }
-
-#endif

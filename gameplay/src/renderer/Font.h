@@ -1,5 +1,4 @@
-#ifndef FONT_H_
-#define FONT_H_
+#pragma once
 
 #include "graphics/SpriteBatch.h"
 
@@ -350,5 +349,3 @@ private:
 };
 
 }
-
-#endif

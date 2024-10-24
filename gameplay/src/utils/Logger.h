@@ -1,5 +1,4 @@
-#ifndef LOGGER_H_
-#define LOGGER_H_
+#pragma once
 
 namespace gameplay
 {
@@ -120,5 +119,3 @@ private:
 };
 
 }
-
-#endif

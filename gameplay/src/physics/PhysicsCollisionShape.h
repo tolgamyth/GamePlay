@@ -1,5 +1,4 @@
-#ifndef PHYSICSCOLLISIONSHAPE_H_
-#define PHYSICSCOLLISIONSHAPE_H_
+#pragma once
 
 #include "math/Vector3.h"
 #include "graphics/Mesh.h"
@@ -288,5 +287,3 @@ private:
 };
 
 }
-
-#endif

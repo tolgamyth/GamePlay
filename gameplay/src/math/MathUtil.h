@@ -1,5 +1,4 @@
-#ifndef MATHUTIL_H_
-#define MATHUTIL_H_
+#pragma once
 
 namespace gameplay
 {
@@ -77,6 +76,4 @@ private:
 #include "math/MathUtilNeon.inl"
 #else
 #include "math/MathUtil.inl"
-#endif
-
 #endif

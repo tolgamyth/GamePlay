@@ -1,5 +1,4 @@
-#ifndef FORMSSAMPLE_H_
-#define FORMSSAMPLE_H_
+#pragma once
 
 #include "SamplesGame.h"
 
@@ -49,5 +48,3 @@ private:
     Vector2 _joysticks[2];
 
 };
-
-#endif

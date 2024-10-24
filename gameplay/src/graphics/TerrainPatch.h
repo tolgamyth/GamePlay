@@ -1,8 +1,7 @@
-#ifndef TERRAINPATCH_H_
-#define TERRAINPATCH_H_
+#pragma once
 
 #include "graphics/Model.h"
-#include "graphics/Camera.h"
+#include "renderer/Camera.h"
 
 namespace gameplay
 {
@@ -153,5 +152,3 @@ private:
 };
 
 }
-
-#endif

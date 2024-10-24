@@ -1,5 +1,4 @@
-#ifndef PHYSICSSOCKETCONSTRAINT_H_
-#define PHYSICSSOCKETCONSTRAINT_H_
+#pragma once
 
 #include "physics/PhysicsConstraint.h"
 #include "physics/PhysicsRigidBody.h"
@@ -53,5 +52,3 @@ private:
 };
 
 }
-
-#endif

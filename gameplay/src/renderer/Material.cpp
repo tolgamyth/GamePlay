@@ -1,9 +1,9 @@
 #include "framework/Base.h"
-#include "graphics/Material.h"
+#include "renderer/Material.h"
 #include "framework/FileSystem.h"
 #include "graphics/Effect.h"
-#include "graphics/Technique.h"
-#include "graphics/Pass.h"
+#include "renderer/Technique.h"
+#include "renderer/Pass.h"
 #include "scene/Properties.h"
 #include "scene/Node.h"
 

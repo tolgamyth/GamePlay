@@ -1,5 +1,4 @@
-#ifndef SCRIPTCONTROLLER_H_
-#define SCRIPTCONTROLLER_H_
+#pragma once
 
 #include "scripting/Script.h"
 #include "framework/Game.h"
@@ -1171,5 +1170,3 @@ public:
 }
 
 #include "ScriptController.inl"
-
-#endif

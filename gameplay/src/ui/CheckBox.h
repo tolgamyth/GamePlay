@@ -1,5 +1,4 @@
-#ifndef CHECKBOX_H_
-#define CHECKBOX_H_
+#pragma once
 
 #include "ui/Theme.h"
 #include "scene/Properties.h"
@@ -149,5 +148,3 @@ private:
 };
 
 }
-
-#endif

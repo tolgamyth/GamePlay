@@ -1,5 +1,4 @@
-#ifndef PHYSICSGENERICCONSTRAINT_H_
-#define PHYSICSGENERICCONSTRAINT_H_
+#pragma once
 
 #include "physics/PhysicsConstraint.h"
 #include "math/Quaternion.h"
@@ -164,5 +163,3 @@ private:
 }
 
 #include "physics/PhysicsGenericConstraint.inl"
-
-#endif

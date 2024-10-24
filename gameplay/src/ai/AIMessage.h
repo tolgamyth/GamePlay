@@ -1,37 +1,38 @@
-#ifndef AIMESSAGE_H_
-#define AIMESSAGE_H_
+#pragma once
+
+#include <string>
 
 namespace gameplay
 {
 
-/**
- * Defines a simple message structure used for passing messages through
- * the AI system.
- *
- * Messages can store an arbitrary number of parameters. For the sake of simplicity,
- * each parameter is stored as type double, which is flexible enough to store most
- * data that needs to be passed.
- */
-class AIMessage
-{
+  /**
+   * Defines a simple message structure used for passing messages through
+   * the AI system.
+   *
+   * Messages can store an arbitrary number of parameters. For the sake of simplicity,
+   * each parameter is stored as type double, which is flexible enough to store most
+   * data that needs to be passed.
+   */
+  class AIMessage
+  {
     friend class AIAgent;
     friend class AIController;
     friend class AIStateMachine;
 
-public:
+  public:
 
     /**
      * Enumeration of supported AIMessage parameter types.
      */
     enum ParameterType
     {
-        UNDEFINED,
-        INTEGER,
-        LONG,
-        FLOAT,
-        DOUBLE,
-        BOOLEAN,
-        STRING
+      UNDEFINED,
+      INTEGER,
+      LONG,
+      FLOAT,
+      DOUBLE,
+      BOOLEAN,
+      STRING
     };
 
     /**
@@ -57,7 +58,7 @@ public:
      * Destroys an AIMessage.
      *
      * Under normal circumstances this method does not need to be called since the
-     * AIController will automatically destroy an AIMessage once it has been 
+     * AIController will automatically destroy an AIMessage once it has been
      * sent. However, in the rare case where an AIMessage is constructed and not
      * passed to AIController::sendMessage, this method should be called to destroy
      * the message.
@@ -189,12 +190,12 @@ public:
 
     /**
      * Returns the number of parameters for this message.
-     * 
+     *
      * @return The number of message parameters.
      */
     unsigned int getParameterCount() const;
 
-    /** 
+    /**
      * Returns the type of the specified parameter.
      *
      * @param index Index of the parameter to query.
@@ -203,15 +204,15 @@ public:
      */
     ParameterType getParameterType(unsigned int index) const;
 
-private:
+  private:
 
     /**
      * Internal message type enumeration.
      */
     enum MessageType
     {
-        MESSAGE_TYPE_STATE_CHANGE,
-        MESSAGE_TYPE_CUSTOM
+      MESSAGE_TYPE_STATE_CHANGE,
+      MESSAGE_TYPE_CUSTOM
     };
 
     /**
@@ -219,23 +220,23 @@ private:
      */
     struct Parameter
     {
-        Parameter();
+      Parameter();
 
-        ~Parameter();
+      ~Parameter();
 
-        void clear();
+      void clear();
 
-        union
-        {
-            int intValue;
-            long longValue;
-            float floatValue;
-            double doubleValue;
-            bool boolValue;
-            char* stringValue;
-        };
+      union
+      {
+        int intValue;
+        long longValue;
+        float floatValue;
+        double doubleValue;
+        bool boolValue;
+        char* stringValue;
+      };
 
-        AIMessage::ParameterType type;
+      AIMessage::ParameterType type;
     };
 
     /**
@@ -276,8 +277,6 @@ private:
     MessageType _messageType;
     AIMessage* _next;
 
-};
+  };
 
 }
-
-#endif

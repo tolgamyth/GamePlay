@@ -1,5 +1,4 @@
-#ifndef AUDIOSAMPLE_H_
-#define AUDIOSAMPLE_H_
+#pragma once
 
 #include "SamplesGame.h"
 
@@ -32,5 +31,3 @@ private:
     AudioSource* _audioEngine;
     AudioSource* _audioBraking;
 };
-
-#endif

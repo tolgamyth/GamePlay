@@ -1,5 +1,4 @@
-#ifndef PHYSICSRIGIDBODY_H_
-#define PHYSICSRIGIDBODY_H_
+#pragma once
 
 #include "graphics/Mesh.h"
 #include "physics/PhysicsConstraint.h"
@@ -448,5 +447,3 @@ private:
 }
 
 #include "physics/PhysicsRigidBody.inl"
-
-#endif

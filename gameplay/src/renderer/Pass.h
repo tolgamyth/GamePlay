@@ -1,8 +1,7 @@
-#ifndef PASS_H_
-#define PASS_H_
+#pragma once
 
-#include "graphics/RenderState.h"
-#include "graphics/VertexAttributeBinding.h"
+#include "renderer/RenderState.h"
+#include "renderer/VertexAttributeBinding.h"
 
 namespace gameplay
 {
@@ -112,5 +111,3 @@ private:
 };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef SAMPLE_H_
-#define SAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 
@@ -94,5 +93,3 @@ private:
     Sample(const Sample&); 
     Sample& operator=(const Sample&);
 };
-
-#endif

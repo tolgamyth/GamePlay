@@ -1,5 +1,4 @@
-#ifndef TIMELISTENER_H_
-#define TIMELISTENER_H_
+#pragma once
 
 namespace gameplay
 {
@@ -24,5 +23,3 @@ public:
 };
 
 }
-
-#endif

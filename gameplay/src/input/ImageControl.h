@@ -1,5 +1,4 @@
-#ifndef IMAGECONTROL_H_
-#define IMAGECONTROL_H_
+#pragma once
 
 #include "ui/Control.h"
 #include "ui/Theme.h"
@@ -153,5 +152,3 @@ private:
 };
 
 }
-
-#endif

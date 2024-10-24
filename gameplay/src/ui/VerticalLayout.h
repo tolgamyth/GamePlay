@@ -1,5 +1,4 @@
-#ifndef VERTICALLAYOUT_H_
-#define VERTICALLAYOUT_H_
+#pragma once
 
 #include "ui/Layout.h"
 #include "ui/Container.h"
@@ -106,5 +105,3 @@ private:
 };
 
 }
-
-#endif

@@ -1,11 +1,10 @@
-#ifndef PARTICLEEMITTER_H_
-#define PARTICLEEMITTER_H_
+#pragma once
 
 #include "math/Transform.h"
 #include "graphics/Mesh.h"
 #include "math/Vector2.h"
 #include "math/Vector4.h"
-#include "graphics/Texture.h"
+#include "renderer/Texture.h"
 #include "graphics/Rectangle.h"
 #include "graphics/SpriteBatch.h"
 #include "scene/Properties.h"
@@ -843,5 +842,3 @@ private:
 };
 
 }
-
-#endif

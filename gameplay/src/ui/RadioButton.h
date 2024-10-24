@@ -1,5 +1,4 @@
-#ifndef RADIOBUTTON_H_
-#define RADIOBUTTON_H_
+#pragma once
 
 #include "ui/Button.h"
 #include "ui/Theme.h"
@@ -170,5 +169,3 @@ private:
 };
 
 }
-
-#endif

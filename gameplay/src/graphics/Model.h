@@ -1,32 +1,31 @@
-#ifndef MODEL_H_
-#define MODEL_H_
+#pragma once
 
 #include "graphics/Mesh.h"
 #include "graphics/MeshSkin.h"
-#include "graphics/Material.h"
+#include "renderer/Material.h"
 #include "graphics/Drawable.h"
 
 namespace gameplay
 {
 
-class Bundle;
-class MeshSkin;
+  class Bundle;
+  class MeshSkin;
 
 
-/**
- * Defines a Model or mesh renderer which is an instance of a Mesh. 
- *
- * A model has a mesh that can be drawn with the specified materials for
- * each of the mesh parts within it.
- */
-class Model : public Ref, public Drawable
-{
+  /**
+   * Defines a Model or mesh renderer which is an instance of a Mesh.
+   *
+   * A model has a mesh that can be drawn with the specified materials for
+   * each of the mesh parts within it.
+   */
+  class Model : public Ref, public Drawable
+  {
     friend class Node;
     friend class Scene;
     friend class Mesh;
     friend class Bundle;
 
-public:
+  public:
 
     /**
      * Creates a new Model.
@@ -141,7 +140,7 @@ public:
      */
     unsigned int draw(bool wireframe = false);
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -162,7 +161,7 @@ private:
      * Hidden copy assignment operator.
      */
     Model& operator=(const Model&);
-    
+
     /**
      * @see Drawable::setNode
      */
@@ -183,7 +182,7 @@ private:
     /**
      * Sets the specified material's node binding to this model's node.
      */
-    void setMaterialNodeBinding(Material *m);
+    void setMaterialNodeBinding(Material* m);
 
     void validatePartCount();
 
@@ -192,8 +191,6 @@ private:
     unsigned int _partCount;
     Material** _partMaterials;
     MeshSkin* _skin;
-};
+  };
 
 }
-
-#endif

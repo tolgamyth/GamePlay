@@ -1,5 +1,4 @@
-#ifndef RECTANGLE_H_
-#define RECTANGLE_H_
+#pragma once
 
 
 namespace gameplay
@@ -239,5 +238,3 @@ public:
 };
 
 }
-
-#endif

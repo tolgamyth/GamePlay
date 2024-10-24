@@ -1,5 +1,5 @@
-#ifndef AISTATEMACHINE_H_
-#define AISTATEMACHINE_H_
+#pragma once
+#include <list>
 
 #include "ai/AIState.h"
 
@@ -157,5 +157,3 @@ private:
 };
 
 }
-
-#endif

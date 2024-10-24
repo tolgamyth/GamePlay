@@ -1,44 +1,43 @@
-#ifndef MATERIALPARAMETER_H_
-#define MATERIALPARAMETER_H_
+#pragma once
 
 #include "animation/AnimationTarget.h"
 #include "math/Vector2.h"
 #include "math/Vector3.h"
 #include "math/Vector4.h"
 #include "math/Matrix.h"
-#include "graphics/Texture.h"
+#include "renderer/Texture.h"
 #include "graphics/Effect.h"
 
 namespace gameplay
 {
-    class Node;
+  class Node;
 
-/**
- * Defines a material parameter.
- *
- * This class represents a parameter that can be set for a material.
- * The methods in this class provide a mechanism to set parameters
- * of all supported types. Some types support setting by value,
- * while others only support setting by reference/pointer.
- *
- * Setting a parameter by reference/pointer provides the ability to
- * pass an array of values as well as a convenient way to support
- * auto-binding of values to a material parameter. For example, by
- * setting the parameter value to a pointer to a Matrix, any changes
- * to the Matrix will automatically be reflected in the technique the
- * next time the parameter is applied to the render state.
- *
- * Note that for parameter values to arrays or pointers, the 
- * MaterialParameter will keep a long-lived reference to the passed
- * in array/pointer. Therefore, you must ensure that the pointers
- * you pass in are valid for the lifetime of the MaterialParameter
- * object.
- */
-class MaterialParameter : public AnimationTarget, public Ref
-{
+  /**
+   * Defines a material parameter.
+   *
+   * This class represents a parameter that can be set for a material.
+   * The methods in this class provide a mechanism to set parameters
+   * of all supported types. Some types support setting by value,
+   * while others only support setting by reference/pointer.
+   *
+   * Setting a parameter by reference/pointer provides the ability to
+   * pass an array of values as well as a convenient way to support
+   * auto-binding of values to a material parameter. For example, by
+   * setting the parameter value to a pointer to a Matrix, any changes
+   * to the Matrix will automatically be reflected in the technique the
+   * next time the parameter is applied to the render state.
+   *
+   * Note that for parameter values to arrays or pointers, the
+   * MaterialParameter will keep a long-lived reference to the passed
+   * in array/pointer. Therefore, you must ensure that the pointers
+   * you pass in are valid for the lifetime of the MaterialParameter
+   * object.
+   */
+  class MaterialParameter : public AnimationTarget, public Ref
+  {
     friend class RenderState;
 
-public:
+  public:
 
     /**
      * Animates the uniform.
@@ -52,7 +51,7 @@ public:
 
     /**
      * Returns the texture sampler or nullptr if this MaterialParameter is not a sampler type.
-     * 
+     *
      * @param index Index of the sampler (if the parameter is a sampler array),
      *      or zero if it is a single sampler value.
      *
@@ -282,7 +281,7 @@ public:
      * @param valueMethod A pointer to the class method to bind (in the format '&class::method').
      */
     template <class ClassType, class ParameterType>
-    void bindValue(ClassType* classInstance, ParameterType (ClassType::*valueMethod)() const);
+    void bindValue(ClassType* classInstance, ParameterType(ClassType::* valueMethod)() const);
 
     /**
      * Binds the return value of a class method to this material parameter.
@@ -298,13 +297,13 @@ public:
      * @param countMethod A pointer to a method that returns the number of entries in the array returned by valueMethod.
      */
     template <class ClassType, class ParameterType>
-    void bindValue(ClassType* classInstance, ParameterType (ClassType::*valueMethod)() const, unsigned int (ClassType::*countMethod)() const);
+    void bindValue(ClassType* classInstance, ParameterType(ClassType::* valueMethod)() const, unsigned int (ClassType::* countMethod)() const);
 
     /**
      * Binds the return value of the supported class method for the given node to this material parameter.
-     * 
+     *
      * Note: intended for use from Lua scripts.
-     * 
+     *
      * @param node The node containing the the member method to bind.
      * @param binding The name of the class method to bind (in the format '&class::method').
      *      Note: this name must be one of the following supported methods:
@@ -346,13 +345,13 @@ public:
      */
     void setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight = 1.0f);
 
-private:
-   
+  private:
+
     /**
      * Constructor.
      */
     MaterialParameter(const char* name);
-    
+
     /**
      * Destructor.
      */
@@ -362,37 +361,37 @@ private:
      * Hidden copy assignment operator.
      */
     MaterialParameter& operator=(const MaterialParameter&);
-    
+
     /**
      * Interface implemented by templated method bindings for simple storage and iteration.
      */
     class MethodBinding : public Ref
     {
-        friend class RenderState;
+      friend class RenderState;
 
     public:
 
-        virtual void setValue(Effect* effect) = 0;
+      virtual void setValue(Effect* effect) = 0;
 
     protected:
 
-        /**
-         * Constructor.
-         */
-        MethodBinding(MaterialParameter* param);
+      /**
+       * Constructor.
+       */
+      MethodBinding(MaterialParameter* param);
 
-        /**
-         * Destructor.
-         */
-        virtual ~MethodBinding() { }
+      /**
+       * Destructor.
+       */
+      virtual ~MethodBinding() { }
 
-        /**
-         * Hidden copy assignment operator.
-         */
-        MethodBinding& operator=(const MethodBinding&);
+      /**
+       * Hidden copy assignment operator.
+       */
+      MethodBinding& operator=(const MethodBinding&);
 
-        MaterialParameter* _parameter;
-        bool _autoBinding;
+      MaterialParameter* _parameter;
+      bool _autoBinding;
     };
 
     /**
@@ -401,13 +400,13 @@ private:
     template <class ClassType, class ParameterType>
     class MethodValueBinding : public MethodBinding
     {
-        typedef ParameterType (ClassType::*ValueMethod)() const;
+      typedef ParameterType(ClassType::* ValueMethod)() const;
     public:
-        MethodValueBinding(MaterialParameter* param, ClassType* instance, ValueMethod valueMethod);
-        void setValue(Effect* effect);
+      MethodValueBinding(MaterialParameter* param, ClassType* instance, ValueMethod valueMethod);
+      void setValue(Effect* effect);
     private:
-        ClassType* _instance;
-        ValueMethod _valueMethod;
+      ClassType* _instance;
+      ValueMethod _valueMethod;
 
     };
 
@@ -417,15 +416,15 @@ private:
     template <class ClassType, class ParameterType>
     class MethodArrayBinding : public MethodBinding
     {
-        typedef ParameterType (ClassType::*ValueMethod)() const;
-        typedef unsigned int (ClassType::*CountMethod)() const;
+      typedef ParameterType(ClassType::* ValueMethod)() const;
+      typedef unsigned int (ClassType::* CountMethod)() const;
     public:
-        MethodArrayBinding(MaterialParameter* param, ClassType* instance, ValueMethod valueMethod, CountMethod countMethod);
-        void setValue(Effect* effect);
+      MethodArrayBinding(MaterialParameter* param, ClassType* instance, ValueMethod valueMethod, CountMethod countMethod);
+      void setValue(Effect* effect);
     private:
-        ClassType* _instance;
-        ValueMethod _valueMethod;
-        CountMethod _countMethod;
+      ClassType* _instance;
+      ValueMethod _valueMethod;
+      CountMethod _countMethod;
     };
 
     void clearValue();
@@ -438,95 +437,93 @@ private:
 
     enum LOGGER_DIRTYBITS
     {
-        UNIFORM_NOT_FOUND = 0x01,
-        PARAMETER_VALUE_NOT_SET = 0x02
+      UNIFORM_NOT_FOUND = 0x01,
+      PARAMETER_VALUE_NOT_SET = 0x02
     };
-    
+
     union
     {
-        /** @script{ignore} */
-        float floatValue;
-        /** @script{ignore} */
-        int intValue;
-        /** @script{ignore} */
-        float* floatPtrValue;
-        /** @script{ignore} */
-        int* intPtrValue;
-        /** @script{ignore} */
-        const Texture::Sampler* samplerValue;
-        /** @script{ignore} */
-        const Texture::Sampler** samplerArrayValue;
-        /** @script{ignore} */
-        MethodBinding* method;
+      /** @script{ignore} */
+      float floatValue;
+      /** @script{ignore} */
+      int intValue;
+      /** @script{ignore} */
+      float* floatPtrValue;
+      /** @script{ignore} */
+      int* intPtrValue;
+      /** @script{ignore} */
+      const Texture::Sampler* samplerValue;
+      /** @script{ignore} */
+      const Texture::Sampler** samplerArrayValue;
+      /** @script{ignore} */
+      MethodBinding* method;
     } _value;
-    
+
     enum
     {
-        NONE,
-        FLOAT,
-        FLOAT_ARRAY,
-        INT,
-        INT_ARRAY,
-        VECTOR2,
-        VECTOR3,
-        VECTOR4,
-        MATRIX,
-        SAMPLER,
-        SAMPLER_ARRAY,
-        METHOD
+      NONE,
+      FLOAT,
+      FLOAT_ARRAY,
+      INT,
+      INT_ARRAY,
+      VECTOR2,
+      VECTOR3,
+      VECTOR4,
+      MATRIX,
+      SAMPLER,
+      SAMPLER_ARRAY,
+      METHOD
     } _type;
-    
+
     unsigned int _count;
     bool _dynamic;
     std::string _name;
     Uniform* _uniform;
     char _loggerDirtyBits;
-};
+  };
 
-template <class ClassType, class ParameterType>
-void MaterialParameter::bindValue(ClassType* classInstance, ParameterType (ClassType::*valueMethod)() const)
-{
+  template <class ClassType, class ParameterType>
+  void MaterialParameter::bindValue(ClassType* classInstance, ParameterType(ClassType::* valueMethod)() const)
+  {
     clearValue();
 
     _value.method = new MethodValueBinding<ClassType, ParameterType>(this, classInstance, valueMethod);
     _dynamic = true;
     _type = MaterialParameter::METHOD;
-}
+  }
 
-template <class ClassType, class ParameterType>
-void MaterialParameter::bindValue(ClassType* classInstance, ParameterType (ClassType::*valueMethod)() const, unsigned int (ClassType::*countMethod)() const)
-{
+  template <class ClassType, class ParameterType>
+  void MaterialParameter::bindValue(ClassType* classInstance, ParameterType(ClassType::* valueMethod)() const, unsigned int (ClassType::* countMethod)() const)
+  {
     clearValue();
 
     _value.method = new MethodArrayBinding<ClassType, ParameterType>(this, classInstance, valueMethod, countMethod);
     _dynamic = true;
     _type = MaterialParameter::METHOD;
-}
+  }
 
-template <class ClassType, class ParameterType>
-MaterialParameter::MethodValueBinding<ClassType, ParameterType>::MethodValueBinding(MaterialParameter* param, ClassType* instance, ValueMethod valueMethod) :
+  template <class ClassType, class ParameterType>
+  MaterialParameter::MethodValueBinding<ClassType, ParameterType>::MethodValueBinding(MaterialParameter* param, ClassType* instance, ValueMethod valueMethod) :
     MethodBinding(param), _instance(instance), _valueMethod(valueMethod)
-{
-}
+  {
+  }
 
-template <class ClassType, class ParameterType>
-void MaterialParameter::MethodValueBinding<ClassType, ParameterType>::setValue(Effect* effect)
-{
+  template <class ClassType, class ParameterType>
+  void MaterialParameter::MethodValueBinding<ClassType, ParameterType>::setValue(Effect* effect)
+  {
     effect->setValue(_parameter->_uniform, (_instance->*_valueMethod)());
-}
+  }
 
-template <class ClassType, class ParameterType>
-MaterialParameter::MethodArrayBinding<ClassType, ParameterType>::MethodArrayBinding(MaterialParameter* param, ClassType* instance, ValueMethod valueMethod, CountMethod countMethod) :
+  template <class ClassType, class ParameterType>
+  MaterialParameter::MethodArrayBinding<ClassType, ParameterType>::MethodArrayBinding(MaterialParameter* param, ClassType* instance, ValueMethod valueMethod, CountMethod countMethod) :
     MethodBinding(param), _instance(instance), _valueMethod(valueMethod), _countMethod(countMethod)
-{
-}
+  {
+  }
 
-template <class ClassType, class ParameterType>
-void MaterialParameter::MethodArrayBinding<ClassType, ParameterType>::setValue(Effect* effect)
-{
+  template <class ClassType, class ParameterType>
+  void MaterialParameter::MethodArrayBinding<ClassType, ParameterType>::setValue(Effect* effect)
+  {
     effect->setValue(_parameter->_uniform, (_instance->*_valueMethod)(), (_instance->*_countMethod)());
-}
+  }
 
 }
-
-#endif

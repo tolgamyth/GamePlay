@@ -1,5 +1,4 @@
-#ifndef TEXTBOX_H_
-#define TEXTBOX_H_
+#pragma once
 
 #include <string>
 #include "ui/Label.h"
@@ -264,5 +263,3 @@ private:
 };
 
 }
-
-#endif

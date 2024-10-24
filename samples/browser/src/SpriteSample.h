@@ -1,5 +1,4 @@
-#ifndef SPRITESAMPLE_H_
-#define SPRITESAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -50,5 +49,3 @@ private:
     int _playerMovement;
     
 };
-
-#endif

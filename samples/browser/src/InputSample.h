@@ -1,5 +1,4 @@
-#ifndef INPUTSAMPLE_H_
-#define INPUTSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -70,5 +69,3 @@ private:
     Node* _formNodeParent;
     Vector3 _formNodeRestPosition;
 };
-
-#endif

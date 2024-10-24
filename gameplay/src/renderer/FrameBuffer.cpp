@@ -1,5 +1,5 @@
 #include "framework/Base.h"
-#include "graphics/FrameBuffer.h"
+#include "renderer/FrameBuffer.h"
 #include "framework/Game.h"
 
 #define FRAMEBUFFER_ID_DEFAULT "org.gameplay3d.framebuffer.default"

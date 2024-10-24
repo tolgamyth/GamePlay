@@ -1,5 +1,4 @@
-#ifndef MESHBATCHSAMPLE_H_
-#define MESHBATCHSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -47,5 +46,3 @@ private:
     std::vector<Vertex> _vertices;
     double _lastTriangleAdded;
 };
-
-#endif

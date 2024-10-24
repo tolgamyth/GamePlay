@@ -1,5 +1,4 @@
-#ifndef LIGHT_H_
-#define LIGHT_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "math/Vector3.h"
@@ -318,5 +317,3 @@ private:
 };
 
 }
-
-#endif

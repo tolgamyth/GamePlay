@@ -1,5 +1,4 @@
-#ifndef PHYSICSCOLLISIONOBJECTSAMPLE_H_
-#define PHYSICSCOLLISIONOBJECTSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -64,5 +63,3 @@ private:
     std::vector<const char*> _nodeNames;
     std::vector<Vector4> _colors;
 };
-
-#endif

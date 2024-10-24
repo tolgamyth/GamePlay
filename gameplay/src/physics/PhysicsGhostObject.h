@@ -1,5 +1,4 @@
-#ifndef PHYSICSGHOSTOBJECT_H_
-#define PHYSICSGHOSTOBJECT_H_
+#pragma once
 
 #include "physics/PhysicsCollisionObject.h"
 #include "physics/PhysicsRigidBody.h"
@@ -74,5 +73,3 @@ protected:
 };
 
 }
-
-#endif

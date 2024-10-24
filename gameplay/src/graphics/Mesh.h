@@ -1,8 +1,7 @@
-#ifndef MESH_H_
-#define MESH_H_
+#pragma once
 
 #include "utils/Ref.h"
-#include "graphics/VertexFormat.h"
+#include "renderer/VertexFormat.h"
 #include "math/Vector3.h"
 #include "graphics/BoundingBox.h"
 #include "graphics/BoundingSphere.h"
@@ -362,5 +361,3 @@ private:
 };
 
 }
-
-#endif

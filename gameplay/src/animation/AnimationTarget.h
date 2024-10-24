@@ -1,5 +1,4 @@
-#ifndef ANIMATIONTARGET_H_
-#define ANIMATIONTARGET_H_
+#pragma once
 
 #include "graphics/Curve.h"
 #include "animation/AnimationController.h"
@@ -244,5 +243,3 @@ private:
 
 };
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef POSTPROCESSSAMPLE_H_
-#define POSTPROCESSSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -90,5 +89,3 @@ private:
     static  Material* _compositorMaterial;
 
 };
-
-#endif

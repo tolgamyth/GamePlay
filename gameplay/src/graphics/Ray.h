@@ -1,5 +1,4 @@
-#ifndef RAY_H_
-#define RAY_H_
+#pragma once
 
 #include "math/Vector3.h"
 
@@ -203,5 +202,3 @@ inline const Ray operator*(const Matrix& matrix, const Ray& ray);
 }
 
 #include "graphics/Ray.inl"
-
-#endif

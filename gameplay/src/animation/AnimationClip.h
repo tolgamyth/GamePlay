@@ -1,5 +1,4 @@
-#ifndef ANIMATIONCLIP_H_
-#define ANIMATIONCLIP_H_
+#pragma once
 
 #include "animation/AnimationValue.h"
 #include "graphics/Curve.h"
@@ -411,5 +410,3 @@ private:
 };
 
 }
-
-#endif

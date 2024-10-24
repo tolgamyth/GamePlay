@@ -1,5 +1,4 @@
-#ifndef GESTURE_H_
-#define GESTURE_H_
+#pragma once
 
 namespace gameplay
 {
@@ -54,5 +53,3 @@ private:
 };
 
 }
-
-#endif

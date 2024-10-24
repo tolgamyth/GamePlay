@@ -1,9 +1,8 @@
-#ifndef LIGHTSAMPLE_H_
-#define LIGHTSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
-#include "graphics/Material.h"
+#include "renderer/Material.h"
 #include "graphics/Model.h"
 
 using namespace gameplay;
@@ -89,5 +88,3 @@ private:
 	bool _touched;
 	int _touchX, _touchY;
 };
-
-#endif

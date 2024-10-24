@@ -1,5 +1,4 @@
-#ifndef CHARACTERGAME_H_
-#define CHARACTERGAME_H_
+#pragma once
 
 #include "gameplay.h"
 using namespace gameplay;
@@ -113,5 +112,3 @@ private:
     Gamepad* _gamepad;
 
 };
-
-#endif

@@ -1,5 +1,5 @@
 #include "framework/Base.h"
-#include "graphics/VertexAttributeBinding.h"
+#include "renderer/VertexAttributeBinding.h"
 #include "graphics/Mesh.h"
 #include "graphics/Effect.h"
 

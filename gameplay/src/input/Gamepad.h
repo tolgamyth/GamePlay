@@ -1,5 +1,4 @@
-#ifndef GAMEPAD_H_
-#define GAMEPAD_H_
+#pragma once
 
 #include "math/Vector2.h"
 
@@ -214,5 +213,3 @@ private:
 };
 
 }
-
-#endif

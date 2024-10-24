@@ -1,5 +1,5 @@
 #include "framework/Base.h"
-#include "graphics/Text.h"
+#include "renderer/Text.h"
 #include "math/Matrix.h"
 #include "scene/Scene.h"
 

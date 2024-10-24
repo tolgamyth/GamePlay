@@ -1,5 +1,4 @@
-#ifndef MOUSE_H_
-#define MOUSE_H_
+#pragma once
 
 namespace gameplay
 {
@@ -36,5 +35,3 @@ private:
 };
 
 }
-
-#endif

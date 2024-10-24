@@ -1,5 +1,4 @@
-#ifndef SPRITE_H_
-#define SPRITE_H_
+#pragma once
 
 #include "utils/Ref.h"
 #include "graphics/Drawable.h"
@@ -13,84 +12,84 @@
 namespace gameplay
 {
 
-/**
- * Defines a sprite for rendering a 2D region.
- *
- * A sprite has alignment for controlling the local offset bounds.
- * A sprite has an anchor for controlling the origin for rotation and physics.
- *
- * You can add transformation and hierarchial by attaching sprites to Nodes within a Scene.
- *
- * The active camera in a scene effects the rendering location in the viewport for each sprite.
- *
- * Sprites can be animated using the animation system.
- * Sprites can have physics applied to them via their node binding.
- */
-class Sprite : public Ref, public Drawable, public AnimationTarget
-{
+  /**
+   * Defines a sprite for rendering a 2D region.
+   *
+   * A sprite has alignment for controlling the local offset bounds.
+   * A sprite has an anchor for controlling the origin for rotation and physics.
+   *
+   * You can add transformation and hierarchial by attaching sprites to Nodes within a Scene.
+   *
+   * The active camera in a scene effects the rendering location in the viewport for each sprite.
+   *
+   * Sprites can be animated using the animation system.
+   * Sprites can have physics applied to them via their node binding.
+   */
+  class Sprite : public Ref, public Drawable, public AnimationTarget
+  {
     friend class Node;
-    
-public:
-    
+
+  public:
+
     /**
      * Opacity property. Data=opacity
      */
     static const int ANIMATE_OPACITY = 1;
-    
+
     /**
      * Color property. Data = red, green, blue, alpha
      */
     static const int ANIMATE_COLOR = 2;
-    
+
     /**
      * Image keyframe index property. Data=index
      */
     static const int ANIMATE_KEYFRAME = 3;
-    
+
     /**
      * Defines the offset for position.
      */
     enum Offset
     {
-        OFFSET_LEFT = 0x01,
-        OFFSET_HCENTER = 0x02,
-        OFFSET_RIGHT = 0x04,
-        OFFSET_TOP = 0x10,
-        OFFSET_VCENTER = 0x20,
-        OFFSET_BOTTOM = 0x40,
-        OFFSET_ANCHOR = 0x80,
-        OFFSET_TOP_LEFT = OFFSET_TOP | OFFSET_LEFT,
-        OFFSET_VCENTER_LEFT = OFFSET_VCENTER | OFFSET_LEFT,
-        OFFSET_BOTTOM_LEFT = OFFSET_BOTTOM | OFFSET_LEFT,
-        OFFSET_TOP_HCENTER = OFFSET_TOP | OFFSET_HCENTER,
-        OFFSET_VCENTER_HCENTER = OFFSET_VCENTER | OFFSET_HCENTER,
-        OFFSET_BOTTOM_HCENTER = OFFSET_BOTTOM | OFFSET_HCENTER,
-        OFFSET_TOP_RIGHT = OFFSET_TOP | OFFSET_RIGHT,
-        OFFSET_VCENTER_RIGHT = OFFSET_VCENTER | OFFSET_RIGHT,
-        OFFSET_BOTTOM_RIGHT = OFFSET_BOTTOM | OFFSET_RIGHT
+      OFFSET_LEFT = 0x01,
+      OFFSET_HCENTER = 0x02,
+      OFFSET_RIGHT = 0x04,
+      OFFSET_TOP = 0x10,
+      OFFSET_VCENTER = 0x20,
+      OFFSET_BOTTOM = 0x40,
+      OFFSET_ANCHOR = 0x80,
+      OFFSET_TOP_LEFT = OFFSET_TOP | OFFSET_LEFT,
+      OFFSET_VCENTER_LEFT = OFFSET_VCENTER | OFFSET_LEFT,
+      OFFSET_BOTTOM_LEFT = OFFSET_BOTTOM | OFFSET_LEFT,
+      OFFSET_TOP_HCENTER = OFFSET_TOP | OFFSET_HCENTER,
+      OFFSET_VCENTER_HCENTER = OFFSET_VCENTER | OFFSET_HCENTER,
+      OFFSET_BOTTOM_HCENTER = OFFSET_BOTTOM | OFFSET_HCENTER,
+      OFFSET_TOP_RIGHT = OFFSET_TOP | OFFSET_RIGHT,
+      OFFSET_VCENTER_RIGHT = OFFSET_VCENTER | OFFSET_RIGHT,
+      OFFSET_BOTTOM_RIGHT = OFFSET_BOTTOM | OFFSET_RIGHT
     };
-    
+
     /**
      * Defines the flip flags used for rendering the sprite.
      */
     enum FlipFlags
     {
-        FLIP_NONE,
-        FLIP_VERTICAL,
-        FLIP_HORIZONTAL
+      FLIP_NONE,
+      FLIP_VERTICAL,
+      FLIP_HORIZONTAL
     };
-    
+
     /**
      * Defines the blend modes.
      */
     enum BlendMode
     {
-        BLEND_NONE,
-        BLEND_ALPHA,
-        BLEND_ADDITIVE,
-        BLEND_MULTIPLIED
+      BLEND_NONE,
+      BLEND_ALPHA,
+      BLEND_ADDITIVE,
+      BLEND_MULTIPLIED
     };
-    
+
     /**
      * Create a sprite image using
      *
@@ -101,8 +100,8 @@ public:
      * @return The new sprite.
      */
     static Sprite* create(const char* imagePath, float width = -1, float height = -1,
-                          Effect* effect = nullptr);
-    
+      Effect* effect = nullptr);
+
     /**
      * Creates a sprite from a user specified source region within the image.
      *
@@ -118,9 +117,9 @@ public:
      * @return The new sprite.
      */
     static Sprite* create(const char* imagePath, float width, float height,
-                          const Rectangle& source, unsigned int frameCount = 1,
-                          Effect* effect = nullptr);
-    
+      const Rectangle& source, unsigned int frameCount = 1,
+      Effect* effect = nullptr);
+
     /**
      * Creates a sprite from properties.
      *
@@ -128,21 +127,21 @@ public:
      * @return The new Sprite.
      */
     static Sprite* create(Properties* properties);
-    
+
     /**
      * Gets the width of the sprite.
      *
      * @return The width of the sprite.
      */
     float getWidth() const;
-    
+
     /**
      * Gets the height of the sprite.
      *
      * @return The height of the sprite.
      */
     float getHeight() const;
-    
+
     /**
      * Sets the offset used for how much to locally adjust the bounds of the sprite.
      *
@@ -151,7 +150,7 @@ public:
      * @param offset The offset used for how much to locally adjust the bounds of the sprite.
      */
     void setOffset(Offset offset);
-    
+
     /**
      * Gets the offset used for how much to locally adjust the bounds of the sprite.
      *
@@ -160,7 +159,7 @@ public:
      * @return The offset used for how much to locally adjust the bounds of the sprite.
      */
     Offset getOffset() const;
-    
+
     /**
      * Sets the anchor which is a origin ratio of the sprite width and height from [0.0,1.0].
      *
@@ -174,7 +173,7 @@ public:
      * @return The anchor which is a origin ratio of the sprite width and height from [0.0,1.0].
      */
     const Vector2& getAnchor() const;
-    
+
     /**
      * Sets the flip flags used for rendering the sprite.
      *
@@ -182,7 +181,7 @@ public:
      * @see Sprite::FlipFlags
      */
     void setFlip(int flipFlags);
-    
+
     /**
      * Gets the flip flags used for rendering the sprite.
      *
@@ -190,7 +189,7 @@ public:
      * @see Sprite::FlipFlags
      */
     int getFlip() const;
-    
+
     /**
      * Sets the source region from the source image.
      *
@@ -198,7 +197,7 @@ public:
      * @param source The source clip region from the source image.
      */
     void setFrameSource(unsigned int frameIndex, const Rectangle& source);
-    
+
     /**
      * Gets the source region from the source image.
      *
@@ -206,7 +205,7 @@ public:
      * @return The source clip region from the source image.
      */
     const Rectangle& getFrameSource(unsigned int frameIndex) const;
-    
+
     /**
      * Computes the source frames for sprites with frameCount > 1.
      *
@@ -218,14 +217,14 @@ public:
      * @param framePadding The number of pixels used as padding between frame.
      */
     void computeFrames(unsigned int frameStride = 0, unsigned int framePadding = 1);
-    
+
     /**
      * Gets the number of frames this sprite can render.
      *
      * @return The total number of frames this sprite can render.
      */
     unsigned int getFrameCount() const;
-    
+
     /**
      * Gets the number of frames to travel across before
      * wrapping to the next row or column.
@@ -233,7 +232,7 @@ public:
      * @return The total number of frames this sprite can render.
      */
     unsigned int getFrameStride() const;
-    
+
     /**
      * Gets the source padding in pixels around the source region.
      *
@@ -241,21 +240,21 @@ public:
      * @see Sprite::FlipFlags
      */
     unsigned int getFramePadding() const;
-    
+
     /**
      * Sets the current frame index to be rendered.
      *
      * @param index The current frame index to be rendered.
      */
     void setFrameIndex(unsigned int index);
-    
+
     /**
      * Gets the current frame index to be rendered.
      *
      * @return The current frame index to be rendered.
      */
     unsigned int getFrameIndex() const;
-    
+
     /**
      * Sets the opacity for the sprite.
      *
@@ -264,7 +263,7 @@ public:
      * @param opacity The opacity for the sprite.
      */
     void setOpacity(float opacity);
-    
+
     /**
      * Gets the opacity for the sprite.
      *
@@ -273,14 +272,14 @@ public:
      * @return The opacity for the sprite.
      */
     float getOpacity() const;
-    
+
     /**
      * Sets the color (RGBA) for the sprite.
      *
      * @param color The color(RGBA) for the sprite.
      */
     void setColor(const Vector4& color);
-    
+
     /**
      * Gets the color (RGBA) for the sprite.
      *
@@ -303,7 +302,7 @@ public:
      * @see Sprite::BlendMode
      */
     BlendMode getBlendMode() const;
-    
+
     /**
      * Gets the texture sampler used when sampling the texture.
      * This can be modified for controlling sampler setting such as
@@ -312,7 +311,7 @@ public:
      * @return The texture sampler used when sampling the texture.
      */
     Texture::Sampler* getSampler() const;
-    
+
     /**
      * Gets the StateBlock for the SpriteBatch.
      *
@@ -323,7 +322,7 @@ public:
      * @return The StateBlock for this SpriteBatch.
      */
     RenderState::StateBlock* getStateBlock() const;
-    
+
     /**
      * Gets the material used by sprite batch.
      *
@@ -336,18 +335,18 @@ public:
      */
     unsigned int draw(bool wireframe = false);
 
-protected:
-    
+  protected:
+
     /**
      * Constructor.
      */
     Sprite();
-    
+
     /**
      * Destructor.
      */
     ~Sprite();
-    
+
     /**
      * operator=
      */
@@ -357,7 +356,7 @@ protected:
      * @see Drawable::clone
      */
     Drawable* clone(NodeCloneContext& context);
-    
+
     /**
      * @see AnimationTarget::getPropertyId
      */
@@ -367,18 +366,18 @@ protected:
      * @see AnimationTarget::getAnimationPropertyComponentCount
      */
     unsigned int getAnimationPropertyComponentCount(int propertyId) const;
-    
+
     /**
      * @see AnimationTarget::getAnimationProperty
      */
     void getAnimationPropertyValue(int propertyId, AnimationValue* value);
-    
+
     /**
      * @see AnimationTarget::setAnimationProperty
      */
     void setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight = 1.0f);
 
-private:
+  private:
 
     float _width;
     float _height;
@@ -394,7 +393,6 @@ private:
     float _opacity;
     Vector4 _color;
     BlendMode _blendMode;
-};
+  };
 
 }
-#endif

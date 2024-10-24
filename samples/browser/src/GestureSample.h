@@ -1,5 +1,4 @@
-#ifndef GESTURESAMPLE_H_
-#define GESTURESAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -44,5 +43,3 @@ private:
     Font* _font;
     std::list<std::string> _eventLog;
 };
-
-#endif

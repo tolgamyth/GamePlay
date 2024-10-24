@@ -1,5 +1,5 @@
 #include "framework/Base.h"
-#include "graphics/VertexFormat.h"
+#include "renderer/VertexFormat.h"
 
 namespace gameplay
 {

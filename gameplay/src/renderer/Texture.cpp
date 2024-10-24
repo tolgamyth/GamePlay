@@ -1,6 +1,6 @@
 #include "framework/Base.h"
 #include "ui/Image.h"
-#include "graphics/Texture.h"
+#include "renderer/Texture.h"
 #include "framework/FileSystem.h"
 
 // PVRTC (GL_IMG_texture_compression_pvrtc) : Imagination based gpus

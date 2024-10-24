@@ -1,5 +1,4 @@
-#ifndef AUDIO3DSAMPLE_H_
-#define AUDIO3DSAMPLE_H_
+#pragma once
 
 #include "gameplay.h"
 #include "Sample.h"
@@ -58,5 +57,3 @@ private:
     int _prevY;
     bool _buttonPressed;
 };
-
-#endif

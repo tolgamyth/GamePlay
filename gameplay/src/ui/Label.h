@@ -1,5 +1,4 @@
-#ifndef LABEL_H_
-#define LABEL_H_
+#pragma once
 
 #include "ui/Control.h"
 #include "ui/Theme.h"
@@ -150,5 +149,3 @@ private:
 };
 
 }
-
-#endif

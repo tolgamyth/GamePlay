@@ -1,8 +1,7 @@
-#ifndef VERTEXATTRIBUTEBINDING_H_
-#define VERTEXATTRIBUTEBINDING_H_
+#pragma once
 
 #include "utils/Ref.h"
-#include "graphics/VertexFormat.h"
+#include "renderer/VertexFormat.h"
 
 namespace gameplay
 {
@@ -117,5 +116,3 @@ private:
 };
 
 }
-
-#endif

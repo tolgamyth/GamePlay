@@ -3,7 +3,7 @@
 #include "animation/Animation.h"
 #include "framework/Game.h"
 #include "scene/Node.h"
-#include "graphics/MaterialParameter.h"
+#include "renderer/MaterialParameter.h"
 
 #define ANIMATION_TARGET_INDEFINITE_STR "INDEFINITE"
 

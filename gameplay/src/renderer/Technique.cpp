@@ -1,6 +1,6 @@
 #include "framework/Base.h"
-#include "graphics/Technique.h"
-#include "graphics/Material.h"
+#include "renderer/Technique.h"
+#include "renderer/Material.h"
 #include "scene/Node.h"
 
 namespace gameplay
