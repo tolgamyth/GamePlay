@@ -6,19 +6,17 @@
 namespace gameplay
 {
 
-class AudioSource;
+  class AudioSource;
 
-/**
- * Defines the actual audio buffer data.
- *
- * Currently only supports supported formats: .ogg, .wav, .au and .raw files.
- */
-class AudioBuffer : public Ref
-{
+  /**
+   * Defines the actual audio buffer data.
+   *
+   * Currently only supports supported formats: .ogg, .wav, .au and .raw files.
+   */
+  class AudioBuffer
+  {
     friend class AudioSource;
-
-private:
-    
+  public:
     /**
      * Constructor.
      */
@@ -27,7 +25,9 @@ private:
     /**
      * Destructor.
      */
-    virtual ~AudioBuffer();
+    ~AudioBuffer();
+
+  private:
 
     /**
      * Hidden copy assignment operator.
@@ -36,35 +36,35 @@ private:
 
     /**
      * Creates an audio buffer from a file.
-     * 
+     *
      * @param path The path to the audio buffer on the filesystem.
-     * 
+     *
      * @return The buffer from a file.
      */
-    static AudioBuffer* create(const char* path, bool streamed);
+    static std::shared_ptr<AudioBuffer> create(const char* path, bool streamed);
 
     struct AudioStreamStateWav
     {
-        long dataStart;
-        unsigned int dataSize;
-        ALuint format;
-        ALuint frequency;
+      long dataStart;
+      unsigned int dataSize;
+      ALuint format;
+      ALuint frequency;
     };
 
     struct AudioStreamStateOgg
     {
-        long dataStart;
-        unsigned int dataSize;
-        ALuint format;
-        ALuint frequency;
-        OggVorbis_File oggFile;
+      long dataStart;
+      unsigned int dataSize;
+      ALuint format;
+      ALuint frequency;
+      OggVorbis_File oggFile;
     };
 
     enum { STREAMING_BUFFER_QUEUE_SIZE = 3 };
     enum { STREAMING_BUFFER_SIZE = 48000 };
 
     static bool loadWav(Stream* stream, ALuint buffer, bool streamed, AudioStreamStateWav* streamState);
-    
+
     static bool loadOgg(Stream* stream, ALuint buffer, bool streamed, AudioStreamStateOgg* streamState);
 
     bool streamData(ALuint buffer, bool looped);
@@ -76,6 +76,6 @@ private:
     std::unique_ptr<AudioStreamStateWav> _streamStateWav;
     std::unique_ptr<AudioStreamStateOgg> _streamStateOgg;
     int _buffersNeededCount;
-};
+  };
 
 }

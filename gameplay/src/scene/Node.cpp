@@ -47,7 +47,6 @@ namespace gameplay
     SAFE_RELEASE(ref);
     SAFE_RELEASE(_camera);
     SAFE_RELEASE(_light);
-    SAFE_RELEASE(_audioSource);
     SAFE_DELETE(_collisionObject);
     SAFE_RELEASE(_userObject);
     SAFE_DELETE(_tags);
@@ -962,20 +961,18 @@ namespace gameplay
 
   void Node::setAudioSource(AudioSource* audio)
   {
-    if (_audioSource == audio)
+    if (_audioSource.get() == audio)
       return;
 
     if (_audioSource)
     {
       _audioSource->setNode(nullptr);
-      SAFE_RELEASE(_audioSource);
     }
 
-    _audioSource = audio;
+    _audioSource = std::shared_ptr<AudioSource>(audio);
 
     if (_audioSource)
     {
-      _audioSource->addRef();
       _audioSource->setNode(this);
     }
   }

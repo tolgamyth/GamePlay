@@ -62,7 +62,7 @@ SpaceshipGame game;
 SpaceshipGame::SpaceshipGame()
     : _scene(nullptr), _cameraNode(nullptr), _shipGroupNode(nullptr), _shipNode(nullptr), _propulsionNode(nullptr), _glowNode(nullptr),
       _stateBlock(nullptr), _font(nullptr), _throttle(0), _shipTilt(0), _finished(true), _finishedTime(0), _pushing(false), _time(0),
-       _glowDiffuseParameter(nullptr), _shipSpecularParameter(nullptr), _spaceshipSound(nullptr)
+       _glowDiffuseParameter(nullptr), _shipSpecularParameter(nullptr), _spaceshipSound(NULL)
 {
 }
 
@@ -74,7 +74,7 @@ void SpaceshipGame::initialize()
 {
     // TODO: Not working on iOS
     // Display the gameplay splash screen for at least 1 second.
-    displayScreen(this, &SpaceshipGame::drawSplash, nullptr, 1000L);
+    displayScreen(this, &SpaceshipGame::drawSplash, NULL, 1000L);
 
     // Create our render state block that will be reused across all materials
     _stateBlock = RenderState::StateBlock::create();
@@ -223,8 +223,6 @@ void SpaceshipGame::initializeMaterial(Material* material, bool lighting, bool s
 
 void SpaceshipGame::finalize()
 {
-    SAFE_RELEASE(_backgroundMusic);
-    SAFE_RELEASE(_spaceshipSound);
     SAFE_RELEASE(_font);
     SAFE_RELEASE(_stateBlock);
     SAFE_RELEASE(_scene);
@@ -290,7 +288,7 @@ void SpaceshipGame::update(float elapsedTime)
     }
 
     // Clamp the throttle
-    _throttle = CLAMP(_throttle, 0.0f, 1.0f);
+    _throttle = std::clamp(_throttle, 0.0f, 1.0f);
 
     // Update acceleration (a = F/m)
     _acceleration.set(_force.x / MASS, _force.y / MASS);
@@ -300,8 +298,8 @@ void SpaceshipGame::update(float elapsedTime)
     _velocity.y += _acceleration.y * t;
 
     // Clamp velocity to its maximum range
-    _velocity.x = CLAMP(_velocity.x, -VELOCITY_MAX, VELOCITY_MAX);
-    _velocity.y = CLAMP(_velocity.y, -VELOCITY_MAX, VELOCITY_MAX);
+    _velocity.x = std::clamp(_velocity.x, -VELOCITY_MAX, VELOCITY_MAX);
+    _velocity.y = std::clamp(_velocity.y, -VELOCITY_MAX, VELOCITY_MAX);
 
     // Move the spaceship based on its current velocity (x1 = x0 + vt)
     _shipGroupNode->translate(_velocity.x * t, _velocity.y * t, 0);

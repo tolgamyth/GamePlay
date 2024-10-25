@@ -330,7 +330,7 @@ Animation::Channel* Animation::createChannel(AnimationTarget* target, int proper
     unsigned int lowest = keyTimes[0];
     unsigned long duration = keyTimes[keyCount-1] - lowest;
 
-    float* normalizedKeyTimes = new float[keyCount];
+    std::vector<float> normalizedKeyTimes(keyCount);
 
     normalizedKeyTimes[0] = 0.0f;
     curve->setPoint(0, normalizedKeyTimes[0], keyValues, (Curve::InterpolationType) type);
@@ -348,8 +348,6 @@ Animation::Channel* Animation::createChannel(AnimationTarget* target, int proper
         normalizedKeyTimes[i] = 1.0f;
         curve->setPoint(i, normalizedKeyTimes[i], keyValues + pointOffset, (Curve::InterpolationType) type);
     }
-
-    SAFE_DELETE_ARRAY(normalizedKeyTimes);
 
     Channel* channel = new Channel(this, target, propertyId, curve, duration);
     curve->release();

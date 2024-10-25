@@ -275,9 +275,8 @@ void SceneLoader::applyNodeProperty(SceneNode& sceneNode, Node* node, const Prop
         {
         case SceneNodeProperty::AUDIO:
         {
-            AudioSource* audioSource = AudioSource::create(p);
-            node->setAudioSource(audioSource);
-            SAFE_RELEASE(audioSource);
+            std::shared_ptr<AudioSource> audioSource = AudioSource::create(p);
+            node->setAudioSource(audioSource.get());
             break;
         }
         case SceneNodeProperty::MATERIAL:

@@ -53,17 +53,17 @@ private:
      */
     void update(float elapsedTime);
 
-    void addPlayingSource(AudioSource* source);
+    void addPlayingSource(std::shared_ptr<AudioSource> source);
     
-    void removePlayingSource(AudioSource* source);
+    void removePlayingSource(std::shared_ptr<AudioSource> source);
 
     static void streamingThreadProc(void* arg);
 
     ALCdevice* _alcDevice;
     ALCcontext* _alcContext;
-    std::set<AudioSource*> _playingSources;
-    std::set<AudioSource*> _streamingSources;
-    AudioSource* _pausingSource;
+    std::set<std::shared_ptr<AudioSource>> _playingSources;
+    std::set<std::shared_ptr<AudioSource>> _streamingSources;
+    std::shared_ptr<AudioSource> _pausingSource;
 
     bool _streamingThreadActive;
     std::unique_ptr<std::thread> _streamingThread;

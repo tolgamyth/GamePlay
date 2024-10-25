@@ -142,3 +142,8 @@ gameplay.xcworkspace/xcshareddata/gameplay.xccheckout
 /samples/spaceship/sample-spaceship.xcodeproj/xcuserdata
 /samples/spaceship/sample-spaceship.vcxproj.user
 /.vs/gameplay
+/UnitTests/x64/Debug
+/x64/Debug
+*.bak
+*.user
+/packages/Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.7

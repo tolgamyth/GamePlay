@@ -231,6 +231,11 @@ unsigned int Container::addControl(Control* control)
 			if( _controls[ i ]->_focusIndex > maxFocusIndex )
 				maxFocusIndex = _controls[ i ]->_focusIndex;
 		}
+    // TODO this somehow not compiles in VS even though C++20 enabled
+    //  int maxFocusIndex = std::ranges::max_element(_controls, [](const Control* control) {
+    //  return control->_focusIndex;
+    //  })->_focusIndex;
+
 		control->setFocusIndex( maxFocusIndex + 1 );
 	}
 
@@ -328,9 +333,8 @@ Control* Container::getControl(const char* id) const
 {
     assert(id);
     std::vector<Control*>::const_iterator it;
-    for (it = _controls.begin(); it < _controls.end(); it++)
+    for(Control* c : _controls)
     {
-        Control* c = *it;
         assert(c);
         if (strcmp(id, c->getId()) == 0)
         {

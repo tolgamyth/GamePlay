@@ -7,27 +7,27 @@ using namespace gameplay;
 class AudioSample : public Sample, Control::Listener
 {
 public:
-    
-    AudioSample();
+
+  AudioSample();
 
 protected:
 
-    void initialize();
+  void initialize();
 
-    void finalize();
+  void finalize();
 
-    void update(float elapsedTime);
+  void update(float elapsedTime);
 
-    void render(float elapsedTime);
+  void render(float elapsedTime);
 
-    void controlEvent(Control* control, EventType evt);
+  void controlEvent(Control* control, EventType evt);
 
 private:
-    
-    Form* _formBackground;
-    Form* _formEngine;
-    Form* _formBraking;
-    AudioSource* _audioBackground;
-    AudioSource* _audioEngine;
-    AudioSource* _audioBraking;
+
+  Form* _formBackground;
+  Form* _formEngine;
+  Form* _formBraking;
+  std::shared_ptr<AudioSource> _audioBackground;
+  std::shared_ptr<AudioSource> _audioEngine;
+  std::shared_ptr<AudioSource> _audioBraking;
 };

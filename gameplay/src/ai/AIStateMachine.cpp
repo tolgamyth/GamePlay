@@ -21,9 +21,8 @@ AIStateMachine::AIStateMachine(AIAgent* agent)
 AIStateMachine::~AIStateMachine()
 {
     // Release all states
-    for (std::list<AIState*>::iterator itr = _states.begin(); itr != _states.end(); ++itr)
-    {
-        (*itr)->release();
+    for (AIState* state : _states) {
+      state->release();
     }
 
     if (AIState::_empty)
@@ -71,12 +70,10 @@ AIState* AIStateMachine::getState(const char* id) const
 {
     assert(id);
 
-    for (std::list<AIState*>::const_iterator itr = _states.begin(); itr != _states.end(); ++itr)
-    {
-        AIState* state = (*itr);
-
-        if (strcmp(id, state->getId()) == 0)
-            return state;
+    for (AIState* state : _states) {
+      if (strcmp(id, state->getId()) == 0) {
+        return state;
+      }
     }
 
     return nullptr;

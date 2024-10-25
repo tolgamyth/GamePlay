@@ -977,11 +977,10 @@ namespace gameplay
   {
     if (_listeners)
     {
-      for (std::list<TransformListener>::iterator itr = _listeners->begin(); itr != _listeners->end(); ++itr)
+      for(auto transform : *_listeners)
       {
-        TransformListener& l = *itr;
-        assert(l.listener);
-        l.listener->transformChanged(this, l.cookie);
+        assert(transform.listener);
+        transform.listener->transformChanged(this, transform.cookie);
       }
     }
     fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(Transform, transformChanged), dynamic_cast<void*>(this));

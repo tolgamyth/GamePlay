@@ -18,14 +18,10 @@ Effect::Effect() : _program(0)
 
 Effect::~Effect()
 {
-    // Remove this effect from the cache.
-    __effectCache.erase(_id);
-
     // Free uniforms.
-    for (std::map<std::string, Uniform*>::iterator itr = _uniforms.begin(); itr != _uniforms.end(); ++itr)
-    {
-        SAFE_DELETE(itr->second);
-    }
+    std::for_each(_uniforms.begin(), _uniforms.end(), [](auto& pair) {
+      SAFE_DELETE(pair.second);
+      });
 
     if (_program)
     {
@@ -510,15 +506,8 @@ Uniform* Effect::getUniform(const char* name) const
 
 Uniform* Effect::getUniform(unsigned int index) const
 {
-    unsigned int i = 0;
-    for (std::map<std::string, Uniform*>::const_iterator itr = _uniforms.begin(); itr != _uniforms.end(); ++itr, ++i)
-    {
-        if (i == index)
-        {
-            return itr->second;
-        }
-    }
-    return nullptr;
+    auto itr = std::next(_uniforms.begin(), index);
+    return itr->second;
 }
 
 unsigned int Effect::getUniformCount() const

@@ -129,7 +129,7 @@ private:
     float _upsetTimer;
 
     // Music and Sounds
-    AudioSource* _backgroundMusic;
-    AudioSource* _engineSound;
-    AudioSource* _brakingSound;
+    std::shared_ptr<AudioSource> _backgroundMusic;
+    std::shared_ptr<AudioSource> _engineSound;
+    std::shared_ptr<AudioSource> _brakingSound;
 };

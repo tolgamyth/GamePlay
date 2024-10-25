@@ -17,7 +17,7 @@ ALenum __al_error_code = AL_NO_ERROR;
 namespace gameplay
 {
 
-  static Game* __gameInstance = NULL;
+  static Game* __gameInstance = nullptr;
   double Game::_pausedTimeLast = 0.0;
   double Game::_pausedTimeTotal = 0.0;
 
@@ -62,12 +62,12 @@ namespace gameplay
   Game::Game()
     : _initialized(false), _state(UNINITIALIZED), _pausedCount(0),
     _frameLastFPS(0), _frameCount(0), _frameRate(0), _width(0), _height(0),
-    _clearDepth(1.0f), _clearStencil(0), _timeEvents(NULL)
+    _clearDepth(1.0f), _clearStencil(0), _timeEvents(nullptr)
   {
     assert(__gameInstance == NULL);
+    _timeEvents = new std::priority_queue<TimeEvent, std::vector<TimeEvent>, std::less<TimeEvent> >();
 
     __gameInstance = this;
-    _timeEvents = new std::priority_queue<TimeEvent, std::vector<TimeEvent>, std::less<TimeEvent> >();
   }
 
   Game::~Game()

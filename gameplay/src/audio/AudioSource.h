@@ -7,20 +7,20 @@
 namespace gameplay
 {
 
-class AudioBuffer;
-class Node;
-class NodeCloneContext;
+  class AudioBuffer;
+  class Node;
+  class NodeCloneContext;
 
-/**
- * Defines an audio source in 3D space.
- *
- * This can be attached to a Node for applying its 3D transformation.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Audio
- */
-class AudioSource : public Ref, public Transform::Listener
-{
-public:
+  /**
+   * Defines an audio source in 3D space.
+   *
+   * This can be attached to a Node for applying its 3D transformation.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Audio
+   */
+  class AudioSource : public Transform::Listener, public std::enable_shared_from_this<AudioSource>
+  {
+  public:
 
     friend class Node;
     friend class AudioController;
@@ -30,32 +30,42 @@ public:
      */
     enum State
     {
-        INITIAL,
-        PLAYING,
-        PAUSED,
-        STOPPED
+      INITIAL,
+      PLAYING,
+      PAUSED,
+      STOPPED
     };
+
+    /**
+     * Constructor that takes an AudioBuffer.
+     */
+    AudioSource(std::shared_ptr<AudioBuffer> buffer, ALuint source);
+
+    /**
+     * Destructor.
+     */
+    virtual ~AudioSource();
 
     /**
      * Create an audio source. This is used to instantiate an Audio Source. Currently only wav, au, and raw files are supported.
      * Alternately, a URL specifying a Properties object that defines an audio source can be used (where the URL is of the format
      * "<file-path>.<extension>#<namespace-id>/<namespace-id>/.../<namespace-id>" and "#<namespace-id>/<namespace-id>/.../<namespace-id>" is optional).
-     * 
+     *
      * @param url The relative location on disk of the sound file or a URL specifying a Properties object defining an audio source.
      * @param streamed Don't read the entire audio buffer first before playing, instead play immediately from a stream that is read on demand.
      * @return The newly created audio source, or nullptr if an audio source cannot be created.
      * @script{create}
      */
-    static AudioSource* create(const char* url, bool streamed = false);
+    static std::shared_ptr<AudioSource> create(const char* url, bool streamed = false);
 
     /**
      * Create an audio source from the given properties object.
-     * 
+     *
      * @param properties The properties object defining the audio source (must have namespace equal to 'audio').
      * @return The newly created audio source, or <code>nullptr</code> if the audio source failed to load.
      * @script{create}
      */
-    static AudioSource* create(Properties* properties);
+    static std::shared_ptr<AudioSource> create(Properties* properties);
 
     /**
      * Plays the audio source.
@@ -163,22 +173,12 @@ public:
 
     /**
      * Gets the node that this source is attached to.
-     * 
+     *
      * @return The node that this audio source is attached to.
      */
     Node* getNode() const;
 
-private:
-
-    /**
-     * Constructor that takes an AudioBuffer.
-     */
-    AudioSource(AudioBuffer* buffer, ALuint source);
-
-    /**
-     * Destructor.
-     */
-    virtual ~AudioSource();
+  private:
 
     /**
      * Hidden copy assignment operator.
@@ -197,7 +197,7 @@ private:
 
     /**
      * Clones the audio source and returns a new audio source.
-     * 
+     *
      * @param context The clone context.
      * @return The newly created audio source.
      */
@@ -206,12 +206,13 @@ private:
     bool streamDataIfNeeded();
 
     ALuint _alSource;
-    AudioBuffer* _buffer;
+    std::shared_ptr<AudioBuffer> _buffer;
     bool _looped;
     float _gain;
     float _pitch;
     Vector3 _velocity;
     Node* _node;
-};
+    std::mutex _mtx;
+  };
 
 }
