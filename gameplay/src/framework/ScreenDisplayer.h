@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "framework/Game.h"
 #include "framework/Platform.h"
 
@@ -33,7 +35,7 @@ namespace gameplay
      * @param cookie See Game::renderOnce().
      * @param time The minimum amount of time to display the screen (in milliseconds).
      */
-    template <typename T> void run(T* instance, void (T::* method) (void*), void* cookie, unsigned long time);
+    template <typename T> void run(T* instance, std::function<void(void*)>, void* cookie, unsigned long time);
 
     /**
      * Starts a new screen displayer running; draws a screen using the {@link Game::renderOnce} mechanism for at least the given amount of time.
@@ -59,13 +61,6 @@ namespace gameplay
     static ScreenDisplayer* __scriptInstance;
   };
 
-  template <typename T> void ScreenDisplayer::run(T* instance, void (T::* method) (void*), void* cookie, unsigned long time)
-  {
-    _time = time;
-    Game::getInstance()->renderOnce(instance, method, cookie);
-    _startTime = Game::getInstance()->getGameTime();
-  }
-
   /**
    * Displays a screen using the {@link gameplay::Game::renderOnce} mechanism for at least the given amount
    * of time. This function is intended to be called at the beginning of a block of code that is be
@@ -77,8 +72,10 @@ namespace gameplay
    * @param cookie See {@link gameplay::Game::renderOnce}.
    * @param time The minimum amount of time to display the screen (in milliseconds).
    */
-#define displayScreen(instance, method, cookie, time) \
-    ScreenDisplayer __##instance##ScreenDisplayer; \
-    __##instance##ScreenDisplayer.run(instance, method, cookie, time)
-
+  template <typename T> void ScreenDisplayer::run(T* instance, std::function<void(void*)> method, void* data, unsigned long time)
+  {
+    _time = time;
+    Game::getInstance()->renderOnce(instance, method, data);
+    _startTime = Game::getInstance()->getGameTime();
+  }
 }

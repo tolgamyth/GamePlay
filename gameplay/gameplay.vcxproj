@@ -170,6 +170,7 @@
     <ClCompile Include="src\utils\Ref.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Profiler.h" />
     <ClInclude Include="src\ai\AIAgent.h" />
     <ClInclude Include="src\ai\AIController.h" />
     <ClInclude Include="src\ai\AIMessage.h" />

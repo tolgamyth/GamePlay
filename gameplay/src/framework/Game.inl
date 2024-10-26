@@ -64,10 +64,10 @@ namespace gameplay
   }
 
   template <class T>
-  void Game::renderOnce(T* instance, void (T::* method)(void*), void* cookie)
+  void Game::renderOnce(T* instance, std::function<void(void*)> method, void* data)
   {
     assert(instance);
-    (instance->*method)(cookie);
+    method(data);
     Platform::swapBuffers();
   }
 

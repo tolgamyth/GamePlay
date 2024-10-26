@@ -19,126 +19,126 @@ Sample::Sample()
 
 Sample::~Sample()
 {
-	enableScriptCamera(false);
+  enableScriptCamera(false);
 }
 
 bool Sample::isVsync()
 {
-    return Game::isVsync();
+  return Game::isVsync();
 }
 
 void Sample::setVsync(bool enable)
 {
-    Game::setVsync(enable);
+  Game::setVsync(enable);
 }
 
 long Sample::getAbsoluteTime()
 {
-    return Game::getAbsoluteTime();
+  return Game::getAbsoluteTime();
 }
 
 long Sample::getGameTime()
 {
-    return Game::getGameTime();
+  return Game::getGameTime();
 }
 
 Game::State Sample::getState() const
 {
-    return Game::getInstance()->getState();
+  return Game::getInstance()->getState();
 }
 
 int Sample::run()
 {
-    return Game::getInstance()->run();
+  return Game::getInstance()->run();
 }
 
 void Sample::pause()
 {
-    Game::getInstance()->pause();
+  Game::getInstance()->pause();
 }
 
 void Sample::resume()
 {
-    Game::getInstance()->resume();
+  Game::getInstance()->resume();
 }
 
 void Sample::exit()
 {
-    Game::getInstance()->exit();
+  Game::getInstance()->exit();
 }
 
 void Sample::frame()
 {
-    Game::getInstance()->frame();
+  Game::getInstance()->frame();
 }
 
 unsigned int Sample::getFrameRate() const
 {
-    return Game::getInstance()->getFrameRate();
+  return Game::getInstance()->getFrameRate();
 }
 
 const Rectangle& Sample::getViewport() const
 {
-    return Game::getInstance()->getViewport();
+  return Game::getInstance()->getViewport();
 }
 
 void Sample::setViewport(const Rectangle& viewport)
 {
-	Game::getInstance()->setViewport(viewport);
+  Game::getInstance()->setViewport(viewport);
 }
 
 unsigned int Sample::getWidth() const
 {
-    return Game::getInstance()->getWidth();
+  return Game::getInstance()->getWidth();
 }
 
 unsigned int Sample::getHeight() const
 {
-    return Game::getInstance()->getHeight();
+  return Game::getInstance()->getHeight();
 }
 
 float Sample::getAspectRatio() const
 {
-    return Game::getInstance()->getAspectRatio();
+  return Game::getInstance()->getAspectRatio();
 }
 
 void Sample::clear(Game::ClearFlags flags, const Vector4& clearColor, float clearDepth, int clearStencil)
 {
-    Game::getInstance()->clear(flags, clearColor, clearDepth, clearStencil);
+  Game::getInstance()->clear(flags, clearColor, clearDepth, clearStencil);
 }
 
 void Sample::clear(Game::ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil)
 {
-    Game::getInstance()->clear(flags, red, green, blue, alpha, clearDepth, clearStencil);
+  Game::getInstance()->clear(flags, red, green, blue, alpha, clearDepth, clearStencil);
 }
 
 AudioController* Sample::getAudioController() const
 {
-    return Game::getInstance()->getAudioController();
+  return Game::getInstance()->getAudioController();
 }
 
 AnimationController* Sample::getAnimationController() const
 {
-    return Game::getInstance()->getAnimationController();
+  return Game::getInstance()->getAnimationController();
 }
 
 PhysicsController* Sample::getPhysicsController() const
 {
-    return Game::getInstance()->getPhysicsController();
+  return Game::getInstance()->getPhysicsController();
 }
 
 ScriptController* Sample::getScriptController() const
 {
-	return Game::getInstance()->getScriptController();
+  return Game::getInstance()->getScriptController();
 }
 
 void Sample::displayKeyboard(bool display)
 {
-    Game::getInstance()->displayKeyboard(display);
+  Game::getInstance()->displayKeyboard(display);
 }
 
 void Sample::keyEvent(Keyboard::KeyEvent evt, int key)
-{    
+{
 }
 
 void Sample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
@@ -147,82 +147,82 @@ void Sample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contac
 
 bool Sample::mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelDelta)
 {
-    return false;
+  return false;
 }
 
 bool Sample::hasMouse()
 {
-    return Game::getInstance()->hasMouse();
+  return Game::getInstance()->hasMouse();
 }
 
 bool Sample::isMouseCaptured()
 {
-    return Game::getInstance()->isMouseCaptured();
+  return Game::getInstance()->isMouseCaptured();
 }
 
 void Sample::setMouseCaptured(bool captured)
 {
-    Game::getInstance()->setMouseCaptured(captured);
+  Game::getInstance()->setMouseCaptured(captured);
 }
 
 void Sample::setMultiTouch(bool enabled)
 {
-    Game::getInstance()->setMultiTouch(enabled);
+  Game::getInstance()->setMultiTouch(enabled);
 }
 
 bool Sample::isMultiTouch() const
 {
-    return Game::getInstance()->isMultiTouch();
+  return Game::getInstance()->isMultiTouch();
 }
 
 bool Sample::hasAccelerometer() const
 {
-    return Game::getInstance()->hasAccelerometer();
+  return Game::getInstance()->hasAccelerometer();
 }
 
 void Sample::getAccelerometerValues(float* pitch, float* roll)
 {
-    Game::getInstance()->getAccelerometerValues(pitch, roll);
+  Game::getInstance()->getAccelerometerValues(pitch, roll);
 }
 
 void Sample::getSensorValues(float* accelX, float* accelY, float* accelZ, float* gyroX, float* gyroY, float* gyroZ)
 {
-    Game::getInstance()->getSensorValues(accelX, accelY, accelZ, gyroX, gyroY, gyroZ);
+  Game::getInstance()->getSensorValues(accelX, accelY, accelZ, gyroX, gyroY, gyroZ);
 }
 
 void Sample::schedule(long timeOffset, TimeListener* timeListener, void* cookie)
 {
-    Game::getInstance()->schedule(timeOffset, timeListener, cookie);
+  Game::getInstance()->schedule(timeOffset, timeListener, cookie);
 }
 
 void Sample::enableScriptCamera(bool enable)
 {
-	Game::getInstance()->getScriptController()->executeFunction<void>("camera_setActive", "b", nullptr, enable);
+  Game::getInstance()->getScriptController()->executeFunction<void>("camera_setActive", "b", nullptr, enable);
 }
 
 void Sample::setScriptCameraSpeed(float normal, float fast)
 {
-    Game::getInstance()->getScriptController()->executeFunction<void>("camera_setSpeed", "ff", nullptr, normal, fast);
+  Game::getInstance()->getScriptController()->executeFunction<void>("camera_setSpeed", "ff", nullptr, normal, fast);
 }
 
 bool Sample::isGestureSupported(Gesture::GestureEvent evt)
 {
-    return Game::getInstance()->isGestureSupported(evt);
+  return Game::getInstance()->isGestureSupported(evt);
 }
 
 void Sample::registerGesture(Gesture::GestureEvent evt)
 {
-    Game::getInstance()->registerGesture(evt);
+  Game::getInstance()->registerGesture(evt);
 }
 
 void Sample::unregisterGesture(Gesture::GestureEvent evt)
 {
-    Game::getInstance()->unregisterGesture(evt);
+  Game::getInstance()->unregisterGesture(evt);
 }
 
 bool Sample::isGestureRegistered(Gesture::GestureEvent evt)
 {
-    return Game::getInstance()->isGestureRegistered(evt);
+  return Game::getInstance()->isGestureRegistered(evt);
 }
 
 void Sample::gestureSwipeEvent(int x, int y, int direction)
@@ -255,19 +255,19 @@ void Sample::gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad)
 
 unsigned int Sample::getGamepadCount() const
 {
-    return Game::getInstance()->getGamepadCount();
+  return Game::getInstance()->getGamepadCount();
 }
 
 Gamepad* Sample::getGamepad(unsigned int index, bool preferPhysical) const
 {
-    return Game::getInstance()->getGamepad(index, preferPhysical);
+  return Game::getInstance()->getGamepad(index, preferPhysical);
 }
 
 void Sample::drawFrameRate(Font* font, const Vector4& color, unsigned int x, unsigned int y, unsigned int fps)
 {
-    char buffer[10];
-    sprintf(buffer, "%u", fps);
-    font->start();
-    font->drawText(buffer, x, y, color, 18);
-    font->finish();
+  char buffer[10];
+  sprintf(buffer, "%u", fps);
+  font->start();
+  font->drawText(buffer, x, y, color, 18);
+  font->finish();
 }

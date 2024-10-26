@@ -45,7 +45,8 @@ void RacerGame::initialize()
   _font = Font::create("res/ui/arial.gpb");
 
   // Display the gameplay splash screen during loading, for at least 1 second.
-  displayScreen(this, &RacerGame::drawSplash, nullptr, 1000L);
+  ScreenDisplayer screenDisplayer;
+  screenDisplayer.run(this, [this](void* data) { this->drawSplash(data); }, NULL, 1000L);
 
   // Create the menu and start listening to its controls.
   _menu = Form::create("res/common/menu.form");

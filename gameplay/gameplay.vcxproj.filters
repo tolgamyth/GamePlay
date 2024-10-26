@@ -855,5 +855,8 @@
     <ClInclude Include="src\renderer\Font.h">
       <Filter>src\renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Profiler.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
