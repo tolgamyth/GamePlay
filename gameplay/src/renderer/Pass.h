@@ -6,27 +6,37 @@
 namespace gameplay
 {
 
-class Technique;
-class NodeCloneContext;
+  class Technique;
+  class NodeCloneContext;
 
-/**
- * Defines a pass for an object to be rendered.
- *
- * This class encapsulates the parameters and logic required to apply a shader
- * to an object to be rendered. This includes specifying both a vertex and fragment
- * shader, as well as any uniforms and vertex attributes to be applied to these.
- */
-class Pass : public RenderState
-{
+  /**
+   * Defines a pass for an object to be rendered.
+   *
+   * This class encapsulates the parameters and logic required to apply a shader
+   * to an object to be rendered. This includes specifying both a vertex and fragment
+   * shader, as well as any uniforms and vertex attributes to be applied to these.
+   */
+  class Pass : public RenderState
+  {
     friend class Technique;
     friend class Material;
     friend class RenderState;
 
-public:
+  public:
+
+    /**
+     * Constructor.
+     */
+    Pass(const char* id, std::shared_ptr<Technique> technique);
+
+    /**
+     * Destructor.
+     */
+    ~Pass();
 
     /**
      * Returns the Id of this pass.
-     */ 
+     */
     const char* getId() const;
 
     /**
@@ -42,14 +52,14 @@ public:
      *
      * @param binding The VertexAttributeBinding to set (or nullptr to remove an existing binding).
      */
-    void setVertexAttributeBinding(VertexAttributeBinding* binding);
+    void setVertexAttributeBinding(std::shared_ptr<VertexAttributeBinding> binding);
 
     /**
      * Sets a vertex attribute binding for this pass.
      *
      * @return The vertex attribute binding for this pass.
      */
-    VertexAttributeBinding* getVertexAttributeBinding() const;
+    std::shared_ptr<VertexAttributeBinding> getVertexAttributeBinding() const;
 
     /**
      * Binds the render state for this pass.
@@ -61,28 +71,18 @@ public:
 
     /**
      * Unbinds the render state for this pass.
-     * 
+     *
      * This method should always be called when rendering for a pass is complete, to
      * restore the render state to the state it was in previous to calling bind().
      */
     void unbind();
 
-private:
-
-    /**
-     * Constructor.
-     */
-    Pass(const char* id, Technique* technique);
+  private:
 
     /**
      * Hidden copy constructor.
      */
     Pass(const Pass& copy);
-
-    /**
-     * Destructor.
-     */
-    ~Pass();
 
     /**
      * Creates a new pass for the given shaders.
@@ -96,18 +96,18 @@ private:
 
     /**
      * Clones the Pass and assigns it the given Technique.
-     * 
+     *
      * @param technique The technique to assign to the new Pass.
      * @param context The clone context.
-     * 
+     *
      * @return The newly created Pass.
      */
-    Pass* clone(Technique* technique, NodeCloneContext &context) const;
+    std::shared_ptr<Pass> clone(std::shared_ptr<Technique> technique, NodeCloneContext& context) const;
 
     std::string _id;
-    Technique* _technique;
+    std::shared_ptr<Technique> _technique;
     std::shared_ptr<Effect> _effect;
-    VertexAttributeBinding* _vaBinding;
-};
+    std::shared_ptr<VertexAttributeBinding> _vaBinding;
+  };
 
 }

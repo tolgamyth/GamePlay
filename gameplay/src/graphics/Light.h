@@ -164,7 +164,7 @@ public:
      * 
      * @return The node associated with this light.
      */
-    Node* getNode() const;
+    std::shared_ptr<Node> getNode() const;
 
     /**
      * Returns the Range of the point or spot light. 
@@ -292,7 +292,7 @@ private:
      * 
      * @param node The node to be associated with this light.
      */
-    void setNode(Node* node);
+    void setNode(std::shared_ptr<Node> node);
 
     /**
      * Clones the light and returns a new light.
@@ -313,7 +313,7 @@ private:
         /** @script{ignore} */
         Spot* _spot;
     };
-    Node* _node;
+    std::shared_ptr<Node> _node;
 };
 
 }

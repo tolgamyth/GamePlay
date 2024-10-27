@@ -82,7 +82,7 @@ public:
         * @return True if the auto binding is handled and the associated parmeter is
         *      bound, false otherwise.
         */
-        virtual bool resolveAutoBinding(const char* autoBinding, Node* node, MaterialParameter* parameter) = 0;
+        virtual bool resolveAutoBinding(const char* autoBinding, std::shared_ptr<Node> node, std::shared_ptr<MaterialParameter> parameter) = 0;
 
     protected:
 
@@ -477,7 +477,7 @@ public:
      * 
      * @return A MaterialParameter for the specified name.
      */
-    MaterialParameter* getParameter(const char* name) const;
+    std::shared_ptr<MaterialParameter> getParameter(const char* name) const;
 
     /**
      * Gets the number of material parameters.
@@ -491,14 +491,14 @@ public:
      *
      * @return A MaterialParameter for the specified index.
      */
-    MaterialParameter* getParameterByIndex(unsigned int index);
+    std::shared_ptr<MaterialParameter> getParameterByIndex(unsigned int index);
 
     /**
      * Adds a MaterialParameter to the render state.
      *
      * @param param The parameters to to added.
      */
-    void addParameter(MaterialParameter* param);
+    void addParameter(std::shared_ptr<MaterialParameter> param);
 
     /**
      * Removes(clears) the MaterialParameter with the given name.
@@ -568,7 +568,7 @@ public:
      *
      * @param node The node to use for applying auto-bindings.
      */
-    virtual void setNodeBinding(Node* node);
+    virtual void setNodeBinding(std::shared_ptr<Node> node);
 
 protected:
 
@@ -617,7 +617,7 @@ protected:
      * @param renderState The RenderState to copy the data to.
      * @param context The clone context.
      */
-    void cloneInto(RenderState* renderState, NodeCloneContext& context) const;
+    void cloneInto(std::shared_ptr<RenderState> renderState, NodeCloneContext& context) const;
 
 private:
 
@@ -653,7 +653,7 @@ protected:
     /**
      * Collection of MaterialParameter's to be applied to the gameplay::Effect.
      */
-    mutable std::vector<MaterialParameter*> _parameters;
+    mutable std::vector<std::shared_ptr<MaterialParameter>> _parameters;
 
     /**
      * Map of parameter names to auto binding strings.
@@ -663,7 +663,7 @@ protected:
     /**
      * The Node bound to the RenderState.
      */
-    Node* _nodeBinding;
+    std::shared_ptr<Node> _nodeBinding;
 
     /**
      * The StateBlock of fixed-function render states that can be applied to the RenderState.
@@ -673,7 +673,7 @@ protected:
     /**
      * The RenderState's parent.
      */
-    RenderState* _parent;
+    std::shared_ptr<RenderState> _parent;
 
     /**
      * Map of custom auto binding resolvers.

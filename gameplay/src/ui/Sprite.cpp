@@ -570,7 +570,7 @@ unsigned int Sprite::draw(bool wireframe)
         Camera* activeCamera = _node->getScene()->getActiveCamera();
         if (activeCamera)
         {
-            Node* cameraNode = _node->getScene()->getActiveCamera()->getNode();
+            auto cameraNode = _node->getScene()->getActiveCamera()->getNode();
             if (cameraNode)
             {
                 // Scene projection
@@ -647,15 +647,15 @@ unsigned int Sprite::draw(bool wireframe)
     
 Drawable* Sprite::clone(NodeCloneContext& context)
 {
-    Sprite* spriteClone = new Sprite();
+    auto spriteClone = std::make_shared<Sprite>();
 
     // Clone animations
-    AnimationTarget::cloneInto(static_cast<AnimationTarget*>(spriteClone), context);
+    AnimationTarget::cloneInto(spriteClone.get(), context);
 
     // Get copied node if it exists
-    if (Node* node = getNode())
+    if (auto node = getNode())
     {
-        Node* clonedNode = context.findClonedNode(node);
+        auto clonedNode = context.findClonedNode(node.get());
         if (clonedNode)
         {
             spriteClone->setNode(clonedNode);
@@ -679,7 +679,7 @@ Drawable* Sprite::clone(NodeCloneContext& context)
     spriteClone->_frameIndex = _frameIndex;
     spriteClone->_batch = _batch;
 
-    return spriteClone;
+    return spriteClone.get();
 }
 
 int Sprite::getPropertyId(TargetType type, const char* propertyIdStr)

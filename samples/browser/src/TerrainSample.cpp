@@ -377,7 +377,7 @@ Vector3 TerrainSample::getLightColor0() const
     return _directionalLight->getColor();
 }
 
-bool TerrainSample::resolveAutoBinding(const char* autoBinding, Node* node, MaterialParameter* parameter)
+bool TerrainSample::resolveAutoBinding(const char* autoBinding, std::shared_ptr<Node> node, std::shared_ptr<MaterialParameter> parameter)
 {
     if (strcmp(autoBinding, "LIGHT_DIRECTION_0") == 0)
     {

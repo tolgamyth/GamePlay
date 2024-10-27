@@ -137,12 +137,12 @@ namespace gameplay
     _id = id ? id : "";
   }
 
-  Node* Scene::findNode(const char* id, bool recursive, bool exactMatch) const
+  std::shared_ptr<Node> Scene::findNode(const char* id, bool recursive, bool exactMatch) const
   {
     assert(id);
 
     // Search immediate children first.
-    for (Node* child = getFirstNode(); child != nullptr; child = child->getNextSibling())
+    for (auto child = getFirstNode(); child != nullptr; child = child->getNextSibling())
     {
       // Does this child's ID match?
       if ((exactMatch && child->_id == id) || (!exactMatch && child->_id.find(id) == 0))
@@ -154,9 +154,9 @@ namespace gameplay
     // Recurse.
     if (recursive)
     {
-      for (Node* child = getFirstNode(); child != nullptr; child = child->getNextSibling())
+      for (auto child = getFirstNode(); child != nullptr; child = child->getNextSibling())
       {
-        Node* match = child->findNode(id, true, exactMatch);
+        auto match = child->findNode(id, true, exactMatch);
         if (match)
         {
           return match;
@@ -166,14 +166,14 @@ namespace gameplay
     return nullptr;
   }
 
-  unsigned int Scene::findNodes(const char* id, std::vector<Node*>& nodes, bool recursive, bool exactMatch) const
+  unsigned int Scene::findNodes(const char* id, std::vector<std::shared_ptr<Node>>& nodes, bool recursive, bool exactMatch) const
   {
     assert(id);
 
     unsigned int count = 0;
 
     // Search immediate children first.
-    for (Node* child = getFirstNode(); child != nullptr; child = child->getNextSibling())
+    for (auto child = getFirstNode(); child != nullptr; child = child->getNextSibling())
     {
       // Does this child's ID match?
       if ((exactMatch && child->_id == id) || (!exactMatch && child->_id.find(id) == 0))
@@ -186,7 +186,7 @@ namespace gameplay
     // Recurse.
     if (recursive)
     {
-      for (Node* child = getFirstNode(); child != nullptr; child = child->getNextSibling())
+      for (auto child = getFirstNode(); child != nullptr; child = child->getNextSibling())
       {
         count += child->findNodes(id, nodes, true, exactMatch);
       }
@@ -195,13 +195,13 @@ namespace gameplay
     return count;
   }
 
-  void Scene::visitNode(Node* node, const char* visitMethod)
+  void Scene::visitNode(std::shared_ptr<Node> node, const char* visitMethod)
   {
     ScriptController* sc = Game::getInstance()->getScriptController();
 
     // Invoke the visit method for this node.
     bool result;
-    if (!sc->executeFunction<bool>(visitMethod, "<Node>", &result, (void*)node) || !result)
+    if (!sc->executeFunction<bool>(visitMethod, "<Node>", &result, (void*)node.get()) || !result)
       return;
 
     // If this node has a model with a mesh skin, visit the joint hierarchy within it
@@ -215,25 +215,22 @@ namespace gameplay
     }
 
     // Recurse for all children.
-    for (Node* child = node->getFirstChild(); child != nullptr; child = child->getNextSibling())
+    for (auto child = node->getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
       visitNode(child, visitMethod);
     }
   }
 
-  Node* Scene::addNode(const char* id)
+  std::shared_ptr<Node> Scene::addNode(const char* id)
   {
-    Node* node = Node::create(id);
+    std::shared_ptr<Node> node = Node::create(id);
     assert(node);
     addNode(node);
-
-    // Call release to decrement the ref count to 1 before returning.
-    node->release();
 
     return node;
   }
 
-  void Scene::addNode(Node* node)
+  void Scene::addNode(std::shared_ptr<Node> node)
   {
     assert(node);
 
@@ -242,8 +239,6 @@ namespace gameplay
       // The node is already a member of this scene.
       return;
     }
-
-    node->addRef();
 
     // If the node is part of another scene, remove it.
     if (node->_scene && node->_scene != this)
@@ -284,7 +279,7 @@ namespace gameplay
     }
   }
 
-  void Scene::removeNode(Node* node)
+  void Scene::removeNode(std::shared_ptr<Node> node)
   {
     assert(node);
 
@@ -303,8 +298,6 @@ namespace gameplay
     node->remove();
     node->_scene = nullptr;
 
-    SAFE_RELEASE(node);
-
     --_nodeCount;
   }
 
@@ -321,7 +314,7 @@ namespace gameplay
     return _nodeCount;
   }
 
-  Node* Scene::getFirstNode() const
+  std::shared_ptr<Node> Scene::getFirstNode() const
   {
     return _firstNode;
   }
@@ -388,7 +381,7 @@ namespace gameplay
 
   void Scene::update(float elapsedTime)
   {
-    for (Node* node = _firstNode; node != nullptr; node = node->_nextSibling)
+    for (auto node = _firstNode; node != nullptr; node = node->_nextSibling)
     {
       if (node->isEnabled())
         node->update(elapsedTime);
@@ -401,7 +394,7 @@ namespace gameplay
     _nextReset = true;
   }
 
-  Node* Scene::getNext()
+  std::shared_ptr<Node> Scene::getNext()
   {
     if (_nextReset)
     {
@@ -410,7 +403,7 @@ namespace gameplay
     }
     else if (_nextItr)
     {
-      Node* node = findNextVisibleSibling(_nextItr->getFirstChild());
+      auto node = findNextVisibleSibling(_nextItr->getFirstChild());
       if (node == nullptr)
       {
         node = findNextVisibleSibling(_nextItr->getNextSibling());
@@ -434,9 +427,9 @@ namespace gameplay
   }
 
 
-  Node* Scene::findNextVisibleSibling(Node* node)
+  std::shared_ptr<Node> Scene::findNextVisibleSibling(std::shared_ptr<Node> node)
   {
-    while (node != nullptr && !isNodeVisible(node))
+    while (node != nullptr && !isNodeVisible(node.get()))
     {
       node = node->getNextSibling();
     }

@@ -22,8 +22,8 @@ PhysicsGenericConstraint::PhysicsGenericConstraint(PhysicsRigidBody* a, PhysicsR
     if (b)
     {
         assert(b->_body && b->getNode());
-        Vector3 origin = centerOfMassMidpoint(a->getNode(), b->getNode());
-        _constraint = bullet_new<btGeneric6DofConstraint>(*a->_body, *b->_body, getTransformOffset(a->getNode(), origin), getTransformOffset(b->getNode(), origin), true);
+        Vector3 origin = centerOfMassMidpoint(a->getNode().get(), b->getNode().get());
+        _constraint = bullet_new<btGeneric6DofConstraint>(*a->_body, *b->_body, getTransformOffset(a->getNode().get(), origin), getTransformOffset(b->getNode().get(), origin), true);
     }
     else
     {

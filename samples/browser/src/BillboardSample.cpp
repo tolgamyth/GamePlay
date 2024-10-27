@@ -149,7 +149,7 @@ void BillboardSample::render(float elapsedTime)
 
   for (unsigned int i = 0; i < BILLBOARD_COUNT; i++)
   {
-    Node* node = _billboards[i];
+    std::shared_ptr<Node> node = _billboards[i];
 
     // Rotate the node x/z to face the camera
     Matrix m;
@@ -278,7 +278,7 @@ void BillboardSample::loadGround()
 {
   // Just a basic plane for this sample
   Mesh* mesh = Mesh::createQuad(-(GROUND_WIDTH / 2.0f), -(GROUND_HEIGHT / 2.0f), GROUND_WIDTH, GROUND_HEIGHT);
-  Node* node = Node::create();
+  std::shared_ptr<Node> node = Node::create();
   _ground = Model::create(mesh);
   SAFE_RELEASE(mesh);
   node->setDrawable(_ground);
@@ -294,7 +294,6 @@ void BillboardSample::loadGround()
   material->setParameterAutoBinding("u_worldViewProjectionMatrix", RenderState::WORLD_VIEW_PROJECTION_MATRIX);
   _ground->setMaterial(material);
   SAFE_RELEASE(material);
-  SAFE_RELEASE(node);
 }
 
 void BillboardSample::loadBillboards()
@@ -307,7 +306,7 @@ void BillboardSample::loadBillboards()
   // Create the model and node and bind the material
   for (unsigned int i = 0; i < BILLBOARD_COUNT; i++)
   {
-    Node* node = Node::create();
+    std::shared_ptr<Node> node = Node::create();
     Model* model = Model::create(mesh);
     node->setDrawable(model);
     _scene->addNode(node);

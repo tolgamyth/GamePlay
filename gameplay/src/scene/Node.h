@@ -33,7 +33,7 @@ class Drawable;
  *
  * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Node
  */
-class Node : public Transform, public Ref
+class Node : public Transform, std::enable_shared_from_this<Node>
 {
     friend class Scene;
     friend class SceneLoader;
@@ -66,7 +66,7 @@ public:
      * @param id The ID for the new node.
      * @script{create}
      */
-    static Node* create(const char* id = nullptr);
+    static std::shared_ptr<Node> create(const char* id = nullptr);
 
     /**
      * Extends ScriptTarget::getTypeName() to return the type name of this class.
@@ -100,14 +100,14 @@ public:
      *
      * @param child The child to add.
      */
-    virtual void addChild(Node* child);
+    virtual void addChild(std::shared_ptr<Node> child);
 
     /**
      * Removes a child node.
      *
      * @param child The child to remove.
      */
-    virtual void removeChild(Node* child);
+    virtual void removeChild(std::shared_ptr<Node> child);
 
     /**
      * Removes all child nodes.
@@ -119,28 +119,28 @@ public:
      *
      * @return The first child.
      */
-    Node* getFirstChild() const { return _firstChild; }
+    std::shared_ptr<Node> getFirstChild() const { return _firstChild; }
 
     /**
      * Returns the first sibling of this node.
      *
      * @return The first sibling.
      */
-    Node* getNextSibling() const { return _nextSibling; }
+    std::shared_ptr<Node> getNextSibling() const { return _nextSibling; }
 
     /**
      * Returns the previous sibling to this node.
      *
      * @return The previous sibling.
      */
-    Node* getPreviousSibling() const { return _prevSibling; }
+    std::shared_ptr<Node> getPreviousSibling() const { return _prevSibling; }
 
     /**
      * Returns the parent of this node.
      *
      * @return The parent.
      */
-    Node* getParent() const { return _parent; }
+    std::shared_ptr<Node> getParent() const { return _parent; }
 
     /**
      * Returns the number of direct children of this item.
@@ -168,7 +168,7 @@ public:
      *
      * @return The Node found or nullptr if not found.
      */
-    Node* findNode(const char* id, bool recursive = true, bool exactMatch = true) const;
+    std::shared_ptr<Node> findNode(const char* id, bool recursive = true, bool exactMatch = true) const;
 
     /**
      * Returns all child nodes that match the given ID.
@@ -182,7 +182,7 @@ public:
      * @return The number of matches found.
      * @script{ignore}
      */
-    unsigned int findNodes(const char* id, std::vector<Node*>& nodes, bool recursive = true, bool exactMatch = true) const;
+    unsigned int findNodes(const char* id, std::vector<std::shared_ptr<Node>>& nodes, bool recursive = true, bool exactMatch = true) const;
 
     /**
      * Gets the scene this node is currenlty within.
@@ -417,7 +417,7 @@ public:
      *
      * @return The drawable component attached to this node.
      */
-    Drawable* getDrawable() const { return _drawable; }
+    std::shared_ptr<Drawable> getDrawable() const { return _drawable; }
 
     /**
      * Set the drawable object to be attached to this node
@@ -429,7 +429,7 @@ public:
      *
      * @param drawable The new drawable component. May be nullptr.
      */
-    void setDrawable(Drawable* drawable);
+    void setDrawable(std::shared_ptr<Drawable> drawable);
 
     /**
      * Gets the camera attached to this node.
@@ -604,9 +604,7 @@ public:
      * @return A new node.
      * @script{create}
      */
-    Node* clone() const;
-
-protected:
+    std::shared_ptr<Node> clone() const;
 
     /**
      * Constructor.
@@ -618,6 +616,8 @@ protected:
      */
     virtual ~Node();
 
+protected:
+
     /**
      * Clones a single node and its data but not its children.
      *
@@ -625,7 +625,7 @@ protected:
      *
      * @return Pointer to the newly created node.
      */
-    virtual Node* cloneSingleNode(NodeCloneContext &context) const;
+    virtual std::shared_ptr<Node> cloneSingleNode(NodeCloneContext &context) const;
 
     /**
      * Recursively clones this node and its children.
@@ -634,7 +634,7 @@ protected:
      *
      * @return The newly created node.
      */
-    Node* cloneRecursive(NodeCloneContext &context) const;
+    std::shared_ptr<Node> cloneRecursive(NodeCloneContext &context) const;
 
     /**
      * Copies the data from this node into the given node.
@@ -642,7 +642,7 @@ protected:
      * @param node The node to copy the data to.
      * @param context The clone context.
      */
-    void cloneInto(Node* node, NodeCloneContext &context) const;
+    void cloneInto(std::shared_ptr<Node> node, NodeCloneContext &context) const;
 
     /**
      * Removes this node from its parent.
@@ -679,7 +679,7 @@ protected:
      *
      * @return The Node found or nullptr if not found.
      */
-    Node* findNode(const char* id, bool recursive, bool exactMatch, bool skipSkin) const;
+    std::shared_ptr<Node> findNode(const char* id, bool recursive, bool exactMatch, bool skipSkin) const;
 
 
     /**
@@ -695,7 +695,7 @@ protected:
      * @return The number of matches found.
      * @script{ignore}
      */
-    unsigned int findNodes(const char* id, std::vector<Node*>& nodes, bool recursive, bool exactMatch, bool skipSkin) const;
+    unsigned int findNodes(const char* id, std::vector<std::shared_ptr<Node>>& nodes, bool recursive, bool exactMatch, bool skipSkin) const;
 
 private:
 
@@ -718,13 +718,13 @@ protected:
     /** The nodes id. */
     std::string _id;
     /** The nodes first child. */
-    Node* _firstChild;
+    std::shared_ptr<Node> _firstChild;
     /** The nodes next sibiling. */
-    Node* _nextSibling;
+    std::shared_ptr<Node> _nextSibling;
     /** The nodes previous sibiling. */
-    Node* _prevSibling;
+    std::shared_ptr<Node> _prevSibling;
     /** The nodes parent. */
-    Node* _parent;
+    std::shared_ptr<Node> _parent;
     /** The number of child nodes. */
     unsigned int _childCount;
     /** If this node is enabled. Maybe different if parent is enabled/disabled. */
@@ -732,7 +732,7 @@ protected:
     /** Tags assigned to this node. */
     std::map<std::string, std::string>* _tags;
     /** The drawble component attached to this node. */
-    Drawable* _drawable;
+    std::shared_ptr<Drawable> _drawable;
     /** The camera component attached to this node. */
     Camera* _camera;
     /** The light component attached to this node. */
@@ -795,7 +795,7 @@ public:
      *
      * @return The cloned node or nullptr if not found.
      */
-    Node* findClonedNode(const Node* node);
+    std::shared_ptr<Node> findClonedNode(const Node* node);
 
     /**
      * Registers the cloned node with this context so that it doens't get cloned twice.
@@ -803,7 +803,7 @@ public:
      * @param original The pointer to the original node.
      * @param clone The pointer to the cloned node.
      */
-    void registerClonedNode(const Node* original, Node* clone);
+    void registerClonedNode(const Node* original, std::shared_ptr<Node> clone);
 
 private:
 
@@ -818,7 +818,7 @@ private:
     NodeCloneContext& operator=(const NodeCloneContext&);
 
     std::map<const Animation*, Animation*> _clonedAnimations;
-    std::map<const Node*, Node*> _clonedNodes;
+    std::map<const Node*, std::shared_ptr<Node>> _clonedNodes;
 };
 
 }

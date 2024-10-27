@@ -79,7 +79,7 @@ private:
         const char* _nodeID;
         bool _exactMatch;
         Properties* _namespace;
-        std::vector<Node*> _nodes; // list of nodes sharing properties defined in this SceneNode
+        std::vector<std::shared_ptr<Node>> _nodes; // list of nodes sharing properties defined in this SceneNode
         std::vector<SceneNode> _children; // list of unique child nodes
         std::vector<SceneNodeProperty> _properties;
         std::map<std::string, std::string> _tags;
@@ -99,11 +99,11 @@ private:
 
     void applyNodeProperties(SceneNode& sceneNode, const Properties* sceneProperties, unsigned int typeFlags);
 
-    void applyNodeProperty(SceneNode& sceneNode, Node* node, const Properties* sceneProperties, const SceneNodeProperty& snp);
+    void applyNodeProperty(SceneNode& sceneNode, std::shared_ptr<Node> node, const Properties* sceneProperties, const SceneNodeProperty& snp);
 
     void applyNodeUrls();
 
-    void applyNodeUrls(SceneNode& sceneNode, Node* parent);
+    void applyNodeUrls(SceneNode& sceneNode, std::shared_ptr<Node> parent);
 
     void buildReferenceTables(Properties* sceneProperties);
 

@@ -73,7 +73,7 @@ namespace gameplay
      *
      * @return The first node found that matches the given ID.
      */
-    Node* findNode(const char* id, bool recursive = true, bool exactMatch = true) const;
+    std::shared_ptr<Node> findNode(const char* id, bool recursive = true, bool exactMatch = true) const;
 
     /**
      * Returns all nodes in the scene that match the given ID.
@@ -87,7 +87,7 @@ namespace gameplay
      * @return The number of matches found.
      * @script{ignore}
      */
-    unsigned int findNodes(const char* id, std::vector<Node*>& nodes, bool recursive = true, bool exactMatch = true) const;
+    unsigned int findNodes(const char* id, std::vector<std::shared_ptr<Node>>& nodes, bool recursive = true, bool exactMatch = true) const;
 
     /**
      * Creates and adds a new node to the scene.
@@ -96,21 +96,21 @@ namespace gameplay
      *
      * @return The new node.
      */
-    Node* addNode(const char* id = nullptr);
+    std::shared_ptr<Node> addNode(const char* id = nullptr);
 
     /**
      * Adds the specified node to the scene.
      *
      * @param node The node to be added to the scene.
      */
-    void addNode(Node* node);
+    void addNode(std::shared_ptr<Node> node);
 
     /**
      * Removes the specified node from the scene.
      *
      * @param node The node to remove.
      */
-    void removeNode(Node* node);
+    void removeNode(std::shared_ptr<Node> node);
 
     /**
      * Removes all nodes from the scene.
@@ -129,7 +129,7 @@ namespace gameplay
      *
      * @return The first node in the scene.
      */
-    Node* getFirstNode() const;
+    std::shared_ptr<Node> getFirstNode() const;
 
     /**
      * Gets the active camera for the scene.
@@ -248,7 +248,7 @@ namespace gameplay
     /**
      * @see VisibleSet#getNext
      */
-    Node* getNext();
+    std::shared_ptr<Node> getNext();
 
     /**
      * @see VisibleSet#reset
@@ -281,38 +281,38 @@ namespace gameplay
      * Visits the given node and all of its children recursively.
      */
     template <class T>
-    void visitNode(Node* node, T* instance, bool (T::* visitMethod)(Node*));
+    void visitNode(std::shared_ptr<Node> node, T* instance, bool (T::* visitMethod)(Node*));
 
     /**
      * Visits the given node and all of its children recursively.
      */
     template <class T, class C>
-    void visitNode(Node* node, T* instance, bool (T::* visitMethod)(Node*, C), C cookie);
+    void visitNode(std::shared_ptr<Node> node, T* instance, bool (T::* visitMethod)(Node*, C), C cookie);
 
     /**
      * Visits the given node and all of its children recursively.
      */
-    void visitNode(Node* node, const char* visitMethod);
+    void visitNode(std::shared_ptr<Node> node, const char* visitMethod);
 
-    Node* findNextVisibleSibling(Node* node);
+    std::shared_ptr<Node> findNextVisibleSibling(std::shared_ptr<Node> node);
 
     bool isNodeVisible(Node* node);
 
     std::string _id;
     Camera* _activeCamera;
-    Node* _firstNode;
-    Node* _lastNode;
+    std::shared_ptr<Node> _firstNode;
+    std::shared_ptr<Node> _lastNode;
     unsigned int _nodeCount;
     Vector3 _ambientColor;
     bool _bindAudioListenerToCamera;
-    Node* _nextItr;
+    std::shared_ptr<Node> _nextItr;
     bool _nextReset;
   };
 
   template <class T>
   void Scene::visit(T* instance, bool (T::* visitMethod)(Node*))
   {
-    for (Node* node = getFirstNode(); node != nullptr; node = node->getNextSibling())
+    for (auto node = getFirstNode(); node != nullptr; node = node->getNextSibling())
     {
       visitNode(node, instance, visitMethod);
     }
@@ -321,7 +321,7 @@ namespace gameplay
   template <class T, class C>
   void Scene::visit(T* instance, bool (T::* visitMethod)(Node*, C), C cookie)
   {
-    for (Node* node = getFirstNode(); node != nullptr; node = node->getNextSibling())
+    for (auto node = getFirstNode(); node != nullptr; node = node->getNextSibling())
     {
       visitNode(node, instance, visitMethod, cookie);
     }
@@ -329,14 +329,14 @@ namespace gameplay
 
   inline void Scene::visit(const char* visitMethod)
   {
-    for (Node* node = getFirstNode(); node != nullptr; node = node->getNextSibling())
+    for (auto node = getFirstNode(); node != nullptr; node = node->getNextSibling())
     {
       visitNode(node, visitMethod);
     }
   }
 
   template <class T>
-  void Scene::visitNode(Node* node, T* instance, bool (T::* visitMethod)(Node*))
+  void Scene::visitNode(std::shared_ptr<Node> node, T* instance, bool (T::* visitMethod)(Node*))
   {
     // Invoke the visit method for this node.
     if (!(instance->*visitMethod)(node))
@@ -360,10 +360,10 @@ namespace gameplay
   }
 
   template <class T, class C>
-  void Scene::visitNode(Node* node, T* instance, bool (T::* visitMethod)(Node*, C), C cookie)
+  void Scene::visitNode(std::shared_ptr<Node> node, T* instance, bool (T::* visitMethod)(Node*, C), C cookie)
   {
     // Invoke the visit method for this node.
-    if (!(instance->*visitMethod)(node, cookie))
+    if (!(instance->*visitMethod)(node.get(), cookie))
       return;
 
     // If this node has a model with a mesh skin, visit the joint hierarchy within it
@@ -377,7 +377,7 @@ namespace gameplay
     }
 
     // Recurse for all children.
-    for (Node* child = node->getFirstChild(); child != nullptr; child = child->getNextSibling())
+    for (auto child = node->getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
       visitNode(child, instance, visitMethod, cookie);
     }

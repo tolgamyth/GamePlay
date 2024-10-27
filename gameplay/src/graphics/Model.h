@@ -57,7 +57,7 @@ namespace gameplay
      *
      * @return The requested Material, or nullptr if no Material is set.
      */
-    Material* getMaterial(int partIndex = -1);
+    std::shared_ptr<Material> getMaterial(int partIndex = -1);
 
     /**
      * Sets a material to be used for drawing this Model.
@@ -73,7 +73,7 @@ namespace gameplay
      * @param material The new material.
      * @param partIndex The index of the mesh part to set the material for (-1 for shared material).
      */
-    void setMaterial(Material* material, int partIndex = -1);
+    void setMaterial(std::shared_ptr<Material> material, int partIndex = -1);
 
     /**
      * Sets a material to be used for drawing this Model.
@@ -93,7 +93,7 @@ namespace gameplay
      *
      * @return The newly created and bound Material, or nullptr if the Material could not be created.
      */
-    Material* setMaterial(const char* vshPath, const char* fshPath, const char* defines = nullptr, int partIndex = -1);
+    std::shared_ptr<Material> setMaterial(const char* vshPath, const char* fshPath, const char* defines = nullptr, int partIndex = -1);
 
     /**
      * Sets a material to be used for drawing this Model.
@@ -111,7 +111,7 @@ namespace gameplay
      *
      * @return The newly created and bound Material, or nullptr if the Material could not be created.
      */
-    Material* setMaterial(const char* materialPath, int partIndex = -1);
+    std::shared_ptr<Material> setMaterial(const char* materialPath, int partIndex = -1);
 
     /**
      * Determines if a custom (non-shared) material is set for the specified part index.
@@ -165,7 +165,7 @@ namespace gameplay
     /**
      * @see Drawable::setNode
      */
-    void setNode(Node* node);
+    void setNode(std::shared_ptr<Node> node);
 
     /**
      * @see Drawable::clone
@@ -182,14 +182,14 @@ namespace gameplay
     /**
      * Sets the specified material's node binding to this model's node.
      */
-    void setMaterialNodeBinding(Material* m);
+    void setMaterialNodeBinding(std::shared_ptr<Material> m);
 
     void validatePartCount();
 
     Mesh* _mesh;
-    Material* _material;
+    std::shared_ptr<Material> _material;
     unsigned int _partCount;
-    Material** _partMaterials;
+    std::vector<std::shared_ptr<Material>> _partMaterials;
     MeshSkin* _skin;
   };
 

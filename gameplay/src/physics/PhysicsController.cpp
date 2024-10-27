@@ -714,12 +714,12 @@ PhysicsCollisionObject* PhysicsController::getCollisionObject(const btCollisionO
     return reinterpret_cast<PhysicsCollisionObject*>(collisionObject->getUserPointer());
 }
 
-static void getBoundingBox(Node* node, BoundingBox* out, bool merge = false)
+static void getBoundingBox(std::shared_ptr<Node> node, BoundingBox* out, bool merge = false)
 {
     assert(node);
     assert(out);
 
-    Model* model = dynamic_cast<Model*>(node->getDrawable());
+    Model* model = dynamic_cast<Model*>(node->getDrawable().get());
     if (model != nullptr)
     {
         assert(model->getMesh());
@@ -733,7 +733,7 @@ static void getBoundingBox(Node* node, BoundingBox* out, bool merge = false)
         }
     }
 
-    Node* child = node->getFirstChild();
+    std::shared_ptr<Node> child = node->getFirstChild();
     while (child)
     {
         getBoundingBox(child, out, merge);
@@ -741,12 +741,12 @@ static void getBoundingBox(Node* node, BoundingBox* out, bool merge = false)
     }
 }
 
-static void getBoundingSphere(Node* node, BoundingSphere* out, bool merge = false)
+static void getBoundingSphere(std::shared_ptr<Node> node, BoundingSphere* out, bool merge = false)
 {
     assert(node);
     assert(out);
 
-    Model* model = dynamic_cast<Model*>(node->getDrawable());
+    Model* model = dynamic_cast<Model*>(node->getDrawable().get());
     if (model != nullptr)
     {
         assert(model->getMesh());
@@ -760,7 +760,7 @@ static void getBoundingSphere(Node* node, BoundingSphere* out, bool merge = fals
         }
     }
 
-    Node* child = node->getFirstChild();
+    std::shared_ptr<Node> child = node->getFirstChild();
     while (child)
     {
         getBoundingSphere(child, out, merge);
@@ -780,7 +780,7 @@ static void computeCenterOfMass(const Vector3& center, const Vector3& scale, Vec
     centerOfMassOffset->negate();
 }
 
-PhysicsCollisionShape* PhysicsController::createShape(Node* node, const PhysicsCollisionShape::Definition& shape, Vector3* centerOfMassOffset, bool dynamic)
+PhysicsCollisionShape* PhysicsController::createShape(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, Vector3* centerOfMassOffset, bool dynamic)
 {
     assert(node);
 
@@ -894,10 +894,10 @@ PhysicsCollisionShape* PhysicsController::createShape(Node* node, const PhysicsC
             else
             {
                 // Build the heightfield from an attached terrain's height array
-                if (dynamic_cast<Terrain*>(node->getDrawable()) == nullptr)
+                if (dynamic_cast<Terrain*>(node->getDrawable().get()) == nullptr)
                     GP_ERROR("Empty heightfield collision shapes can only be used on nodes that have an attached Terrain.");
                 else
-                    collisionShape = createHeightfield(node, dynamic_cast<Terrain*>(node->getDrawable())->_heightfield, centerOfMassOffset);
+                    collisionShape = createHeightfield(node, dynamic_cast<Terrain*>(node->getDrawable().get())->_heightfield, centerOfMassOffset);
             }
         }
         break;
@@ -1016,7 +1016,7 @@ PhysicsCollisionShape* PhysicsController::createCapsule(float radius, float heig
     return shape;
 }
 
-PhysicsCollisionShape* PhysicsController::createHeightfield(Node* node, HeightField* heightfield, Vector3* centerOfMassOffset)
+PhysicsCollisionShape* PhysicsController::createHeightfield(std::shared_ptr<Node> node, HeightField* heightfield, Vector3* centerOfMassOffset)
 {
     assert(node);
     assert(heightfield);
@@ -1039,7 +1039,7 @@ PhysicsCollisionShape* PhysicsController::createHeightfield(Node* node, HeightFi
     node->getWorldMatrix().getScale(&scale);
 
     // If the node has a terrain, apply the terrain's local scale to the world scale
-    Terrain* terrain = dynamic_cast<Terrain*>(node->getDrawable());
+    Terrain* terrain = dynamic_cast<Terrain*>(node->getDrawable().get());
     if (terrain != nullptr)
     {
         const Vector3& tScale = terrain->_localScale;
@@ -1359,7 +1359,7 @@ PhysicsController::DebugDrawer::DebugDrawer()
     };
 
     std::shared_ptr<Effect> effect = Effect::createFromSource(vs_str, fs_str);
-    Material* material = Material::create(effect);
+    std::shared_ptr<Material> material = Material::create(effect);
     assert(material && material->getStateBlock());
     material->getStateBlock()->setDepthTest(true);
     material->getStateBlock()->setDepthFunction(RenderState::DEPTH_LEQUAL);
@@ -1369,8 +1369,7 @@ PhysicsController::DebugDrawer::DebugDrawer()
         VertexFormat::Element(VertexFormat::POSITION, 3),
         VertexFormat::Element(VertexFormat::COLOR, 4),
     };
-    _meshBatch = MeshBatch::create(VertexFormat(elements, 2), Mesh::LINES, material, false, 4096, 4096);
-    SAFE_RELEASE(material);
+    _meshBatch = MeshBatch::create(VertexFormat(elements, 2), Mesh::LINES, material.get(), false, 4096, 4096);
 }
 
 PhysicsController::DebugDrawer::~DebugDrawer()

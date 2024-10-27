@@ -207,7 +207,7 @@ private:
      * @param group Group identifier
      * @param mask Bitmask field for filtering collisions with this object.
      */
-    PhysicsCharacter(Node* node, const PhysicsCollisionShape::Definition& shape, float mass, int group = PHYSICS_COLLISION_GROUP_DEFAULT, int mask = PHYSICS_COLLISION_MASK_DEFAULT);
+    PhysicsCharacter(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, float mass, int group = PHYSICS_COLLISION_GROUP_DEFAULT, int mask = PHYSICS_COLLISION_MASK_DEFAULT);
 
     /**
      * Destructor.
@@ -224,7 +224,7 @@ private:
      * @param properties The properties object defining the physics character (must have namespace equal to 'character').
      * @return The newly created physics character, or <code>nullptr</code> if the physics character failed to load.
      */
-    static PhysicsCharacter* create(Node* node, Properties* properties);
+    static PhysicsCharacter* create(std::shared_ptr<Node> node, Properties* properties);
 
     void updateCurrentVelocity();
 

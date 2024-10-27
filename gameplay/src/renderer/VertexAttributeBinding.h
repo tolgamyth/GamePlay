@@ -32,6 +32,16 @@ class VertexAttributeBinding : public Ref
 {
 public:
 
+  /**
+   * Constructor.
+   */
+  VertexAttributeBinding();
+
+  /**
+   * Destructor.
+   */
+  ~VertexAttributeBinding();
+
     /**
      * Creates a new VertexAttributeBinding between the given Mesh and Effect.
      *
@@ -47,7 +57,7 @@ public:
      * @return A VertexAttributeBinding for the requested parameters.
      * @script{create}
      */
-    static VertexAttributeBinding* create(Mesh* mesh, Effect* effect);
+    static std::shared_ptr<VertexAttributeBinding> create(Mesh* mesh, Effect* effect);
 
     /**
      * Creates a client-side vertex attribute binding.
@@ -65,7 +75,7 @@ public:
      * @return A VertexAttributeBinding for the requested parameters.
      * @script{ignore}
      */
-    static VertexAttributeBinding* create(const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect);
+    static std::shared_ptr<VertexAttributeBinding> create(const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect);
 
     /**
      * Binds this vertex array object.
@@ -91,21 +101,11 @@ private:
     };
 
     /**
-     * Constructor.
-     */
-    VertexAttributeBinding();
-
-    /**
-     * Destructor.
-     */
-    ~VertexAttributeBinding();
-
-    /**
      * Hidden copy assignment operator.
      */
     VertexAttributeBinding& operator=(const VertexAttributeBinding&);
 
-    static VertexAttributeBinding* create(Mesh* mesh, const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect);
+    static std::shared_ptr<VertexAttributeBinding> create(Mesh* mesh, const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect);
 
     void setVertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalize, GLsizei stride, void* pointer);
 

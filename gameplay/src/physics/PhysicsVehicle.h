@@ -295,7 +295,7 @@ private:
      * @param shape The rigid body shape construction information.
      * @param parameters The rigid body construction parameters.
      */
-    PhysicsVehicle(Node* node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters);
+    PhysicsVehicle(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters);
 
     /**
      * Creates a vehicle based on the given rigid body and some 'safe' defaults.
@@ -304,7 +304,7 @@ private:
      *      a model attached to it prior to creating a rigid body for it.
      * @param rigidBody The rigid body.
      */
-    PhysicsVehicle(Node* node, PhysicsRigidBody* rigidBody);
+    PhysicsVehicle(std::shared_ptr<Node> node, PhysicsRigidBody* rigidBody);
 
     /**
      * Private copy constructor to prevent copying.
@@ -324,7 +324,7 @@ private:
      * @param properties The properties object defining the vehicle (must have type equal to 'VEHICLE').
      * @return The newly created vehicle, or <code>nullptr</code> if the vehicle failed to load.
      */
-    static PhysicsVehicle* create(Node* node, Properties* properties);
+    static PhysicsVehicle* create(std::shared_ptr<Node> node, Properties* properties);
 
     /**
      * Initializes this vehicle and advertises itself among its ancestor nodes.

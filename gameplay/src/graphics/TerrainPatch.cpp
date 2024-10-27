@@ -24,7 +24,7 @@ template <class T> T clamp(T value, T min, T max) { return value < min ? min : (
  */
 class TerrainAutoBindingResolver : RenderState::AutoBindingResolver
 {
-    bool resolveAutoBinding(const char* autoBinding, Node* node, MaterialParameter* parameter);
+    bool resolveAutoBinding(const char* autoBinding, std::shared_ptr<Node> node, std::shared_ptr<MaterialParameter> parameter);
 };
 static TerrainAutoBindingResolver __autoBindingResolver;
 static int __currentPatchIndex = -1;
@@ -102,9 +102,9 @@ Material* TerrainPatch::getMaterial(int index) const
         {
             _level = 0;
         }
-        return _levels[_level]->model->getMaterial();
+        return _levels[_level]->model->getMaterial().get();
     }
-    return _levels[index]->model->getMaterial();
+    return _levels[index]->model->getMaterial().get();
 }
 
 void TerrainPatch::addLOD(float* heights, unsigned int width, unsigned int height,
@@ -538,7 +538,7 @@ bool TerrainPatch::updateMaterial()
 
     for (size_t i = 0, count = _levels.size(); i < count; ++i)
     {
-        Material* material = Material::create(_terrain->_materialPath.c_str(), &passCallback, this);
+      std::shared_ptr<Material> material = Material::create(_terrain->_materialPath.c_str(), &passCallback, this);
         assert(material);
         if (!material)
         {
@@ -712,7 +712,7 @@ bool TerrainPatch::LayerCompare::operator() (const Layer* lhs, const Layer* rhs)
     return (lhs->index < rhs->index);
 }
 
-bool TerrainAutoBindingResolver::resolveAutoBinding(const char* autoBinding, Node* node, MaterialParameter* parameter)
+bool TerrainAutoBindingResolver::resolveAutoBinding(const char* autoBinding, std::shared_ptr<Node> node, std::shared_ptr<MaterialParameter> parameter)
 {
     // Local helper functions
     struct HelperFunctions
@@ -733,7 +733,7 @@ bool TerrainAutoBindingResolver::resolveAutoBinding(const char* autoBinding, Nod
 
     if (strcmp(autoBinding, "TERRAIN_LAYER_MAPS") == 0)
     {
-        TerrainPatch* patch = HelperFunctions::getPatch(node);
+        TerrainPatch* patch = HelperFunctions::getPatch(node.get());
         if (patch && patch->_layers.size() > 0)
             parameter->setValue((const Texture::Sampler**)&patch->_samplers[0], (unsigned int)patch->_samplers.size());
         return true;
@@ -747,14 +747,14 @@ bool TerrainAutoBindingResolver::resolveAutoBinding(const char* autoBinding, Nod
     }
     else if (strcmp(autoBinding, "TERRAIN_ROW") == 0)
     {
-        TerrainPatch* patch = HelperFunctions::getPatch(node);
+        TerrainPatch* patch = HelperFunctions::getPatch(node.get());
         if (patch)
             parameter->setValue((float)patch->_row);
         return true;
     }
     else if (strcmp(autoBinding, "TERRAIN_COLUMN") == 0)
     {
-        TerrainPatch* patch = HelperFunctions::getPatch(node);
+        TerrainPatch* patch = HelperFunctions::getPatch(node.get());
         if (patch)
             parameter->setValue((float)patch->_column);
         return true;

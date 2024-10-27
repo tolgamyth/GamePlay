@@ -128,7 +128,7 @@ void AudioListener::cameraChanged(Camera* camera)
    
   if (_camera)
   {
-    Node* node = camera->getNode();
+    auto node = camera->getNode();
     if (node)
     {
       setPosition(node->getTranslationWorld());

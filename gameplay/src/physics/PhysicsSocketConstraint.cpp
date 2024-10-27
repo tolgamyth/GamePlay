@@ -12,9 +12,9 @@ PhysicsSocketConstraint::PhysicsSocketConstraint(PhysicsRigidBody* a, PhysicsRig
     if (b)
     {
         assert(b->_body && b->getNode());
-        Vector3 origin = centerOfMassMidpoint(a->getNode(), b->getNode());
-        btTransform frameInA = getTransformOffset(a->getNode(), origin);
-        btTransform frameInB = getTransformOffset(b->getNode(), origin);
+        Vector3 origin = centerOfMassMidpoint(a->getNode().get(), b->getNode().get());
+        btTransform frameInA = getTransformOffset(a->getNode().get(), origin);
+        btTransform frameInB = getTransformOffset(b->getNode().get(), origin);
 
         _constraint = bullet_new<btPoint2PointConstraint>(*a->_body, *b->_body, frameInA.getOrigin(), frameInB.getOrigin());
     }

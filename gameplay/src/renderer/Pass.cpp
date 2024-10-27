@@ -7,10 +7,11 @@
 namespace gameplay
 {
 
-Pass::Pass(const char* id, Technique* technique) :
+Pass::Pass(const char* id, std::shared_ptr<Technique> technique) :
     _id(id ? id : ""), _technique(technique), _effect(nullptr), _vaBinding(nullptr)
 {
-    RenderState::_parent = _technique;
+    RenderState::_parent = std::dynamic_pointer_cast<RenderState>(
+       std::make_shared<Technique>(id, std::dynamic_pointer_cast<Material>(_technique)));
 }
 
 Pass::~Pass()
@@ -46,18 +47,15 @@ Effect* Pass::getEffect() const
     return _effect.get();
 }
 
-void Pass::setVertexAttributeBinding(VertexAttributeBinding* binding)
+void Pass::setVertexAttributeBinding(std::shared_ptr<VertexAttributeBinding> binding)
 {
-    SAFE_RELEASE(_vaBinding);
-
     if (binding)
     {
         _vaBinding = binding;
-        binding->addRef();
     }
 }
 
-VertexAttributeBinding* Pass::getVertexAttributeBinding() const
+std::shared_ptr<VertexAttributeBinding> Pass::getVertexAttributeBinding() const
 {
     return _vaBinding;
 }
@@ -88,11 +86,11 @@ void Pass::unbind()
     }
 }
 
-Pass* Pass::clone(Technique* technique, NodeCloneContext &context) const
+std::shared_ptr<Pass> Pass::clone(std::shared_ptr<Technique> technique, NodeCloneContext &context) const
 {
     assert(_effect);
 
-    Pass* pass = new Pass(getId(), technique);
+    std::shared_ptr<Pass> pass = std::make_shared<Pass>(getId(), technique);
     pass->_effect = _effect;
 
     RenderState::cloneInto(pass, context);

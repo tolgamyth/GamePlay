@@ -32,6 +32,16 @@ namespace gameplay
   public:
 
     /**
+     * Constructor.
+     */
+    Sprite();
+
+    /**
+     * Destructor.
+     */
+    ~Sprite();
+
+    /**
      * Opacity property. Data=opacity
      */
     static const int ANIMATE_OPACITY = 1;
@@ -336,16 +346,6 @@ namespace gameplay
     unsigned int draw(bool wireframe = false);
 
   protected:
-
-    /**
-     * Constructor.
-     */
-    Sprite();
-
-    /**
-     * Destructor.
-     */
-    ~Sprite();
 
     /**
      * operator=

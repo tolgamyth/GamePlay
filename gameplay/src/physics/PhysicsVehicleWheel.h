@@ -41,7 +41,7 @@ public:
      * @param node the node to be transformed; (typically a visual
      * representation of this wheel).
      */
-    void transform(Node* node) const;
+    void transform(std::shared_ptr<Node> node) const;
 
     /**
      * Returns true if this wheel is steerable, false otherwise.
@@ -260,7 +260,7 @@ private:
      * @param shape The rigid body shape construction information.
      * @param parameters The rigid body construction parameters.
      */
-    PhysicsVehicleWheel(Node* node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters);
+    PhysicsVehicleWheel(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters);
 
     /**
      * Creates a vehicle wheel based on some 'safe' defaults.
@@ -270,7 +270,7 @@ private:
      * 
      * @param node The node to create a vehicle wheel for.
      */
-    PhysicsVehicleWheel(Node* node);
+    PhysicsVehicleWheel(std::shared_ptr<Node> node);
 
     /**
      * Private copy constructor to prevent copying.
@@ -293,7 +293,7 @@ private:
      * @param properties The properties object defining the vehicle wheel (must have type equal to 'VEHICLE_WHEEL').
      * @return The newly created wheel, or <code>nullptr</code> if the vehicle wheel failed to load.
      */
-    static PhysicsVehicleWheel* create(Node* node, Properties* properties);
+    static PhysicsVehicleWheel* create(std::shared_ptr<Node> node, Properties* properties);
 
     /**
      * Destructor.
@@ -312,7 +312,7 @@ private:
      *
      * @param node the starting node for the recursive search.
      */
-    PhysicsVehicle* findVehicle(Node* node);
+    PhysicsVehicle* findVehicle(std::shared_ptr<Node> node);
 
     /**
      * Sets the host vehicle for this wheel.

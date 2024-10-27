@@ -54,7 +54,7 @@ public:
      * @return The loaded node, or nullptr if the node could not be loaded.
      * @script{create}
      */
-    Node* loadNode(const char* id);
+    std::shared_ptr<Node> loadNode(const char* id);
 
     /**
      * Loads a mesh with the specified ID from the bundle.
@@ -237,12 +237,12 @@ private:
      *
      * Only one of node or scene should be passed as non-nullptr (or neither).
      */
-    Node* loadNode(const char* id, Scene* sceneContext, Node* nodeContext);
+    std::shared_ptr<Node> loadNode(const char* id, Scene* sceneContext, std::shared_ptr<Node> nodeContext);
 
     /**
      * Internal method for SceneLoader to load a node into a scene.
      */
-    Node* loadNode(const char* id, Scene* sceneContext);
+    std::shared_ptr<Node> loadNode(const char* id, Scene* sceneContext);
 
     /**
      * Loads a mesh with the specified ID from the bundle.
@@ -339,7 +339,7 @@ private:
      * 
      * @return A pointer to new node or nullptr if there was an error.
      */
-    Node* readNode(Scene* sceneContext, Node* nodeContext);
+    std::shared_ptr<Node> readNode(Scene* sceneContext, std::shared_ptr<Node> nodeContext);
 
     /**
      * Reads a camera from the current file position.
@@ -433,12 +433,12 @@ private:
      * @param values A pointer to array of 16 floats.
      * @param transform The transform to set the values in.
      */
-    void setTransform(const float* values, Transform* transform);
+    void setTransform(const float* values, std::shared_ptr<Transform> transform);
 
     /**
      * Resolves joint references for all pending mesh skins.
      */
-    void resolveJointReferences(Scene* sceneContext, Node* nodeContext);
+    void resolveJointReferences(Scene* sceneContext, std::shared_ptr<Node> nodeContext);
 
 private:
 
@@ -457,7 +457,7 @@ private:
     Stream* _stream;
 
     std::vector<MeshSkinData*> _meshSkins;
-    std::map<std::string, Node*>* _trackedNodes;
+    std::map<std::string, std::shared_ptr<Node>>* _trackedNodes;
 };
 
 }

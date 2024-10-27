@@ -376,7 +376,7 @@ namespace gameplay
     return terrain;
   }
 
-  void Terrain::setNode(Node* node)
+  void Terrain::setNode(std::shared_ptr<Node> node)
   {
 
     if (_node != node)

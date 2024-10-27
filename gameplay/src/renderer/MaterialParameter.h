@@ -40,6 +40,16 @@ namespace gameplay
   public:
 
     /**
+     * Constructor.
+     */
+    MaterialParameter(const char* name);
+
+    /**
+     * Destructor.
+     */
+    ~MaterialParameter();
+
+    /**
      * Animates the uniform.
      */
     static const int ANIMATE_UNIFORM = 1;
@@ -348,16 +358,6 @@ namespace gameplay
   private:
 
     /**
-     * Constructor.
-     */
-    MaterialParameter(const char* name);
-
-    /**
-     * Destructor.
-     */
-    ~MaterialParameter();
-
-    /**
      * Hidden copy assignment operator.
      */
     MaterialParameter& operator=(const MaterialParameter&);
@@ -433,7 +433,7 @@ namespace gameplay
 
     void applyAnimationValue(AnimationValue* value, float blendWeight, int components);
 
-    void cloneInto(MaterialParameter* materialParameter) const;
+    void cloneInto(std::shared_ptr<MaterialParameter> materialParameter) const;
 
     enum LOGGER_DIRTYBITS
     {

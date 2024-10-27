@@ -127,7 +127,7 @@ bool PhysicsCollisionShape::Definition::isEmpty() const
     return type == SHAPE_NONE;
 }
 
-PhysicsCollisionShape::Definition PhysicsCollisionShape::Definition::create(Node* node, Properties* properties)
+PhysicsCollisionShape::Definition PhysicsCollisionShape::Definition::create(std::shared_ptr<Node> node, Properties* properties)
 {
     assert(node);
 
@@ -289,7 +289,7 @@ PhysicsCollisionShape::Definition PhysicsCollisionShape::Definition::create(Node
     case SHAPE_MESH:
         {
             // Mesh is required on node.
-            Mesh* nodeMesh = node->getDrawable() ? dynamic_cast<Model*>(node->getDrawable())->getMesh() : nullptr;
+            Mesh* nodeMesh = node->getDrawable() ? dynamic_cast<Model*>(node->getDrawable().get())->getMesh() : nullptr;
             if (nodeMesh == nullptr)
             {
                 GP_ERROR("Cannot create mesh collision object for node without model/mesh.");
@@ -318,7 +318,7 @@ PhysicsCollisionShape::Definition PhysicsCollisionShape::Definition::create(Node
             if (imagePath == nullptr)
             {
                 // Node requires a valid terrain
-                if (dynamic_cast<Terrain*>(node->getDrawable()) == nullptr)
+                if (dynamic_cast<Terrain*>(node->getDrawable().get()) == nullptr)
                 {
                     GP_ERROR("Heightfield collision objects can only be specified on nodes that have a valid terrain, or that specify an image path.");
                 }

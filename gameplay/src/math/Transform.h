@@ -844,7 +844,7 @@ protected:
      * Adds the specified transform to the list of transforms waiting to be notified of a change.
      * Sets the DIRTY_NOTIFY bit on the transform.
      */
-    static void suspendTransformChange(Transform* transform);
+    static void suspendTransformChange(std::shared_ptr<Transform> transform);
 
     /**
      * Called when the transform changes.
@@ -857,7 +857,7 @@ protected:
      * @param transform The transform to copy into.
      * @param context The clone context.
      */
-    void cloneInto(Transform* transform, NodeCloneContext &context) const;
+    void cloneInto(std::shared_ptr<Transform> transform, NodeCloneContext &context) const;
 
     /**
      * The scale component of the Transform.
@@ -894,7 +894,7 @@ private:
     void applyAnimationValueRotation(AnimationValue* value, unsigned int index, float blendWeight);
 
     static int _suspendTransformChanged;
-    static std::vector<Transform*> _transformsChanged;
+    static std::vector<std::shared_ptr<Transform>> _transformsChanged;
     
 };
 

@@ -10,7 +10,7 @@
 namespace gameplay
 {
 
-PhysicsRigidBody::PhysicsRigidBody(Node* node, const PhysicsCollisionShape::Definition& shape, const Parameters& parameters, int group, int mask)
+PhysicsRigidBody::PhysicsRigidBody(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, const Parameters& parameters, int group, int mask)
         : PhysicsCollisionObject(node, group, mask), _body(nullptr), _mass(parameters.mass), _constraints(nullptr), _inDestructor(false)
 {
     assert(Game::getInstance()->getPhysicsController());
@@ -158,7 +158,7 @@ void PhysicsRigidBody::applyTorqueImpulse(const Vector3& torque)
     }
 }
 
-PhysicsRigidBody* PhysicsRigidBody::create(Node* node, Properties* properties, const char* nspace)
+PhysicsRigidBody* PhysicsRigidBody::create(std::shared_ptr<Node> node, Properties* properties, const char* nspace)
 {
     // Check if the properties is valid and has a valid namespace.
     if (!properties || !(strcmp(properties->getNamespace(), "collisionObject") == 0))

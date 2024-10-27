@@ -49,7 +49,7 @@ protected:
      * @param group Group identifier
      * @param mask Bitmask field for filtering collisions with this object.
      */
-    PhysicsGhostObject(Node* node, const PhysicsCollisionShape::Definition& shape, int group = PHYSICS_COLLISION_GROUP_DEFAULT, int mask = PHYSICS_COLLISION_MASK_DEFAULT);
+    PhysicsGhostObject(std::shared_ptr<Node>, const PhysicsCollisionShape::Definition& shape, int group = PHYSICS_COLLISION_GROUP_DEFAULT, int mask = PHYSICS_COLLISION_MASK_DEFAULT);
 
     /**
      * Destructor.
@@ -64,7 +64,7 @@ protected:
      * @param properties The properties object defining the ghost object (must have namespace equal to 'ghost').
      * @return The newly created ghost object, or <code>nullptr</code> if the ghost object failed to load.
      */
-    static PhysicsGhostObject* create(Node* node, Properties* properties);
+    static PhysicsGhostObject* create(std::shared_ptr<Node> node, Properties* properties);
 
     /**
      * Pointer to the Bullet ghost collision object.

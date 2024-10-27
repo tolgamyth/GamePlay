@@ -18,7 +18,7 @@ namespace gameplay
    *
    * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Audio
    */
-  class AudioSource : public Transform::Listener, public std::enable_shared_from_this<AudioSource>
+  class AudioSource : public Transform::Listener
   {
   public:
 
@@ -176,7 +176,7 @@ namespace gameplay
      *
      * @return The node that this audio source is attached to.
      */
-    Node* getNode() const;
+    std::shared_ptr<Node> getNode() const;
 
   private:
 
@@ -188,7 +188,7 @@ namespace gameplay
     /**
      * Sets the node for this audio source.
      */
-    void setNode(Node* node);
+    void setNode(std::shared_ptr<Node> node);
 
     /**
      * @see Transform::Listener::transformChanged
@@ -211,8 +211,7 @@ namespace gameplay
     float _gain;
     float _pitch;
     Vector3 _velocity;
-    Node* _node;
-    std::mutex _mtx;
+    std::shared_ptr<Node> _node;
   };
 
 }

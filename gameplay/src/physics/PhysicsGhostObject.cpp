@@ -6,7 +6,7 @@
 namespace gameplay
 {
 
-PhysicsGhostObject::PhysicsGhostObject(Node* node, const PhysicsCollisionShape::Definition& shape, int group, int mask)
+PhysicsGhostObject::PhysicsGhostObject(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, int group, int mask)
     : PhysicsCollisionObject(node, group, mask), _ghostObject(nullptr)
 {
     Vector3 centerOfMassOffset;
@@ -44,7 +44,7 @@ PhysicsGhostObject::~PhysicsGhostObject()
     SAFE_DELETE(_ghostObject);
 }
 
-PhysicsGhostObject* PhysicsGhostObject::create(Node* node, Properties* properties)
+PhysicsGhostObject* PhysicsGhostObject::create(std::shared_ptr<Node> node, Properties* properties)
 {
     // Check if the properties is valid and has a valid namespace.
     if (!properties || !(strcmp(properties->getNamespace(), "collisionObject") == 0))

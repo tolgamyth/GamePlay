@@ -79,7 +79,7 @@ private:
     btCollisionObject* _me;
 };
 
-PhysicsVehicle::PhysicsVehicle(Node* node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters)
+PhysicsVehicle::PhysicsVehicle(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters)
     : PhysicsCollisionObject(node), _speedSmoothed(0)
 {
     // Note that the constructor for PhysicsRigidBody calls addCollisionObject and so
@@ -89,7 +89,7 @@ PhysicsVehicle::PhysicsVehicle(Node* node, const PhysicsCollisionShape::Definiti
     initialize();
 }
 
-PhysicsVehicle::PhysicsVehicle(Node* node, PhysicsRigidBody* rigidBody)
+PhysicsVehicle::PhysicsVehicle(std::shared_ptr<Node> node, PhysicsRigidBody* rigidBody)
     : PhysicsCollisionObject(node), _speedSmoothed(0)
 {
     _rigidBody = rigidBody;
@@ -97,7 +97,7 @@ PhysicsVehicle::PhysicsVehicle(Node* node, PhysicsRigidBody* rigidBody)
     initialize();
 }
 
-PhysicsVehicle* PhysicsVehicle::create(Node* node, Properties* properties)
+PhysicsVehicle* PhysicsVehicle::create(std::shared_ptr<Node> node, Properties* properties)
 {
     // Note that the constructor for PhysicsRigidBody calls addCollisionObject and so
     // that is where the rigid body gets added to the dynamics world.

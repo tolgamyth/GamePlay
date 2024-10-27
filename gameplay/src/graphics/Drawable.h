@@ -39,7 +39,7 @@ public:
      *
      * @return The node this drawable is attached to.
      */
-    Node* getNode() const;
+    std::shared_ptr<Node> getNode() const;
 
 protected:
 
@@ -56,12 +56,12 @@ protected:
      *
      * @param node The node this drawable is attached to.
      */
-    virtual void setNode(Node* node);
+    virtual void setNode(std::shared_ptr<Node> node);
 
     /**
      * Node this drawable is attached to.
      */
-    Node* _node;
+    std::shared_ptr<Node> _node;
 };
 
 }

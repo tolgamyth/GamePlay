@@ -432,7 +432,7 @@ private:
 
     // Creates a collision shape for the given node and gameplay shape definition.
     // Populates 'centerOfMassOffset' with the correct calculated center of mass offset.
-    PhysicsCollisionShape* createShape(Node* node, const PhysicsCollisionShape::Definition& shape, Vector3* centerOfMassOffset, bool dynamic);
+    PhysicsCollisionShape* createShape(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, Vector3* centerOfMassOffset, bool dynamic);
     
     // Creates a box collision shape.
     PhysicsCollisionShape* createBox(const Vector3& extents, const Vector3& scale);
@@ -444,7 +444,7 @@ private:
     PhysicsCollisionShape* createCapsule(float radius, float height, const Vector3& scale);
 
     // Creates a heightfield collision shape.
-    PhysicsCollisionShape* createHeightfield(Node* node, HeightField* heightfield, Vector3* centerOfMassOffset);
+    PhysicsCollisionShape* createHeightfield(std::shared_ptr<Node> node, HeightField* heightfield, Vector3* centerOfMassOffset);
 
     // Creates a triangle mesh collision shape.
     PhysicsCollisionShape* createMesh(Mesh* mesh, const Vector3& scale, bool dynamic);

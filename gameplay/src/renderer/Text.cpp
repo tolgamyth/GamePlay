@@ -244,7 +244,7 @@ unsigned int Text::draw(bool wireframe)
         Camera* activeCamera = _node->getScene()->getActiveCamera();
         if (activeCamera)
         {
-            Node* cameraNode = _node->getScene()->getActiveCamera()->getNode();
+            auto cameraNode = _node->getScene()->getActiveCamera()->getNode();
             if (cameraNode)
             {
                 // Camera translation offsets

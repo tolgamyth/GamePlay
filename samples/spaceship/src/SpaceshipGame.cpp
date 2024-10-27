@@ -119,7 +119,7 @@ void SpaceshipGame::initialize()
 
 void SpaceshipGame::initializeSpaceship()
 {
-  Material* material;
+  std::shared_ptr<Material> material;
 
   _shipGroupNode = _scene->findNode("gSpaceShip");
 
@@ -128,29 +128,29 @@ void SpaceshipGame::initializeSpaceship()
   _shipNode = _scene->findNode("pSpaceShip");
   material = dynamic_cast<Model*>(_shipNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1", 0);
   material->getParameter("u_diffuseColor")->setValue(Vector4(0.53544f, 0.53544f, 0.53544f, 1.0f));
-  initializeMaterial(material, true, true);
+  initializeMaterial(material.get(), true, true);
   // Part 1
   material = dynamic_cast<Model*>(_shipNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1", 1);
   material->getParameter("u_diffuseColor")->setValue(Vector4(0.8f, 0.8f, 0.8f, 1.0f));
   _shipSpecularParameter = material->getParameter("u_specularExponent");
-  initializeMaterial(material, true, true);
+  initializeMaterial(material.get(), true, true);
   // Part 2
   material = dynamic_cast<Model*>(_shipNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1", 2);
   material->getParameter("u_diffuseColor")->setValue(Vector4(0.280584f, 0.5584863f, 0.6928f, 1.0f));
-  initializeMaterial(material, true, true);
+  initializeMaterial(material.get(), true, true);
 
   // Setup spaceship propulsion model
   _propulsionNode = _scene->findNode("pPropulsion");
   material = dynamic_cast<Model*>(_propulsionNode->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1");
   material->getParameter("u_diffuseColor")->setValue(Vector4(0.8f, 0.8f, 0.8f, 1.0f));
-  initializeMaterial(material, true, true);
+  initializeMaterial(material.get(), true, true);
 
   // Glow effect node
   _glowNode = _scene->findNode("pGlow");
   material = dynamic_cast<Model*>(_glowNode->getDrawable())->setMaterial("res/shaders/textured.vert", "res/shaders/textured.frag", "MODULATE_COLOR");
   material->getParameter("u_diffuseTexture")->setValue("res/propulsion_glow.png", true);
   _glowDiffuseParameter = material->getParameter("u_modulateColor");
-  initializeMaterial(material, false, false);
+  initializeMaterial(material.get(), false, false);
 
   // Setup the sound
   _spaceshipSound = AudioSource::create("res/spaceship.wav");
@@ -162,17 +162,17 @@ void SpaceshipGame::initializeSpaceship()
 
 void SpaceshipGame::initializeEnvironment()
 {
-  Material* material;
-  std::vector<Node*> nodes;
+  std::shared_ptr<Material> material;
+  std::vector<std::shared_ptr<Node>> nodes;
 
   // Setup ground model
   _scene->findNodes("pGround", nodes, true, false);
   for (size_t i = 0, count = nodes.size(); i < count; ++i)
   {
-    Node* pGround = nodes[i];
+    std::shared_ptr<Node> pGround = nodes[i];
     material = dynamic_cast<Model*>(pGround->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1");
     material->getParameter("u_diffuseColor")->setValue(Vector4(0.280584f, 0.5584863f, 0.6928f, 1.0f));
-    initializeMaterial(material, true, true);
+    initializeMaterial(material.get(), true, true);
   }
 
   // Setup roof model
@@ -180,18 +180,18 @@ void SpaceshipGame::initializeEnvironment()
   _scene->findNodes("pRoof", nodes, true, false);
   for (size_t i = 0, count = nodes.size(); i < count; ++i)
   {
-    Node* pRoof = nodes[i];
+    std::shared_ptr<Node> pRoof = nodes[i];
     material = dynamic_cast<Model*>(pRoof->getDrawable())->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "SPECULAR;DIRECTIONAL_LIGHT_COUNT 1");
     material->getParameter("u_diffuseColor")->setValue(Vector4(0.280584f, 0.5584863f, 0.6928f, 1.0f));
-    initializeMaterial(material, true, true);
+    initializeMaterial(material.get(), true, true);
   }
 
   // Setup background model
   nodes.clear();
-  Node* pBackground = _scene->findNode("pBackground");
+  std::shared_ptr<Node> pBackground = _scene->findNode("pBackground");
   material = dynamic_cast<Model*>(pBackground->getDrawable())->setMaterial("res/shaders/textured.vert", "res/shaders/textured.frag", "DIRECTIONAL_LIGHT_COUNT 1");
   material->getParameter("u_diffuseTexture")->setValue("res/background.png", true);
-  initializeMaterial(material, true, false);
+  initializeMaterial(material.get(), true, false);
 }
 
 void SpaceshipGame::initializeMaterial(Material* material, bool lighting, bool specular)
@@ -208,7 +208,7 @@ void SpaceshipGame::initializeMaterial(Material* material, bool lighting, bool s
     material->setParameterAutoBinding("u_inverseTransposeWorldViewMatrix", RenderState::INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX);
     material->getParameter("u_ambientColor")->setValue(AMBIENT_LIGHT_COLOR);
 
-    Node* lightNode = _scene->findNode("directionalLight1");
+    std::shared_ptr<Node> lightNode = _scene->findNode("directionalLight1");
     Vector3 lightDirection = lightNode->getForwardVector();
     lightDirection.normalize();
     if (lightNode)
@@ -488,7 +488,7 @@ bool SpaceshipGame::drawScene(Node* node, void* cookie)
   if (drawable)
   {
     // Transparent nodes must be drawn last (stage 1)
-    bool isTransparent = (node == _glowNode);
+    bool isTransparent = (node == _glowNode.get());
 
     // Skip transparent objects for stage 0
     if ((!isTransparent && (int*)cookie == 0) || (isTransparent && (int*)cookie == (int*)1))

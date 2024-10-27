@@ -55,7 +55,7 @@ public:
      * 
      * @return The joint.
      */
-    Joint* getJoint(unsigned int index) const;
+    std::shared_ptr<Joint> getJoint(unsigned int index) const;
 
     /**
      * Returns the joint with the given ID.
@@ -64,14 +64,14 @@ public:
      * 
      * @return The joint, or nullptr if not found.
      */
-    Joint* getJoint(const char* id) const;
+    std::shared_ptr<Joint> getJoint(const char* id) const;
 
     /**
      * Returns the root most joint for this MeshSkin.
      *
      * @return The root joint.
      */
-    Joint* getRootJoint() const;
+    std::shared_ptr<Joint> getRootJoint() const;
 
     /**
      * Sets the root joint for this MeshSkin.
@@ -80,14 +80,14 @@ public:
      *
      * @param joint The root joint.
      */
-    void setRootJoint(Joint* joint);
+    void setRootJoint(std::shared_ptr<Joint> joint);
 
     /**
      * Returns the index of the specified joint in this MeshSkin.
      *
      * @return The index of the joint in this MeshSkin, or -1 if the joint does not belong to this MeshSkin.
      */
-    int getJointIndex(Joint* joint) const;
+    int getJointIndex(std::shared_ptr<Joint> joint) const;
 
     /**
      * Returns the pointer to the Vector4 array for the purpose of binding to a shader.
@@ -160,14 +160,14 @@ private:
      * @param joint The joint to be set.
      * @param index The index in the joints vector.
      */
-    void setJoint(Joint* joint, unsigned int index);
+    void setJoint(std::shared_ptr<Joint>, unsigned int index);
 
     /**
      * Sets the root node of this mesh skin.
      * 
      * @param node The node to set as the root node, may be nullptr.
      */
-    void setRootNode(Node* node);
+    void setRootNode(std::shared_ptr<Node> node);
 
     /**
      * Clears the list of joints and releases each joint.
@@ -175,13 +175,13 @@ private:
     void clearJoints();
 
     Matrix _bindShape;
-    std::vector<Joint*> _joints;
-    Joint* _rootJoint;
+    std::vector<std::shared_ptr<Joint>> _joints;
+    std::shared_ptr<Joint> _rootJoint;
     
     // Pointer to the root node of the mesh skin.
     // The purpose is so that the joint hierarchy doesn't need to be in the scene.
     // If the joints are not in the scene then something has to hold a reference to it.
-    Node* _rootNode;
+    std::shared_ptr<Node> _rootNode;
 
     // Pointer to the array of palette matrices.
     // This array is passed to the vertex shader as a uniform.

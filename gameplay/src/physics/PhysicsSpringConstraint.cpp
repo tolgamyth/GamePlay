@@ -15,8 +15,8 @@ PhysicsSpringConstraint::PhysicsSpringConstraint(PhysicsRigidBody* a, PhysicsRig
     _a = a;
     _b = b;
 
-    Vector3 origin = centerOfMassMidpoint(a->getNode(), b->getNode());
-    _constraint = bullet_new<btGeneric6DofSpringConstraint>(*a->_body, *b->_body, getTransformOffset(a->getNode(), origin), getTransformOffset(b->getNode(), origin), true);
+    Vector3 origin = centerOfMassMidpoint(a->getNode().get(), b->getNode().get());
+    _constraint = bullet_new<btGeneric6DofSpringConstraint>(*a->_body, *b->_body, getTransformOffset(a->getNode().get(), origin), getTransformOffset(b->getNode().get(), origin), true);
 }
 
 PhysicsSpringConstraint::PhysicsSpringConstraint(PhysicsRigidBody* a, const Quaternion& rotationOffsetA, const Vector3& translationOffsetA,

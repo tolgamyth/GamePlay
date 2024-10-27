@@ -86,7 +86,7 @@ SpriteBatch* SpriteBatch::create(Texture* texture, std::shared_ptr<Effect> effec
     }
 
     // Wrap the effect in a material
-    Material* material = Material::create(effect);
+    std::shared_ptr<Material> material = Material::create(effect);
 
     // Set initial material state
     material->getStateBlock()->setBlend(true);
@@ -107,7 +107,7 @@ SpriteBatch* SpriteBatch::create(Texture* texture, std::shared_ptr<Effect> effec
     VertexFormat vertexFormat(vertexElements, 3);
 
     // Create the mesh batch
-    MeshBatch* meshBatch = MeshBatch::create(vertexFormat, Mesh::TRIANGLE_STRIP, material, true, initialCapacity > 0 ? initialCapacity : SPRITE_BATCH_DEFAULT_SIZE);
+    MeshBatch* meshBatch = MeshBatch::create(vertexFormat, Mesh::TRIANGLE_STRIP, material.get(), true, initialCapacity > 0 ? initialCapacity : SPRITE_BATCH_DEFAULT_SIZE);
     material->release(); // don't call SAFE_RELEASE since material is used below
 
     // Create the batch

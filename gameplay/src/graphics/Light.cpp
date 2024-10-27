@@ -156,12 +156,12 @@ Light::Type Light::getLightType() const
     return _type;
 }
 
-Node* Light::getNode() const
+std::shared_ptr<Node> Light::getNode() const
 {
     return _node;
 }
 
-void Light::setNode(Node* node)
+void Light::setNode(std::shared_ptr<Node> node)
 {
     // Connect the new node.
     _node = node;
@@ -342,7 +342,7 @@ Light* Light::clone(NodeCloneContext &context)
     }
     assert(lightClone);
 
-    if (Node* node = context.findClonedNode(getNode()))
+    if (auto node = context.findClonedNode(getNode().get()))
     {
         lightClone->setNode(node);
     }

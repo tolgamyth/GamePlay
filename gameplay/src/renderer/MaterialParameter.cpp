@@ -754,7 +754,7 @@ namespace gameplay
       _value.floatPtrValue[i] = Curve::lerp(blendWeight, _value.floatPtrValue[i], value->getFloat(i));
   }
 
-  void MaterialParameter::cloneInto(MaterialParameter* materialParameter) const
+  void MaterialParameter::cloneInto(std::shared_ptr<MaterialParameter> materialParameter) const
   {
     assert(materialParameter);
     materialParameter->_type = _type;
@@ -850,7 +850,7 @@ namespace gameplay
     }
 
     NodeCloneContext context;
-    this->AnimationTarget::cloneInto(materialParameter, context);
+    this->AnimationTarget::cloneInto(materialParameter.get(), context);
   }
 
   MaterialParameter::MethodBinding::MethodBinding(MaterialParameter* param) :

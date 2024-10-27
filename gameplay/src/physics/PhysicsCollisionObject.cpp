@@ -36,7 +36,7 @@ struct CollidesWithCallback : public btCollisionWorld::ContactResultCallback
     bool result;
 };
 
-PhysicsCollisionObject::PhysicsCollisionObject(Node* node, int group, int mask)
+PhysicsCollisionObject::PhysicsCollisionObject(std::shared_ptr<Node> node, int group, int mask)
     : _node(node), _collisionShape(nullptr), _enabled(true), _scriptListeners(nullptr), _motionState(nullptr), _group(group), _mask(mask)
 {
 }
@@ -64,7 +64,7 @@ PhysicsCollisionShape::Type PhysicsCollisionObject::getShapeType() const
     return getCollisionShape()->getType();
 }
 
-Node* PhysicsCollisionObject::getNode() const
+std::shared_ptr<Node> PhysicsCollisionObject::getNode() const
 {
     return _node;
 }
@@ -210,7 +210,7 @@ bool PhysicsCollisionObject::CollisionPair::operator < (const CollisionPair& col
     return false;
 }
 
-PhysicsCollisionObject::PhysicsMotionState::PhysicsMotionState(Node* node, PhysicsCollisionObject* collisionObject, const Vector3* centerOfMassOffset) :
+PhysicsCollisionObject::PhysicsMotionState::PhysicsMotionState(std::shared_ptr<Node> node, PhysicsCollisionObject* collisionObject, const Vector3* centerOfMassOffset) :
     _node(node), _collisionObject(collisionObject), _centerOfMassOffset(btTransform::getIdentity())
 {
     if (centerOfMassOffset)

@@ -44,7 +44,7 @@ private:
 private:
 
     FirstPersonCamera _camera;
-	std::vector<Node*> _billboards;
+	std::vector<std::shared_ptr<Node>> _billboards;
     Font* _font;
 	Scene* _scene;
 	Model* _ground;

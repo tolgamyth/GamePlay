@@ -22,7 +22,7 @@ namespace gameplay
    * typical effect systems support, such as GPU render state management,
    * techniques and passes.
    */
-  class Effect : public std::enable_shared_from_this<Effect>
+  class Effect
   {
   public:
 

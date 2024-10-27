@@ -637,7 +637,7 @@ void Effect::bind()
 {
    GL_ASSERT( glUseProgram(_program) );
 
-    __currentEffect = shared_from_this();
+    __currentEffect = std::make_shared<Effect>(*this);
 }
 
 std::shared_ptr<Effect> Effect::getCurrentEffect()

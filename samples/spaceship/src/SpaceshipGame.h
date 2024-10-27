@@ -108,11 +108,11 @@ private:
 
     // Scene variables
     Scene* _scene;
-    Node* _cameraNode;
-    Node* _shipGroupNode;
-    Node* _shipNode;
-    Node* _propulsionNode;
-    Node* _glowNode;
+    std::shared_ptr<Node> _cameraNode;
+    std::shared_ptr<Node> _shipGroupNode;
+    std::shared_ptr<Node> _shipNode;
+    std::shared_ptr<Node> _propulsionNode;
+    std::shared_ptr<Node> _glowNode;
     RenderState::StateBlock* _stateBlock;
     Vector3 _initialShipPos;
     Quaternion _initialShipRot;
@@ -138,8 +138,8 @@ private:
     float _time;
 
     // Frequently updated material parameters
-    MaterialParameter* _glowDiffuseParameter;
-    MaterialParameter* _shipSpecularParameter;
+    std::shared_ptr<MaterialParameter> _glowDiffuseParameter;
+    std::shared_ptr<MaterialParameter> _shipSpecularParameter;
 
     // Sounds
     std::shared_ptr<AudioSource> _backgroundMusic;

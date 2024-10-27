@@ -7,7 +7,7 @@ namespace gameplay
 {
 
 static GLuint __maxVertexAttribs = 0;
-static std::vector<VertexAttributeBinding*> __vertexAttributeBindingCache;
+static std::vector<std::shared_ptr<VertexAttributeBinding>> __vertexAttributeBindingCache;
 
 VertexAttributeBinding::VertexAttributeBinding() :
     _handle(0), _attributes(nullptr), _mesh(nullptr), _effect(nullptr)
@@ -17,7 +17,7 @@ VertexAttributeBinding::VertexAttributeBinding() :
 VertexAttributeBinding::~VertexAttributeBinding()
 {
     // Delete from the vertex attribute binding cache.
-    std::vector<VertexAttributeBinding*>::iterator itr = std::find(__vertexAttributeBindingCache.begin(), __vertexAttributeBindingCache.end(), this);
+   auto itr = std::find(__vertexAttributeBindingCache.begin(), __vertexAttributeBindingCache.end(), std::make_shared<VertexAttributeBinding>(*this));
     if (itr != __vertexAttributeBindingCache.end())
     {
         __vertexAttributeBindingCache.erase(itr);
@@ -33,12 +33,12 @@ VertexAttributeBinding::~VertexAttributeBinding()
     }
 }
 
-VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, Effect* effect)
+std::shared_ptr<VertexAttributeBinding> VertexAttributeBinding::create(Mesh* mesh, Effect* effect)
 {
     assert(mesh);
 
     // Search for an existing vertex attribute binding that can be used.
-    VertexAttributeBinding* b;
+    std::shared_ptr<VertexAttributeBinding> b;
     for (size_t i = 0, count = __vertexAttributeBindingCache.size(); i < count; ++i)
     {
         b = __vertexAttributeBindingCache[i];
@@ -62,12 +62,12 @@ VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, Effect* effec
     return b;
 }
 
-VertexAttributeBinding* VertexAttributeBinding::create(const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect)
+std::shared_ptr<VertexAttributeBinding> VertexAttributeBinding::create(const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect)
 {
     return create(nullptr, vertexFormat, vertexPointer, effect);
 }
 
-VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect)
+std::shared_ptr<VertexAttributeBinding> VertexAttributeBinding::create(Mesh* mesh, const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect)
 {
     assert(effect);
 
@@ -86,7 +86,7 @@ VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, const VertexF
     }
 
     // Create a new VertexAttributeBinding.
-    VertexAttributeBinding* b = new VertexAttributeBinding();
+    std::shared_ptr<VertexAttributeBinding> b = std::make_shared<VertexAttributeBinding>();
 
 #ifdef GP_USE_VAO
     if (mesh && glGenVertexArrays)
@@ -100,7 +100,7 @@ VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, const VertexF
         if (b->_handle == 0)
         {
             GP_ERROR("Failed to create VAO handle.");
-            SAFE_DELETE(b);
+            //SAFE_DELETE(b);
             return nullptr;
         }
 

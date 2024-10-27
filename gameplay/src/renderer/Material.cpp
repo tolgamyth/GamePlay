@@ -10,58 +10,52 @@
 namespace gameplay
 {
 
-Material::Material() :
+  Material::Material() :
     _currentTechnique(nullptr)
-{
-}
+  {
+  }
 
-Material::~Material()
-{
-    // Destroy all the techniques.
-    for (size_t i = 0, count = _techniques.size(); i < count; ++i)
-    {
-        Technique* technique = _techniques[i];
-        SAFE_RELEASE(technique);
-    }
-}
+  Material::~Material()
+  {
+  }
 
-Material* Material::create(const char* url)
-{
+  std::shared_ptr<Material> Material::create(const char* url)
+  {
     return create(url, (PassCallback)nullptr, nullptr);
-}
+  }
 
-Material* Material::create(const char* url, PassCallback callback, void* cookie)
-{
+  std::shared_ptr<Material> Material::create(const char* url, PassCallback callback, void* cookie)
+  {
     // Load the material properties from file.
     Properties* properties = Properties::create(url);
     if (properties == nullptr)
     {
-        GP_WARN("Failed to create material from file: %s", url);
-        return nullptr;
+      GP_WARN("Failed to create material from file: %s", url);
+      return nullptr;
     }
 
-    Material* material = create((strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace(), callback, cookie);
+    std::shared_ptr<Material> material = create((strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace(), callback, cookie);
     SAFE_DELETE(properties);
 
     return material;
-}
+  }
 
-Material* Material::create(Properties* materialProperties)
-{
+  std::shared_ptr<Material> Material::create(Properties* materialProperties)
+  {
     return create(materialProperties, (PassCallback)nullptr, nullptr);
-}
+  }
 
-Material* Material::create(Properties* materialProperties, PassCallback callback, void* cookie)
-{
+  std::shared_ptr<Material> Material::create(Properties* materialProperties, PassCallback callback, void* cookie)
+  {
     // Check if the Properties is valid and has a valid namespace.
     if (!materialProperties || !(strcmp(materialProperties->getNamespace(), "material") == 0))
     {
-        GP_ERROR("Properties object must be non-null and have namespace equal to 'material'.");
-        return nullptr;
+      GP_ERROR("Properties object must be non-null and have namespace equal to 'material'.");
+      return nullptr;
     }
 
     // Create new material from the file passed in.
-    Material* material = new Material();
+    std::shared_ptr<Material> material = std::make_shared<Material>();
 
     // Load uniform value parameters for this material.
     loadRenderState(material, materialProperties);
@@ -70,151 +64,147 @@ Material* Material::create(Properties* materialProperties, PassCallback callback
     Properties* techniqueProperties = nullptr;
     while ((techniqueProperties = materialProperties->getNextNamespace()))
     {
-        if (strcmp(techniqueProperties->getNamespace(), "technique") == 0)
+      if (strcmp(techniqueProperties->getNamespace(), "technique") == 0)
+      {
+        if (!loadTechnique(material, techniqueProperties, callback, cookie))
         {
-            if (!loadTechnique(material, techniqueProperties, callback, cookie))
-            {
-                GP_ERROR("Failed to load technique for material.");
-                SAFE_RELEASE(material);
-                return nullptr;
-            }
+          GP_ERROR("Failed to load technique for material.");
+          return nullptr;
         }
+      }
     }
 
     // Set the current technique to the first found technique.
     if (material->getTechniqueCount() > 0)
     {
-        Technique* t = material->getTechniqueByIndex(0);
-        if (t)
-        {
-            material->_currentTechnique = t;
-        }
+      std::shared_ptr<Technique> t = material->getTechniqueByIndex(0);
+      if (t)
+      {
+        material->_currentTechnique = t;
+      }
     }
     return material;
-}
+  }
 
-Material* Material::create(std::shared_ptr<Effect> effect)
-{
+  std::shared_ptr<Material> Material::create(std::shared_ptr<Effect> effect)
+  {
     assert(effect);
 
     // Create a new material with a single technique and pass for the given effect.
-    Material* material = new Material();
+    std::shared_ptr<Material> material = std::make_shared<Material>();
 
-    Technique* technique = new Technique(nullptr, material);
+    std::shared_ptr<Technique> technique = std::make_shared<Technique>("", material);
     material->_techniques.push_back(technique);
 
-    Pass* pass = new Pass(nullptr, technique);
+    std::shared_ptr<Pass> pass = std::make_shared<Pass>("", technique);
     pass->_effect = effect;
     technique->_passes.push_back(pass);
 
     material->_currentTechnique = technique;
 
     return material;
-}
+  }
 
-Material* Material::create(const char* vshPath, const char* fshPath, const char* defines)
-{
+  std::shared_ptr<Material> Material::create(const char* vshPath, const char* fshPath, const char* defines)
+  {
     assert(vshPath);
     assert(fshPath);
 
     // Create a new material with a single technique and pass for the given effect
-    Material* material = new Material();
+    std::shared_ptr<Material> material = std::make_shared<Material>();
 
-    Technique* technique = new Technique(nullptr, material);
+    std::shared_ptr<Technique> technique = std::make_shared<Technique>("", material);
     material->_techniques.push_back(technique);
 
-    Pass* pass = new Pass(nullptr, technique);
+    std::shared_ptr<Pass> pass = std::make_shared<Pass>("", technique);
     if (!pass->initialize(vshPath, fshPath, defines))
     {
-        GP_WARN("Failed to create pass for material: vertexShader = %s, fragmentShader = %s, defines = %s", vshPath, fshPath, defines ? defines : "");
-        SAFE_RELEASE(pass);
-        SAFE_RELEASE(material);
-        return nullptr;
+      GP_WARN("Failed to create pass for material: vertexShader = %s, fragmentShader = %s, defines = %s", vshPath, fshPath, defines ? defines : "");
+      return nullptr;
     }
     technique->_passes.push_back(pass);
 
     material->_currentTechnique = technique;
 
     return material;
-}
+  }
 
-unsigned int Material::getTechniqueCount() const
-{
+  unsigned int Material::getTechniqueCount() const
+  {
     return (unsigned int)_techniques.size();
-}
+  }
 
-Technique* Material::getTechniqueByIndex(unsigned int index) const
-{
+  std::shared_ptr<Technique> Material::getTechniqueByIndex(unsigned int index) const
+  {
     assert(index < _techniques.size());
     return _techniques[index];
-}
+  }
 
-Technique* Material::getTechnique(const char* id) const
-{
+  std::shared_ptr<Technique> Material::getTechnique(const char* id) const
+  {
     assert(id);
     for (size_t i = 0, count = _techniques.size(); i < count; ++i)
     {
-        Technique* t = _techniques[i];
-        assert(t);
-        if (strcmp(t->getId(), id) == 0)
-        {
-            return t;
-        }
+      std::shared_ptr<Technique> t = _techniques[i];
+      assert(t);
+      if (strcmp(t->getId(), id) == 0)
+      {
+        return t;
+      }
     }
 
     return nullptr;
-}
+  }
 
-Technique* Material::getTechnique() const
-{
+  std::shared_ptr<Technique> Material::getTechnique() const
+  {
     return _currentTechnique;
-}
+  }
 
-void Material::setTechnique(const char* id)
-{
-    Technique* t = getTechnique(id);
+  void Material::setTechnique(const char* id)
+  {
+    std::shared_ptr<Technique> t = getTechnique(id);
     if (t)
     {
-        _currentTechnique = t;
+      _currentTechnique = t;
     }
-}
+  }
 
-void Material::setNodeBinding(Node* node)
-{
+  void Material::setNodeBinding(std::shared_ptr<Node> node)
+  {
     RenderState::setNodeBinding(node);
 
     for (size_t i = 0, count = _techniques.size(); i < count; ++i)
     {
-        _techniques[i]->setNodeBinding(node);
+      _techniques[i]->setNodeBinding(node);
     }
-}
+  }
 
-Material* Material::clone(NodeCloneContext &context) const
-{
-    Material* material = new Material();
+  std::shared_ptr<Material> Material::clone(NodeCloneContext& context) const
+  {
+    std::shared_ptr<Material> material = std::make_shared<Material>();
     RenderState::cloneInto(material, context);
 
-    for (std::vector<Technique*>::const_iterator it = _techniques.begin(); it != _techniques.end(); ++it)
+    for (const auto& technique : _techniques)
     {
-        const Technique* technique = *it;
-        assert(technique);
-        Technique* techniqueClone = technique->clone(material, context);
-        material->_techniques.push_back(techniqueClone);
-        if (_currentTechnique == technique)
-        {
-            material->_currentTechnique = techniqueClone;
-        }
+      assert(technique);
+      std::shared_ptr<Technique> techniqueClone = technique->clone(material, context);
+      material->_techniques.push_back(techniqueClone);
+      if (_currentTechnique == technique)
+      {
+        material->_currentTechnique = techniqueClone;
+      }
     }
     return material;
-}
+  }
 
-bool Material::loadTechnique(Material* material, Properties* techniqueProperties, PassCallback callback, void* cookie)
-{
+  bool Material::loadTechnique(std::shared_ptr<Material> material, Properties* techniqueProperties, PassCallback callback, void* cookie)
+  {
     assert(material);
     assert(techniqueProperties);
 
     // Create a new technique.
-    Technique* technique = new Technique(techniqueProperties->getId(), material);
+    std::shared_ptr<Technique> technique = std::make_shared<Technique>(techniqueProperties->getId(), material);
 
     // Load uniform value parameters for this technique.
     loadRenderState(technique, techniqueProperties);
@@ -224,26 +214,25 @@ bool Material::loadTechnique(Material* material, Properties* techniqueProperties
     Properties* passProperties = nullptr;
     while ((passProperties = techniqueProperties->getNextNamespace()))
     {
-        if (strcmp(passProperties->getNamespace(), "pass") == 0)
+      if (strcmp(passProperties->getNamespace(), "pass") == 0)
+      {
+        // Create and load passes.
+        if (!loadPass(technique, passProperties, callback, cookie))
         {
-            // Create and load passes.
-            if (!loadPass(technique, passProperties, callback, cookie))
-            {
-                GP_ERROR("Failed to create pass for technique.");
-                SAFE_RELEASE(technique);
-                return false;
-            }
+          GP_ERROR("Failed to create pass for technique.");
+          return false;
         }
+      }
     }
 
     // Add the new technique to the material.
     material->_techniques.push_back(technique);
 
     return true;
-}
+  }
 
-bool Material::loadPass(Technique* technique, Properties* passProperties, PassCallback callback, void* cookie)
-{
+  bool Material::loadPass(std::shared_ptr<Technique> technique, Properties* passProperties, PassCallback callback, void* cookie)
+  {
     assert(passProperties);
     assert(technique);
 
@@ -255,7 +244,7 @@ bool Material::loadPass(Technique* technique, Properties* passProperties, PassCa
     const char* passDefines = passProperties->getString("defines");
 
     // Create the pass
-    Pass* pass = new Pass(passProperties->getId(), technique);
+    std::shared_ptr<Pass> pass = std::make_shared<Pass>(passProperties->getId(), technique);
 
     // Load render state.
     loadRenderState(pass, passProperties);
@@ -264,34 +253,33 @@ bool Material::loadPass(Technique* technique, Properties* passProperties, PassCa
     std::string allDefines = passDefines ? passDefines : "";
     if (callback)
     {
-        std::string customDefines = callback(pass, cookie);
-        if (customDefines.length() > 0)
-        {
-            if (allDefines.length() > 0)
-                allDefines += ';';
-            allDefines += customDefines;
-        }
+      std::string customDefines = callback(pass.get(), cookie);
+      if (customDefines.length() > 0)
+      {
+        if (allDefines.length() > 0)
+          allDefines += ';';
+        allDefines += customDefines;
+      }
     }
 
     // Initialize/compile the effect with the full set of defines
     if (!pass->initialize(vertexShaderPath, fragmentShaderPath, allDefines.c_str()))
     {
-        GP_WARN("Failed to create pass for technique.");
-        SAFE_RELEASE(pass);
-        return false;
+      GP_WARN("Failed to create pass for technique.");
+      return false;
     }
 
     // Add the new pass to the technique.
     technique->_passes.push_back(pass);
 
     return true;
-}
+  }
 
-static bool isMaterialKeyword(const char* str)
-{
+  static bool isMaterialKeyword(const char* str)
+  {
     assert(str);
 
-    #define MATERIAL_KEYWORD_COUNT 3
+#define MATERIAL_KEYWORD_COUNT 3
     static const char* reservedKeywords[MATERIAL_KEYWORD_COUNT] =
     {
         "vertexShader",
@@ -300,76 +288,76 @@ static bool isMaterialKeyword(const char* str)
     };
     for (unsigned int i = 0; i < MATERIAL_KEYWORD_COUNT; ++i)
     {
-        if (strcmp(reservedKeywords[i], str) == 0)
-        {
-            return true;
-        }
+      if (strcmp(reservedKeywords[i], str) == 0)
+      {
+        return true;
+      }
     }
     return false;
-}
+  }
 
-static Texture::Filter parseTextureFilterMode(const char* str, Texture::Filter defaultValue)
-{
+  static Texture::Filter parseTextureFilterMode(const char* str, Texture::Filter defaultValue)
+  {
     if (str == nullptr || strlen(str) == 0)
     {
-        GP_ERROR("Texture filter mode string must be non-null and non-empty.");
-        return defaultValue;
+      GP_ERROR("Texture filter mode string must be non-null and non-empty.");
+      return defaultValue;
     }
     else if (strcmp(str, "NEAREST") == 0)
     {
-        return Texture::NEAREST;
+      return Texture::NEAREST;
     }
     else if (strcmp(str, "LINEAR") == 0)
     {
-        return Texture::LINEAR;
+      return Texture::LINEAR;
     }
     else if (strcmp(str, "NEAREST_MIPMAP_NEAREST") == 0)
     {
-        return Texture::NEAREST_MIPMAP_NEAREST;
+      return Texture::NEAREST_MIPMAP_NEAREST;
     }
     else if (strcmp(str, "LINEAR_MIPMAP_NEAREST") == 0)
     {
-        return Texture::LINEAR_MIPMAP_NEAREST;
+      return Texture::LINEAR_MIPMAP_NEAREST;
     }
     else if (strcmp(str, "NEAREST_MIPMAP_LINEAR") == 0)
     {
-        return Texture::NEAREST_MIPMAP_LINEAR;
+      return Texture::NEAREST_MIPMAP_LINEAR;
     }
     else if (strcmp(str, "LINEAR_MIPMAP_LINEAR") == 0)
     {
-        return Texture::LINEAR_MIPMAP_LINEAR;
+      return Texture::LINEAR_MIPMAP_LINEAR;
     }
     else
     {
-        GP_ERROR("Unsupported texture filter mode string ('%s').", str);
-        return defaultValue;
+      GP_ERROR("Unsupported texture filter mode string ('%s').", str);
+      return defaultValue;
     }
-}
+  }
 
-static Texture::Wrap parseTextureWrapMode(const char* str, Texture::Wrap defaultValue)
-{
+  static Texture::Wrap parseTextureWrapMode(const char* str, Texture::Wrap defaultValue)
+  {
     if (str == nullptr || strlen(str) == 0)
     {
-        GP_ERROR("Texture wrap mode string must be non-null and non-empty.");
-        return defaultValue;
+      GP_ERROR("Texture wrap mode string must be non-null and non-empty.");
+      return defaultValue;
     }
     else if (strcmp(str, "REPEAT") == 0)
     {
-        return Texture::REPEAT;
+      return Texture::REPEAT;
     }
     else if (strcmp(str, "CLAMP") == 0)
     {
-        return Texture::CLAMP;
+      return Texture::CLAMP;
     }
     else
     {
-        GP_ERROR("Unsupported texture wrap mode string ('%s').", str);
-        return defaultValue;
+      GP_ERROR("Unsupported texture wrap mode string ('%s').", str);
+      return defaultValue;
     }
-}
+  }
 
-void Material::loadRenderState(RenderState* renderState, Properties* properties)
-{
+  void Material::loadRenderState(std::shared_ptr<RenderState> renderState, Properties* properties)
+  {
     assert(renderState);
     assert(properties);
 
@@ -379,116 +367,116 @@ void Material::loadRenderState(RenderState* renderState, Properties* properties)
     const char* name;
     while ((name = properties->getNextProperty()))
     {
-        if (isMaterialKeyword(name))
-            continue; // keyword - skip
+      if (isMaterialKeyword(name))
+        continue; // keyword - skip
 
-        switch (properties->getType())
+      switch (properties->getType())
+      {
+      case Properties::NUMBER:
+        assert(renderState->getParameter(name));
+        renderState->getParameter(name)->setValue(properties->getFloat());
+        break;
+      case Properties::VECTOR2:
+      {
+        Vector2 vector2;
+        if (properties->getVector2(nullptr, &vector2))
         {
-        case Properties::NUMBER:
-            assert(renderState->getParameter(name));
-            renderState->getParameter(name)->setValue(properties->getFloat());
-            break;
-        case Properties::VECTOR2:
-            {
-                Vector2 vector2;
-                if (properties->getVector2(nullptr, &vector2))
-                {
-                    assert(renderState->getParameter(name));
-                    renderState->getParameter(name)->setValue(vector2);
-                }
-            }
-            break;
-        case Properties::VECTOR3:
-            {
-                Vector3 vector3;
-                if (properties->getVector3(nullptr, &vector3))
-                {
-                    assert(renderState->getParameter(name));
-                    renderState->getParameter(name)->setValue(vector3);
-                }
-            }
-            break;
-        case Properties::VECTOR4:
-            {
-                Vector4 vector4;
-                if (properties->getVector4(nullptr, &vector4))
-                {
-                    assert(renderState->getParameter(name));
-                    renderState->getParameter(name)->setValue(vector4);
-                }
-            }
-            break;
-        case Properties::MATRIX:
-            {
-                Matrix matrix;
-                if (properties->getMatrix(nullptr, &matrix))
-                {
-                    assert(renderState->getParameter(name));
-                    renderState->getParameter(name)->setValue(matrix);
-                }
-            }
-            break;
-        default:
-            {
-                // Assume this is a parameter auto-binding.
-                renderState->setParameterAutoBinding(name, properties->getString());
-            }
-            break;
+          assert(renderState->getParameter(name));
+          renderState->getParameter(name)->setValue(vector2);
         }
+      }
+      break;
+      case Properties::VECTOR3:
+      {
+        Vector3 vector3;
+        if (properties->getVector3(nullptr, &vector3))
+        {
+          assert(renderState->getParameter(name));
+          renderState->getParameter(name)->setValue(vector3);
+        }
+      }
+      break;
+      case Properties::VECTOR4:
+      {
+        Vector4 vector4;
+        if (properties->getVector4(nullptr, &vector4))
+        {
+          assert(renderState->getParameter(name));
+          renderState->getParameter(name)->setValue(vector4);
+        }
+      }
+      break;
+      case Properties::MATRIX:
+      {
+        Matrix matrix;
+        if (properties->getMatrix(nullptr, &matrix))
+        {
+          assert(renderState->getParameter(name));
+          renderState->getParameter(name)->setValue(matrix);
+        }
+      }
+      break;
+      default:
+      {
+        // Assume this is a parameter auto-binding.
+        renderState->setParameterAutoBinding(name, properties->getString());
+      }
+      break;
+      }
     }
 
     // Iterate through all child namespaces searching for samplers and render state blocks.
     Properties* ns;
     while ((ns = properties->getNextNamespace()))
     {
-        if (strcmp(ns->getNamespace(), "sampler") == 0)
+      if (strcmp(ns->getNamespace(), "sampler") == 0)
+      {
+        // Read the texture uniform name.
+        name = ns->getId();
+        if (strlen(name) == 0)
         {
-            // Read the texture uniform name.
-            name = ns->getId();
-            if (strlen(name) == 0)
-            {
-                GP_ERROR("Texture sampler is missing required uniform name.");
-                continue;
-            }
-
-            // Get the texture path.
-            std::string path;
-            if (!ns->getPath("path", &path))
-            {
-                GP_ERROR("Texture sampler '%s' is missing required image file path.", name);
-                continue;
-            }
-
-            // Read texture state (booleans default to 'false' if not present).
-            bool mipmap = ns->getBool("mipmap");
-            Texture::Wrap wrapS = parseTextureWrapMode(ns->getString("wrapS"), Texture::REPEAT);
-            Texture::Wrap wrapT = parseTextureWrapMode(ns->getString("wrapT"), Texture::REPEAT);
-            Texture::Wrap wrapR = Texture::REPEAT;
-            if(ns->exists("wrapR"))
-            {
-                wrapR = parseTextureWrapMode(ns->getString("wrapR"), Texture::REPEAT);
-            }
-            Texture::Filter minFilter = parseTextureFilterMode(ns->getString("minFilter"), mipmap ? Texture::NEAREST_MIPMAP_LINEAR : Texture::LINEAR);
-            Texture::Filter magFilter = parseTextureFilterMode(ns->getString("magFilter"), Texture::LINEAR);
-
-            // Set the sampler parameter.
-            assert(renderState->getParameter(name));
-            Texture::Sampler* sampler = renderState->getParameter(name)->setValue(path.c_str(), mipmap);
-            if (sampler)
-            {
-                sampler->setWrapMode(wrapS, wrapT, wrapR);
-                sampler->setFilterMode(minFilter, magFilter);
-            }
+          GP_ERROR("Texture sampler is missing required uniform name.");
+          continue;
         }
-        else if (strcmp(ns->getNamespace(), "renderState") == 0)
+
+        // Get the texture path.
+        std::string path;
+        if (!ns->getPath("path", &path))
         {
-            while ((name = ns->getNextProperty()))
-            {
-                assert(renderState->getStateBlock());
-                renderState->getStateBlock()->setState(name, ns->getString());
-            }
+          GP_ERROR("Texture sampler '%s' is missing required image file path.", name);
+          continue;
         }
+
+        // Read texture state (booleans default to 'false' if not present).
+        bool mipmap = ns->getBool("mipmap");
+        Texture::Wrap wrapS = parseTextureWrapMode(ns->getString("wrapS"), Texture::REPEAT);
+        Texture::Wrap wrapT = parseTextureWrapMode(ns->getString("wrapT"), Texture::REPEAT);
+        Texture::Wrap wrapR = Texture::REPEAT;
+        if (ns->exists("wrapR"))
+        {
+          wrapR = parseTextureWrapMode(ns->getString("wrapR"), Texture::REPEAT);
+        }
+        Texture::Filter minFilter = parseTextureFilterMode(ns->getString("minFilter"), mipmap ? Texture::NEAREST_MIPMAP_LINEAR : Texture::LINEAR);
+        Texture::Filter magFilter = parseTextureFilterMode(ns->getString("magFilter"), Texture::LINEAR);
+
+        // Set the sampler parameter.
+        assert(renderState->getParameter(name));
+        Texture::Sampler* sampler = renderState->getParameter(name)->setValue(path.c_str(), mipmap);
+        if (sampler)
+        {
+          sampler->setWrapMode(wrapS, wrapT, wrapR);
+          sampler->setFilterMode(minFilter, magFilter);
+        }
+      }
+      else if (strcmp(ns->getNamespace(), "renderState") == 0)
+      {
+        while ((name = ns->getNextProperty()))
+        {
+          assert(renderState->getStateBlock());
+          renderState->getStateBlock()->setState(name, ns->getString());
+        }
+      }
     }
-}
+  }
 
 }

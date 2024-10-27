@@ -49,7 +49,7 @@ protected:
     btScalar _minSlopeDot;
 };
 
-PhysicsCharacter::PhysicsCharacter(Node* node, const PhysicsCollisionShape::Definition& shape, float mass, int group, int mask)
+PhysicsCharacter::PhysicsCharacter(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, float mass, int group, int mask)
     : PhysicsGhostObject(node, shape, group, mask), _moveVelocity(0,0,0), _forwardVelocity(0.0f), _rightVelocity(0.0f),
     _verticalVelocity(0, 0, 0), _currentVelocity(0,0,0), _normalizedVelocity(0,0,0),
     _colliding(false), _collisionNormal(0,0,0), _currentPosition(0,0,0), _stepHeight(0.1f),
@@ -76,7 +76,7 @@ PhysicsCharacter::~PhysicsCharacter()
 
 }
 
-PhysicsCharacter* PhysicsCharacter::create(Node* node, Properties* properties)
+PhysicsCharacter* PhysicsCharacter::create(std::shared_ptr<Node> node, Properties* properties)
 {
     // Check if the properties is valid and has a valid namespace.
     if (!properties || !(strcmp(properties->getNamespace(), "collisionObject") == 0))

@@ -207,12 +207,12 @@ namespace gameplay
     cameraChanged();
   }
 
-  Node* Camera::getNode() const
+  std::shared_ptr<Node> Camera::getNode() const
   {
     return _node;
   }
 
-  void Camera::setNode(Node* node)
+  void Camera::setNode(std::shared_ptr<Node> node)
   {
     if (_node != node)
     {
@@ -443,7 +443,7 @@ namespace gameplay
     }
     assert(cameraClone);
 
-    if (Node* node = context.findClonedNode(getNode()))
+    if (auto node = context.findClonedNode(getNode().get()))
     {
       cameraClone->setNode(node);
     }

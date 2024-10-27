@@ -49,7 +49,7 @@ private:
     Vector3 getLightDirection0() const;
     Vector3 getLightColor0() const;
 
-    bool resolveAutoBinding(const char* autoBinding, Node* node, MaterialParameter* parameter);
+    bool resolveAutoBinding(const char* autoBinding, std::shared_ptr<Node> node, std::shared_ptr<MaterialParameter> parameter);
 
 	Font* _font;
 	Scene* _scene;

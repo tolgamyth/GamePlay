@@ -37,7 +37,7 @@ namespace gameplay
       // from controller's set regardless of its playing state.
       AudioController* audioController = Game::getInstance()->getAudioController();
       assert(audioController);
-      audioController->removePlayingSource(shared_from_this());
+      audioController->removePlayingSource(std::make_shared<AudioSource>(*this));
 
       AL_CHECK(alDeleteSources(1, &_alSource));
       _alSource = 0;
@@ -77,7 +77,7 @@ namespace gameplay
       return nullptr;
     }
 
-    return std::shared_ptr<AudioSource>(new AudioSource(buffer, alSource));
+    return std::make_shared<AudioSource>(buffer, alSource);
   }
 
   std::shared_ptr<AudioSource> AudioSource::create(Properties* properties)
@@ -166,7 +166,7 @@ namespace gameplay
     // Add the source to the controller's list of currently playing sources.
     AudioController* audioController = Game::getInstance()->getAudioController();
     assert(audioController);
-    audioController->addPlayingSource(shared_from_this());
+    audioController->addPlayingSource(std::make_shared<AudioSource>(*this));
   }
 
   void AudioSource::pause()
@@ -177,7 +177,7 @@ namespace gameplay
     // if the source is being paused by the user and not the controller itself.
     AudioController* audioController = Game::getInstance()->getAudioController();
     assert(audioController);
-    audioController->removePlayingSource(shared_from_this());
+    audioController->removePlayingSource(std::make_shared<AudioSource>(*this));
   }
 
   void AudioSource::resume()
@@ -195,7 +195,7 @@ namespace gameplay
     // Remove the source from the controller's set of currently playing sources.
     AudioController* audioController = Game::getInstance()->getAudioController();
     assert(audioController);
-    audioController->removePlayingSource(shared_from_this());
+    audioController->removePlayingSource(std::make_shared<AudioSource>(*this));
   }
 
   void AudioSource::rewind()
@@ -256,12 +256,12 @@ namespace gameplay
     setVelocity(Vector3(x, y, z));
   }
 
-  Node* AudioSource::getNode() const
+  std::shared_ptr<Node> AudioSource::getNode() const
   {
     return _node;
   }
 
-  void AudioSource::setNode(Node* node)
+  void AudioSource::setNode(std::shared_ptr<Node> node)
   {
     if (_node != node)
     {
@@ -278,7 +278,7 @@ namespace gameplay
       {
         _node->addListener(this);
         // Update the audio source position.
-        transformChanged(_node, 0);
+        transformChanged(_node.get(), 0);
       }
     }
   }
@@ -309,9 +309,9 @@ namespace gameplay
     audioClone->setGain(getGain());
     audioClone->setPitch(getPitch());
     audioClone->setVelocity(getVelocity());
-    if (Node* node = getNode())
+    if (std::shared_ptr<Node> node = getNode())
     {
-      Node* clonedNode = context.findClonedNode(node);
+      auto clonedNode = context.findClonedNode(node.get());
       if (clonedNode)
       {
         audioClone->setNode(clonedNode);

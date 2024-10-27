@@ -271,7 +271,7 @@ protected:
     /**
      * @see Drawable::setNode
      */
-    void setNode(Node* node);
+    void setNode(std::shared_ptr<Node> node);
 
     /**
      * @see Drawable::clone

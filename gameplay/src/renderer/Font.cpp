@@ -357,7 +357,7 @@ namespace gameplay
             if (getFormat() == DISTANCE_FIELD)
             {
               if (_cutoffParam == nullptr)
-                _cutoffParam = _batch->getMaterial()->getParameter("u_cutoff");
+                _cutoffParam = _batch->getMaterial()->getParameter("u_cutoff").get();
               // TODO: Fix me so that smaller font are much smoother
               _cutoffParam->setVector2(Vector2(1.0, 1.0));
             }
@@ -521,7 +521,7 @@ namespace gameplay
               if (getFormat() == DISTANCE_FIELD)
               {
                 if (_cutoffParam == nullptr)
-                  _cutoffParam = _batch->getMaterial()->getParameter("u_cutoff");
+                  _cutoffParam = _batch->getMaterial()->getParameter("u_cutoff").get();
                 // TODO: Fix me so that smaller font are much smoother
                 _cutoffParam->setVector2(Vector2(1.0, 1.0));
               }

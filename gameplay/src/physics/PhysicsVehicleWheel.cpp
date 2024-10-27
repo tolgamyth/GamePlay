@@ -6,19 +6,19 @@
 namespace gameplay
 {
 
-PhysicsVehicleWheel::PhysicsVehicleWheel(Node* node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters)
+PhysicsVehicleWheel::PhysicsVehicleWheel(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters)
     : PhysicsCollisionObject(node), _host(nullptr), _indexInHost(0)
 {
     findAncestorAndBind();
 }
 
-PhysicsVehicleWheel::PhysicsVehicleWheel(Node* node)
+PhysicsVehicleWheel::PhysicsVehicleWheel(std::shared_ptr<Node> node)
     : PhysicsCollisionObject(node), _host(nullptr), _indexInHost(0)
 {
     findAncestorAndBind();
 }
 
-PhysicsVehicleWheel* PhysicsVehicleWheel::create(Node* node, Properties* properties)
+PhysicsVehicleWheel* PhysicsVehicleWheel::create(std::shared_ptr<Node> node, Properties* properties)
 {
     PhysicsVehicleWheel* wheel = new PhysicsVehicleWheel(node);
 
@@ -126,8 +126,8 @@ void PhysicsVehicleWheel::findAncestorAndBind()
     // 3: Let n = the parent of n
     // 4: Go to 2.
     PhysicsVehicle* host = nullptr;
-    Node* m;
-    for (Node* n = getNode(); n && !host; n = n->getParent())
+    std::shared_ptr<Node> m;
+    for (auto n = getNode(); n && !host; n = n->getParent())
     {
         // Visit previous siblings starting with n
 		for (m = n; m && !host; m = m->getPreviousSibling())
@@ -150,7 +150,7 @@ void PhysicsVehicleWheel::findAncestorAndBind()
     }
 }
 
-PhysicsVehicle* PhysicsVehicleWheel::findVehicle(Node* node)
+PhysicsVehicle* PhysicsVehicleWheel::findVehicle(std::shared_ptr<Node> node)
 {
     PhysicsCollisionObject* collisionObject = node->getCollisionObject();
     if (collisionObject && collisionObject->getType() == PhysicsCollisionObject::VEHICLE)
@@ -159,7 +159,7 @@ PhysicsVehicle* PhysicsVehicleWheel::findVehicle(Node* node)
     }
 
     PhysicsVehicle* result = nullptr;
-    for (Node* p = node->getFirstChild(); p && !result; p = p->getNextSibling())
+    for (std::shared_ptr<Node> p = node->getFirstChild(); p && !result; p = p->getNextSibling())
     {
         result = findVehicle(p);
     }
@@ -189,7 +189,7 @@ void PhysicsVehicleWheel::addToVehicle(btRaycastVehicle* vehicle)
         false);
 }
 
-void PhysicsVehicleWheel::transform(Node* node) const
+void PhysicsVehicleWheel::transform(std::shared_ptr<Node> node) const
 {
     assert(_host);
     assert(_host->_node);

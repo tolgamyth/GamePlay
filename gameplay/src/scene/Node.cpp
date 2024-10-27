@@ -43,8 +43,6 @@ namespace gameplay
       _drawable->setNode(nullptr);
     if (_audioSource)
       _audioSource->setNode(nullptr);
-    Ref* ref = dynamic_cast<Ref*>(_drawable);
-    SAFE_RELEASE(ref);
     SAFE_RELEASE(_camera);
     SAFE_RELEASE(_light);
     SAFE_DELETE(_collisionObject);
@@ -53,21 +51,20 @@ namespace gameplay
     setAgent(nullptr);
   }
 
-  Node* Node::create(const char* id)
+  std::shared_ptr<Node> Node::create(const char* id)
   {
-    return new Node(id);
+    return std::make_shared<Node>(id);
   }
 
-  void Node::addChild(Node* child)
+  void Node::addChild(std::shared_ptr<Node> child)
   {
     assert(child);
 
-    if (child->_parent == this)
+    if (child->_parent.get() == this)
     {
       // This node is already present in our hierarchy
       return;
     }
-    child->addRef();
 
     // If the item belongs to another hierarchy, remove it first.
     if (child->_parent)
@@ -85,7 +82,7 @@ namespace gameplay
     // predictable, so I've changed it.
     if (_firstChild)
     {
-      Node* n = _firstChild;
+      auto n = _firstChild;
       while (n->_nextSibling)
         n = n->_nextSibling;
       n->_nextSibling = child;
@@ -95,7 +92,7 @@ namespace gameplay
     {
       _firstChild = child;
     }
-    child->_parent = this;
+    child->_parent = shared_from_this();
     ++_childCount;
     setBoundsDirty();
 
@@ -105,16 +102,15 @@ namespace gameplay
     }
   }
 
-  void Node::removeChild(Node* child)
+  void Node::removeChild(std::shared_ptr<Node> child)
   {
-    if (child == nullptr || child->_parent != this)
+    if (child == nullptr || child->_parent.get() != this)
     {
       // The child is not in our hierarchy.
       return;
     }
     // Call remove on the child.
     child->remove();
-    SAFE_RELEASE(child);
   }
 
   void Node::removeAllChildren()
@@ -133,25 +129,22 @@ namespace gameplay
     // Re-link our neighbours.
     if (_prevSibling)
     {
-      _prevSibling->_nextSibling = _nextSibling;
+      _prevSibling->_nextSibling = std::move(_nextSibling);
     }
     if (_nextSibling)
     {
-      _nextSibling->_prevSibling = _prevSibling;
+      _nextSibling->_prevSibling = std::move(_prevSibling);
     }
     // Update our parent.
-    Node* parent = _parent;
+    std::shared_ptr<Node> parent = std::move(_parent);
     if (parent)
     {
-      if (this == parent->_firstChild)
+      if (this == parent->_firstChild.get())
       {
-        parent->_firstChild = _nextSibling;
+        parent->_firstChild = std::move(_nextSibling);
       }
       --parent->_childCount;
     }
-    _nextSibling = nullptr;
-    _prevSibling = nullptr;
-    _parent = nullptr;
 
     if (parent && parent->_dirtyBits & NODE_DIRTY_HIERARCHY)
     {
@@ -161,20 +154,20 @@ namespace gameplay
 
   Node* Node::getRootNode() const
   {
-    Node* n = const_cast<Node*>(this);
+    auto n = const_cast<Node*>(this);
     while (n->getParent())
     {
-      n = n->getParent();
+      n = n->getParent().get();
     }
     return n;
   }
 
-  Node* Node::findNode(const char* id, bool recursive, bool exactMatch) const
+  std::shared_ptr<Node> Node::findNode(const char* id, bool recursive, bool exactMatch) const
   {
     return findNode(id, recursive, exactMatch, false);
   }
 
-  Node* Node::findNode(const char* id, bool recursive, bool exactMatch, bool skipSkin) const
+  std::shared_ptr<Node> Node::findNode(const char* id, bool recursive, bool exactMatch, bool skipSkin) const
   {
     assert(id);
 
@@ -182,8 +175,8 @@ namespace gameplay
     if (!skipSkin)
     {
       // If the drawable is a model with a mesh skin, search the skin's hierarchy as well.
-      Node* rootNode = nullptr;
-      Model* model = dynamic_cast<Model*>(_drawable);
+      std::shared_ptr<Node> rootNode = nullptr;
+      Model* model = dynamic_cast<Model*>(_drawable.get());
       if (model)
       {
         if (model->getSkin() != nullptr && (rootNode = model->getSkin()->_rootNode) != nullptr)
@@ -191,7 +184,7 @@ namespace gameplay
           if ((exactMatch && rootNode->_id == id) || (!exactMatch && rootNode->_id.find(id) == 0))
             return rootNode;
 
-          Node* match = rootNode->findNode(id, true, exactMatch, true);
+          auto match = rootNode->findNode(id, true, exactMatch, true);
           if (match)
           {
             return match;
@@ -200,7 +193,7 @@ namespace gameplay
       }
     }
     // Search immediate children first.
-    for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
+    for (auto child = getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
       // Does this child's ID match?
       if ((exactMatch && child->_id == id) || (!exactMatch && child->_id.find(id) == 0))
@@ -211,9 +204,9 @@ namespace gameplay
     // Recurse.
     if (recursive)
     {
-      for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
+      for (auto child = getFirstChild(); child != nullptr; child = child->getNextSibling())
       {
-        Node* match = child->findNode(id, true, exactMatch, skipSkin);
+        auto match = child->findNode(id, true, exactMatch, skipSkin);
         if (match)
         {
           return match;
@@ -223,12 +216,12 @@ namespace gameplay
     return nullptr;
   }
 
-  unsigned int Node::findNodes(const char* id, std::vector<Node*>& nodes, bool recursive, bool exactMatch) const
+  unsigned int Node::findNodes(const char* id, std::vector<std::shared_ptr<Node>>& nodes, bool recursive, bool exactMatch) const
   {
     return findNodes(id, nodes, recursive, exactMatch, false);
   }
 
-  unsigned int Node::findNodes(const char* id, std::vector<Node*>& nodes, bool recursive, bool exactMatch, bool skipSkin) const
+  unsigned int Node::findNodes(const char* id, std::vector<std::shared_ptr<Node>>& nodes, bool recursive, bool exactMatch, bool skipSkin) const
   {
     assert(id);
 
@@ -237,8 +230,8 @@ namespace gameplay
 
     if (!skipSkin)
     {
-      Node* rootNode = nullptr;
-      Model* model = dynamic_cast<Model*>(_drawable);
+      std::shared_ptr<Node> rootNode = nullptr;
+      Model* model = dynamic_cast<Model*>(_drawable.get());
       if (model)
       {
         if (model->getSkin() != nullptr && (rootNode = model->getSkin()->_rootNode) != nullptr)
@@ -254,7 +247,7 @@ namespace gameplay
     }
 
     // Search immediate children first.
-    for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
+    for (auto child = getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
       // Does this child's ID match?
       if ((exactMatch && child->_id == id) || (!exactMatch && child->_id.find(id) == 0))
@@ -266,7 +259,7 @@ namespace gameplay
     // Recurse.
     if (recursive)
     {
-      for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
+      for (auto child = getFirstChild(); child != nullptr; child = child->getNextSibling())
       {
         count += child->findNodes(id, nodes, recursive, exactMatch, skipSkin);
       }
@@ -356,7 +349,7 @@ namespace gameplay
     if (!_enabled)
       return false;
 
-    Node* node = _parent;
+    auto node = _parent;
     while (node)
     {
       if (!node->_enabled)
@@ -370,7 +363,7 @@ namespace gameplay
 
   void Node::update(float elapsedTime)
   {
-    for (Node* node = _firstChild; node != nullptr; node = node->_nextSibling)
+    for (auto node = _firstChild; node != nullptr; node = node->_nextSibling)
     {
       if (node->isEnabled())
       {
@@ -397,7 +390,7 @@ namespace gameplay
       {
         // If we have a parent, multiply our parent world transform by our local
         // transform to obtain our final resolved world transform.
-        Node* parent = getParent();
+        auto parent = getParent();
         if (parent && (!_collisionObject || _collisionObject->isKinematic()))
         {
           Matrix::multiply(parent->getWorldMatrix(), getMatrix(), &_world);
@@ -409,7 +402,7 @@ namespace gameplay
 
         // Our world matrix was just updated, so call getWorldMatrix() on all child nodes
         // to force their resolved world matrices to be updated.
-        for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
+        for (auto child = getFirstChild(); child != nullptr; child = child->getNextSibling())
         {
           child->getWorldMatrix();
         }
@@ -571,7 +564,7 @@ namespace gameplay
       Camera* camera = scene->getActiveCamera();
       if (camera)
       {
-        Node* cameraNode = camera->getNode();
+        auto cameraNode = camera->getNode();
         if (cameraNode)
         {
           return cameraNode->getTranslationWorld();
@@ -589,7 +582,7 @@ namespace gameplay
       Camera* camera = scene->getActiveCamera();
       if (camera)
       {
-        Node* cameraNode = camera->getNode();
+        auto cameraNode = camera->getNode();
         if (cameraNode)
         {
           return cameraNode->getTranslationView();
@@ -612,7 +605,7 @@ namespace gameplay
     _dirtyBits |= NODE_DIRTY_WORLD | NODE_DIRTY_BOUNDS;
 
     // Notify our children that their transform has also changed (since transforms are inherited).
-    for (Node* n = getFirstChild(); n != nullptr; n = n->getNextSibling())
+    for (auto n = getFirstChild(); n != nullptr; n = n->getNextSibling())
     {
       if (Transform::isTransformChangedSuspended())
       {
@@ -648,14 +641,14 @@ namespace gameplay
       return animation;
 
     // See if this node has a model, then drill down.
-    Model* model = dynamic_cast<Model*>(_drawable);
+    Model* model = dynamic_cast<Model*>(_drawable.get());
     if (model)
     {
       // Check to see if there's any animations with the ID on the joints.
       MeshSkin* skin = model->getSkin();
       if (skin)
       {
-        Node* rootNode = skin->_rootNode;
+        auto rootNode = skin->_rootNode;
         if (rootNode)
         {
           animation = rootNode->getAnimation(id);
@@ -666,15 +659,14 @@ namespace gameplay
 
       // Check to see if any of the model's material parameter's has an animation
       // with the given ID.
-      Material* material = model->getMaterial();
+      std::shared_ptr<Material> material = model->getMaterial();
       if (material)
       {
         // How to access material parameters? hidden on the Material::RenderState.
-        std::vector<MaterialParameter*>::iterator itr = material->_parameters.begin();
-        for (; itr != material->_parameters.end(); itr++)
+        for (const auto& m :  material->_parameters)
         {
-          assert(*itr);
-          animation = ((MaterialParameter*)(*itr))->getAnimation(id);
+          assert(m);
+          animation = m->getAnimation(id);
           if (animation)
             return animation;
         }
@@ -682,7 +674,7 @@ namespace gameplay
     }
 
     // look through form for animations.
-    Form* form = dynamic_cast<Form*>(_drawable);
+    Form* form = dynamic_cast<Form*>(_drawable.get());
     if (form)
     {
       animation = form->getAnimation(id);
@@ -691,7 +683,7 @@ namespace gameplay
     }
 
     // Look through this node's children for an animation with the specified ID.
-    for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
+    for (auto child = getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
       animation = child->getAnimation(id);
       if (animation)
@@ -717,7 +709,7 @@ namespace gameplay
     if (_camera)
     {
       _camera->addRef();
-      _camera->setNode(this);
+      _camera->setNode(shared_from_this());
     }
   }
 
@@ -737,32 +729,26 @@ namespace gameplay
     if (_light)
     {
       _light->addRef();
-      _light->setNode(this);
+      _light->setNode(shared_from_this());
     }
 
     setBoundsDirty();
   }
 
-  void Node::setDrawable(Drawable* drawable)
+  void Node::setDrawable(std::shared_ptr<Drawable> drawable)
   {
     if (_drawable != drawable)
     {
       if (_drawable)
       {
         _drawable->setNode(nullptr);
-        Ref* ref = dynamic_cast<Ref*>(_drawable);
-        if (ref)
-          ref->release();
       }
 
       _drawable = drawable;
 
       if (_drawable)
       {
-        Ref* ref = dynamic_cast<Ref*>(_drawable);
-        if (ref)
-          ref->addRef();
-        _drawable->setNode(this);
+        _drawable->setNode(shared_from_this());
       }
     }
     setBoundsDirty();
@@ -779,13 +765,13 @@ namespace gameplay
       // Start with our local bounding sphere
       // TODO: Incorporate bounds from entities other than mesh (i.e. particleemitters, audiosource, etc)
       bool empty = true;
-      Terrain* terrain = dynamic_cast<Terrain*>(_drawable);
+      Terrain* terrain = dynamic_cast<Terrain*>(_drawable.get());
       if (terrain)
       {
         _bounds.set(terrain->getBoundingBox());
         empty = false;
       }
-      Model* model = dynamic_cast<Model*>(_drawable);
+      Model* model = dynamic_cast<Model*>(_drawable.get());
       if (model && model->getMesh())
       {
         if (empty)
@@ -840,7 +826,7 @@ namespace gameplay
           // be considered as directly transforming vertices on the GPU (they can instead
           // be applied directly to the bounding volume transformation below).
           assert(model->getSkin()->getRootJoint());
-          Node* jointParent = model->getSkin()->getRootJoint()->getParent();
+          auto jointParent = model->getSkin()->getRootJoint()->getParent();
           if (jointParent)
           {
             // TODO: Should we protect against the case where joints are nested directly
@@ -858,7 +844,7 @@ namespace gameplay
       }
 
       // Merge this world-space bounding sphere with our childrens' bounding volumes.
-      for (Node* n = getFirstChild(); n != nullptr; n = n->getNextSibling())
+      for (auto n = getFirstChild(); n != nullptr; n = n->getNextSibling())
       {
         const BoundingSphere& childSphere = n->getBoundingSphere();
         if (!childSphere.isEmpty())
@@ -879,50 +865,46 @@ namespace gameplay
     return _bounds;
   }
 
-  Node* Node::clone() const
+  std::shared_ptr<Node> Node::clone() const
   {
     NodeCloneContext context;
     return cloneRecursive(context);
   }
 
-  Node* Node::cloneSingleNode(NodeCloneContext& context) const
+  std::shared_ptr<Node> Node::cloneSingleNode(NodeCloneContext& context) const
   {
-    Node* copy = Node::create(getId());
+    std::shared_ptr<Node> copy = Node::create(getId());
     context.registerClonedNode(this, copy);
     cloneInto(copy, context);
     return copy;
   }
 
-  Node* Node::cloneRecursive(NodeCloneContext& context) const
+  std::shared_ptr<Node> Node::cloneRecursive(NodeCloneContext& context) const
   {
-    Node* copy = cloneSingleNode(context);
+    std::shared_ptr<Node> copy = cloneSingleNode(context);
     assert(copy);
 
     // Add child nodes
-    for (Node* child = getFirstChild(); child != nullptr; child = child->getNextSibling())
+    for (auto child = getFirstChild(); child != nullptr; child = child->getNextSibling())
     {
-      Node* childCopy = child->cloneRecursive(context);
+      std::shared_ptr<Node> childCopy = child->cloneRecursive(context);
       assert(childCopy);
       copy->addChild(childCopy);
-      childCopy->release();
     }
 
     return copy;
   }
 
-  void Node::cloneInto(Node* node, NodeCloneContext& context) const
+  void Node::cloneInto(std::shared_ptr<Node> node, NodeCloneContext& context) const
   {
     assert(node);
 
     Transform::cloneInto(node, context);
 
-    if (Drawable* drawable = getDrawable())
+    if (std::shared_ptr<Drawable> drawable = getDrawable())
     {
-      Drawable* clone = drawable->clone(context);
+      std::shared_ptr<Drawable> clone = std::make_shared<Drawable>(drawable->clone(context));
       node->setDrawable(clone);
-      Ref* ref = dynamic_cast<Ref*>(clone);
-      if (ref)
-        ref->release();
     }
     if (Camera* camera = getCamera())
     {
@@ -973,7 +955,7 @@ namespace gameplay
 
     if (_audioSource)
     {
-      _audioSource->setNode(this);
+      _audioSource->setNode(shared_from_this());
     }
   }
 
@@ -985,25 +967,25 @@ namespace gameplay
     {
     case PhysicsCollisionObject::RIGID_BODY:
     {
-      _collisionObject = new PhysicsRigidBody(this, shape, rigidBodyParameters ? *rigidBodyParameters : PhysicsRigidBody::Parameters(), group, mask);
+      _collisionObject = new PhysicsRigidBody(shared_from_this(), shape, rigidBodyParameters ? *rigidBodyParameters : PhysicsRigidBody::Parameters(), group, mask);
     }
     break;
 
     case PhysicsCollisionObject::GHOST_OBJECT:
     {
-      _collisionObject = new PhysicsGhostObject(this, shape, group, mask);
+      _collisionObject = new PhysicsGhostObject(shared_from_this(), shape, group, mask);
     }
     break;
 
     case PhysicsCollisionObject::CHARACTER:
     {
-      _collisionObject = new PhysicsCharacter(this, shape, rigidBodyParameters ? rigidBodyParameters->mass : 1.0f);
+      _collisionObject = new PhysicsCharacter(shared_from_this(), shape, rigidBodyParameters ? rigidBodyParameters->mass : 1.0f);
     }
     break;
 
     case PhysicsCollisionObject::VEHICLE:
     {
-      _collisionObject = new PhysicsVehicle(this, shape, rigidBodyParameters ? *rigidBodyParameters : PhysicsRigidBody::Parameters());
+      _collisionObject = new PhysicsVehicle(shared_from_this(), shape, rigidBodyParameters ? *rigidBodyParameters : PhysicsRigidBody::Parameters());
     }
     break;
 
@@ -1018,7 +1000,7 @@ namespace gameplay
       //
       // IMPORTANT: The VEHICLE must come before the VEHICLE_WHEEL in the ".scene" (properties) file!
       //
-      _collisionObject = new PhysicsVehicleWheel(this, shape, rigidBodyParameters ? *rigidBodyParameters : PhysicsRigidBody::Parameters());
+      _collisionObject = new PhysicsVehicleWheel(shared_from_this(), shape, rigidBodyParameters ? *rigidBodyParameters : PhysicsRigidBody::Parameters());
     }
     break;
 
@@ -1060,19 +1042,19 @@ namespace gameplay
     {
       if (strcmp(type, "CHARACTER") == 0)
       {
-        _collisionObject = PhysicsCharacter::create(this, properties);
+        _collisionObject = PhysicsCharacter::create(shared_from_this(), properties);
       }
       else if (strcmp(type, "GHOST_OBJECT") == 0)
       {
-        _collisionObject = PhysicsGhostObject::create(this, properties);
+        _collisionObject = PhysicsGhostObject::create(shared_from_this(), properties);
       }
       else if (strcmp(type, "RIGID_BODY") == 0)
       {
-        _collisionObject = PhysicsRigidBody::create(this, properties);
+        _collisionObject = PhysicsRigidBody::create(shared_from_this(), properties);
       }
       else if (strcmp(type, "VEHICLE") == 0)
       {
-        _collisionObject = PhysicsVehicle::create(this, properties);
+        _collisionObject = PhysicsVehicle::create(shared_from_this(), properties);
       }
       else if (strcmp(type, "VEHICLE_WHEEL") == 0)
       {
@@ -1085,7 +1067,7 @@ namespace gameplay
         //
         // IMPORTANT: The VEHICLE must come before the VEHICLE_WHEEL in the ".scene" (properties) file!
         //
-        _collisionObject = PhysicsVehicleWheel::create(this, properties);
+        _collisionObject = PhysicsVehicleWheel::create(shared_from_this(), properties);
       }
       else
       {
@@ -1163,15 +1145,15 @@ namespace gameplay
     _clonedAnimations[original] = clone;
   }
 
-  Node* NodeCloneContext::findClonedNode(const Node* node)
+  std::shared_ptr<Node> NodeCloneContext::findClonedNode(const Node* node)
   {
     assert(node);
 
-    std::map<const Node*, Node*>::iterator it = _clonedNodes.find(node);
+    auto it = _clonedNodes.find(node);
     return it != _clonedNodes.end() ? it->second : nullptr;
   }
 
-  void NodeCloneContext::registerClonedNode(const Node* original, Node* clone)
+  void NodeCloneContext::registerClonedNode(const Node* original, std::shared_ptr<Node> clone)
   {
     assert(original);
     assert(clone);

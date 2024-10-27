@@ -15,12 +15,12 @@ Drawable::~Drawable()
 {
 }
 
-Node* Drawable::getNode() const
+std::shared_ptr<Node> Drawable::getNode() const
 {
     return _node;
 }
 
-void Drawable::setNode(Node* node)
+void Drawable::setNode(std::shared_ptr<Node> node)
 {
     _node = node;
 }

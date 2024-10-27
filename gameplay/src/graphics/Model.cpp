@@ -23,17 +23,7 @@ namespace gameplay
 
   Model::~Model()
   {
-    SAFE_RELEASE(_material);
-    if (_partMaterials)
-    {
-      for (unsigned int i = 0; i < _partCount; ++i)
-      {
-        SAFE_RELEASE(_partMaterials[i]);
-      }
-      SAFE_DELETE_ARRAY(_partMaterials);
-    }
-    SAFE_RELEASE(_mesh);
-    SAFE_DELETE(_skin);
+    _partMaterials.clear();
   }
 
   Model* Model::create(Mesh* mesh)
@@ -54,11 +44,11 @@ namespace gameplay
     return _mesh->getPartCount();
   }
 
-  Material* Model::getMaterial(int partIndex)
+  std::shared_ptr<Material> Model::getMaterial(int partIndex)
   {
     assert(partIndex == -1 || partIndex >= 0);
 
-    Material* m = nullptr;
+    std::shared_ptr<Material> m = nullptr;
 
     if (partIndex < 0)
       return _material;
@@ -66,10 +56,7 @@ namespace gameplay
       return nullptr;
 
     // Look up explicitly specified part material.
-    if (_partMaterials)
-    {
-      m = _partMaterials[partIndex];
-    }
+    m = _partMaterials[partIndex];
     if (m == nullptr)
     {
       // Return the shared material.
@@ -79,11 +66,11 @@ namespace gameplay
     return m;
   }
 
-  void Model::setMaterial(Material* material, int partIndex)
+  void Model::setMaterial(std::shared_ptr<Material> material, int partIndex)
   {
     assert(partIndex == -1 || (partIndex >= 0 && partIndex < (int)getMeshPartCount()));
 
-    Material* oldMaterial = nullptr;
+    std::shared_ptr<Material> oldMaterial = nullptr;
 
     if (partIndex == -1)
     {
@@ -93,7 +80,6 @@ namespace gameplay
       if (material)
       {
         _material = material;
-        _material->addRef();
       }
     }
     else if (partIndex >= 0 && partIndex < (int)getMeshPartCount())
@@ -102,25 +88,15 @@ namespace gameplay
       validatePartCount();
 
       // Release existing part material and part binding.
-      if (_partMaterials)
+      if (!_partMaterials.empty())
       {
         oldMaterial = _partMaterials[partIndex];
-      }
-      else
-      {
-        // Allocate part arrays for the first time.
-        if (_partMaterials == nullptr)
-        {
-          _partMaterials = new Material * [_partCount];
-          memset(_partMaterials, 0, sizeof(Material*) * _partCount);
-        }
       }
 
       // Set new part material.
       if (material)
       {
         _partMaterials[partIndex] = material;
-        material->addRef();
       }
     }
 
@@ -129,7 +105,7 @@ namespace gameplay
     {
       for (unsigned int i = 0, tCount = oldMaterial->getTechniqueCount(); i < tCount; ++i)
       {
-        Technique* t = oldMaterial->getTechniqueByIndex(i);
+        std::shared_ptr<Technique> t = oldMaterial->getTechniqueByIndex(i);
         assert(t);
         for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
         {
@@ -137,7 +113,6 @@ namespace gameplay
           t->getPassByIndex(j)->setVertexAttributeBinding(nullptr);
         }
       }
-      SAFE_RELEASE(oldMaterial);
     }
 
     if (material)
@@ -145,15 +120,15 @@ namespace gameplay
       // Hookup vertex attribute bindings for all passes in the new material.
       for (unsigned int i = 0, tCount = material->getTechniqueCount(); i < tCount; ++i)
       {
-        Technique* t = material->getTechniqueByIndex(i);
+        std::shared_ptr<Technique> t = material->getTechniqueByIndex(i);
         assert(t);
         for (unsigned int j = 0, pCount = t->getPassCount(); j < pCount; ++j)
         {
-          Pass* p = t->getPassByIndex(j);
+          std::shared_ptr<Pass> p = t->getPassByIndex(j);
           assert(p);
-          VertexAttributeBinding* b = VertexAttributeBinding::create(_mesh, p->getEffect());
+          std::shared_ptr<VertexAttributeBinding> b = VertexAttributeBinding::create(_mesh, p->getEffect());
           p->setVertexAttributeBinding(b);
-          SAFE_RELEASE(b);
+          //SAFE_RELEASE(b);
         }
       }
       // Apply node binding for the new material.
@@ -164,10 +139,10 @@ namespace gameplay
     }
   }
 
-  Material* Model::setMaterial(const char* vshPath, const char* fshPath, const char* defines, int partIndex)
+  std::shared_ptr<Material> Model::setMaterial(const char* vshPath, const char* fshPath, const char* defines, int partIndex)
   {
     // Try to create a Material with the given parameters.
-    Material* material = Material::create(vshPath, fshPath, defines);
+    std::shared_ptr<Material> material = Material::create(vshPath, fshPath, defines);
     if (material == nullptr)
     {
       GP_ERROR("Failed to create material for model.");
@@ -183,10 +158,10 @@ namespace gameplay
     return material;
   }
 
-  Material* Model::setMaterial(const char* materialPath, int partIndex)
+  std::shared_ptr<Material> Model::setMaterial(const char* materialPath, int partIndex)
   {
     // Try to create a Material from the specified material file.
-    Material* material = Material::create(materialPath);
+    std::shared_ptr<Material> material = Material::create(materialPath);
     if (material == nullptr)
     {
       GP_ERROR("Failed to create material for model.");
@@ -204,7 +179,7 @@ namespace gameplay
 
   bool Model::hasMaterial(unsigned int partIndex) const
   {
-    return (partIndex < _partCount && _partMaterials && _partMaterials[partIndex]);
+    return (partIndex < _partCount && _partMaterials[partIndex]);
   }
 
   MeshSkin* Model::getSkin() const
@@ -226,7 +201,7 @@ namespace gameplay
     }
   }
 
-  void Model::setNode(Node* node)
+  void Model::setNode(std::shared_ptr<Node> node)
   {
     Drawable::setNode(node);
 
@@ -237,8 +212,6 @@ namespace gameplay
       {
         setMaterialNodeBinding(_material);
       }
-      if (_partMaterials)
-      {
         for (unsigned int i = 0; i < _partCount; ++i)
         {
           if (_partMaterials[i])
@@ -246,7 +219,6 @@ namespace gameplay
             setMaterialNodeBinding(_partMaterials[i]);
           }
         }
-      }
     }
   }
 
@@ -336,12 +308,12 @@ namespace gameplay
       // No mesh parts (index buffers).
       if (_material)
       {
-        Technique* technique = _material->getTechnique();
+        std::shared_ptr<Technique> technique = _material->getTechnique();
         assert(technique);
         unsigned int passCount = technique->getPassCount();
         for (unsigned int i = 0; i < passCount; ++i)
         {
-          Pass* pass = technique->getPassByIndex(i);
+          std::shared_ptr<Pass> pass = technique->getPassByIndex(i);
           assert(pass);
           pass->bind();
           GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
@@ -361,15 +333,15 @@ namespace gameplay
         assert(part);
 
         // Get the material for this mesh part.
-        Material* material = getMaterial(i);
+        std::shared_ptr<Material> material = getMaterial(i);
         if (material)
         {
-          Technique* technique = material->getTechnique();
+          std::shared_ptr<Technique> technique = material->getTechnique();
           assert(technique);
           unsigned int passCount = technique->getPassCount();
           for (unsigned int j = 0; j < passCount; ++j)
           {
-            Pass* pass = technique->getPassByIndex(j);
+            std::shared_ptr<Pass> pass = technique->getPassByIndex(j);
             assert(pass);
             pass->bind();
             GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->_indexBuffer));
@@ -385,7 +357,7 @@ namespace gameplay
     return partCount;
   }
 
-  void Model::setMaterialNodeBinding(Material* material)
+  void Model::setMaterialNodeBinding(std::shared_ptr<Material> material)
   {
     assert(material);
 
@@ -410,7 +382,7 @@ namespace gameplay
     }
     if (getMaterial())
     {
-      Material* materialClone = getMaterial()->clone(context);
+      std::shared_ptr<Material> materialClone = getMaterial()->clone(context);
       if (!materialClone)
       {
         GP_ERROR("Failed to clone material for model.");
@@ -419,17 +391,14 @@ namespace gameplay
       model->setMaterial(materialClone);
       materialClone->release();
     }
-    if (_partMaterials)
+    assert(_partCount == model->_partCount);
+    for (unsigned int i = 0; i < _partCount; ++i)
     {
-      assert(_partCount == model->_partCount);
-      for (unsigned int i = 0; i < _partCount; ++i)
+      if (_partMaterials[i])
       {
-        if (_partMaterials[i])
-        {
-          Material* materialClone = _partMaterials[i]->clone(context);
-          model->setMaterial(materialClone, i);
-          materialClone->release();
-        }
+        std::shared_ptr<Material> materialClone = _partMaterials[i]->clone(context);
+        model->setMaterial(materialClone, i);
+        materialClone->release();
       }
     }
     return model;
@@ -438,28 +407,7 @@ namespace gameplay
   void Model::validatePartCount()
   {
     assert(_mesh);
-    unsigned int partCount = _mesh->getPartCount();
-
-    if (_partCount != partCount)
-    {
-      // Allocate new arrays and copy old items to them.
-      if (_partMaterials)
-      {
-        Material** oldArray = _partMaterials;
-        _partMaterials = new Material * [partCount];
-        memset(_partMaterials, 0, sizeof(Material*) * partCount);
-        if (oldArray)
-        {
-          for (unsigned int i = 0; i < _partCount; ++i)
-          {
-            _partMaterials[i] = oldArray[i];
-          }
-        }
-        SAFE_DELETE_ARRAY(oldArray);
-      }
-      // Update local part count.
-      _partCount = _mesh->getPartCount();
-    }
+    _partCount = _mesh->getPartCount();
   }
 
 }

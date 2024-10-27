@@ -7,7 +7,7 @@ namespace gameplay
 {
 
   int Transform::_suspendTransformChanged(0);
-  std::vector<Transform*> Transform::_transformsChanged;
+  std::vector<std::shared_ptr<Transform>> Transform::_transformsChanged;
 
   Transform::Transform()
     : _matrixDirtyBits(0), _listeners(nullptr)
@@ -66,7 +66,7 @@ namespace gameplay
       size_t transformCount = _transformsChanged.size();
       for (size_t i = 0; i < transformCount; i++)
       {
-        Transform* t = _transformsChanged.at(i);
+        std::shared_ptr<Transform> t = _transformsChanged.at(i);
         assert(t);
         t->transformChanged();
       }
@@ -76,7 +76,7 @@ namespace gameplay
       transformCount = _transformsChanged.size();
       for (size_t i = 0; i < transformCount; i++)
       {
-        Transform* t = _transformsChanged.at(i);
+        std::shared_ptr<Transform> t = _transformsChanged.at(i);
         assert(t);
         t->_matrixDirtyBits &= ~DIRTY_NOTIFY;
       }
@@ -922,7 +922,7 @@ namespace gameplay
     {
       if (!isDirty(DIRTY_NOTIFY))
       {
-        suspendTransformChange(this);
+        suspendTransformChange(std::make_shared<Transform>(*this));
       }
     }
     else
@@ -936,7 +936,7 @@ namespace gameplay
     return (_matrixDirtyBits & matrixDirtyBits) == matrixDirtyBits;
   }
 
-  void Transform::suspendTransformChange(Transform* transform)
+  void Transform::suspendTransformChange(std::shared_ptr<Transform> transform)
   {
     assert(transform);
     transform->_matrixDirtyBits |= DIRTY_NOTIFY;
@@ -986,11 +986,11 @@ namespace gameplay
     fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(Transform, transformChanged), dynamic_cast<void*>(this));
   }
 
-  void Transform::cloneInto(Transform* transform, NodeCloneContext& context) const
+  void Transform::cloneInto(std::shared_ptr<Transform> transform, NodeCloneContext& context) const
   {
     assert(transform);
 
-    AnimationTarget::cloneInto(transform, context);
+    AnimationTarget::cloneInto(dynamic_cast<AnimationTarget*>(transform.get()), context);
     transform->_scale.set(_scale);
     transform->_rotation.set(_rotation);
     transform->_translation.set(_translation);

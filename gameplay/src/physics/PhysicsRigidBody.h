@@ -403,7 +403,7 @@ private:
      * @param group Group identifier
      * @param mask Bitmask field for filtering collisions with this object.
      */
-    PhysicsRigidBody(Node* node, const PhysicsCollisionShape::Definition& shape, const Parameters& parameters, int group = PHYSICS_COLLISION_GROUP_DEFAULT, int mask = PHYSICS_COLLISION_MASK_DEFAULT);
+    PhysicsRigidBody(std::shared_ptr<Node> node, const PhysicsCollisionShape::Definition& shape, const Parameters& parameters, int group = PHYSICS_COLLISION_GROUP_DEFAULT, int mask = PHYSICS_COLLISION_MASK_DEFAULT);
 
     /**
      * Destructor.
@@ -423,7 +423,7 @@ private:
      * @param nspace The namespace expected (default is "RIGID_BODY").
      * @return The newly created rigid body, or <code>nullptr</code> if the rigid body failed to load.
      */
-    static PhysicsRigidBody* create(Node* node, Properties* properties, const char* nspace = "RIGID_BODY");
+    static PhysicsRigidBody* create(std::shared_ptr<Node> node, Properties* properties, const char* nspace = "RIGID_BODY");
 
     // Adds a constraint to this rigid body.
     void addConstraint(PhysicsConstraint* constraint);
