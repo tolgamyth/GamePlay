@@ -307,8 +307,10 @@ void BillboardSample::loadBillboards()
   // Create the model and node and bind the material
   for (unsigned int i = 0; i < BILLBOARD_COUNT; i++)
   {
-    Node* node = Node::create();
+    auto& node = _billboards.emplace_back(Node::create());
+    
     Model* model = Model::create(mesh);
+    
     node->setDrawable(model);
     _scene->addNode(node);
 
@@ -325,8 +327,6 @@ void BillboardSample::loadBillboards()
     float tx = MATH_RANDOM_0_1() * GROUND_WIDTH - (GROUND_WIDTH / 2.0f);
     float tz = MATH_RANDOM_0_1() * GROUND_HEIGHT - (GROUND_HEIGHT / 2.0f);
     node->translate(tx, (BILLBOARD_HEIGHT / 2.0f), tz);
-
-    _billboards.push_back(node);
   }
   SAFE_RELEASE(mesh);
 }

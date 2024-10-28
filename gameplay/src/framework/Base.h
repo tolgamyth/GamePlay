@@ -338,3 +338,32 @@ extern ALenum __al_error_code;
  * Accesses the most recently set global AL error.
  */
 #define AL_LAST_ERROR() __al_error_code
+
+#define DEFINE_ITERATOR(StructType)                             \
+    class Iterator {                                            \
+    public:                                                     \
+        StructType* current;                                    \
+                                                                \
+        explicit Iterator(StructType* entry) : current(entry) {}\
+                                                                \
+        StructType& operator*() { return *current; }            \
+        StructType* operator->() { return current; }            \
+                                                                \
+        Iterator& operator++() {                                \
+            if (current) current = current->next;               \
+            return *this;                                       \
+        }                                                       \
+                                                                \
+        Iterator operator++(int) {                              \
+            Iterator temp = *this;                              \
+            ++(*this);                                          \
+            return temp;                                        \
+        }                                                       \
+                                                                \
+        bool operator!=(const Iterator& other) const {          \
+            return current != other.current;                    \
+        }                                                       \
+    };                                                          \
+                                                                \
+    Iterator begin() { return Iterator(this); }                 \
+    Iterator end() { return Iterator(nullptr); }

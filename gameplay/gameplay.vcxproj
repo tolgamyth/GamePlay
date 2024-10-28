@@ -15,6 +15,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="res\materials\terrain.material" />
     <None Include="res\shaders\colored.frag" />
     <None Include="res\shaders\colored.vert" />

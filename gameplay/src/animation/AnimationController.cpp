@@ -40,9 +40,8 @@ void AnimationController::initialize()
 void AnimationController::finalize()
 {
     std::list<AnimationClip*>::iterator itr = _runningClips.begin();
-    for ( ; itr != _runningClips.end(); itr++)
+    for (auto& clip : _runningClips)
     {
-        AnimationClip* clip = *itr;
         SAFE_RELEASE(clip);
     }
     _runningClips.clear();

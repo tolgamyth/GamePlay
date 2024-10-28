@@ -93,8 +93,9 @@ FrameBuffer* FrameBuffer::create(const char* id, unsigned int width, unsigned in
     // Create the frame buffer
     GLuint handle = 0;
     GL_ASSERT( glGenFramebuffers(1, &handle) );
-    FrameBuffer* frameBuffer = new FrameBuffer(id, width, height, handle);
-    
+
+    const auto& frameBuffer = _frameBuffers.emplace_back(new FrameBuffer(id, width, height, handle));
+
     // Create the render target array for the new frame buffer
     frameBuffer->_renderTargets = new RenderTarget*[_maxRenderTargets];
     memset(frameBuffer->_renderTargets, 0, sizeof(RenderTarget*) * _maxRenderTargets);
@@ -104,7 +105,6 @@ FrameBuffer* FrameBuffer::create(const char* id, unsigned int width, unsigned in
         frameBuffer->setRenderTarget(renderTarget, 0);
         SAFE_RELEASE(renderTarget);
     }
-    _frameBuffers.push_back(frameBuffer);
 
     return frameBuffer;
 }
@@ -115,9 +115,8 @@ FrameBuffer* FrameBuffer::getFrameBuffer(const char* id)
 
     // Search the vector for a matching ID.
     std::vector<FrameBuffer*>::const_iterator it;
-    for (it = _frameBuffers.begin(); it < _frameBuffers.end(); ++it)
+    for (auto fb : _frameBuffers)
     {
-        FrameBuffer* fb = *it;
         assert(fb);
         if (strcmp(id, fb->getId()) == 0)
         {

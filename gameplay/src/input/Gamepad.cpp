@@ -74,40 +74,32 @@ namespace gameplay
 
   void Gamepad::remove(GamepadHandle handle)
   {
-    std::vector<Gamepad*>::iterator it = __gamepads.begin();
-    do
-    {
-      Gamepad* gamepad = *it;
-      if (gamepad->_handle == handle)
-      {
-        it = __gamepads.erase(it);
-        Game::getInstance()->gamepadEventInternal(DISCONNECTED_EVENT, gamepad);
-        SAFE_DELETE(gamepad);
-      }
-      else
-      {
-        it++;
-      }
-    } while (it != __gamepads.end());
+    __gamepads.erase(
+      std::remove_if(__gamepads.begin(), __gamepads.end(),
+        [handle](Gamepad* gamepad) {
+          if (gamepad->_handle == handle) {
+            Game::getInstance()->gamepadEventInternal(DISCONNECTED_EVENT, gamepad);
+            SAFE_DELETE(gamepad);
+            return true; // Mark for removal
+          }
+          return false; // Keep in container
+        }),
+      __gamepads.end());
   }
 
   void Gamepad::remove(Gamepad* gamepad)
   {
-    std::vector<Gamepad*>::iterator it = __gamepads.begin();
-    do
-    {
-      Gamepad* g = *it;
-      if (g == gamepad)
-      {
-        it = __gamepads.erase(it);
-        Game::getInstance()->gamepadEventInternal(DISCONNECTED_EVENT, g);
-        SAFE_DELETE(gamepad);
-      }
-      else
-      {
-        it++;
-      }
-    } while (it != __gamepads.end());
+    __gamepads.erase(
+      std::remove_if(__gamepads.begin(), __gamepads.end(),
+        [&gamepad](Gamepad* g) {
+          if (gamepad == g) {
+            Game::getInstance()->gamepadEventInternal(DISCONNECTED_EVENT, g);
+            SAFE_DELETE(gamepad);
+            return true; // Mark for removal
+          }
+          return false; // Keep in container
+        }),
+      __gamepads.end());
   }
 
   void Gamepad::bindGamepadControls(Container* container)

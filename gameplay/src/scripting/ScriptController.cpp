@@ -762,9 +762,9 @@ void ScriptController::initialize()
 void ScriptController::finalize()
 {
     // Cleanup any outstanding time listeners
-    for (std::list<ScriptTimeListener*>::iterator itr = _timeListeners.begin(); itr != _timeListeners.end(); ++itr)
+    for (auto listener : _timeListeners)
     {
-        SAFE_DELETE(*itr);
+        SAFE_DELETE(listener);
     }
     _timeListeners.clear();
 
@@ -937,8 +937,7 @@ void ScriptController::schedule(float timeOffset, const char* function)
         script->addRef();
     }
 
-    ScriptTimeListener* listener = new ScriptTimeListener(script, function);
-    _timeListeners.push_back(listener);
+    auto& listener = _timeListeners.emplace_back(new ScriptTimeListener(script, function));
 
     Game::getInstance()->schedule(timeOffset, listener, nullptr);
 }

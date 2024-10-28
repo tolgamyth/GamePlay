@@ -36,8 +36,8 @@ namespace gameplay
       // playing sources. When the source is deleted afterwards, it should be removed
       // from controller's set regardless of its playing state.
       AudioController* audioController = Game::getInstance()->getAudioController();
-      assert(audioController);
-      audioController->removePlayingSource(shared_from_this());
+      //assert(audioController);
+      audioController->removePlayingSource(this);
 
       AL_CHECK(alDeleteSources(1, &_alSource));
       _alSource = 0;
@@ -77,7 +77,7 @@ namespace gameplay
       return nullptr;
     }
 
-    return std::shared_ptr<AudioSource>(new AudioSource(buffer, alSource));
+    return std::make_shared<AudioSource>(buffer, alSource);
   }
 
   std::shared_ptr<AudioSource> AudioSource::create(Properties* properties)
@@ -177,7 +177,7 @@ namespace gameplay
     // if the source is being paused by the user and not the controller itself.
     AudioController* audioController = Game::getInstance()->getAudioController();
     assert(audioController);
-    audioController->removePlayingSource(shared_from_this());
+    audioController->removePlayingSource(this);
   }
 
   void AudioSource::resume()
@@ -195,7 +195,7 @@ namespace gameplay
     // Remove the source from the controller's set of currently playing sources.
     AudioController* audioController = Game::getInstance()->getAudioController();
     assert(audioController);
-    audioController->removePlayingSource(shared_from_this());
+    audioController->removePlayingSource(this);
   }
 
   void AudioSource::rewind()

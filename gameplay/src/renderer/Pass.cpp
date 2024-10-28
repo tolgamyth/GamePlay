@@ -7,11 +7,17 @@
 namespace gameplay
 {
 
-Pass::Pass(const char* id, Technique* technique) :
+  Pass::Pass(const char* id, Technique* technique) :
     _id(id ? id : ""), _technique(technique), _effect(nullptr), _vaBinding(nullptr)
-{
+  {
     RenderState::_parent = _technique;
-}
+  }
+
+  Pass::Pass(const char* id, Technique* technique, Effect* effect) :
+    _id(id ? id : ""), _technique(technique), _effect(effect), _vaBinding(nullptr)
+  {
+    RenderState::_parent = _technique;
+  }
 
 Pass::~Pass()
 {

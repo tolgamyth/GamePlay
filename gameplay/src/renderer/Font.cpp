@@ -747,13 +747,13 @@ namespace gameplay
 
               // Record this line's size.
               emptyLines.push_back(false);
-              lines.push_back(Vector2(xPos, lineWidth));
+              lines.emplace_back(Vector2(xPos, lineWidth));
             }
             else
             {
               // Record the existence of an empty line.
               emptyLines.push_back(true);
-              lines.push_back(Vector2(FLT_MAX, 0));
+              lines.emplace_back(Vector2(FLT_MAX, 0));
             }
 
             lineWidth = 0;
@@ -805,7 +805,7 @@ namespace gameplay
 
           // Record this line's size.
           emptyLines.push_back(false);
-          lines.push_back(Vector2(xPos, lineWidth));
+          lines.emplace_back(Vector2(xPos, lineWidth));
           lineWidth = 0;
         }
         else
@@ -841,7 +841,7 @@ namespace gameplay
             // Record the existence of an empty line.
             ++emptyLinesCount;
             emptyLines.push_back(true);
-            lines.push_back(Vector2(FLT_MAX, 0));
+            lines.emplace_back(Vector2(FLT_MAX, 0));
           }
 
           token++;
@@ -864,7 +864,7 @@ namespace gameplay
         }
 
         // Record this line's size.
-        lines.push_back(Vector2(xPos, lineWidth));
+        lines.emplace_back(Vector2(xPos, lineWidth));
 
         token += tokenLength;
       }
@@ -886,7 +886,7 @@ namespace gameplay
         xPos += hWhitespace;
       }
 
-      lines.push_back(Vector2(xPos, lineWidth));
+      lines.emplace_back(Vector2(xPos, lineWidth));
     }
 
     int x = INT_MAX;

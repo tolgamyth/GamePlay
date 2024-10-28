@@ -960,16 +960,22 @@ namespace gameplay
   {
     assert(listener);
 
-    if (_listeners)
+    if (_listeners && !_listeners->empty())
     {
-      for (std::list<TransformListener>::iterator itr = _listeners->begin(); itr != _listeners->end(); ++itr)
+      if (auto itr = std::ranges::find_if(*_listeners, [&](const TransformListener& item) {
+        return item.listener == listener;
+        }); itr != _listeners->end())
       {
-        if ((*itr).listener == listener)
-        {
-          _listeners->erase(itr);
-          break;
-        }
+        _listeners->erase(itr);
       }
+      // Another way to acheive similar
+      //auto itr = std::find_if(_listeners->begin(), _listeners->end(), [&](const TransformListener& item) {
+      //  return item.listener == listener;
+      //  });
+
+      //if (itr != _listeners->end()) {
+      //  _listeners->erase(itr);
+      //}
     }
   }
 
@@ -977,7 +983,7 @@ namespace gameplay
   {
     if (_listeners)
     {
-      for(auto transform : *_listeners)
+      for (auto transform : *_listeners)
       {
         assert(transform.listener);
         transform.listener->transformChanged(this, transform.cookie);

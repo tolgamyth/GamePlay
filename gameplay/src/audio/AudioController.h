@@ -55,7 +55,7 @@ private:
 
     void addPlayingSource(std::shared_ptr<AudioSource> source);
     
-    void removePlayingSource(std::shared_ptr<AudioSource> source);
+    void removePlayingSource(AudioSource* source);
 
     static void streamingThreadProc(void* arg);
 

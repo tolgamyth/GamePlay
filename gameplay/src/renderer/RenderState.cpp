@@ -74,10 +74,7 @@ namespace gameplay
     }
 
     // Create a new parameter and store it in our list.
-    param = new MaterialParameter(name);
-    _parameters.push_back(param);
-
-    return param;
+    return _parameters.emplace_back(new MaterialParameter(name));
   }
 
   unsigned int RenderState::getParameterCount() const
@@ -223,12 +220,21 @@ namespace gameplay
       if (_nodeBinding)
       {
         // Apply all existing auto-bindings using this node.
-        std::map<std::string, std::string>::const_iterator itr = _autoBindings.begin();
-        while (itr != _autoBindings.end())
-        {
-          applyAutoBinding(itr->first.c_str(), itr->second.c_str());
-          ++itr;
+        for (const auto& [key, value] : _autoBindings) {
+          applyAutoBinding(key.c_str(), value.c_str());
         }
+        
+        // Alternatives
+        //std::ranges::for_each(_autoBindings, [this](const auto& binding) {
+        //  applyAutoBinding(binding.first.c_str(), binding.second.c_str());
+        //  });
+
+        //std::map<std::string, std::string>::const_iterator itr = _autoBindings.begin();
+        //while (itr != _autoBindings.end())
+        //{
+        //  applyAutoBinding(itr->first.c_str(), itr->second.c_str());
+        //  ++itr;
+        //}
       }
     }
   }

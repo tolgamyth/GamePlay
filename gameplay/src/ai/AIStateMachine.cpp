@@ -45,9 +45,7 @@ AIAgent* AIStateMachine::getAgent() const
 
 AIState* AIStateMachine::addState(const char* id)
 {
-    AIState* state = AIState::create(id);
-    _states.push_back(state);
-    return state;
+    return _states.emplace_back(AIState::create(id));
 }
 
 void AIStateMachine::addState(AIState* state)
@@ -71,7 +69,7 @@ AIState* AIStateMachine::getState(const char* id) const
     assert(id);
 
     for (AIState* state : _states) {
-      if (strcmp(id, state->getId()) == 0) {
+      if (state->getId() == std::string_view{ id }) {
         return state;
       }
     }

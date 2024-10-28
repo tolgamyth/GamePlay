@@ -462,9 +462,8 @@ namespace gameplay
     if (_listeners == nullptr)
       return;
 
-    for (std::list<Camera::Listener*>::iterator itr = _listeners->begin(); itr != _listeners->end(); ++itr)
+    for (auto listener : *_listeners)
     {
-      Camera::Listener* listener = (*itr);
       listener->cameraChanged(this);
     }
   }
@@ -485,13 +484,9 @@ namespace gameplay
 
     if (_listeners)
     {
-      for (std::list<Camera::Listener*>::iterator itr = _listeners->begin(); itr != _listeners->end(); ++itr)
-      {
-        if ((*itr) == listener)
-        {
-          _listeners->erase(itr);
-          break;
-        }
+      auto iter = std::find(_listeners->begin(), _listeners->end(), listener);
+      if (iter != _listeners->end()) {
+        _listeners->erase(iter);
       }
     }
   }

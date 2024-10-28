@@ -6,20 +6,20 @@
 namespace gameplay
 {
 
-PhysicsVehicleWheel::PhysicsVehicleWheel(Node* node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters)
+  PhysicsVehicleWheel::PhysicsVehicleWheel(Node* node, const PhysicsCollisionShape::Definition& shape, const PhysicsRigidBody::Parameters& parameters)
     : PhysicsCollisionObject(node), _host(nullptr), _indexInHost(0)
-{
+  {
     findAncestorAndBind();
-}
+  }
 
-PhysicsVehicleWheel::PhysicsVehicleWheel(Node* node)
+  PhysicsVehicleWheel::PhysicsVehicleWheel(Node* node)
     : PhysicsCollisionObject(node), _host(nullptr), _indexInHost(0)
-{
+  {
     findAncestorAndBind();
-}
+  }
 
-PhysicsVehicleWheel* PhysicsVehicleWheel::create(Node* node, Properties* properties)
-{
+  PhysicsVehicleWheel* PhysicsVehicleWheel::create(Node* node, Properties* properties)
+  {
     PhysicsVehicleWheel* wheel = new PhysicsVehicleWheel(node);
 
     // Load the defined wheel parameters.
@@ -28,90 +28,90 @@ PhysicsVehicleWheel* PhysicsVehicleWheel::create(Node* node, Properties* propert
     const char* name;
     while ((name = properties->getNextProperty()) != nullptr)
     {
-        if (strcmp(name, "steerable") == 0)
-        {
-            wheel->setSteerable(properties->getBool(name));
-        }
-        else if (strcmp(name, "wheelDirection") == 0 && properties->getVector3(name, &v))
-        {
-            wheel->setWheelDirection(v);
-        }
-        else if (strcmp(name, "wheelAxle") == 0 && properties->getVector3(name, &v))
-        {
-            wheel->setWheelAxle(v);
-        }
-        else if (strcmp(name, "strutConnectionOffset") == 0 && properties->getVector3(name, &v))
-        {
-            wheel->setStrutConnectionOffset(v);
-        }
-        else if (strcmp(name, "strutRestLength") == 0)
-        {
-            wheel->setStrutRestLength(properties->getFloat(name));
-        }
-        else if (strcmp(name, "strutTravelMax") == 0)
-        {
-            wheel->setStrutTravelMax(properties->getFloat(name));
-        }
-        else if (strcmp(name, "strutStiffness") == 0)
-        {
-            wheel->setStrutStiffness(properties->getFloat(name));
-        }
-        else if (strcmp(name, "strutDampingCompression") == 0)
-        {
-            wheel->setStrutDampingCompression(properties->getFloat(name));
-        }
-        else if (strcmp(name, "strutDampingRelaxation") == 0)
-        {
-            wheel->setStrutDampingRelaxation(properties->getFloat(name));
-        }
-        else if (strcmp(name, "strutForceMax") == 0)
-        {
-            wheel->setStrutForceMax(properties->getFloat(name));
-        }
-        else if (strcmp(name, "frictionBreakout") == 0)
-        {
-            wheel->setFrictionBreakout(properties->getFloat(name));
-        }
-        else if (strcmp(name, "wheelRadius") == 0)
-        {
-            wheel->setWheelRadius(properties->getFloat(name));
-        }
-        else if (strcmp(name, "rollInfluence") == 0)
-        {
-            wheel->setRollInfluence(properties->getFloat(name));
-        }
-        else
-        {
-            // Ignore this case (we've already parsed the rigid body parameters).
-        }
+      if (strcmp(name, "steerable") == 0)
+      {
+        wheel->setSteerable(properties->getBool(name));
+      }
+      else if (strcmp(name, "wheelDirection") == 0 && properties->getVector3(name, &v))
+      {
+        wheel->setWheelDirection(v);
+      }
+      else if (strcmp(name, "wheelAxle") == 0 && properties->getVector3(name, &v))
+      {
+        wheel->setWheelAxle(v);
+      }
+      else if (strcmp(name, "strutConnectionOffset") == 0 && properties->getVector3(name, &v))
+      {
+        wheel->setStrutConnectionOffset(v);
+      }
+      else if (strcmp(name, "strutRestLength") == 0)
+      {
+        wheel->setStrutRestLength(properties->getFloat(name));
+      }
+      else if (strcmp(name, "strutTravelMax") == 0)
+      {
+        wheel->setStrutTravelMax(properties->getFloat(name));
+      }
+      else if (strcmp(name, "strutStiffness") == 0)
+      {
+        wheel->setStrutStiffness(properties->getFloat(name));
+      }
+      else if (strcmp(name, "strutDampingCompression") == 0)
+      {
+        wheel->setStrutDampingCompression(properties->getFloat(name));
+      }
+      else if (strcmp(name, "strutDampingRelaxation") == 0)
+      {
+        wheel->setStrutDampingRelaxation(properties->getFloat(name));
+      }
+      else if (strcmp(name, "strutForceMax") == 0)
+      {
+        wheel->setStrutForceMax(properties->getFloat(name));
+      }
+      else if (strcmp(name, "frictionBreakout") == 0)
+      {
+        wheel->setFrictionBreakout(properties->getFloat(name));
+      }
+      else if (strcmp(name, "wheelRadius") == 0)
+      {
+        wheel->setWheelRadius(properties->getFloat(name));
+      }
+      else if (strcmp(name, "rollInfluence") == 0)
+      {
+        wheel->setRollInfluence(properties->getFloat(name));
+      }
+      else
+      {
+        // Ignore this case (we've already parsed the rigid body parameters).
+      }
     }
 
     return wheel;
-}
+  }
 
-PhysicsVehicleWheel::~PhysicsVehicleWheel()
-{
-}
+  PhysicsVehicleWheel::~PhysicsVehicleWheel()
+  {
+  }
 
-btCollisionObject* PhysicsVehicleWheel::getCollisionObject() const
-{
+  btCollisionObject* PhysicsVehicleWheel::getCollisionObject() const
+  {
     assert(_host);
 
     return _host->getCollisionObject();
-}
+  }
 
-PhysicsCollisionObject::Type PhysicsVehicleWheel::getType() const
-{
+  PhysicsCollisionObject::Type PhysicsVehicleWheel::getType() const
+  {
     return PhysicsCollisionObject::VEHICLE_WHEEL;
-}
+  }
 
-void PhysicsVehicleWheel::setEnabled(bool enable)
-{
+  void PhysicsVehicleWheel::setEnabled(bool enable)
+  {
     GP_ERROR("Operation not supported (PhysicsVehicleWheel::setEnabled(bool)). Use host vehicle instead.");
-}
+  }
 
-void PhysicsVehicleWheel::findAncestorAndBind()
-{
+  void PhysicsVehicleWheel::findAncestorAndBind()
+  {
     assert(getNode());
 
     // Search for the first PhysicsVehicle that shares a common ancestor, and
@@ -129,68 +129,68 @@ void PhysicsVehicleWheel::findAncestorAndBind()
     Node* m;
     for (Node* n = getNode(); n && !host; n = n->getParent())
     {
-        // Visit previous siblings starting with n
-		for (m = n; m && !host; m = m->getPreviousSibling())
-        {
-            host = findVehicle(m);
-        }
+      // Visit previous siblings starting with n
+      for (m = n; m && !host; m = m->getPreviousSibling())
+      {
+        host = findVehicle(m);
+      }
 
-        // Visit siblings after n
-        for (m = n->getNextSibling(); m && !host; m = m->getNextSibling())
-        {
-            host = findVehicle(m);
-        }
+      // Visit siblings after n
+      for (m = n->getNextSibling(); m && !host; m = m->getNextSibling())
+      {
+        host = findVehicle(m);
+      }
     }
 
     // Note: Currently this method is silent on failure to find a host.
     if (host)
     {
-        host->addWheel(this);
-        _initialOffset = _node->getTranslation() - host->_node->getTranslation();
+      host->addWheel(this);
+      _initialOffset = _node->getTranslation() - host->_node->getTranslation();
     }
-}
+  }
 
-PhysicsVehicle* PhysicsVehicleWheel::findVehicle(Node* node)
-{
+  PhysicsVehicle* PhysicsVehicleWheel::findVehicle(Node* node)
+  {
     PhysicsCollisionObject* collisionObject = node->getCollisionObject();
     if (collisionObject && collisionObject->getType() == PhysicsCollisionObject::VEHICLE)
     {
-        return static_cast<PhysicsVehicle*>(collisionObject);
+      return static_cast<PhysicsVehicle*>(collisionObject);
     }
 
     PhysicsVehicle* result = nullptr;
     for (Node* p = node->getFirstChild(); p && !result; p = p->getNextSibling())
     {
-        result = findVehicle(p);
+      result = findVehicle(p);
     }
     return result;
-}
+  }
 
-void PhysicsVehicleWheel::setHost(PhysicsVehicle* host, unsigned int indexInHost)
-{
+  void PhysicsVehicleWheel::setHost(PhysicsVehicle* host, unsigned int indexInHost)
+  {
     _host = host;
     _indexInHost = indexInHost;
-}
+  }
 
-void PhysicsVehicleWheel::addToVehicle(btRaycastVehicle* vehicle)
-{
+  void PhysicsVehicleWheel::addToVehicle(btRaycastVehicle* vehicle)
+  {
     assert(_host);
     assert(_host->getWheelCount() == vehicle->getNumWheels() + 1);
 
     // Use safe defaults for now. Properties are assigned elsewhere.
     btRaycastVehicle::btVehicleTuning tuning;
     vehicle->addWheel(
-        btVector3(0, 0, 0),
-        btVector3(0, -1, 0),
-        btVector3(-1, 0, 0),
-        0.6f,
-        0.5f,
-        tuning,
-        false);
-}
+      btVector3(0, 0, 0),
+      btVector3(0, -1, 0),
+      btVector3(-1, 0, 0),
+      0.6f,
+      0.5f,
+      tuning,
+      false);
+  }
 
-void PhysicsVehicleWheel::transform(Node* node) const
-{
+  void PhysicsVehicleWheel::transform(Node* node) const
+  {
     assert(_host);
     assert(_host->_node);
 
@@ -202,11 +202,11 @@ void PhysicsVehicleWheel::transform(Node* node) const
     _host->_node->getMatrix().transformVector(&strutLine);
     Vector3 wheelPos;
     getWheelPos(&wheelPos);
-    node->setTranslation(wheelPos + strutLine*(strutLine.dot(_positionDelta) / strutLine.lengthSquared()));
-}
+    node->setTranslation(wheelPos + strutLine * (strutLine.dot(_positionDelta) / strutLine.lengthSquared()));
+  }
 
-void PhysicsVehicleWheel::update(float elapsedTime)
-{
+  void PhysicsVehicleWheel::update(float elapsedTime)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
@@ -223,12 +223,12 @@ void PhysicsVehicleWheel::update(float elapsedTime)
     // Filter out noise from Bullet
     Vector3 delta(_positionDelta, commandedPosition);
     float threshold = getStrutRestLength() * 2.0f;
-    float responseTime = (delta.lengthSquared() > threshold*threshold) ? 0 : 60;
+    float responseTime = (delta.lengthSquared() > threshold * threshold) ? 0 : 60;
     _positionDelta.smooth(commandedPosition, elapsedTime, responseTime);
-}
+  }
 
-void PhysicsVehicleWheel::getConnectionDefault(Vector3* result) const
-{
+  void PhysicsVehicleWheel::getConnectionDefault(Vector3* result) const
+  {
     // projected strut length
     getWheelDirection(result);
     result->normalize();
@@ -244,69 +244,69 @@ void PhysicsVehicleWheel::getConnectionDefault(Vector3* result) const
 
     // offset at bind time
     *result += _initialOffset;
-}
+  }
 
-void PhysicsVehicleWheel::getWheelPos(Vector3* result) const
-{
+  void PhysicsVehicleWheel::getWheelPos(Vector3* result) const
+  {
     assert(_host);
     assert(_host->_node);
 
     *result = _initialOffset;
     _host->_node->getMatrix().transformPoint(result);
-}
+  }
 
-bool PhysicsVehicleWheel::isSteerable() const
-{
+  bool PhysicsVehicleWheel::isSteerable() const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_bIsFrontWheel;
-}
+  }
 
-void PhysicsVehicleWheel::setSteerable(bool steerable)
-{
+  void PhysicsVehicleWheel::setSteerable(bool steerable)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_bIsFrontWheel = steerable;
-}
+  }
 
-void PhysicsVehicleWheel::getWheelDirection(Vector3* wheelDirection) const
-{
+  void PhysicsVehicleWheel::getWheelDirection(Vector3* wheelDirection) const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     const btVector3& v = _host->_vehicle->getWheelInfo(_indexInHost).m_wheelDirectionCS;
     wheelDirection->set(v.x(), v.y(), v.z());
-}
+  }
 
-void PhysicsVehicleWheel::setWheelDirection(const Vector3& wheelDirection)
-{
+  void PhysicsVehicleWheel::setWheelDirection(const Vector3& wheelDirection)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_wheelDirectionCS.setValue(wheelDirection.x, wheelDirection.y, wheelDirection.z);
-}
+  }
 
-void PhysicsVehicleWheel::getWheelAxle(Vector3* wheelAxle) const
-{
+  void PhysicsVehicleWheel::getWheelAxle(Vector3* wheelAxle) const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     const btVector3& v = _host->_vehicle->getWheelInfo(_indexInHost).m_wheelAxleCS;
     wheelAxle->set(v.x(), v.y(), v.z());
-}
+  }
 
-void PhysicsVehicleWheel::setWheelAxle(const Vector3& wheelAxle)
-{
+  void PhysicsVehicleWheel::setWheelAxle(const Vector3& wheelAxle)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
-    _host->_vehicle->getWheelInfo(_indexInHost).m_wheelAxleCS.setValue( wheelAxle.x, wheelAxle.y, wheelAxle.z);
-}
+    _host->_vehicle->getWheelInfo(_indexInHost).m_wheelAxleCS.setValue(wheelAxle.x, wheelAxle.y, wheelAxle.z);
+  }
 
-void PhysicsVehicleWheel::getStrutConnectionOffset(Vector3* strutConnectionOffset) const
-{
+  void PhysicsVehicleWheel::getStrutConnectionOffset(Vector3* strutConnectionOffset) const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
@@ -315,10 +315,10 @@ void PhysicsVehicleWheel::getStrutConnectionOffset(Vector3* strutConnectionOffse
     Vector3 strutConnectionDefault;
     getConnectionDefault(&strutConnectionDefault);
     *strutConnectionOffset -= strutConnectionDefault;
-}
+  }
 
-void PhysicsVehicleWheel::setStrutConnectionOffset(const Vector3& strutConnectionOffset)
-{
+  void PhysicsVehicleWheel::setStrutConnectionOffset(const Vector3& strutConnectionOffset)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
@@ -326,152 +326,152 @@ void PhysicsVehicleWheel::setStrutConnectionOffset(const Vector3& strutConnectio
     getConnectionDefault(&strutConnectionPoint);
     strutConnectionPoint += strutConnectionOffset;
     _host->_vehicle->getWheelInfo(_indexInHost).m_chassisConnectionPointCS.setValue(strutConnectionPoint.x,
-                                                                                    strutConnectionPoint.y,
-                                                                                    strutConnectionPoint.z);
-}
+      strutConnectionPoint.y,
+      strutConnectionPoint.z);
+  }
 
-float PhysicsVehicleWheel::getStrutRestLength() const
-{
+  float PhysicsVehicleWheel::getStrutRestLength() const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_suspensionRestLength1;
-}
+  }
 
-void PhysicsVehicleWheel::setStrutRestLength(float strutRestLength)
-{
+  void PhysicsVehicleWheel::setStrutRestLength(float strutRestLength)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_suspensionRestLength1 = strutRestLength;
-}
+  }
 
-float PhysicsVehicleWheel::getStrutTravelMax() const
-{
+  float PhysicsVehicleWheel::getStrutTravelMax() const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_maxSuspensionTravelCm / 100.0f;
-}
+  }
 
-void PhysicsVehicleWheel::setStrutTravelMax(float strutTravelMax)
-{
+  void PhysicsVehicleWheel::setStrutTravelMax(float strutTravelMax)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_maxSuspensionTravelCm = strutTravelMax * 100.0f;
-}
+  }
 
-float PhysicsVehicleWheel::getStrutStiffness() const
-{
+  float PhysicsVehicleWheel::getStrutStiffness() const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_suspensionStiffness;
-}
+  }
 
-void PhysicsVehicleWheel::setStrutStiffness(float strutStiffness)
-{
+  void PhysicsVehicleWheel::setStrutStiffness(float strutStiffness)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_suspensionStiffness = strutStiffness;
-}
+  }
 
-float PhysicsVehicleWheel::getStrutDampingCompression() const
-{
+  float PhysicsVehicleWheel::getStrutDampingCompression() const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsDampingCompression;
-}
+  }
 
-void PhysicsVehicleWheel::setStrutDampingCompression(float strutDampingCompression)
-{
+  void PhysicsVehicleWheel::setStrutDampingCompression(float strutDampingCompression)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsDampingCompression = strutDampingCompression;
-}
+  }
 
-float PhysicsVehicleWheel::getStrutDampingRelaxation() const
-{
+  float PhysicsVehicleWheel::getStrutDampingRelaxation() const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsDampingRelaxation;
-}
+  }
 
-void PhysicsVehicleWheel::setStrutDampingRelaxation(float strutDampingRelaxation)
-{
+  void PhysicsVehicleWheel::setStrutDampingRelaxation(float strutDampingRelaxation)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsDampingRelaxation = strutDampingRelaxation;
-}
+  }
 
-float PhysicsVehicleWheel::getStrutForceMax() const
-{
+  float PhysicsVehicleWheel::getStrutForceMax() const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_maxSuspensionForce;
-}
+  }
 
-void PhysicsVehicleWheel::setStrutForceMax(float strutForceMax)
-{
+  void PhysicsVehicleWheel::setStrutForceMax(float strutForceMax)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_maxSuspensionForce = strutForceMax;
-}
+  }
 
-float PhysicsVehicleWheel::getFrictionBreakout() const
-{
+  float PhysicsVehicleWheel::getFrictionBreakout() const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_frictionSlip;
-}
+  }
 
-void PhysicsVehicleWheel::setFrictionBreakout(float frictionBreakout)
-{
+  void PhysicsVehicleWheel::setFrictionBreakout(float frictionBreakout)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_frictionSlip = frictionBreakout;
-}
+  }
 
-float PhysicsVehicleWheel::getWheelRadius() const
-{
+  float PhysicsVehicleWheel::getWheelRadius() const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsRadius;
-}
+  }
 
-void PhysicsVehicleWheel::setWheelRadius(float wheelRadius)
-{
+  void PhysicsVehicleWheel::setWheelRadius(float wheelRadius)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_wheelsRadius = wheelRadius;
-}
+  }
 
-float PhysicsVehicleWheel::getRollInfluence() const
-{
+  float PhysicsVehicleWheel::getRollInfluence() const
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     return _host->_vehicle->getWheelInfo(_indexInHost).m_rollInfluence;
-}
+  }
 
-void PhysicsVehicleWheel::setRollInfluence(float rollInfluence)
-{
+  void PhysicsVehicleWheel::setRollInfluence(float rollInfluence)
+  {
     assert(_host);
     assert(_host->_vehicle);
 
     _host->_vehicle->getWheelInfo(_indexInHost).m_rollInfluence = rollInfluence;
-}
+  }
 
 }

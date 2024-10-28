@@ -71,18 +71,14 @@ namespace gameplay
 
   void AudioController::pause()
   {
-    std::set<std::shared_ptr<AudioSource>>::iterator itr = _playingSources.begin();
-
     // For each source that is playing, pause it.
-    std::shared_ptr<AudioSource> source = nullptr;
-    while (itr != _playingSources.end())
+    for (auto& source : _playingSources)
     {
-      assert(*itr);
-      source = *itr;
+      assert(source);
       _pausingSource = source;
+
       source->pause();
       _pausingSource = nullptr;
-      itr++;
     }
 #ifdef ALC_SOFT_pause_device
     alcDevicePauseSOFT(_alcDevice);
@@ -99,13 +95,10 @@ namespace gameplay
     auto itr = _playingSources.begin();
 
     // For each source that is playing, resume it.
-    std::shared_ptr<AudioSource> source = nullptr;
-    while (itr != _playingSources.end())
+    for (auto& source : _playingSources)
     {
-      assert(*itr);
-      source = *itr;
+      assert(source);
       source->resume();
-      itr++;
     }
   }
 
@@ -141,20 +134,29 @@ namespace gameplay
     }
   }
 
-  void AudioController::removePlayingSource(std::shared_ptr<AudioSource> source)
+  void AudioController::removePlayingSource(AudioSource* source)
   {
-    if (_pausingSource != source)
+    if (_pausingSource.get() != source)
     {
-      auto iter = _playingSources.find(source);
+      auto iter = std::find_if(_playingSources.begin(), _playingSources.end(), 
+                                [source](const std::shared_ptr<AudioSource>& ptr) {
+                                  return ptr.get() == source;
+                                });
+
       if (iter != _playingSources.end())
       {
         _playingSources.erase(iter);
 
         if (source->isStreamed())
         {
-          assert(_streamingSources.find(source) != _streamingSources.end());
+          auto streaming_it = std::find_if(_streamingSources.begin(), _streamingSources.end(),
+            [source](const std::shared_ptr<AudioSource>& ptr) {
+              return ptr.get() == source;
+            });
+
+          assert(streaming_it != _streamingSources.end());
           _streamingMutex->lock();
-          _streamingSources.erase(source);
+          _streamingSources.erase(streaming_it);
           _streamingMutex->unlock();
         }
       }

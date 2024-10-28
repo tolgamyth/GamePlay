@@ -1,3 +1,5 @@
+#include <ranges>
+
 #include "framework/Base.h"
 #include "physics/PhysicsController.h"
 #include "physics/PhysicsRigidBody.h"
@@ -22,203 +24,199 @@
 namespace gameplay
 {
 
-const int PhysicsController::DIRTY         = 0x01;
-const int PhysicsController::COLLISION     = 0x02;
-const int PhysicsController::REGISTERED    = 0x04;
-const int PhysicsController::REMOVE        = 0x08;
+  const int PhysicsController::DIRTY = 0x01;
+  const int PhysicsController::COLLISION = 0x02;
+  const int PhysicsController::REGISTERED = 0x04;
+  const int PhysicsController::REMOVE = 0x08;
 
-PhysicsController::PhysicsController()
-  : _isUpdating(false), _collisionConfiguration(nullptr), _dispatcher(nullptr),
+  PhysicsController::PhysicsController()
+    : _isUpdating(false), _collisionConfiguration(nullptr), _dispatcher(nullptr),
     _overlappingPairCache(nullptr), _solver(nullptr), _world(nullptr), _ghostPairCallback(nullptr),
     _debugDrawer(nullptr), _status(PhysicsController::Listener::DEACTIVATED), _listeners(nullptr),
     _gravity(btScalar(0.0), btScalar(-9.8), btScalar(0.0)), _collisionCallback(nullptr)
-{
+  {
     GP_REGISTER_SCRIPT_EVENTS();
 
     // Default gravity is 9.8 along the negative Y axis.
     _collisionCallback = new CollisionCallback(this);
-}
+  }
 
-PhysicsController::~PhysicsController()
-{
+  PhysicsController::~PhysicsController()
+  {
     SAFE_DELETE(_collisionCallback);
     SAFE_DELETE(_ghostPairCallback);
     SAFE_DELETE(_debugDrawer);
     SAFE_DELETE(_listeners);
-}
+  }
 
-const char* PhysicsController::getTypeName() const
-{
+  const char* PhysicsController::getTypeName() const
+  {
     return "PhysicsController";
-}
+  }
 
-void PhysicsController::addStatusListener(Listener* listener)
-{
+  void PhysicsController::addStatusListener(Listener* listener)
+  {
     assert(listener);
     if (!_listeners)
-        _listeners = new std::vector<Listener*>();
+      _listeners = new std::vector<Listener*>();
 
     _listeners->push_back(listener);
-}
+  }
 
-void PhysicsController::removeStatusListener(Listener* listener)
-{
+  void PhysicsController::removeStatusListener(Listener* listener)
+  {
     assert(listener);
     if (!_listeners)
-        return;
+      return;
 
-    for (std::vector<Listener*>::iterator iter = _listeners->begin(); iter != _listeners->end(); iter++)
-    {
-        if (*iter == listener)
-        {
-            _listeners->erase(iter);
-            return;
-        }
+    auto iter = std::find(_listeners->begin(), _listeners->end(), listener);
+    if (iter != _listeners->end()) {
+      _listeners->erase(iter);
     }
-}
+  }
 
-PhysicsFixedConstraint* PhysicsController::createFixedConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
-{
+  PhysicsFixedConstraint* PhysicsController::createFixedConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
+  {
     checkConstraintRigidBodies(a, b);
     PhysicsFixedConstraint* constraint = new PhysicsFixedConstraint(a, b);
     addConstraint(a, b, constraint);
     return constraint;
-}
+  }
 
-PhysicsGenericConstraint* PhysicsController::createGenericConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
-{
+  PhysicsGenericConstraint* PhysicsController::createGenericConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
+  {
     checkConstraintRigidBodies(a, b);
     PhysicsGenericConstraint* constraint = new PhysicsGenericConstraint(a, b);
     addConstraint(a, b, constraint);
     return constraint;
-}
+  }
 
-PhysicsGenericConstraint* PhysicsController::createGenericConstraint(PhysicsRigidBody* a,
+  PhysicsGenericConstraint* PhysicsController::createGenericConstraint(PhysicsRigidBody* a,
     const Quaternion& rotationOffsetA, const Vector3& translationOffsetA, PhysicsRigidBody* b,
     const Quaternion& rotationOffsetB, const Vector3& translationOffsetB)
-{
+  {
     checkConstraintRigidBodies(a, b);
     PhysicsGenericConstraint* constraint = new PhysicsGenericConstraint(a, rotationOffsetA, translationOffsetA, b, rotationOffsetB, translationOffsetB);
     addConstraint(a, b, constraint);
     return constraint;
-}
+  }
 
-PhysicsHingeConstraint* PhysicsController::createHingeConstraint(PhysicsRigidBody* a,
-    const Quaternion& rotationOffsetA, const Vector3& translationOffsetA, PhysicsRigidBody* b, 
+  PhysicsHingeConstraint* PhysicsController::createHingeConstraint(PhysicsRigidBody* a,
+    const Quaternion& rotationOffsetA, const Vector3& translationOffsetA, PhysicsRigidBody* b,
     const Quaternion& rotationOffsetB, const Vector3& translationOffsetB)
-{
+  {
     checkConstraintRigidBodies(a, b);
     PhysicsHingeConstraint* constraint = new PhysicsHingeConstraint(a, rotationOffsetA, translationOffsetA, b, rotationOffsetB, translationOffsetB);
     addConstraint(a, b, constraint);
     return constraint;
-}
+  }
 
-PhysicsSocketConstraint* PhysicsController::createSocketConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
-{
+  PhysicsSocketConstraint* PhysicsController::createSocketConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
+  {
     checkConstraintRigidBodies(a, b);
     PhysicsSocketConstraint* constraint = new PhysicsSocketConstraint(a, b);
     addConstraint(a, b, constraint);
     return constraint;
-}
+  }
 
-PhysicsSocketConstraint* PhysicsController::createSocketConstraint(PhysicsRigidBody* a,
+  PhysicsSocketConstraint* PhysicsController::createSocketConstraint(PhysicsRigidBody* a,
     const Vector3& translationOffsetA, PhysicsRigidBody* b, const Vector3& translationOffsetB)
-{
+  {
     checkConstraintRigidBodies(a, b);
-    PhysicsSocketConstraint* constraint = new PhysicsSocketConstraint(a,translationOffsetA, b, translationOffsetB);
+    PhysicsSocketConstraint* constraint = new PhysicsSocketConstraint(a, translationOffsetA, b, translationOffsetB);
     addConstraint(a, b, constraint);
     return constraint;
-}
+  }
 
-PhysicsSpringConstraint* PhysicsController::createSpringConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
-{
+  PhysicsSpringConstraint* PhysicsController::createSpringConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
+  {
     checkConstraintRigidBodies(a, b);
     PhysicsSpringConstraint* constraint = new PhysicsSpringConstraint(a, b);
     addConstraint(a, b, constraint);
     return constraint;
-}
+  }
 
-PhysicsSpringConstraint* PhysicsController::createSpringConstraint(PhysicsRigidBody* a, const Quaternion& rotationOffsetA, const Vector3& translationOffsetA,           
-                                                                   PhysicsRigidBody* b, const Quaternion& rotationOffsetB, const Vector3& translationOffsetB)
-{
+  PhysicsSpringConstraint* PhysicsController::createSpringConstraint(PhysicsRigidBody* a, const Quaternion& rotationOffsetA, const Vector3& translationOffsetA,
+    PhysicsRigidBody* b, const Quaternion& rotationOffsetB, const Vector3& translationOffsetB)
+  {
     checkConstraintRigidBodies(a, b);
     PhysicsSpringConstraint* constraint = new PhysicsSpringConstraint(a, rotationOffsetA, translationOffsetA, b, rotationOffsetB, translationOffsetB);
     addConstraint(a, b, constraint);
     return constraint;
-}
+  }
 
-const Vector3& PhysicsController::getGravity() const
-{
+  const Vector3& PhysicsController::getGravity() const
+  {
     return _gravity;
-}
+  }
 
-void PhysicsController::setGravity(const Vector3& gravity)
-{
+  void PhysicsController::setGravity(const Vector3& gravity)
+  {
     _gravity = gravity;
 
     if (_world)
-        _world->setGravity(BV(_gravity));
-}
+      _world->setGravity(BV(_gravity));
+  }
 
-void PhysicsController::drawDebug(const Matrix& viewProjection)
-{
+  void PhysicsController::drawDebug(const Matrix& viewProjection)
+  {
     assert(_debugDrawer);
     assert(_world);
 
     _debugDrawer->begin(viewProjection);
     _world->debugDrawWorld();
     _debugDrawer->end();
-}
+  }
 
-bool PhysicsController::rayTest(const Ray& ray, float distance, PhysicsController::HitResult* result, PhysicsController::HitFilter* filter)
-{
+  bool PhysicsController::rayTest(const Ray& ray, float distance, PhysicsController::HitResult* result, PhysicsController::HitFilter* filter)
+  {
     class RayTestCallback : public btCollisionWorld::ClosestRayResultCallback
     {
     private:
 
-        HitFilter* filter;
-        HitResult hitResult;
+      HitFilter* filter;
+      HitResult hitResult;
 
     public:
 
-        RayTestCallback(const btVector3& rayFromWorld, const btVector3& rayToWorld, PhysicsController::HitFilter* filter)
-            : btCollisionWorld::ClosestRayResultCallback(rayFromWorld, rayToWorld), filter(filter)
-        {
-        }
+      RayTestCallback(const btVector3& rayFromWorld, const btVector3& rayToWorld, PhysicsController::HitFilter* filter)
+        : btCollisionWorld::ClosestRayResultCallback(rayFromWorld, rayToWorld), filter(filter)
+      {
+      }
 
-        virtual bool needsCollision(btBroadphaseProxy* proxy0) const
-        {
-            if (!btCollisionWorld::ClosestRayResultCallback::needsCollision(proxy0))
-                return false;
+      virtual bool needsCollision(btBroadphaseProxy* proxy0) const
+      {
+        if (!btCollisionWorld::ClosestRayResultCallback::needsCollision(proxy0))
+          return false;
 
-            btCollisionObject* co = reinterpret_cast<btCollisionObject*>(proxy0->m_clientObject);
-            PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(co->getUserPointer());
-            if (object == nullptr)
-                return false;
+        btCollisionObject* co = reinterpret_cast<btCollisionObject*>(proxy0->m_clientObject);
+        PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(co->getUserPointer());
+        if (object == nullptr)
+          return false;
 
-            return filter ? !filter->filter(object) : true;
-        }
+        return filter ? !filter->filter(object) : true;
+      }
 
-        btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace)
-        {
-            assert(rayResult.m_collisionObject);
-            PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(rayResult.m_collisionObject->getUserPointer());
+      btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace)
+      {
+        assert(rayResult.m_collisionObject);
+        PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(rayResult.m_collisionObject->getUserPointer());
 
-            if (object == nullptr)
-                return 1.0f; // ignore
+        if (object == nullptr)
+          return 1.0f; // ignore
 
-            float result = btCollisionWorld::ClosestRayResultCallback::addSingleResult(rayResult, normalInWorldSpace);
+        float result = btCollisionWorld::ClosestRayResultCallback::addSingleResult(rayResult, normalInWorldSpace);
 
-            hitResult.object = object;
-            hitResult.point.set(m_hitPointWorld.x(), m_hitPointWorld.y(), m_hitPointWorld.z());
-            hitResult.fraction = m_closestHitFraction;
-            hitResult.normal.set(m_hitNormalWorld.x(), m_hitNormalWorld.y(), m_hitNormalWorld.z());
+        hitResult.object = object;
+        hitResult.point.set(m_hitPointWorld.x(), m_hitPointWorld.y(), m_hitPointWorld.z());
+        hitResult.fraction = m_closestHitFraction;
+        hitResult.normal.set(m_hitNormalWorld.x(), m_hitNormalWorld.y(), m_hitNormalWorld.z());
 
-            if (filter && !filter->hit(hitResult))
-                return 1.0f; // process next collision
+        if (filter && !filter->hit(hitResult))
+          return 1.0f; // process next collision
 
-            return result; // continue normally
-        }
+        return result; // continue normally
+      }
     };
 
     assert(_world);
@@ -230,92 +228,92 @@ bool PhysicsController::rayTest(const Ray& ray, float distance, PhysicsControlle
     _world->rayTest(rayFromWorld, rayToWorld, callback);
     if (callback.hasHit())
     {
-        if (result)
-        {
-            result->object = getCollisionObject(callback.m_collisionObject);
-            result->point.set(callback.m_hitPointWorld.x(), callback.m_hitPointWorld.y(), callback.m_hitPointWorld.z());
-            result->fraction = callback.m_closestHitFraction;
-            result->normal.set(callback.m_hitNormalWorld.x(), callback.m_hitNormalWorld.y(), callback.m_hitNormalWorld.z());
-        }
+      if (result)
+      {
+        result->object = getCollisionObject(callback.m_collisionObject);
+        result->point.set(callback.m_hitPointWorld.x(), callback.m_hitPointWorld.y(), callback.m_hitPointWorld.z());
+        result->fraction = callback.m_closestHitFraction;
+        result->normal.set(callback.m_hitNormalWorld.x(), callback.m_hitNormalWorld.y(), callback.m_hitNormalWorld.z());
+      }
 
-        return true;
+      return true;
     }
 
     return false;
-}
+  }
 
-bool PhysicsController::sweepTest(PhysicsCollisionObject* object, const Vector3& endPosition, PhysicsController::HitResult* result, PhysicsController::HitFilter* filter)
-{
+  bool PhysicsController::sweepTest(PhysicsCollisionObject* object, const Vector3& endPosition, PhysicsController::HitResult* result, PhysicsController::HitFilter* filter)
+  {
     class SweepTestCallback : public btCollisionWorld::ClosestConvexResultCallback
     {
     private:
 
-        PhysicsCollisionObject* me;
-        PhysicsController::HitFilter* filter;
-        PhysicsController::HitResult hitResult;
+      PhysicsCollisionObject* me;
+      PhysicsController::HitFilter* filter;
+      PhysicsController::HitResult hitResult;
 
     public:
 
-        SweepTestCallback(PhysicsCollisionObject* me, PhysicsController::HitFilter* filter)
-            : btCollisionWorld::ClosestConvexResultCallback(btVector3(0.0, 0.0, 0.0), btVector3(0.0, 0.0, 0.0)), me(me), filter(filter)
-        {
-        }
+      SweepTestCallback(PhysicsCollisionObject* me, PhysicsController::HitFilter* filter)
+        : btCollisionWorld::ClosestConvexResultCallback(btVector3(0.0, 0.0, 0.0), btVector3(0.0, 0.0, 0.0)), me(me), filter(filter)
+      {
+      }
 
-        virtual bool needsCollision(btBroadphaseProxy* proxy0) const
-        {
-            if (!btCollisionWorld::ClosestConvexResultCallback::needsCollision(proxy0))
-                return false;
+      virtual bool needsCollision(btBroadphaseProxy* proxy0) const
+      {
+        if (!btCollisionWorld::ClosestConvexResultCallback::needsCollision(proxy0))
+          return false;
 
-            btCollisionObject* co = reinterpret_cast<btCollisionObject*>(proxy0->m_clientObject);
-            PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(co->getUserPointer());
-            if (object == nullptr || object == me)
-                return false;
+        btCollisionObject* co = reinterpret_cast<btCollisionObject*>(proxy0->m_clientObject);
+        PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(co->getUserPointer());
+        if (object == nullptr || object == me)
+          return false;
 
-            return filter ? !filter->filter(object) : true;
-        }
+        return filter ? !filter->filter(object) : true;
+      }
 
-        btScalar addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
-        {
-            assert(convexResult.m_hitCollisionObject);
-            PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(convexResult.m_hitCollisionObject->getUserPointer());
+      btScalar addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
+      {
+        assert(convexResult.m_hitCollisionObject);
+        PhysicsCollisionObject* object = reinterpret_cast<PhysicsCollisionObject*>(convexResult.m_hitCollisionObject->getUserPointer());
 
-            if (object == nullptr)
-                return 1.0f;
+        if (object == nullptr)
+          return 1.0f;
 
-            float result = ClosestConvexResultCallback::addSingleResult(convexResult, normalInWorldSpace);
+        float result = ClosestConvexResultCallback::addSingleResult(convexResult, normalInWorldSpace);
 
-            hitResult.object = object;
-            hitResult.point.set(m_hitPointWorld.x(), m_hitPointWorld.y(), m_hitPointWorld.z());
-            hitResult.fraction = m_closestHitFraction;
-            hitResult.normal.set(m_hitNormalWorld.x(), m_hitNormalWorld.y(), m_hitNormalWorld.z());
+        hitResult.object = object;
+        hitResult.point.set(m_hitPointWorld.x(), m_hitPointWorld.y(), m_hitPointWorld.z());
+        hitResult.fraction = m_closestHitFraction;
+        hitResult.normal.set(m_hitNormalWorld.x(), m_hitNormalWorld.y(), m_hitNormalWorld.z());
 
-            if (filter && !filter->hit(hitResult))
-                return 1.0f;
+        if (filter && !filter->hit(hitResult))
+          return 1.0f;
 
-            return result;
-        }
+        return result;
+      }
     };
 
     assert(object && object->getCollisionShape());
     PhysicsCollisionShape* shape = object->getCollisionShape();
     PhysicsCollisionShape::Type type = shape->getType();
     if (type != PhysicsCollisionShape::SHAPE_BOX && type != PhysicsCollisionShape::SHAPE_SPHERE && type != PhysicsCollisionShape::SHAPE_CAPSULE)
-        return false; // unsupported type
+      return false; // unsupported type
 
     // Define the start transform.
     btTransform start;
     start.setIdentity();
     if (object->getNode())
     {
-        Vector3 translation;
-        Quaternion rotation;
-        const Matrix& m = object->getNode()->getWorldMatrix();
-        m.getTranslation(&translation);
-        m.getRotation(&rotation);
+      Vector3 translation;
+      Quaternion rotation;
+      const Matrix& m = object->getNode()->getWorldMatrix();
+      m.getTranslation(&translation);
+      m.getRotation(&rotation);
 
-        start.setIdentity();
-        start.setOrigin(BV(translation));
-        start.setRotation(BQ(rotation));
+      start.setIdentity();
+      start.setOrigin(BV(translation));
+      start.setRotation(BQ(rotation));
     }
 
     // Define the end transform.
@@ -346,23 +344,23 @@ bool PhysicsController::sweepTest(PhysicsCollisionObject* object, const Vector3&
     // Check for hits and store results.
     if (callback.hasHit())
     {
-        if (result)
-        {
-            result->object = getCollisionObject(callback.m_hitCollisionObject);
-            result->point.set(callback.m_hitPointWorld.x(), callback.m_hitPointWorld.y(), callback.m_hitPointWorld.z());
-            result->fraction = callback.m_closestHitFraction;
-            result->normal.set(callback.m_hitNormalWorld.x(), callback.m_hitNormalWorld.y(), callback.m_hitNormalWorld.z());
-        }
+      if (result)
+      {
+        result->object = getCollisionObject(callback.m_hitCollisionObject);
+        result->point.set(callback.m_hitPointWorld.x(), callback.m_hitPointWorld.y(), callback.m_hitPointWorld.z());
+        result->fraction = callback.m_closestHitFraction;
+        result->normal.set(callback.m_hitNormalWorld.x(), callback.m_hitNormalWorld.y(), callback.m_hitNormalWorld.z());
+      }
 
-        return true;
+      return true;
     }
 
     return false;
-}
+  }
 
-btScalar PhysicsController::CollisionCallback::addSingleResult(btManifoldPoint& cp, const btCollisionObjectWrapper* a, int partIdA, int indexA, 
+  btScalar PhysicsController::CollisionCallback::addSingleResult(btManifoldPoint& cp, const btCollisionObjectWrapper* a, int partIdA, int indexA,
     const btCollisionObjectWrapper* b, int partIdB, int indexB)
-{
+  {
     assert(_pc);
 
     // Get pointers to the PhysicsCollisionObject objects.
@@ -378,51 +376,50 @@ btScalar PhysicsController::CollisionCallback::addSingleResult(btManifoldPoint& 
     CollisionInfo* collisionInfo;
     if (_pc->_collisionStatus.count(pair) > 0)
     {
-        collisionInfo = &_pc->_collisionStatus[pair];
+      collisionInfo = &_pc->_collisionStatus[pair];
     }
     else
     {
-        // Add a new collision pair for these objects.
-        collisionInfo = &_pc->_collisionStatus[pair];
+      // Add a new collision pair for these objects.
+      collisionInfo = &_pc->_collisionStatus[pair];
 
-        // Add the appropriate listeners.
-        PhysicsCollisionObject::CollisionPair p1(pair.objectA, nullptr);
-        if (_pc->_collisionStatus.count(p1) > 0)
+      // Add the appropriate listeners.
+      PhysicsCollisionObject::CollisionPair p1(pair.objectA, nullptr);
+      if (_pc->_collisionStatus.count(p1) > 0)
+      {
+        const CollisionInfo& ci = _pc->_collisionStatus[p1];
+        for (const auto& listener : ci._listeners)
         {
-            const CollisionInfo& ci = _pc->_collisionStatus[p1];
-            std::vector<PhysicsCollisionObject::CollisionListener*>::const_iterator iter = ci._listeners.begin();
-            for (; iter != ci._listeners.end(); iter++)
-            {
-                assert(*iter);
-                collisionInfo->_listeners.push_back(*iter);
-            }
+          assert(listener);
+          collisionInfo->_listeners.push_back(listener);
         }
-        PhysicsCollisionObject::CollisionPair p2(pair.objectB, nullptr);
-        if (_pc->_collisionStatus.count(p2) > 0)
+      }
+      PhysicsCollisionObject::CollisionPair p2(pair.objectB, nullptr);
+      if (_pc->_collisionStatus.count(p2) > 0)
+      {
+        const CollisionInfo& ci = _pc->_collisionStatus[p2];
+        for (const auto& listener : ci._listeners)
         {
-            const CollisionInfo& ci = _pc->_collisionStatus[p2];
-            std::vector<PhysicsCollisionObject::CollisionListener*>::const_iterator iter = ci._listeners.begin();
-            for (; iter != ci._listeners.end(); iter++)
-            {
-                assert(*iter);
-                collisionInfo->_listeners.push_back(*iter);
-            }
+          assert(listener);
+          collisionInfo->_listeners.push_back(listener);
         }
+      }
     }
 
     // Fire collision event.
     if ((collisionInfo->_status & COLLISION) == 0)
     {
-        std::vector<PhysicsCollisionObject::CollisionListener*>::const_iterator iter = collisionInfo->_listeners.begin();
-        for (; iter != collisionInfo->_listeners.end(); iter++)
+      for (const auto& listener : collisionInfo->_listeners)
+      {
+        assert(listener);
+        if ((collisionInfo->_status & REMOVE) == 0)
         {
-            assert(*iter);
-            if ((collisionInfo->_status & REMOVE) == 0)
-            {
-                (*iter)->collisionEvent(PhysicsCollisionObject::CollisionListener::COLLIDING, pair, Vector3(cp.getPositionWorldOnA().x(), cp.getPositionWorldOnA().y(), cp.getPositionWorldOnA().z()),
-                    Vector3(cp.getPositionWorldOnB().x(), cp.getPositionWorldOnB().y(), cp.getPositionWorldOnB().z()));
-            }
+          listener->collisionEvent(PhysicsCollisionObject::CollisionListener::COLLIDING,
+            pair,
+            Vector3(cp.getPositionWorldOnA().x(), cp.getPositionWorldOnA().y(), cp.getPositionWorldOnA().z()),
+            Vector3(cp.getPositionWorldOnB().x(), cp.getPositionWorldOnB().y(), cp.getPositionWorldOnB().z()));
         }
+      }
     }
 
     // Update the collision status cache (we remove the dirty bit
@@ -431,10 +428,10 @@ btScalar PhysicsController::CollisionCallback::addSingleResult(btManifoldPoint& 
     collisionInfo->_status &= ~DIRTY;
     collisionInfo->_status |= COLLISION;
     return 0.0f;
-}
+  }
 
-void PhysicsController::initialize()
-{
+  void PhysicsController::initialize()
+  {
     _collisionConfiguration = bullet_new<btDefaultCollisionConfiguration>();
     _dispatcher = bullet_new<btCollisionDispatcher>(_collisionConfiguration);
     _overlappingPairCache = bullet_new<btDbvtBroadphase>();
@@ -453,10 +450,10 @@ void PhysicsController::initialize()
     // Set up debug drawing.
     _debugDrawer = new DebugDrawer();
     _world->setDebugDrawer(_debugDrawer);
-}
+  }
 
-void PhysicsController::finalize()
-{
+  void PhysicsController::finalize()
+  {
     // Clean up the world and its various components.
     SAFE_DELETE(_world);
     SAFE_DELETE(_ghostPairCallback);
@@ -464,20 +461,20 @@ void PhysicsController::finalize()
     SAFE_DELETE(_overlappingPairCache);
     SAFE_DELETE(_dispatcher);
     SAFE_DELETE(_collisionConfiguration);
-}
+  }
 
-void PhysicsController::pause()
-{
+  void PhysicsController::pause()
+  {
     // Unused
-}
+  }
 
-void PhysicsController::resume()
-{
+  void PhysicsController::resume()
+  {
     // Unused
-}
+  }
 
-void PhysicsController::update(float elapsedTime)
-{
+  void PhysicsController::update(float elapsedTime)
+  {
     assert(_world);
     _isUpdating = true;
 
@@ -491,51 +488,51 @@ void PhysicsController::update(float elapsedTime)
     // If we have status listeners, then check if our status has changed.
     if (_listeners || hasScriptListener(GP_GET_SCRIPT_EVENT(PhysicsController, statusEvent)))
     {
-        Listener::EventType oldStatus = _status;
+      Listener::EventType oldStatus = _status;
 
-        if (_status == Listener::DEACTIVATED)
+      if (_status == Listener::DEACTIVATED)
+      {
+        for (int i = 0; i < _world->getNumCollisionObjects(); i++)
         {
-            for (int i = 0; i < _world->getNumCollisionObjects(); i++)
-            {
-                assert(_world->getCollisionObjectArray()[i]);
-                if (_world->getCollisionObjectArray()[i]->isActive())
-                {
-                    _status = Listener::ACTIVATED;
-                    break;
-                }
-            }
+          assert(_world->getCollisionObjectArray()[i]);
+          if (_world->getCollisionObjectArray()[i]->isActive())
+          {
+            _status = Listener::ACTIVATED;
+            break;
+          }
         }
-        else
+      }
+      else
+      {
+        bool allInactive = true;
+        for (int i = 0; i < _world->getNumCollisionObjects(); i++)
         {
-            bool allInactive = true;
-            for (int i = 0; i < _world->getNumCollisionObjects(); i++)
-            {
-                assert(_world->getCollisionObjectArray()[i]);
-                if (_world->getCollisionObjectArray()[i]->isActive())
-                {
-                    allInactive = false;
-                    break;
-                }
-            }
-
-            if (allInactive)
-                _status = Listener::DEACTIVATED;
+          assert(_world->getCollisionObjectArray()[i]);
+          if (_world->getCollisionObjectArray()[i]->isActive())
+          {
+            allInactive = false;
+            break;
+          }
         }
 
-        // If the status has changed, notify our listeners.
-        if (oldStatus != _status)
-        {
-            if (_listeners)
-            {
-                for (unsigned int k = 0; k < _listeners->size(); k++)
-                {
-                    assert((*_listeners)[k]);
-                    (*_listeners)[k]->statusEvent(_status);
-                }
-            }
+        if (allInactive)
+          _status = Listener::DEACTIVATED;
+      }
 
-            fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(PhysicsController, statusEvent), _status);
+      // If the status has changed, notify our listeners.
+      if (oldStatus != _status)
+      {
+        if (_listeners)
+        {
+          std::for_each(_listeners->begin(), _listeners->end(),
+            [this](Listener* listener) {
+              assert(listener);
+              listener->statusEvent(_status);
+            });
         }
+
+        fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(PhysicsController, statusEvent), _status);
+      }
     }
 
     // All statuses are set with the DIRTY bit before collision processing occurs.
@@ -549,71 +546,71 @@ void PhysicsController::update(float elapsedTime)
     std::map<PhysicsCollisionObject::CollisionPair, CollisionInfo>::iterator iter = _collisionStatus.begin();
     for (; iter != _collisionStatus.end();)
     {
-        if ((iter->second._status & REMOVE) != 0)
+      if ((iter->second._status & REMOVE) != 0)
+      {
+        if ((iter->second._status & COLLISION) != 0 && iter->first.objectB)
         {
-            if ((iter->second._status & COLLISION) != 0 && iter->first.objectB)
-            {
-                size_t size = iter->second._listeners.size();
-                for (size_t i = 0; i < size; i++)
-                {
-                    PhysicsCollisionObject::CollisionPair cp(iter->first.objectA, nullptr);
-                    iter->second._listeners[i]->collisionEvent(PhysicsCollisionObject::CollisionListener::NOT_COLLIDING, cp);
-                }
-            }
+          size_t size = iter->second._listeners.size();
+          for (size_t i = 0; i < size; i++)
+          {
+            PhysicsCollisionObject::CollisionPair cp(iter->first.objectA, nullptr);
+            iter->second._listeners[i]->collisionEvent(PhysicsCollisionObject::CollisionListener::NOT_COLLIDING, cp);
+          }
+        }
 
-            std::map<PhysicsCollisionObject::CollisionPair, CollisionInfo>::iterator eraseIter = iter;
-            iter++;
-            _collisionStatus.erase(eraseIter);
-        }
-        else
-        {
-            iter->second._status |= DIRTY;
-            iter++;
-        }
+        std::map<PhysicsCollisionObject::CollisionPair, CollisionInfo>::iterator eraseIter = iter;
+        iter++;
+        _collisionStatus.erase(eraseIter);
+      }
+      else
+      {
+        iter->second._status |= DIRTY;
+        iter++;
+      }
     }
 
     // Go through the collision status cache and perform all registered collision tests.
     iter = _collisionStatus.begin();
     for (; iter != _collisionStatus.end(); iter++)
     {
-        // If this collision pair was one that was registered for listening, then perform the collision test.
-        // (In the case where we register for all collisions with a rigid body, there will be a lot
-        // of collision pairs in the status cache that we did not explicitly register for.)
-        if ((iter->second._status & REGISTERED) != 0 && (iter->second._status & REMOVE) == 0)
-        {
-            if (iter->first.objectB)
-                _world->contactPairTest(iter->first.objectA->getCollisionObject(), iter->first.objectB->getCollisionObject(), *_collisionCallback);
-            else
-                _world->contactTest(iter->first.objectA->getCollisionObject(), *_collisionCallback);
-        }
+      // If this collision pair was one that was registered for listening, then perform the collision test.
+      // (In the case where we register for all collisions with a rigid body, there will be a lot
+      // of collision pairs in the status cache that we did not explicitly register for.)
+      if ((iter->second._status & REGISTERED) != 0 && (iter->second._status & REMOVE) == 0)
+      {
+        if (iter->first.objectB)
+          _world->contactPairTest(iter->first.objectA->getCollisionObject(), iter->first.objectB->getCollisionObject(), *_collisionCallback);
+        else
+          _world->contactTest(iter->first.objectA->getCollisionObject(), *_collisionCallback);
+      }
     }
 
     // Update all the collision status cache entries.
     iter = _collisionStatus.begin();
-    for ( ; iter != _collisionStatus.end(); iter++)
+    for (; iter != _collisionStatus.end(); iter++)
     {
-        if ((iter->second._status & DIRTY) != 0)
+      if ((iter->second._status & DIRTY) != 0)
+      {
+        if ((iter->second._status & COLLISION) != 0 && iter->first.objectB)
         {
-            if ((iter->second._status & COLLISION) != 0 && iter->first.objectB)
-            {
-                size_t size = iter->second._listeners.size();
-                for (size_t i = 0; i < size; i++)
-                {
-                    iter->second._listeners[i]->collisionEvent(PhysicsCollisionObject::CollisionListener::NOT_COLLIDING, iter->first);
-                }
-            }
-
-            iter->second._status &= ~COLLISION;
+          size_t size = iter->second._listeners.size();
+          for (size_t i = 0; i < size; i++)
+          {
+            iter->second._listeners[i]->collisionEvent(PhysicsCollisionObject::CollisionListener::NOT_COLLIDING, iter->first);
+          }
         }
+
+        iter->second._status &= ~COLLISION;
+      }
     }
 
     _isUpdating = false;
-}
+  }
 
-void PhysicsController::addCollisionListener(PhysicsCollisionObject::CollisionListener* listener, PhysicsCollisionObject* objectA, PhysicsCollisionObject* objectB)
-{
+  void PhysicsController::addCollisionListener(PhysicsCollisionObject::CollisionListener* listener, PhysicsCollisionObject* objectA, PhysicsCollisionObject* objectB)
+  {
     assert(listener);
-    
+
     // One of the collision objects in the pair must be non-null.
     assert(objectA || objectB);
     PhysicsCollisionObject::CollisionPair pair(objectA, objectB);
@@ -622,10 +619,10 @@ void PhysicsController::addCollisionListener(PhysicsCollisionObject::CollisionLi
     CollisionInfo& info = _collisionStatus[pair];
     info._listeners.push_back(listener);
     info._status |= PhysicsController::REGISTERED;
-}
+  }
 
-void PhysicsController::removeCollisionListener(PhysicsCollisionObject::CollisionListener* listener, PhysicsCollisionObject* objectA, PhysicsCollisionObject* objectB)
-{
+  void PhysicsController::removeCollisionListener(PhysicsCollisionObject::CollisionListener* listener, PhysicsCollisionObject* objectA, PhysicsCollisionObject* objectB)
+  {
     // One of the collision objects in the pair must be non-null.
     assert(objectA || objectB);
     PhysicsCollisionObject::CollisionPair pair(objectA, objectB);
@@ -633,12 +630,12 @@ void PhysicsController::removeCollisionListener(PhysicsCollisionObject::Collisio
     // Mark the collision pair for these objects for removal.
     if (_collisionStatus.count(pair) > 0)
     {
-        _collisionStatus[pair]._status |= REMOVE;
+      _collisionStatus[pair]._status |= REMOVE;
     }
-}
+  }
 
-void PhysicsController::addCollisionObject(PhysicsCollisionObject* object)
-{
+  void PhysicsController::addCollisionObject(PhysicsCollisionObject* object)
+  {
     assert(object && object->getCollisionObject());
     assert(_world);
 
@@ -652,25 +649,25 @@ void PhysicsController::addCollisionObject(PhysicsCollisionObject* object)
     switch (object->getType())
     {
     case PhysicsCollisionObject::RIGID_BODY:
-        _world->addRigidBody(static_cast<btRigidBody*>(object->getCollisionObject()), group, mask);
-        break;
+      _world->addRigidBody(static_cast<btRigidBody*>(object->getCollisionObject()), group, mask);
+      break;
 
     case PhysicsCollisionObject::CHARACTER:
-        _world->addCollisionObject(object->getCollisionObject(), group, mask);
-        break;
+      _world->addCollisionObject(object->getCollisionObject(), group, mask);
+      break;
 
     case PhysicsCollisionObject::GHOST_OBJECT:
-        _world->addCollisionObject(object->getCollisionObject(), group, mask);
-        break;
+      _world->addCollisionObject(object->getCollisionObject(), group, mask);
+      break;
 
     default:
-        GP_ERROR("Unsupported collision object type (%d).", object->getType());
-        break;
+      GP_ERROR("Unsupported collision object type (%d).", object->getType());
+      break;
     }
-}
+  }
 
-void PhysicsController::removeCollisionObject(PhysicsCollisionObject* object, bool removeListeners)
-{
+  void PhysicsController::removeCollisionObject(PhysicsCollisionObject* object, bool removeListeners)
+  {
     assert(object);
     assert(_world);
     assert(!_isUpdating);
@@ -678,98 +675,98 @@ void PhysicsController::removeCollisionObject(PhysicsCollisionObject* object, bo
     // Remove the collision object from the world.
     if (object->getCollisionObject())
     {
-        switch (object->getType())
-        {
-        case PhysicsCollisionObject::RIGID_BODY:
-            _world->removeRigidBody(static_cast<btRigidBody*>(object->getCollisionObject()));
-            break;
+      switch (object->getType())
+      {
+      case PhysicsCollisionObject::RIGID_BODY:
+        _world->removeRigidBody(static_cast<btRigidBody*>(object->getCollisionObject()));
+        break;
 
-        case PhysicsCollisionObject::CHARACTER:
-        case PhysicsCollisionObject::GHOST_OBJECT:
-            _world->removeCollisionObject(object->getCollisionObject());
-            break;
+      case PhysicsCollisionObject::CHARACTER:
+      case PhysicsCollisionObject::GHOST_OBJECT:
+        _world->removeCollisionObject(object->getCollisionObject());
+        break;
 
-        default:
-            GP_ERROR("Unsupported collision object type (%d).", object->getType());
-            break;
-        }
+      default:
+        GP_ERROR("Unsupported collision object type (%d).", object->getType());
+        break;
+      }
     }
 
     // Find all references to the object in the collision status cache and mark them for removal.
     if (removeListeners)
     {
-        std::map<PhysicsCollisionObject::CollisionPair, CollisionInfo>::iterator iter = _collisionStatus.begin();
-        for (; iter != _collisionStatus.end(); iter++)
-        {
-            if (iter->first.objectA == object || iter->first.objectB == object)
-                iter->second._status |= REMOVE;
-        }
+      std::map<PhysicsCollisionObject::CollisionPair, CollisionInfo>::iterator iter = _collisionStatus.begin();
+      for (; iter != _collisionStatus.end(); iter++)
+      {
+        if (iter->first.objectA == object || iter->first.objectB == object)
+          iter->second._status |= REMOVE;
+      }
     }
-}
+  }
 
-PhysicsCollisionObject* PhysicsController::getCollisionObject(const btCollisionObject* collisionObject) const
-{
+  PhysicsCollisionObject* PhysicsController::getCollisionObject(const btCollisionObject* collisionObject) const
+  {
     // Gameplay collision objects are stored in the userPointer data of Bullet collision objects.
     assert(collisionObject);
     return reinterpret_cast<PhysicsCollisionObject*>(collisionObject->getUserPointer());
-}
+  }
 
-static void getBoundingBox(Node* node, BoundingBox* out, bool merge = false)
-{
+  static void getBoundingBox(Node* node, BoundingBox* out, bool merge = false)
+  {
     assert(node);
     assert(out);
 
     Model* model = dynamic_cast<Model*>(node->getDrawable());
     if (model != nullptr)
     {
-        assert(model->getMesh());
+      assert(model->getMesh());
 
-        if (merge)
-            out->merge(model->getMesh()->getBoundingBox());
-        else
-        {
-            out->set(model->getMesh()->getBoundingBox());
-            merge = true;
-        }
+      if (merge)
+        out->merge(model->getMesh()->getBoundingBox());
+      else
+      {
+        out->set(model->getMesh()->getBoundingBox());
+        merge = true;
+      }
     }
 
     Node* child = node->getFirstChild();
     while (child)
     {
-        getBoundingBox(child, out, merge);
-        child = child->getNextSibling();
+      getBoundingBox(child, out, merge);
+      child = child->getNextSibling();
     }
-}
+  }
 
-static void getBoundingSphere(Node* node, BoundingSphere* out, bool merge = false)
-{
+  static void getBoundingSphere(Node* node, BoundingSphere* out, bool merge = false)
+  {
     assert(node);
     assert(out);
 
     Model* model = dynamic_cast<Model*>(node->getDrawable());
     if (model != nullptr)
     {
-        assert(model->getMesh());
+      assert(model->getMesh());
 
-        if (merge)
-            out->merge(model->getMesh()->getBoundingSphere());
-        else
-        {
-            out->set(model->getMesh()->getBoundingSphere());
-            merge = true;
-        }
+      if (merge)
+        out->merge(model->getMesh()->getBoundingSphere());
+      else
+      {
+        out->set(model->getMesh()->getBoundingSphere());
+        merge = true;
+      }
     }
 
     Node* child = node->getFirstChild();
     while (child)
     {
-        getBoundingSphere(child, out, merge);
-        child = child->getNextSibling();
+      getBoundingSphere(child, out, merge);
+      child = child->getNextSibling();
     }
-}
+  }
 
-static void computeCenterOfMass(const Vector3& center, const Vector3& scale, Vector3* centerOfMassOffset)
-{
+  static void computeCenterOfMass(const Vector3& center, const Vector3& scale, Vector3* centerOfMassOffset)
+  {
     assert(centerOfMassOffset);
 
     // Update center of mass offset.
@@ -778,10 +775,10 @@ static void computeCenterOfMass(const Vector3& center, const Vector3& scale, Vec
     centerOfMassOffset->y *= scale.y;
     centerOfMassOffset->z *= scale.z;
     centerOfMassOffset->negate();
-}
+  }
 
-PhysicsCollisionShape* PhysicsController::createShape(Node* node, const PhysicsCollisionShape::Definition& shape, Vector3* centerOfMassOffset, bool dynamic)
-{
+  PhysicsCollisionShape* PhysicsController::createShape(Node* node, const PhysicsCollisionShape::Definition& shape, Vector3* centerOfMassOffset, bool dynamic)
+  {
     assert(node);
 
     PhysicsCollisionShape* collisionShape = nullptr;
@@ -793,132 +790,132 @@ PhysicsCollisionShape* PhysicsController::createShape(Node* node, const PhysicsC
     switch (shape.type)
     {
     case PhysicsCollisionShape::SHAPE_BOX:
+    {
+      if (shape.isExplicit)
+      {
+        // Use the passed in box information.
+        collisionShape = createBox(Vector3(shape.data.box.extents), Vector3::one());
+
+        if (shape.centerAbsolute)
         {
-            if (shape.isExplicit)
-            {
-                // Use the passed in box information.
-                collisionShape = createBox(Vector3(shape.data.box.extents), Vector3::one());
-
-                if (shape.centerAbsolute)
-                {
-                    computeCenterOfMass(Vector3(shape.data.box.center), Vector3::one(), centerOfMassOffset);
-                }
-                else
-                {
-                    BoundingBox box;
-                    getBoundingBox(node, &box);
-                    computeCenterOfMass(box.getCenter() + Vector3(shape.data.box.center), scale, centerOfMassOffset);
-                }
-            }
-            else
-            {
-                // Automatically compute bounding box from mesh's bounding box.
-                BoundingBox box;
-                getBoundingBox(node, &box);
-                collisionShape = createBox(Vector3(std::fabs(box.max.x - box.min.x), std::fabs(box.max.y - box.min.y), std::fabs(box.max.z - box.min.z)), scale);
-
-                computeCenterOfMass(box.getCenter(), scale, centerOfMassOffset);
-            }
+          computeCenterOfMass(Vector3(shape.data.box.center), Vector3::one(), centerOfMassOffset);
         }
-        break;
+        else
+        {
+          BoundingBox box;
+          getBoundingBox(node, &box);
+          computeCenterOfMass(box.getCenter() + Vector3(shape.data.box.center), scale, centerOfMassOffset);
+        }
+      }
+      else
+      {
+        // Automatically compute bounding box from mesh's bounding box.
+        BoundingBox box;
+        getBoundingBox(node, &box);
+        collisionShape = createBox(Vector3(std::fabs(box.max.x - box.min.x), std::fabs(box.max.y - box.min.y), std::fabs(box.max.z - box.min.z)), scale);
+
+        computeCenterOfMass(box.getCenter(), scale, centerOfMassOffset);
+      }
+    }
+    break;
 
     case PhysicsCollisionShape::SHAPE_SPHERE:
+    {
+      if (shape.isExplicit)
+      {
+        // Use the passed in sphere information.
+        collisionShape = createSphere(shape.data.sphere.radius, Vector3::one());
+
+        if (shape.centerAbsolute)
         {
-            if (shape.isExplicit)
-            {
-                // Use the passed in sphere information.
-                collisionShape = createSphere(shape.data.sphere.radius, Vector3::one());
-
-                if (shape.centerAbsolute)
-                {
-                    computeCenterOfMass(Vector3(shape.data.sphere.center), Vector3::one(), centerOfMassOffset);
-                }
-                else
-                {
-                    BoundingSphere sphere;
-                    getBoundingSphere(node, &sphere);
-                    computeCenterOfMass(sphere.center + Vector3(shape.data.sphere.center), scale, centerOfMassOffset);
-                }
-            }
-            else
-            {
-                // Automatically compute bounding sphere from mesh's bounding sphere.
-                BoundingSphere sphere;
-                getBoundingSphere(node, &sphere);
-                collisionShape = createSphere(sphere.radius, scale);
-
-                computeCenterOfMass(sphere.center, scale, centerOfMassOffset);
-            }
+          computeCenterOfMass(Vector3(shape.data.sphere.center), Vector3::one(), centerOfMassOffset);
         }
-        break;
+        else
+        {
+          BoundingSphere sphere;
+          getBoundingSphere(node, &sphere);
+          computeCenterOfMass(sphere.center + Vector3(shape.data.sphere.center), scale, centerOfMassOffset);
+        }
+      }
+      else
+      {
+        // Automatically compute bounding sphere from mesh's bounding sphere.
+        BoundingSphere sphere;
+        getBoundingSphere(node, &sphere);
+        collisionShape = createSphere(sphere.radius, scale);
+
+        computeCenterOfMass(sphere.center, scale, centerOfMassOffset);
+      }
+    }
+    break;
 
     case PhysicsCollisionShape::SHAPE_CAPSULE:
+    {
+      if (shape.isExplicit)
+      {
+        // Use the passed in capsule information.
+        collisionShape = createCapsule(shape.data.capsule.radius, shape.data.capsule.height, Vector3::one());
+
+        if (shape.centerAbsolute)
         {
-            if (shape.isExplicit)
-            {
-                // Use the passed in capsule information.
-                collisionShape = createCapsule(shape.data.capsule.radius, shape.data.capsule.height, Vector3::one());
-
-                if (shape.centerAbsolute)
-                {
-                    computeCenterOfMass(Vector3(shape.data.capsule.center), Vector3::one(), centerOfMassOffset);
-                }
-                else
-                {
-                    BoundingBox box;
-                    getBoundingBox(node, &box);
-                    computeCenterOfMass(box.getCenter() + Vector3(shape.data.capsule.center), scale, centerOfMassOffset);
-                }
-            }
-            else
-            {
-                // Compute a capsule shape that roughly matches the bounding box of the mesh.
-                BoundingBox box;
-                getBoundingBox(node, &box);
-                float radius = std::max((box.max.x - box.min.x) * 0.5f, (box.max.z - box.min.z) * 0.5f);
-                float height = box.max.y - box.min.y;
-                collisionShape = createCapsule(radius, height, scale);
-
-                computeCenterOfMass(box.getCenter(), scale, centerOfMassOffset);
-            }
+          computeCenterOfMass(Vector3(shape.data.capsule.center), Vector3::one(), centerOfMassOffset);
         }
-        break;
+        else
+        {
+          BoundingBox box;
+          getBoundingBox(node, &box);
+          computeCenterOfMass(box.getCenter() + Vector3(shape.data.capsule.center), scale, centerOfMassOffset);
+        }
+      }
+      else
+      {
+        // Compute a capsule shape that roughly matches the bounding box of the mesh.
+        BoundingBox box;
+        getBoundingBox(node, &box);
+        float radius = std::max((box.max.x - box.min.x) * 0.5f, (box.max.z - box.min.z) * 0.5f);
+        float height = box.max.y - box.min.y;
+        collisionShape = createCapsule(radius, height, scale);
+
+        computeCenterOfMass(box.getCenter(), scale, centerOfMassOffset);
+      }
+    }
+    break;
 
     case PhysicsCollisionShape::SHAPE_HEIGHTFIELD:
-        {
-            if (shape.isExplicit)
-            {
-                // Build heightfield rigid body from the passed in shape.
-                collisionShape = createHeightfield(node, shape.data.heightfield, centerOfMassOffset);
-            }
-            else
-            {
-                // Build the heightfield from an attached terrain's height array
-                if (dynamic_cast<Terrain*>(node->getDrawable()) == nullptr)
-                    GP_ERROR("Empty heightfield collision shapes can only be used on nodes that have an attached Terrain.");
-                else
-                    collisionShape = createHeightfield(node, dynamic_cast<Terrain*>(node->getDrawable())->_heightfield, centerOfMassOffset);
-            }
-        }
-        break;
+    {
+      if (shape.isExplicit)
+      {
+        // Build heightfield rigid body from the passed in shape.
+        collisionShape = createHeightfield(node, shape.data.heightfield, centerOfMassOffset);
+      }
+      else
+      {
+        // Build the heightfield from an attached terrain's height array
+        if (dynamic_cast<Terrain*>(node->getDrawable()) == nullptr)
+          GP_ERROR("Empty heightfield collision shapes can only be used on nodes that have an attached Terrain.");
+        else
+          collisionShape = createHeightfield(node, dynamic_cast<Terrain*>(node->getDrawable())->_heightfield, centerOfMassOffset);
+      }
+    }
+    break;
 
     case PhysicsCollisionShape::SHAPE_MESH:
-        {
-            // Build mesh from passed in shape.
-            collisionShape = createMesh(shape.data.mesh, scale, dynamic);
-        }
-        break;
+    {
+      // Build mesh from passed in shape.
+      collisionShape = createMesh(shape.data.mesh, scale, dynamic);
+    }
+    break;
 
     default:
-        GP_ERROR("Unsupported collision shape type (%d).", shape.type);
-        break;
+      GP_ERROR("Unsupported collision shape type (%d).", shape.type);
+      break;
     }
 
     return collisionShape;
-}
+  }
 
-PhysicsCollisionShape* PhysicsController::createBox(const Vector3& extents, const Vector3& scale)
-{
+  PhysicsCollisionShape* PhysicsController::createBox(const Vector3& extents, const Vector3& scale)
+  {
     btVector3 halfExtents(scale.x * 0.5 * extents.x, scale.y * 0.5 * extents.y, scale.z * 0.5 * extents.z);
 
     PhysicsCollisionShape* shape;
@@ -926,17 +923,17 @@ PhysicsCollisionShape* PhysicsController::createBox(const Vector3& extents, cons
     // Return the box shape from the cache if it already exists.
     for (unsigned int i = 0; i < _shapes.size(); ++i)
     {
-        shape = _shapes[i];
-        assert(shape);
-        if (shape->getType() == PhysicsCollisionShape::SHAPE_BOX)
+      shape = _shapes[i];
+      assert(shape);
+      if (shape->getType() == PhysicsCollisionShape::SHAPE_BOX)
+      {
+        btBoxShape* box = static_cast<btBoxShape*>(shape->_shape);
+        if (box && box->getHalfExtentsWithMargin() == halfExtents)
         {
-            btBoxShape* box = static_cast<btBoxShape*>(shape->_shape);
-            if (box && box->getHalfExtentsWithMargin() == halfExtents)
-            {
-                shape->addRef();
-                return shape;
-            }
+          shape->addRef();
+          return shape;
         }
+      }
     }
 
     // Create the box shape and add it to the cache.
@@ -944,17 +941,17 @@ PhysicsCollisionShape* PhysicsController::createBox(const Vector3& extents, cons
     _shapes.push_back(shape);
 
     return shape;
-}
+  }
 
-PhysicsCollisionShape* PhysicsController::createSphere(float radius, const Vector3& scale)
-{
+  PhysicsCollisionShape* PhysicsController::createSphere(float radius, const Vector3& scale)
+  {
     // Since sphere shapes depend only on the radius, the best we can do is take
     // the largest dimension and apply that as the uniform scale to the rigid body.
     float uniformScale = scale.x;
     if (uniformScale < scale.y)
-        uniformScale = scale.y;
+      uniformScale = scale.y;
     if (uniformScale < scale.z)
-        uniformScale = scale.z;
+      uniformScale = scale.z;
 
     float scaledRadius = radius * uniformScale;
 
@@ -963,31 +960,28 @@ PhysicsCollisionShape* PhysicsController::createSphere(float radius, const Vecto
     // Return the sphere shape from the cache if it already exists.
     for (unsigned int i = 0; i < _shapes.size(); ++i)
     {
-        shape = _shapes[i];
-        assert(shape);
-        if (shape->getType() == PhysicsCollisionShape::SHAPE_SPHERE)
+      shape = _shapes[i];
+      assert(shape);
+      if (shape->getType() == PhysicsCollisionShape::SHAPE_SPHERE)
+      {
+        btSphereShape* sphere = static_cast<btSphereShape*>(shape->_shape);
+        if (sphere && sphere->getRadius() == scaledRadius)
         {
-            btSphereShape* sphere = static_cast<btSphereShape*>(shape->_shape);
-            if (sphere && sphere->getRadius() == scaledRadius)
-            {
-                shape->addRef();
-                return shape;
-            }
+          shape->addRef();
+          return shape;
         }
+      }
     }
 
     // Create the sphere shape and add it to the cache.
-    shape = new PhysicsCollisionShape(PhysicsCollisionShape::SHAPE_SPHERE, bullet_new<btSphereShape>(scaledRadius));
-    _shapes.push_back(shape);
+    return _shapes.emplace_back(new PhysicsCollisionShape(PhysicsCollisionShape::SHAPE_SPHERE, bullet_new<btSphereShape>(scaledRadius)));
+  }
 
-    return shape;
-}
-
-PhysicsCollisionShape* PhysicsController::createCapsule(float radius, float height, const Vector3& scale)
-{
+  PhysicsCollisionShape* PhysicsController::createCapsule(float radius, float height, const Vector3& scale)
+  {
     float girthScale = scale.x;
     if (girthScale < scale.z)
-        girthScale = scale.z;
+      girthScale = scale.z;
     float scaledRadius = radius * girthScale;
     float scaledHeight = height * scale.y - radius * 2;
 
@@ -996,28 +990,25 @@ PhysicsCollisionShape* PhysicsController::createCapsule(float radius, float heig
     // Return the capsule shape from the cache if it already exists.
     for (unsigned int i = 0; i < _shapes.size(); i++)
     {
-        shape = _shapes[i];
-        assert(shape);
-        if (shape->getType() == PhysicsCollisionShape::SHAPE_CAPSULE)
+      shape = _shapes[i];
+      assert(shape);
+      if (shape->getType() == PhysicsCollisionShape::SHAPE_CAPSULE)
+      {
+        btCapsuleShape* capsule = static_cast<btCapsuleShape*>(shape->_shape);
+        if (capsule && capsule->getRadius() == scaledRadius && capsule->getHalfHeight() == 0.5f * scaledHeight)
         {
-            btCapsuleShape* capsule = static_cast<btCapsuleShape*>(shape->_shape);
-            if (capsule && capsule->getRadius() == scaledRadius && capsule->getHalfHeight() == 0.5f * scaledHeight)
-            {
-                shape->addRef();
-                return shape;
-            }
+          shape->addRef();
+          return shape;
         }
+      }
     }
 
     // Create the capsule shape and add it to the cache.
-    shape = new PhysicsCollisionShape(PhysicsCollisionShape::SHAPE_CAPSULE, bullet_new<btCapsuleShape>(scaledRadius, scaledHeight));
-    _shapes.push_back(shape);
+    return _shapes.emplace_back(new PhysicsCollisionShape(PhysicsCollisionShape::SHAPE_CAPSULE, bullet_new<btCapsuleShape>(scaledRadius, scaledHeight)));
+  }
 
-    return shape;
-}
-
-PhysicsCollisionShape* PhysicsController::createHeightfield(Node* node, HeightField* heightfield, Vector3* centerOfMassOffset)
-{
+  PhysicsCollisionShape* PhysicsController::createHeightfield(Node* node, HeightField* heightfield, Vector3* centerOfMassOffset)
+  {
     assert(node);
     assert(heightfield);
     assert(centerOfMassOffset);
@@ -1025,13 +1016,13 @@ PhysicsCollisionShape* PhysicsController::createHeightfield(Node* node, HeightFi
     // Inspect the height array for the min and max values
     float* heights = heightfield->getArray();
     float minHeight = FLT_MAX, maxHeight = -FLT_MAX;
-    for (unsigned int i = 0, count = heightfield->getColumnCount()*heightfield->getRowCount(); i < count; ++i)
+    for (unsigned int i = 0, count = heightfield->getColumnCount() * heightfield->getRowCount(); i < count; ++i)
     {
-        float h = heights[i];
-        if (h < minHeight)
-            minHeight = h;
-        if (h > maxHeight)
-            maxHeight = h;
+      float h = heights[i];
+      if (h < minHeight)
+        minHeight = h;
+      if (h > maxHeight)
+        maxHeight = h;
     }
 
     // Compute initial heightfield scale by pulling the current world scale out of the node
@@ -1042,13 +1033,13 @@ PhysicsCollisionShape* PhysicsController::createHeightfield(Node* node, HeightFi
     Terrain* terrain = dynamic_cast<Terrain*>(node->getDrawable());
     if (terrain != nullptr)
     {
-        const Vector3& tScale = terrain->_localScale;
-        scale.set(scale.x * tScale.x, scale.y * tScale.y, scale.z * tScale.z);
+      const Vector3& tScale = terrain->_localScale;
+      scale.set(scale.x * tScale.x, scale.y * tScale.y, scale.z * tScale.z);
     }
 
     // Compute initial center of mass offset necessary to move the height from its position in bullet
     // physics (always centered around origin) to its intended location.
-    centerOfMassOffset->set(0, -(minHeight + (maxHeight-minHeight)*0.5f) * scale.y, 0);
+    centerOfMassOffset->set(0, -(minHeight + (maxHeight - minHeight) * 0.5f) * scale.y, 0);
 
     // Create our heightfield data to be stored in the collision shape
     PhysicsCollisionShape::HeightfieldData* heightfieldData = new PhysicsCollisionShape::HeightfieldData();
@@ -1060,67 +1051,65 @@ PhysicsCollisionShape* PhysicsController::createHeightfield(Node* node, HeightFi
 
     // Create the bullet terrain shape
     btHeightfieldTerrainShape* terrainShape = bullet_new<btHeightfieldTerrainShape>(
-        heightfield->getColumnCount(), heightfield->getRowCount(), heightfield->getArray(), 1.0f, minHeight, maxHeight, 1, PHY_FLOAT, false);
+      heightfield->getColumnCount(), heightfield->getRowCount(), heightfield->getArray(), 1.0f, minHeight, maxHeight, 1, PHY_FLOAT, false);
 
     // Set initial bullet local scaling for the heightfield
     terrainShape->setLocalScaling(BV(scale));
 
     // Create our collision shape object and store heightfieldData in it.
-    PhysicsCollisionShape* shape = new PhysicsCollisionShape(PhysicsCollisionShape::SHAPE_HEIGHTFIELD, terrainShape);
-    shape->_shapeData.heightfieldData = heightfieldData;
+    _shapes.emplace_back(new PhysicsCollisionShape(PhysicsCollisionShape::SHAPE_HEIGHTFIELD, terrainShape));
+    _shapes.back()->_shapeData.heightfieldData = heightfieldData;
 
-    _shapes.push_back(shape);
+    return _shapes.back();
+  }
 
-    return shape;
-}
-
-PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& scale, bool dynamic)
-{
+  PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& scale, bool dynamic)
+  {
     assert(mesh);
 
     // The mesh must have a valid URL (i.e. it must have been loaded from a Bundle)
     // in order to fetch mesh data for computing mesh rigid body.
     if (strlen(mesh->getUrl()) == 0)
     {
-        GP_ERROR("Cannot create mesh rigid body for mesh without valid URL.");
-        return nullptr;
+      GP_ERROR("Cannot create mesh rigid body for mesh without valid URL.");
+      return nullptr;
     }
 
     if (!dynamic)
     {
-        // Static meshes use btBvhTriangleMeshShape and therefore only support triangle mesh shapes.
-        // Dynamic meshes are approximated with a btConvexHullShape (convex wrapper on cloud of vertices)
-        // and therefore can support any primitive type.
-        bool triMesh = true;
-        if (mesh->getPartCount() > 0)
+      // Static meshes use btBvhTriangleMeshShape and therefore only support triangle mesh shapes.
+      // Dynamic meshes are approximated with a btConvexHullShape (convex wrapper on cloud of vertices)
+      // and therefore can support any primitive type.
+      bool triMesh = true;
+      if (mesh->getPartCount() > 0)
+      {
+        for (unsigned int i = 0; i < mesh->getPartCount(); ++i)
         {
-            for (unsigned int i = 0; i < mesh->getPartCount(); ++i)
-            {
-                if (mesh->getPart(i)->getPrimitiveType() != Mesh::TRIANGLES)
-                {
-                    triMesh = false;
-                    break;
-                }
-            }
+          if (mesh->getPart(i)->getPrimitiveType() != Mesh::TRIANGLES)
+          {
+            triMesh = false;
+            break;
+          }
         }
-        else
-        {
-            triMesh = mesh->getPrimitiveType() == Mesh::TRIANGLES;
-        }
+      }
+      else
+      {
+        triMesh = mesh->getPrimitiveType() == Mesh::TRIANGLES;
+      }
 
-        if (!triMesh)
-        {
-            GP_ERROR("Mesh rigid bodies are currently only supported on meshes with TRIANGLES primitive type.");
-            return nullptr;
-        }
+      if (!triMesh)
+      {
+        GP_ERROR("Mesh rigid bodies are currently only supported on meshes with TRIANGLES primitive type.");
+        return nullptr;
+      }
     }
 
     // Read mesh data from URL
     Bundle::MeshData* data = Bundle::readMeshData(mesh->getUrl());
     if (data == nullptr)
     {
-        GP_ERROR("Failed to load mesh data from url '%s'.", mesh->getUrl());
-        return nullptr;
+      GP_ERROR("Failed to load mesh data from url '%s'.", mesh->getUrl());
+      return nullptr;
     }
 
     // Create mesh data to be populated and store in returned collision shape.
@@ -1136,11 +1125,11 @@ PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& 
     int vertexStride = data->vertexFormat.getVertexSize();
     for (unsigned int i = 0; i < data->vertexCount; i++)
     {
-        v.set(*((float*)&data->vertexData[i * vertexStride + 0 * sizeof(float)]),
-                *((float*)&data->vertexData[i * vertexStride + 1 * sizeof(float)]),
-                *((float*)&data->vertexData[i * vertexStride + 2 * sizeof(float)]));
-        v *= m;
-        memcpy(&(shapeMeshData->vertexData[i * 3]), &v, sizeof(float) * 3);
+      v.set(*((float*)&data->vertexData[i * vertexStride + 0 * sizeof(float)]),
+        *((float*)&data->vertexData[i * vertexStride + 1 * sizeof(float)]),
+        *((float*)&data->vertexData[i * vertexStride + 2 * sizeof(float)]));
+      v *= m;
+      memcpy(&(shapeMeshData->vertexData[i * 3]), &v, sizeof(float) * 3);
     }
 
     btCollisionShape* collisionShape = nullptr;
@@ -1148,103 +1137,105 @@ PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& 
 
     if (dynamic)
     {
-        // For dynamic meshes, use a btConvexHullShape approximation
-        btConvexHullShape* originalConvexShape = bullet_new<btConvexHullShape>(shapeMeshData->vertexData, data->vertexCount, sizeof(float)*3);
+      // For dynamic meshes, use a btConvexHullShape approximation
+      btConvexHullShape* originalConvexShape = bullet_new<btConvexHullShape>(shapeMeshData->vertexData, data->vertexCount, sizeof(float) * 3);
 
-        // Create a hull approximation for better performance
-	    btShapeHull* hull = bullet_new<btShapeHull>(originalConvexShape);
-	    hull->buildHull(originalConvexShape->getMargin());
-	    collisionShape = bullet_new<btConvexHullShape>((btScalar*)hull->getVertexPointer(), hull->numVertices());
+      // Create a hull approximation for better performance
+      btShapeHull* hull = bullet_new<btShapeHull>(originalConvexShape);
+      hull->buildHull(originalConvexShape->getMargin());
+      collisionShape = bullet_new<btConvexHullShape>((btScalar*)hull->getVertexPointer(), hull->numVertices());
 
-        SAFE_DELETE(hull);
-        SAFE_DELETE(originalConvexShape);
+      SAFE_DELETE(hull);
+      SAFE_DELETE(originalConvexShape);
     }
     else
     {
-        // For static meshes, use btBvhTriangleMeshShape
-        meshInterface = bullet_new<btTriangleIndexVertexArray>();
+      // For static meshes, use btBvhTriangleMeshShape
+      meshInterface = bullet_new<btTriangleIndexVertexArray>();
 
-        size_t partCount = data->parts.size();
-        if (partCount > 0)
+      size_t partCount = data->parts.size();
+      if (partCount > 0)
+      {
+        PHY_ScalarType indexType = PHY_UCHAR;
+        int indexStride = 0;
+        Bundle::MeshPartData* meshPart = nullptr;
+        for (size_t i = 0; i < partCount; i++)
         {
-            PHY_ScalarType indexType = PHY_UCHAR;
-            int indexStride = 0;
-            Bundle::MeshPartData* meshPart = nullptr;
-            for (size_t i = 0; i < partCount; i++)
-            {
-                meshPart = data->parts[i];
-                assert(meshPart);
+          meshPart = data->parts[i];
+          assert(meshPart);
 
-                switch (meshPart->indexFormat)
-                {
-                case Mesh::INDEX8:
-                    indexType = PHY_UCHAR;
-                    indexStride = 1;
-                    break;
-                case Mesh::INDEX16:
-                    indexType = PHY_SHORT;
-                    indexStride = 2;
-                    break;
-                case Mesh::INDEX32:
-                    indexType = PHY_INTEGER;
-                    indexStride = 4;
-                    break;
-                default:
-                    GP_ERROR("Unsupported index format (%d).", meshPart->indexFormat);
-                    SAFE_DELETE(meshInterface);
-                    SAFE_DELETE_ARRAY(shapeMeshData->vertexData);
-                    SAFE_DELETE(shapeMeshData);
-                    SAFE_DELETE(data);
-                    return nullptr;
-                }
+          switch (meshPart->indexFormat)
+          {
+          case Mesh::INDEX8:
+            indexType = PHY_UCHAR;
+            indexStride = 1;
+            break;
+          case Mesh::INDEX16:
+            indexType = PHY_SHORT;
+            indexStride = 2;
+            break;
+          case Mesh::INDEX32:
+            indexType = PHY_INTEGER;
+            indexStride = 4;
+            break;
+          default:
+            GP_ERROR("Unsupported index format (%d).", meshPart->indexFormat);
+            SAFE_DELETE(meshInterface);
+            SAFE_DELETE_ARRAY(shapeMeshData->vertexData);
+            SAFE_DELETE(shapeMeshData);
+            SAFE_DELETE(data);
+            return nullptr;
+          }
 
-                // Move the index data into the rigid body's local buffer.
-                // Set it to nullptr in the MeshPartData so it is not released when the data is freed.
-                shapeMeshData->indexData.push_back(meshPart->indexData);
-                meshPart->indexData = nullptr;
+          // Move the index data into the rigid body's local buffer.
+          // Set it to nullptr in the MeshPartData so it is not released when the data is freed.
+          shapeMeshData->indexData.push_back(meshPart->indexData);
+          meshPart->indexData = nullptr;
 
-                // Create a btIndexedMesh object for the current mesh part.
-                btIndexedMesh indexedMesh;
-                indexedMesh.m_indexType = indexType;
-                indexedMesh.m_numTriangles = meshPart->indexCount / 3; // assume TRIANGLES primitive type
-                indexedMesh.m_numVertices = meshPart->indexCount;
-                indexedMesh.m_triangleIndexBase = (const unsigned char*)shapeMeshData->indexData[i];
-                indexedMesh.m_triangleIndexStride = indexStride*3;
-                indexedMesh.m_vertexBase = (const unsigned char*)shapeMeshData->vertexData;
-                indexedMesh.m_vertexStride = sizeof(float)*3;
-                indexedMesh.m_vertexType = PHY_FLOAT;
+          // Create a btIndexedMesh object for the current mesh part.
+          btIndexedMesh indexedMesh;
+          indexedMesh.m_indexType = indexType;
+          indexedMesh.m_numTriangles = meshPart->indexCount / 3; // assume TRIANGLES primitive type
+          indexedMesh.m_numVertices = meshPart->indexCount;
+          indexedMesh.m_triangleIndexBase = (const unsigned char*)shapeMeshData->indexData[i];
+          indexedMesh.m_triangleIndexStride = indexStride * 3;
+          indexedMesh.m_vertexBase = (const unsigned char*)shapeMeshData->vertexData;
+          indexedMesh.m_vertexStride = sizeof(float) * 3;
+          indexedMesh.m_vertexType = PHY_FLOAT;
 
-                // Add the indexed mesh data to the mesh interface.
-                meshInterface->addIndexedMesh(indexedMesh, indexType);
-            }
+          // Add the indexed mesh data to the mesh interface.
+          meshInterface->addIndexedMesh(indexedMesh, indexType);
         }
-        else
-        {
-            // Generate index data for the mesh locally in the rigid body.
-            unsigned int* indexData = new unsigned int[data->vertexCount];
-            for (unsigned int i = 0; i < data->vertexCount; i++)
-            {
-                indexData[i] = i;
-            }
-            shapeMeshData->indexData.push_back((unsigned char*)indexData);
+      }
+      else
+      {
+        // Generate index data for the mesh locally in the rigid body.
+        unsigned int* indexData = new unsigned int[data->vertexCount];
 
-            // Create a single btIndexedMesh object for the mesh interface.
-            btIndexedMesh indexedMesh;
-            indexedMesh.m_indexType = PHY_INTEGER;
-            indexedMesh.m_numTriangles = data->vertexCount / 3; // assume TRIANGLES primitive type
-            indexedMesh.m_numVertices = data->vertexCount;
-            indexedMesh.m_triangleIndexBase = shapeMeshData->indexData[0];
-            indexedMesh.m_triangleIndexStride = sizeof(unsigned int);
-            indexedMesh.m_vertexBase = (const unsigned char*)shapeMeshData->vertexData;
-            indexedMesh.m_vertexStride = sizeof(float)*3;
-            indexedMesh.m_vertexType = PHY_FLOAT;
+        std::ranges::copy(std::views::iota(0u, data->vertexCount), indexData);
 
-            // Set the data in the mesh interface.
-            meshInterface->addIndexedMesh(indexedMesh, indexedMesh.m_indexType);
-        }
+        // The above is simply filling the indexes like this
+        // for (unsigned int i = 0; i < data->vertexCount; i++) indexData[i] = i;
 
-        // Create our collision shape object and store shapeMeshData in it.
-        collisionShape = bullet_new<btBvhTriangleMeshShape>(meshInterface, true);
+        shapeMeshData->indexData.push_back((unsigned char*)indexData);
+
+        // Create a single btIndexedMesh object for the mesh interface.
+        btIndexedMesh indexedMesh;
+        indexedMesh.m_indexType = PHY_INTEGER;
+        indexedMesh.m_numTriangles = data->vertexCount / 3; // assume TRIANGLES primitive type
+        indexedMesh.m_numVertices = data->vertexCount;
+        indexedMesh.m_triangleIndexBase = shapeMeshData->indexData[0];
+        indexedMesh.m_triangleIndexStride = sizeof(unsigned int);
+        indexedMesh.m_vertexBase = (const unsigned char*)shapeMeshData->vertexData;
+        indexedMesh.m_vertexStride = sizeof(float) * 3;
+        indexedMesh.m_vertexType = PHY_FLOAT;
+
+        // Set the data in the mesh interface.
+        meshInterface->addIndexedMesh(indexedMesh, indexedMesh.m_indexType);
+      }
+
+      // Create our collision shape object and store shapeMeshData in it.
+      collisionShape = bullet_new<btBvhTriangleMeshShape>(meshInterface, true);
     }
 
     // Create our collision shape object and store shapeMeshData in it.
@@ -1257,27 +1248,27 @@ PhysicsCollisionShape* PhysicsController::createMesh(Mesh* mesh, const Vector3& 
     SAFE_DELETE(data);
 
     return shape;
-}
+  }
 
-void PhysicsController::destroyShape(PhysicsCollisionShape* shape)
-{
+  void PhysicsController::destroyShape(PhysicsCollisionShape* shape)
+  {
     if (shape)
     {
-        if (shape->getRefCount() == 1)
-        {
-            // Remove shape from shape cache.
-            std::vector<PhysicsCollisionShape*>::iterator shapeItr = std::find(_shapes.begin(), _shapes.end(), shape);
-            if (shapeItr != _shapes.end())
-                _shapes.erase(shapeItr);
-        }
+      if (shape->getRefCount() == 1)
+      {
+        // Remove shape from shape cache.
+        std::vector<PhysicsCollisionShape*>::iterator shapeItr = std::find(_shapes.begin(), _shapes.end(), shape);
+        if (shapeItr != _shapes.end())
+          _shapes.erase(shapeItr);
+      }
 
-        // Release the shape.
-        shape->release();
+      // Release the shape.
+      shape->release();
     }
-}
+  }
 
-void PhysicsController::addConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b, PhysicsConstraint* constraint)
-{
+  void PhysicsController::addConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b, PhysicsConstraint* constraint)
+  {
     assert(a);
     assert(constraint);
     assert(_world);
@@ -1285,56 +1276,56 @@ void PhysicsController::addConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b, 
     a->addConstraint(constraint);
     if (b)
     {
-        b->addConstraint(constraint);
+      b->addConstraint(constraint);
     }
-    
-    _world->addConstraint(constraint->_constraint);
-}
 
-bool PhysicsController::checkConstraintRigidBodies(PhysicsRigidBody* a, PhysicsRigidBody* b)
-{
+    _world->addConstraint(constraint->_constraint);
+  }
+
+  bool PhysicsController::checkConstraintRigidBodies(PhysicsRigidBody* a, PhysicsRigidBody* b)
+  {
     assert(a);
 
     if (!a->supportsConstraints())
     {
-        assert(a->_node);
-        GP_ERROR("Rigid body '%s' does not support constraints; unexpected behavior may occur.", a->_node->getId());
-        return false;
+      assert(a->_node);
+      GP_ERROR("Rigid body '%s' does not support constraints; unexpected behavior may occur.", a->_node->getId());
+      return false;
     }
-    
+
     if (b && !b->supportsConstraints())
     {
-        assert(b->_node);
-        GP_ERROR("Rigid body '%s' does not support constraints; unexpected behavior may occur.", b->_node->getId());
-        return false;
+      assert(b->_node);
+      GP_ERROR("Rigid body '%s' does not support constraints; unexpected behavior may occur.", b->_node->getId());
+      return false;
     }
 
     return true;
-}
+  }
 
-void PhysicsController::removeConstraint(PhysicsConstraint* constraint)
-{
+  void PhysicsController::removeConstraint(PhysicsConstraint* constraint)
+  {
     assert(constraint);
     assert(_world);
 
     // Find the constraint and remove it from the physics world.
     for (int i = _world->getNumConstraints() - 1; i >= 0; i--)
     {
-        btTypedConstraint* currentConstraint = _world->getConstraint(i);
-        if (constraint->_constraint == currentConstraint)
-        {
-            _world->removeConstraint(currentConstraint);
-            break;
-        }
+      btTypedConstraint* currentConstraint = _world->getConstraint(i);
+      if (constraint->_constraint == currentConstraint)
+      {
+        _world->removeConstraint(currentConstraint);
+        break;
+      }
     }
-}
+  }
 
-PhysicsController::DebugDrawer::DebugDrawer()
-    : _mode(btIDebugDraw::DBG_DrawAabb | btIDebugDraw::DBG_DrawConstraintLimits | btIDebugDraw::DBG_DrawConstraints | 
-       btIDebugDraw::DBG_DrawContactPoints | btIDebugDraw::DBG_DrawWireframe), _meshBatch(nullptr), _lineCount(0)
-{
+  PhysicsController::DebugDrawer::DebugDrawer()
+    : _mode(btIDebugDraw::DBG_DrawAabb | btIDebugDraw::DBG_DrawConstraintLimits | btIDebugDraw::DBG_DrawConstraints |
+      btIDebugDraw::DBG_DrawContactPoints | btIDebugDraw::DBG_DrawWireframe), _meshBatch(nullptr), _lineCount(0)
+  {
     // Vertex shader for drawing colored lines.
-    const char* vs_str = 
+    const char* vs_str =
     {
         "uniform mat4 u_viewProjectionMatrix;\n"
         "attribute vec4 a_position;\n"
@@ -1347,7 +1338,7 @@ PhysicsController::DebugDrawer::DebugDrawer()
     };
 
     // Fragment shader for drawing colored lines.
-    const char* fs_str = 
+    const char* fs_str =
     {
     #ifdef OPENGL_ES
         "precision highp float;\n"
@@ -1371,31 +1362,31 @@ PhysicsController::DebugDrawer::DebugDrawer()
     };
     _meshBatch = MeshBatch::create(VertexFormat(elements, 2), Mesh::LINES, material, false, 4096, 4096);
     SAFE_RELEASE(material);
-}
+  }
 
-PhysicsController::DebugDrawer::~DebugDrawer()
-{
+  PhysicsController::DebugDrawer::~DebugDrawer()
+  {
     SAFE_DELETE(_meshBatch);
-}
+  }
 
-void PhysicsController::DebugDrawer::begin(const Matrix& viewProjection)
-{
+  void PhysicsController::DebugDrawer::begin(const Matrix& viewProjection)
+  {
     assert(_meshBatch);
     _meshBatch->start();
     _meshBatch->getMaterial()->getParameter("u_viewProjectionMatrix")->setValue(viewProjection);
-}
+  }
 
-void PhysicsController::DebugDrawer::end()
-{
-  assert(_meshBatch && _meshBatch->getMaterial());
+  void PhysicsController::DebugDrawer::end()
+  {
+    assert(_meshBatch && _meshBatch->getMaterial());
     _meshBatch->finish();
     _meshBatch->draw();
     _lineCount = 0;
-}
+  }
 
-void PhysicsController::DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
-{
-  assert(_meshBatch);
+  void PhysicsController::DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
+  {
+    assert(_meshBatch);
 
     static DebugDrawer::DebugVertex vertices[2];
 
@@ -1420,64 +1411,64 @@ void PhysicsController::DebugDrawer::drawLine(const btVector3& from, const btVec
     ++_lineCount;
     if (_lineCount >= 4096)
     {
-        // Flush the batch when it gets full (don't want to to grow infinitely)
-        end();
-        _meshBatch->start();
+      // Flush the batch when it gets full (don't want to to grow infinitely)
+      end();
+      _meshBatch->start();
     }
-}
+  }
 
-void PhysicsController::DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
-{
+  void PhysicsController::DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
+  {
     drawLine(from, to, color, color);
-}
+  }
 
-void PhysicsController::DebugDrawer::drawContactPoint(const btVector3& pointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
-{
+  void PhysicsController::DebugDrawer::drawContactPoint(const btVector3& pointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color)
+  {
     drawLine(pointOnB, pointOnB + normalOnB, color);
-}
+  }
 
-void PhysicsController::DebugDrawer::reportErrorWarning(const char* warningString)
-{
+  void PhysicsController::DebugDrawer::reportErrorWarning(const char* warningString)
+  {
     GP_WARN(warningString);
-}
+  }
 
-void PhysicsController::DebugDrawer::draw3dText(const btVector3& location, const char* textString)
-{
+  void PhysicsController::DebugDrawer::draw3dText(const btVector3& location, const char* textString)
+  {
     GP_WARN("Physics debug drawing: 3D text is not supported.");
-}
+  }
 
-void PhysicsController::DebugDrawer::setDebugMode(int mode)
-{
+  void PhysicsController::DebugDrawer::setDebugMode(int mode)
+  {
     _mode = mode;
-}
+  }
 
-int PhysicsController::DebugDrawer::getDebugMode() const
-{
+  int PhysicsController::DebugDrawer::getDebugMode() const
+  {
     return _mode;
-}
+  }
 
-PhysicsController::Listener::~Listener()
-{
+  PhysicsController::Listener::~Listener()
+  {
     assert(Game::getInstance()->getPhysicsController());
     Game::getInstance()->getPhysicsController()->removeStatusListener(this);
-}
+  }
 
-PhysicsController::HitFilter::HitFilter()
-{
-}
+  PhysicsController::HitFilter::HitFilter()
+  {
+  }
 
-PhysicsController::HitFilter::~HitFilter()
-{
-}
+  PhysicsController::HitFilter::~HitFilter()
+  {
+  }
 
-bool PhysicsController::HitFilter::filter(PhysicsCollisionObject* object)
-{
+  bool PhysicsController::HitFilter::filter(PhysicsCollisionObject* object)
+  {
     return false;
-}
+  }
 
-bool PhysicsController::HitFilter::hit(const PhysicsController::HitResult& result)
-{
+  bool PhysicsController::HitFilter::hit(const PhysicsController::HitResult& result)
+  {
     return true;
-}
+  }
 
 }

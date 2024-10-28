@@ -357,6 +357,8 @@ protected:
          * @param script The script to create an entry for.
          */
         ScriptEntry(Script* script) : script(script), next(nullptr), prev(nullptr) { }
+
+        DEFINE_ITERATOR(ScriptEntry)
     };
 
     /**

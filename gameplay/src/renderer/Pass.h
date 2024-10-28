@@ -75,6 +75,11 @@ private:
     Pass(const char* id, Technique* technique);
 
     /**
+     * Constructor.
+     */
+    Pass(const char* id, Technique* technique, Effect* effect);
+
+    /**
      * Hidden copy constructor.
      */
     Pass(const Pass& copy);

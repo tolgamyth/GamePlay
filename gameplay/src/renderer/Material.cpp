@@ -100,12 +100,9 @@ Material* Material::create(std::shared_ptr<Effect> effect)
     // Create a new material with a single technique and pass for the given effect.
     Material* material = new Material();
 
-    Technique* technique = new Technique(nullptr, material);
-    material->_techniques.push_back(technique);
+    const auto& technique = material->_techniques.emplace_back(new Technique(nullptr, material));
 
-    Pass* pass = new Pass(nullptr, technique);
-    pass->_effect = effect;
-    technique->_passes.push_back(pass);
+    const auto& pass = technique->_passes.emplace_back(new Pass(nullptr, technique, effect.get()));
 
     material->_currentTechnique = technique;
 
@@ -120,8 +117,8 @@ Material* Material::create(const char* vshPath, const char* fshPath, const char*
     // Create a new material with a single technique and pass for the given effect
     Material* material = new Material();
 
-    Technique* technique = new Technique(nullptr, material);
-    material->_techniques.push_back(technique);
+    material->_techniques.push_back(new Technique(nullptr, material));
+    const auto& technique = material->_techniques.back();
 
     Pass* pass = new Pass(nullptr, technique);
     if (!pass->initialize(vshPath, fshPath, defines))
@@ -194,9 +191,8 @@ Material* Material::clone(NodeCloneContext &context) const
     Material* material = new Material();
     RenderState::cloneInto(material, context);
 
-    for (std::vector<Technique*>::const_iterator it = _techniques.begin(); it != _techniques.end(); ++it)
+    for (const auto& technique : _techniques)
     {
-        const Technique* technique = *it;
         assert(technique);
         Technique* techniqueClone = technique->clone(material, context);
         material->_techniques.push_back(techniqueClone);
@@ -214,7 +210,8 @@ bool Material::loadTechnique(Material* material, Properties* techniqueProperties
     assert(techniqueProperties);
 
     // Create a new technique.
-    Technique* technique = new Technique(techniqueProperties->getId(), material);
+    // Add the new technique to the material.
+    auto& technique = material->_techniques.emplace_back(new Technique(techniqueProperties->getId(), material));
 
     // Load uniform value parameters for this technique.
     loadRenderState(technique, techniqueProperties);
@@ -235,9 +232,6 @@ bool Material::loadTechnique(Material* material, Properties* techniqueProperties
             }
         }
     }
-
-    // Add the new technique to the material.
-    material->_techniques.push_back(technique);
 
     return true;
 }

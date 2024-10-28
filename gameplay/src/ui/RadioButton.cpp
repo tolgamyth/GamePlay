@@ -21,21 +21,17 @@ RadioButton::~RadioButton()
 
 RadioButton* RadioButton::create(const char* id, Theme::Style* style)
 {
-    RadioButton* rb = new RadioButton();
+    auto& rb = __radioButtons.emplace_back(new RadioButton());
     rb->_id = id ? id : "";
     rb->initialize("RadioButton", style, nullptr);
-
-    __radioButtons.push_back(rb);
 
     return rb;
 }
 
 Control* RadioButton::create(Theme::Style* style, Properties* properties)
 {
-    RadioButton* rb = new RadioButton();
+    auto& rb = __radioButtons.emplace_back(new RadioButton());
     rb->initialize("RadioButton", style, properties);
-
-    __radioButtons.push_back(rb);
 
     return rb;
 }
@@ -95,16 +91,11 @@ void RadioButton::addListener(Control::Listener* listener, int eventFlags)
 
 void RadioButton::clearSelected(const std::string& groupId)
 {
-    std::vector<RadioButton*>::const_iterator it;
-    for (it = __radioButtons.begin(); it < __radioButtons.end(); ++it)
-    {
-        RadioButton* radioButton = *it;
-        assert(radioButton);
-        if (groupId == radioButton->_groupId)
-        {
-            radioButton->setSelected(false);
-        }
+  for (auto radioButton : __radioButtons) {
+    if (radioButton && radioButton->_groupId == groupId) {
+      radioButton->setSelected(false);
     }
+  }
 }
 
 bool RadioButton::keyEvent(Keyboard::KeyEvent evt, int key)

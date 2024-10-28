@@ -123,9 +123,9 @@ void MeshBatchSample::addTriangle(int x, int y)
     m.transformPoint(p3, &p3);
     
     // Added the triangle to the list with random vertex colors.
-    _vertices.push_back(Vertex(p1, randomColor()));
-    _vertices.push_back(Vertex(p2, randomColor()));
-    _vertices.push_back(Vertex(p3, randomColor()));
+    _vertices.emplace_back(Vertex(p1, randomColor()));
+    _vertices.emplace_back(Vertex(p2, randomColor()));
+    _vertices.emplace_back(Vertex(p3, randomColor()));
     
     _lastTriangleAdded = Game::getInstance()->getAbsoluteTime();
 }
