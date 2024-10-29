@@ -4,6 +4,7 @@
 #include "graphics/MeshPart.h"
 #include "scene/Scene.h"
 #include "framework/Game.h"
+#include "renderer/Pass.h"
 
 namespace gameplay
 {

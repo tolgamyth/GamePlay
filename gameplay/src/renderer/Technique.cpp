@@ -2,6 +2,7 @@
 #include "renderer/Technique.h"
 #include "renderer/Material.h"
 #include "scene/Node.h"
+#include "renderer/Pass.h"
 
 namespace gameplay
 {
@@ -69,9 +70,7 @@ namespace gameplay
     for (const auto& pass : _passes)
     {
       assert(pass);
-      Pass* passCopy = pass->clone(technique, context);
-      assert(passCopy);
-      technique->_passes.push_back(passCopy);
+      technique->_passes.emplace_back(pass->clone(technique, context));
     }
 
     RenderState::cloneInto(technique, context);

@@ -284,7 +284,7 @@ void BillboardSample::loadGround()
   node->setDrawable(_ground);
   _scene->addNode(node);
   node->rotateX(MATH_DEG_TO_RAD(90));
-  std::shared_ptr<Effect> effect = Effect::createFromFile("res/shaders/textured.vert", "res/shaders/textured.frag", "TEXTURE_REPEAT");
+  Effect* effect = Effect::createFromFile("res/shaders/textured.vert", "res/shaders/textured.frag", "TEXTURE_REPEAT");
   Material* material = Material::create(effect);
   material->getStateBlock()->setDepthTest(true);
   material->getStateBlock()->setBlend(false);
@@ -294,6 +294,7 @@ void BillboardSample::loadGround()
   material->setParameterAutoBinding("u_worldViewProjectionMatrix", RenderState::WORLD_VIEW_PROJECTION_MATRIX);
   _ground->setMaterial(material);
   SAFE_RELEASE(material);
+  SAFE_RELEASE(effect);
   SAFE_RELEASE(node);
 }
 
@@ -302,7 +303,7 @@ void BillboardSample::loadBillboards()
   Mesh* mesh = Mesh::createQuad(-(BILLBOARD_WIDTH / 2.0f), -(BILLBOARD_HEIGHT / 2.0f), BILLBOARD_WIDTH, BILLBOARD_HEIGHT);
   mesh->setBoundingSphere(BoundingSphere(Vector3::zero(), BILLBOARD_HEIGHT));
 
-  std::shared_ptr<Effect> effect = Effect::createFromFile("res/shaders/textured.vert", "res/shaders/textured.frag", "TEXTURE_DISCARD_ALPHA");
+  Effect* effect = Effect::createFromFile("res/shaders/textured.vert", "res/shaders/textured.frag", "TEXTURE_DISCARD_ALPHA");
 
   // Create the model and node and bind the material
   for (unsigned int i = 0; i < BILLBOARD_COUNT; i++)
@@ -328,6 +329,7 @@ void BillboardSample::loadBillboards()
     float tz = MATH_RANDOM_0_1() * GROUND_HEIGHT - (GROUND_HEIGHT / 2.0f);
     node->translate(tx, (BILLBOARD_HEIGHT / 2.0f), tz);
   }
+  SAFE_RELEASE(effect);
   SAFE_RELEASE(mesh);
 }
 

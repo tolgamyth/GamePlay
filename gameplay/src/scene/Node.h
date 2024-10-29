@@ -470,7 +470,7 @@ public:
      *
      * @return The audio source attached to this node.
      */
-    AudioSource* getAudioSource() const { return _audioSource.get(); }
+    AudioSource* getAudioSource() const { return _audioSource; }
 
     /**
      * Attaches an audio source to this node.
@@ -738,7 +738,7 @@ protected:
     /** The light component attached to this node. */
     Light* _light;
     /** The audio source component attached to this node. */
-    std::shared_ptr<AudioSource> _audioSource;
+    AudioSource* _audioSource;
     /** The collision object component attached to this node. */
     PhysicsCollisionObject* _collisionObject;
     /** The AI agent component attached to this node. */

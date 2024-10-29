@@ -83,6 +83,9 @@ void AudioSample::initialize()
 
 void AudioSample::finalize()
 {
+  SAFE_RELEASE(_audioBraking);
+  SAFE_RELEASE(_audioEngine);
+  SAFE_RELEASE(_audioBackground);
   SAFE_RELEASE(_formBraking);
   SAFE_RELEASE(_formEngine);
   SAFE_RELEASE(_formBackground);

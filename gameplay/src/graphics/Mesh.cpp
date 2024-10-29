@@ -1,9 +1,6 @@
 #include "framework/Base.h"
 #include "graphics/Mesh.h"
 #include "graphics/MeshPart.h"
-#include "graphics/Effect.h"
-#include "graphics/Model.h"
-#include "renderer/Material.h"
 
 namespace gameplay
 {
@@ -37,7 +34,7 @@ Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCoun
     GLuint vbo;
     GL_ASSERT( glGenBuffers(1, &vbo) );
     GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, vbo) );
-    GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, nullptr, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+    GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
 
     Mesh* mesh = new Mesh(vertexFormat);
     mesh->_vertexCount = vertexCount;

@@ -276,8 +276,9 @@ namespace gameplay
       {
       case SceneNodeProperty::AUDIO:
       {
-        std::shared_ptr<AudioSource> audioSource = AudioSource::create(p);
-        node->setAudioSource(audioSource.get());
+        AudioSource* audioSource = AudioSource::create(p);
+        node->setAudioSource(audioSource);
+            SAFE_RELEASE(audioSource);
         break;
       }
       case SceneNodeProperty::MATERIAL:

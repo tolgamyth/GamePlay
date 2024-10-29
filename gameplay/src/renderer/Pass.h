@@ -77,7 +77,7 @@ private:
     /**
      * Constructor.
      */
-    Pass(const char* id, Technique* technique, Effect* effect);
+    //Pass(const char* id, Technique* technique, Effect* effect);
 
     /**
      * Hidden copy constructor.
@@ -111,7 +111,7 @@ private:
 
     std::string _id;
     Technique* _technique;
-    std::shared_ptr<Effect> _effect;
+    Effect* _effect;
     VertexAttributeBinding* _vaBinding;
 };
 

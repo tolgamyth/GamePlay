@@ -27,7 +27,7 @@ private:
   Form* _formBackground;
   Form* _formEngine;
   Form* _formBraking;
-  std::shared_ptr<AudioSource> _audioBackground;
-  std::shared_ptr<AudioSource> _audioEngine;
-  std::shared_ptr<AudioSource> _audioBraking;
+  AudioSource* _audioBackground;
+  AudioSource* _audioEngine;
+  AudioSource* _audioBraking;
 };

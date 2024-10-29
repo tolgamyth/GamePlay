@@ -357,7 +357,7 @@ namespace gameplay
 
         if (audioListener && _bindAudioListenerToCamera)
         {
-          audioListener->setCamera(std::make_unique<Camera>(*_activeCamera));
+          audioListener->setCamera(_activeCamera);
         }
       }
     }
@@ -371,7 +371,7 @@ namespace gameplay
 
       if (AudioListener::getInstance())
       {
-        AudioListener::getInstance()->setCamera(bind ? std::make_unique<Camera>(*_activeCamera) : nullptr);
+        AudioListener::getInstance()->setCamera(bind ? _activeCamera : nullptr);
       }
     }
   }

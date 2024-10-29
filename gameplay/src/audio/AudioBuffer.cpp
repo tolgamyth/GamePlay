@@ -6,7 +6,7 @@ namespace gameplay
 {
 
   // Audio buffer cache
-  static std::vector<std::shared_ptr<AudioBuffer>> __buffers;
+  static std::vector<AudioBuffer*> __buffers;
 
   // Callbacks for loading an ogg file using Stream
   static size_t readStream(void* ptr, size_t size, size_t nmemb, void* datasource)
@@ -51,15 +51,18 @@ namespace gameplay
 
     if (!_streamed)
     {
-      unsigned int bufferCount = (unsigned int)__buffers.size();
-      for (unsigned int i = 0; i < bufferCount; i++)
-      {
-        if (this == __buffers[i].get())
-        {
-          //__buffers.erase(__buffers.begin() + i);
-          break;
-        }
-      }
+      //unsigned int bufferCount = (unsigned int)__buffers.size();
+      //for (unsigned int i = 0; i < bufferCount; i++)
+      //{
+      //  if (this == __buffers[i])
+      //  {
+      //    __buffers.erase(__buffers.begin() + i);
+      //    break;
+      //  }
+      //}
+      
+      // Use this instead
+      std::erase_if(__buffers, [this](const auto& buffer) { return this == buffer; });
     }
     else if (_streamStateOgg.get())
     {
@@ -76,24 +79,20 @@ namespace gameplay
     }
   }
 
-  std::shared_ptr<AudioBuffer> AudioBuffer::create(const char* path, bool streamed)
+  AudioBuffer* AudioBuffer::create(const char* path, bool streamed)
   {
     assert(path);
 
-    std::shared_ptr<AudioBuffer> buffer = nullptr;
+    AudioBuffer* buffer = nullptr;
     if (!streamed)
     {
-      unsigned int bufferCount = (unsigned int)__buffers.size();
-      for (unsigned int i = 0; i < bufferCount; i++)
-      {
-        buffer = __buffers[i];
+      auto buff = std::ranges::find_if(__buffers, [path](AudioBuffer* buffer) {
         assert(buffer);
-        if (buffer->_filePath.compare(path) == 0)
-        {
-          return buffer;
-        }
-      }
+        return buffer->_filePath.compare(path) == 0;
+        });
+      if (buff != __buffers.end()) return *buff;
     }
+
     ALuint alBuffer[STREAMING_BUFFER_QUEUE_SIZE];
     memset(alBuffer, 0, sizeof(alBuffer));
 
@@ -157,7 +156,7 @@ namespace gameplay
       goto cleanup;
     }
 
-    buffer = std::make_shared<AudioBuffer>(path, alBuffer, streamed);
+    buffer = new AudioBuffer(path, alBuffer, streamed);
 
     buffer->_fileStream.reset(stream.release());
     buffer->_streamStateWav.reset(streamStateWav.release());

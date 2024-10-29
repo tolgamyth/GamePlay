@@ -13,7 +13,7 @@ namespace gameplay
    *
    * Currently only supports supported formats: .ogg, .wav, .au and .raw files.
    */
-  class AudioBuffer
+  class AudioBuffer : public Ref
   {
     friend class AudioSource;
   public:
@@ -41,7 +41,7 @@ namespace gameplay
      *
      * @return The buffer from a file.
      */
-    static std::shared_ptr<AudioBuffer> create(const char* path, bool streamed);
+    static AudioBuffer* create(const char* path, bool streamed);
 
     struct AudioStreamStateWav
     {

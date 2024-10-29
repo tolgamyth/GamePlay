@@ -9,7 +9,7 @@
 namespace gameplay
 {
 
-  AudioSource::AudioSource(std::shared_ptr<AudioBuffer> buffer, ALuint source)
+  AudioSource::AudioSource(AudioBuffer* buffer, ALuint source)
     : _alSource(source), _buffer(buffer), _looped(false), _gain(1.0f), _pitch(1.0f), _node(nullptr)
   {
     assert(buffer);
@@ -36,15 +36,17 @@ namespace gameplay
       // playing sources. When the source is deleted afterwards, it should be removed
       // from controller's set regardless of its playing state.
       AudioController* audioController = Game::getInstance()->getAudioController();
-      //assert(audioController);
+      
+	  assert(audioController);
       audioController->removePlayingSource(this);
 
       AL_CHECK(alDeleteSources(1, &_alSource));
       _alSource = 0;
     }
+    SAFE_RELEASE(_buffer);
   }
 
-  std::shared_ptr<AudioSource> AudioSource::create(const char* url, bool streamed)
+  AudioSource* AudioSource::create(const char* url, bool streamed)
   {
     // Load from a .audio file.
     std::string pathStr = url;
@@ -57,13 +59,13 @@ namespace gameplay
         return nullptr;
       }
 
-      std::shared_ptr<AudioSource> audioSource = create((strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace());
+      AudioSource* audioSource = create((strlen(properties->getNamespace()) > 0) ? properties : properties->getNextNamespace());
       SAFE_DELETE(properties);
       return audioSource;
     }
 
     // Create an audio buffer from this URL.
-    std::shared_ptr<AudioBuffer> buffer = AudioBuffer::create(url, streamed);
+    AudioBuffer* buffer = AudioBuffer::create(url, streamed);
     if (buffer == nullptr)
       return nullptr;
 
@@ -73,14 +75,15 @@ namespace gameplay
     AL_CHECK(alGenSources(1, &alSource));
     if (AL_LAST_ERROR())
     {
+      SAFE_RELEASE(buffer);
       GP_ERROR("Error generating audio source.");
       return nullptr;
     }
 
-    return std::make_shared<AudioSource>(buffer, alSource);
+    return new AudioSource(buffer, alSource);
   }
 
-  std::shared_ptr<AudioSource> AudioSource::create(Properties* properties)
+  AudioSource* AudioSource::create(Properties* properties)
   {
     // Check if the properties is valid and has a valid namespace.
     assert(properties);
@@ -104,7 +107,7 @@ namespace gameplay
     }
 
     // Create the audio source.
-    std::shared_ptr<AudioSource> audio = AudioSource::create(path.c_str(), streamed);
+    AudioSource* audio = AudioSource::create(path.c_str(), streamed);
     if (audio == nullptr)
     {
       GP_ERROR("Audio file '%s' failed to load properly.", path.c_str());
@@ -166,7 +169,7 @@ namespace gameplay
     // Add the source to the controller's list of currently playing sources.
     AudioController* audioController = Game::getInstance()->getAudioController();
     assert(audioController);
-    audioController->addPlayingSource(shared_from_this());
+    audioController->addPlayingSource(this);
   }
 
   void AudioSource::pause()
@@ -305,6 +308,7 @@ namespace gameplay
     }
     AudioSource* audioClone = new AudioSource(_buffer, alSource);
 
+    _buffer->addRef();
     audioClone->setLooped(isLooped());
     audioClone->setGain(getGain());
     audioClone->setPitch(getPitch());

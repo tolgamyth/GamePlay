@@ -15,7 +15,7 @@ namespace gameplay
 
   static std::vector<Font*> __fontCache;
 
-  static std::shared_ptr<Effect> __fontEffect = nullptr;
+  static Effect* __fontEffect = nullptr;
 
   Font::Font() :
     _format(BITMAP), _style(PLAIN), _size(0), _spacing(0.0f), _glyphs(nullptr), _glyphCount(0), _texture(nullptr), _batch(nullptr), _cutoffParam(nullptr)
@@ -36,10 +36,8 @@ namespace gameplay
     SAFE_RELEASE(_texture);
 
     // Free child fonts
-    for (size_t i = 0, count = _sizes.size(); i < count; ++i)
-    {
-      SAFE_RELEASE(_sizes[i]);
-    }
+    std::ranges::for_each(_sizes, [](auto* font) { SAFE_RELEASE(font); });
+    _sizes.clear();
   }
 
   Font* Font::create(const char* path, const char* id)
@@ -118,9 +116,16 @@ namespace gameplay
         return nullptr;
       }
     }
+    else
+    {
+      __fontEffect->addRef();
+    }
 
     // Create batch for the font.
     SpriteBatch* batch = SpriteBatch::create(texture, __fontEffect, 128);
+
+    // Release __fontEffect since the SpriteBatch keeps a reference to it
+    SAFE_RELEASE(__fontEffect)
 
     if (batch == nullptr)
     {

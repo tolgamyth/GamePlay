@@ -54,7 +54,7 @@ public:
      * @return A new SpriteBatch for drawing sprites using the given texture.
      * @script{create}
      */
-    static SpriteBatch* create(const char* texturePath, std::shared_ptr<Effect> effect = nullptr, unsigned int initialCapacity = 0);
+    static SpriteBatch* create(const char* texturePath, Effect* effect = nullptr, unsigned int initialCapacity = 0);
 
     /**
      * Creates a new SpriteBatch for drawing sprites with the given texture.
@@ -81,7 +81,7 @@ public:
      * @return A new SpriteBatch for drawing sprites using the given texture.
      * @script{create}
      */
-    static SpriteBatch* create(Texture* texture, std::shared_ptr<Effect> effect = nullptr, unsigned int initialCapacity = 0);
+    static SpriteBatch* create(Texture* texture, Effect* effect = nullptr, unsigned int initialCapacity = 0);
 
     /**
      * Destructor.

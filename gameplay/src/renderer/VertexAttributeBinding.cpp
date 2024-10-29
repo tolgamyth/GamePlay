@@ -17,13 +17,17 @@ namespace gameplay
   VertexAttributeBinding::~VertexAttributeBinding()
   {
     // Delete from the vertex attribute binding cache.
-    std::vector<VertexAttributeBinding*>::iterator itr = std::find(__vertexAttributeBindingCache.begin(), __vertexAttributeBindingCache.end(), this);
-    if (itr != __vertexAttributeBindingCache.end())
-    {
-      __vertexAttributeBindingCache.erase(itr);
-    }
+    std::erase(__vertexAttributeBindingCache, this);
+
+    // Old method
+    //std::vector<VertexAttributeBinding*>::iterator itr = std::find(__vertexAttributeBindingCache.begin(), __vertexAttributeBindingCache.end(), this);
+    //if (itr != __vertexAttributeBindingCache.end())
+    //{
+    //  __vertexAttributeBindingCache.erase(itr);
+    //}
 
     SAFE_RELEASE(_mesh);
+    SAFE_RELEASE(_effect);
     SAFE_DELETE_ARRAY(_attributes);
 
     if (_handle)
@@ -135,6 +139,7 @@ namespace gameplay
     }
 
     b->_effect = effect;
+    effect->addRef();
 
     // Call setVertexAttribPointer for each vertex element.
     std::string name;

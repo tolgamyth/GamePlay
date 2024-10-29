@@ -287,13 +287,14 @@ void Audio3DSample::addSound(const std::string& file)
   }
   else
   {
-    std::shared_ptr<AudioSource> audioSource = AudioSource::create(path.c_str());
+    AudioSource* audioSource = AudioSource::create(path.c_str());
     assert(audioSource);
     audioSource->setLooped(true);
 
     node = _cubeNode->clone();
     node->setId(file.c_str());
-    node->setAudioSource(audioSource.get());
+    node->setAudioSource(audioSource);
+        audioSource->release();
 
     _audioNodes[path] = node;
     node->addRef();

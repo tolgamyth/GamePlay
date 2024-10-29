@@ -8,6 +8,7 @@
 #include "ui/ControlFactory.h"
 #include "ui/Theme.h"
 #include "ui/Form.h"
+#include "audio/AudioListener.h"
 
 /** @script{ignore} */
 GLenum __gl_error_code = GL_NO_ERROR;
@@ -72,6 +73,9 @@ namespace gameplay
 
   Game::~Game()
   {
+    SAFE_DELETE(_scriptTarget);
+	SAFE_DELETE(_scriptController);
+
     // Do not call any virtual functions from the destructor.
     // Finalization is done from outside this class.
     SAFE_DELETE(_timeEvents);
@@ -158,19 +162,19 @@ namespace gameplay
     RenderState::initialize();
     FrameBuffer::initialize();
 
-    _animationController = std::make_unique<AnimationController>();
+    _animationController = new AnimationController();
     _animationController->initialize();
 
-    _audioController = std::make_unique<AudioController>();
+    _audioController = new AudioController();
     _audioController->initialize();
 
-    _physicsController = std::make_unique<PhysicsController>();
+    _physicsController = new PhysicsController();
     _physicsController->initialize();
 
-    _aiController = std::make_unique<AIController>();
+    _aiController = new AIController();
     _aiController->initialize();
 
-    _scriptController = std::make_unique<ScriptController>();
+    _scriptController = new ScriptController();
     _scriptController->initialize();
 
     // Load any gamepads, ui or physical.
@@ -179,10 +183,10 @@ namespace gameplay
     // Set script handler
     if (_properties)
     {
-      _scriptTarget = std::make_unique<GameScriptTarget>();
       const char* scriptPath = _properties->getString("script");
       if (scriptPath)
       {
+            _scriptTarget = new GameScriptTarget();
         _scriptTarget->addScript(scriptPath);
       }
       else
@@ -191,6 +195,8 @@ namespace gameplay
         Properties* sns = _properties->getNamespace("scripts", true);
         if (sns)
         {
+                _scriptTarget = new GameScriptTarget();
+
           // Define a macro to simplify defining the following script callback registrations
 #define GP_REG_GAME_SCRIPT_CB(e) if (sns->exists(#e)) _scriptTarget->addScriptCallback(GP_GET_SCRIPT_EVENT(GameScriptTarget, e), sns->getString(#e))
 
@@ -239,7 +245,7 @@ namespace gameplay
         _scriptTarget->fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(GameScriptTarget, finalize));
 
       // Destroy script target so no more script events are fired
-      _scriptTarget.reset();
+        SAFE_DELETE(_scriptTarget);
 
       // Shutdown scripting system first so that any objects allocated in script are released before our subsystems are released
       _scriptController->finalize();
@@ -252,12 +258,15 @@ namespace gameplay
       }
 
       _animationController->finalize();
+        SAFE_DELETE(_animationController);
 
       _audioController->finalize();
+        SAFE_DELETE(_audioController);
 
       _physicsController->finalize();
-
+        SAFE_DELETE(_physicsController);
       _aiController->finalize();
+        SAFE_DELETE(_aiController);
 
       ControlFactory::finalize();
 
@@ -266,8 +275,11 @@ namespace gameplay
       // Note: we do not clean up the script controller here
       // because users can call Game::exit() from a script.
 
+        SAFE_DELETE(_audioListener);
       FrameBuffer::finalize();
       RenderState::finalize();
+
+        SAFE_DELETE(_properties);
 
       _state = UNINITIALIZED;
     }
@@ -515,6 +527,15 @@ namespace gameplay
   void Game::clear(ClearFlags flags, float red, float green, float blue, float alpha, float clearDepth, int clearStencil)
   {
     clear(flags, Vector4(red, green, blue, alpha), clearDepth, clearStencil);
+  }
+
+  AudioListener* Game::getAudioListener()
+  {
+    if (_audioListener == NULL)
+    {
+      _audioListener = new AudioListener();
+    }
+    return _audioListener;
   }
 
   void Game::keyEvent(Keyboard::KeyEvent evt, int key)

@@ -142,8 +142,8 @@ private:
     MaterialParameter* _shipSpecularParameter;
 
     // Sounds
-    std::shared_ptr<AudioSource> _backgroundMusic;
-    std::shared_ptr<AudioSource> _spaceshipSound;
+    AudioSource* _backgroundMusic;
+    AudioSource* _spaceshipSound;
 
     bool _hitSomething;
 };

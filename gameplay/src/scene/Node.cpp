@@ -47,6 +47,7 @@ namespace gameplay
     SAFE_RELEASE(ref);
     SAFE_RELEASE(_camera);
     SAFE_RELEASE(_light);
+    SAFE_RELEASE(_audioSource);
     SAFE_DELETE(_collisionObject);
     SAFE_RELEASE(_userObject);
     SAFE_DELETE(_tags);
@@ -670,14 +671,15 @@ namespace gameplay
       if (material)
       {
         // How to access material parameters? hidden on the Material::RenderState.
-        std::vector<MaterialParameter*>::iterator itr = material->_parameters.begin();
-        for (; itr != material->_parameters.end(); itr++)
-        {
-          assert(*itr);
-          animation = ((MaterialParameter*)(*itr))->getAnimation(id);
-          if (animation)
-            return animation;
-        }
+        auto itr = std::ranges::find_if(material->_parameters, [&](MaterialParameter* param) {
+          assert(param);
+          animation = param->getAnimation(id);
+          return animation != nullptr;
+          });
+
+        if (itr != material->_parameters.end())
+          return animation;
+
       }
     }
 
@@ -961,18 +963,20 @@ namespace gameplay
 
   void Node::setAudioSource(AudioSource* audio)
   {
-    if (_audioSource.get() == audio)
+    if (_audioSource == audio)
       return;
 
     if (_audioSource)
     {
       _audioSource->setNode(nullptr);
+      SAFE_RELEASE(_audioSource);
     }
 
-    _audioSource = std::shared_ptr<AudioSource>(audio);
+    _audioSource = audio;
 
     if (_audioSource)
     {
+      _audioSource->addRef();
       _audioSource->setNode(this);
     }
   }

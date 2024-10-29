@@ -144,7 +144,7 @@ public:
      *
      * @param camera The camera that is associated with the audio listener
      */
-    void setCamera(std::unique_ptr<Camera> camera);
+    void setCamera(Camera* camera);
 
     /**
     * Constructor.
@@ -167,7 +167,7 @@ private:
     Vector3 _position;
     Vector3 _velocity;
     Vector3 _orientation[2];
-    std::unique_ptr<Camera> _camera;
+    Camera* _camera;
 };
 
 }

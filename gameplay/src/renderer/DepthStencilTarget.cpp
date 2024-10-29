@@ -88,17 +88,15 @@ namespace gameplay
   {
     assert(id);
 
-    // Search the vector for a matching ID.
-    std::vector<DepthStencilTarget*>::const_iterator it;
-    for (it = __depthStencilTargets.begin(); it < __depthStencilTargets.end(); it++)
+    if (auto target = std::ranges::find_if(__depthStencilTargets,
+      [id](const DepthStencilTarget* dst) {
+        assert(dst);
+        return std::strcmp(id, dst->getId()) == 0;
+      }); target != __depthStencilTargets.end())
     {
-      DepthStencilTarget* dst = *it;
-      assert(dst);
-      if (strcmp(id, dst->getId()) == 0)
-      {
-        return dst;
-      }
+      return *target;
     }
+
     return nullptr;
   }
 

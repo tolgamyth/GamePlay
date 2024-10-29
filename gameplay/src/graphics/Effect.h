@@ -22,7 +22,7 @@ namespace gameplay
    * typical effect systems support, such as GPU render state management,
    * techniques and passes.
    */
-  class Effect : public std::enable_shared_from_this<Effect>
+  class Effect : public Ref
   {
   public:
 
@@ -45,7 +45,7 @@ namespace gameplay
      *
      * @return The created effect.
      */
-    static std::shared_ptr<Effect> createFromFile(const char* vshPath, const char* fshPath, const char* defines = nullptr);
+    static Effect* createFromFile(const char* vshPath, const char* fshPath, const char* defines = nullptr);
 
     /**
      * Creates an effect from the given vertex and fragment shader source code.
@@ -56,7 +56,7 @@ namespace gameplay
      *
      * @return The created effect.
      */
-    static std::shared_ptr<Effect> createFromSource(const char* vshSource, const char* fshSource, const char* defines = nullptr);
+    static Effect* createFromSource(const char* vshSource, const char* fshSource, const char* defines = nullptr);
 
     /**
      * Returns the unique string identifier for the effect, which is a concatenation of
@@ -229,7 +229,7 @@ namespace gameplay
      *
      * @return The currently bound effect, or nullptr if no effect is currently bound.
      */
-    static std::shared_ptr<Effect> getCurrentEffect();
+    static Effect* getCurrentEffect();
 
   private:
 
@@ -238,7 +238,7 @@ namespace gameplay
      */
     Effect& operator=(const Effect&);
 
-    static std::shared_ptr<Effect> createFromSource(const char* vshPath, const char* vshSource, const char* fshPath, const char* fshSource, const char* defines = nullptr);
+    static Effect* createFromSource(const char* vshPath, const char* vshSource, const char* fshPath, const char* fshSource, const char* defines = nullptr);
 
     GLuint _program;
     std::string _id;

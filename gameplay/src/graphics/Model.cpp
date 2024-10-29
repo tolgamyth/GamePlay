@@ -1,7 +1,6 @@
 #include "framework/Base.h"
 #include "graphics/Model.h"
 #include "graphics/MeshPart.h"
-#include "scene/Scene.h"
 #include "renderer/Technique.h"
 #include "renderer/Pass.h"
 #include "scene/Node.h"

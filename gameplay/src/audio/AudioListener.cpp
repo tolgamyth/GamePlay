@@ -1,12 +1,13 @@
 #include "framework/Base.h"
 #include "scene/Node.h"
 #include "audio/AudioListener.h"
+#include "framework/Game.h"
 
 namespace gameplay
 {
 
 AudioListener::AudioListener()
-  : _gain(1.0f)
+  : _gain(1.0f), _camera(NULL)
 {
 }
 
@@ -14,13 +15,12 @@ AudioListener::~AudioListener()
 {
 	// Call setCamera() to release camera and cause transform listener
 	// to be removed.
-	setCamera(nullptr);
+  setCamera(nullptr);
 }
 
 AudioListener* AudioListener::getInstance()
 {
-  static AudioListener _instance;
-  return &_instance;
+    return Game::getInstance()->getAudioListener();
 }
 
 float AudioListener::getGain() const 
@@ -97,10 +97,10 @@ void AudioListener::setOrientation(float forwardX, float forwardY, float forward
 
 Camera* AudioListener::getCamera() const
 {
-  return _camera.get();
+  return _camera;
 }
 
-void AudioListener::setCamera(std::unique_ptr<Camera> camera)
+void AudioListener::setCamera(Camera* camera)
 {
   if (_camera == camera)
     return;
@@ -109,11 +109,11 @@ void AudioListener::setCamera(std::unique_ptr<Camera> camera)
   if (_camera)
   {
     _camera->removeListener(this);
-    _camera.reset();
+    SAFE_RELEASE(_camera);
   }
 
   // Connect the new camera.
-  _camera = std::move(camera);
+  _camera = camera;
   if (_camera)
   {
     _camera->addRef();
@@ -123,8 +123,8 @@ void AudioListener::setCamera(std::unique_ptr<Camera> camera)
 
 void AudioListener::cameraChanged(Camera* camera)
 {
-  if (_camera.get() != camera)
-    setCamera(std::make_unique<Camera>(*camera));
+  if (_camera != camera)
+    setCamera(camera);
    
   if (_camera)
   {

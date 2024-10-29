@@ -114,7 +114,7 @@ namespace gameplay
     }
   }
 
-  void AudioController::addPlayingSource(std::shared_ptr<AudioSource> source)
+  void AudioController::addPlayingSource(AudioSource* source)
   {
     if (_playingSources.find(source) == _playingSources.end())
     {
@@ -129,18 +129,18 @@ namespace gameplay
         _streamingMutex->unlock();
 
         if (startThread)
-          _streamingThread = std::make_unique<std::thread>(&streamingThreadProc, this);
+          _streamingThread.reset(new std::thread(&streamingThreadProc, this));
       }
     }
   }
 
   void AudioController::removePlayingSource(AudioSource* source)
   {
-    if (_pausingSource.get() != source)
+    if (_pausingSource != source)
     {
       auto iter = std::find_if(_playingSources.begin(), _playingSources.end(), 
-                                [source](const std::shared_ptr<AudioSource>& ptr) {
-                                  return ptr.get() == source;
+                                [source](const auto ptr) {
+                                  return ptr == source;
                                 });
 
       if (iter != _playingSources.end())
@@ -150,8 +150,8 @@ namespace gameplay
         if (source->isStreamed())
         {
           auto streaming_it = std::find_if(_streamingSources.begin(), _streamingSources.end(),
-            [source](const std::shared_ptr<AudioSource>& ptr) {
-              return ptr.get() == source;
+            [source](const auto& ptr) {
+              return ptr == source;
             });
 
           assert(streaming_it != _streamingSources.end());

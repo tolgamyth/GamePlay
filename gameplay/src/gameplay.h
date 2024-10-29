@@ -90,6 +90,7 @@
 #include "renderer/Font.h"
 #include "renderer/FrameBuffer.h"
 #include "renderer/Material.h"
+#include "renderer/Pass.h"
 #include "renderer/RenderState.h"
 #include "renderer/RenderTarget.h"
 #include "renderer/Text.h"

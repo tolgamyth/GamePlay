@@ -18,7 +18,7 @@ namespace gameplay
    *
    * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Audio
    */
-  class AudioSource : public Transform::Listener, public std::enable_shared_from_this<AudioSource>
+  class AudioSource : public Ref, public Transform::Listener
   {
   public:
 
@@ -39,7 +39,7 @@ namespace gameplay
     /**
      * Constructor that takes an AudioBuffer.
      */
-    AudioSource(std::shared_ptr<AudioBuffer> buffer, ALuint source);
+    AudioSource(AudioBuffer* buffer, ALuint source);
 
     /**
      * Destructor.
@@ -56,7 +56,7 @@ namespace gameplay
      * @return The newly created audio source, or nullptr if an audio source cannot be created.
      * @script{create}
      */
-    static std::shared_ptr<AudioSource> create(const char* url, bool streamed = false);
+    static AudioSource* create(const char* url, bool streamed = false);
 
     /**
      * Create an audio source from the given properties object.
@@ -65,7 +65,7 @@ namespace gameplay
      * @return The newly created audio source, or <code>nullptr</code> if the audio source failed to load.
      * @script{create}
      */
-    static std::shared_ptr<AudioSource> create(Properties* properties);
+    static AudioSource* create(Properties* properties);
 
     /**
      * Plays the audio source.
@@ -206,7 +206,7 @@ namespace gameplay
     bool streamDataIfNeeded();
 
     ALuint _alSource;
-    std::shared_ptr<AudioBuffer> _buffer;
+    AudioBuffer* _buffer;
     bool _looped;
     float _gain;
     float _pitch;

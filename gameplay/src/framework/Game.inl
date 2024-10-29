@@ -41,26 +41,26 @@ namespace gameplay
 
   inline AnimationController* Game::getAnimationController() const
   {
-    return _animationController.get();
+    return _animationController;
   }
 
   inline AudioController* Game::getAudioController() const
   {
-    return _audioController.get();
+    return _audioController;
   }
 
   inline PhysicsController* Game::getPhysicsController() const
   {
-    return _physicsController.get();
+    return _physicsController;
   }
 
   inline ScriptController* Game::getScriptController() const
   {
-    return _scriptController.get();
+    return _scriptController;
   }
   inline AIController* Game::getAIController() const
   {
-    return _aiController.get();
+    return _aiController;
   }
 
   template <class T>
