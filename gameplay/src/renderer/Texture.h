@@ -6,32 +6,32 @@
 namespace gameplay
 {
 
-class Image;
+  class Image;
 
-/**
- * Defines a standard texture.
- */
-class Texture : public Ref
-{
+  /**
+   * Defines a standard texture.
+   */
+  class Texture : public Ref
+  {
     friend class Sampler;
 
-public:
+  public:
 
     /**
      * Defines the set of supported texture formats.
      */
     enum Format
     {
-        UNKNOWN = 0,
-        RGB,
-        RGB888 = RGB,
-        RGB565,
-        RGBA,
-        RGBA8888 = RGBA,
-        RGBA4444,
-        RGBA5551,
-        ALPHA,
-        DEPTH,
+      UNKNOWN = 0,
+      RGB,
+      RGB888 = RGB,
+      RGB565,
+      RGBA,
+      RGBA8888 = RGBA,
+      RGBA4444,
+      RGBA5551,
+      ALPHA,
+      DEPTH,
     };
 
     /**
@@ -39,12 +39,12 @@ public:
      */
     enum Filter
     {
-        NEAREST = GL_NEAREST,
-        LINEAR = GL_LINEAR,
-        NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
-        LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
-        NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
-        LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR
+      NEAREST = GL_NEAREST,
+      LINEAR = GL_LINEAR,
+      NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
+      LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
+      NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
+      LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR
     };
 
     /**
@@ -52,8 +52,8 @@ public:
      */
     enum Wrap
     {
-        REPEAT = GL_REPEAT,
-        CLAMP = GL_CLAMP_TO_EDGE
+      REPEAT = GL_REPEAT,
+      CLAMP = GL_CLAMP_TO_EDGE
     };
 
     /**
@@ -61,8 +61,8 @@ public:
      */
     enum Type
     {
-        TEXTURE_2D = GL_TEXTURE_2D,
-        TEXTURE_CUBE = GL_TEXTURE_CUBE_MAP
+      TEXTURE_2D = GL_TEXTURE_2D,
+      TEXTURE_CUBE = GL_TEXTURE_CUBE_MAP
     };
 
     /**
@@ -70,14 +70,14 @@ public:
      */
     enum CubeFace
     {
-        POSITIVE_X,
-        NEGATIVE_X,
-        POSITIVE_Y,
-        NEGATIVE_Y,
-        POSITIVE_Z,
-        NEGATIVE_Z
+      POSITIVE_X,
+      NEGATIVE_X,
+      POSITIVE_Y,
+      NEGATIVE_Y,
+      POSITIVE_Z,
+      NEGATIVE_Z
     };
-    
+
     /**
      * Defines a texture sampler.
      *
@@ -88,83 +88,83 @@ public:
      */
     class Sampler : public Ref
     {
-        friend class Texture;
+      friend class Texture;
 
     public:
 
-        /**
-         * Destructor.
-         */
-        virtual ~Sampler();
+      /**
+       * Destructor.
+       */
+      virtual ~Sampler();
 
-        /**
-         * Creates a sampler for the specified texture.
-         *
-         * @param texture The texture.
-         *
-         * @return The new sampler.
-         * @script{create}
-         */
-        static Sampler* create(Texture* texture);
+      /**
+       * Creates a sampler for the specified texture.
+       *
+       * @param texture The texture.
+       *
+       * @return The new sampler.
+       * @script{create}
+       */
+      static Sampler* create(Texture* texture);
 
-        /**
-         * Creates a sampler for the specified texture.
-         *
-         * @param path Path to the texture to create a sampler for.
-         * @param generateMipmaps True to force a full mipmap chain to be generated for the texture, false otherwise.
-         *
-         * @return The new sampler.
-         * @script{create}
-         */
-        static Sampler* create(const char* path, bool generateMipmaps = false);
+      /**
+       * Creates a sampler for the specified texture.
+       *
+       * @param path Path to the texture to create a sampler for.
+       * @param generateMipmaps True to force a full mipmap chain to be generated for the texture, false otherwise.
+       *
+       * @return The new sampler.
+       * @script{create}
+       */
+      static Sampler* create(const char* path, bool generateMipmaps = false);
 
-        /**
-         * Sets the wrap mode for this sampler.
-         *
-         * @param wrapS The horizontal wrap mode.
-         * @param wrapT The vertical wrap mode.
-         * @param wrapR The depth wrap mode.
-         */
-        void setWrapMode(Wrap wrapS, Wrap wrapT, Wrap wrapR = REPEAT);
+      /**
+       * Sets the wrap mode for this sampler.
+       *
+       * @param wrapS The horizontal wrap mode.
+       * @param wrapT The vertical wrap mode.
+       * @param wrapR The depth wrap mode.
+       */
+      void setWrapMode(Wrap wrapS, Wrap wrapT, Wrap wrapR = REPEAT);
 
-        /**
-         * Sets the texture filter modes for this sampler.
-         *
-         * @param minificationFilter The texture minification filter.
-         * @param magnificationFilter The texture magnification filter.
-         */
-        void setFilterMode(Filter minificationFilter, Filter magnificationFilter);
+      /**
+       * Sets the texture filter modes for this sampler.
+       *
+       * @param minificationFilter The texture minification filter.
+       * @param magnificationFilter The texture magnification filter.
+       */
+      void setFilterMode(Filter minificationFilter, Filter magnificationFilter);
 
-        /**
-         * Gets the texture for this sampler.
-         *
-         * @return The texture for this sampler.
-         */
-        Texture* getTexture() const;
+      /**
+       * Gets the texture for this sampler.
+       *
+       * @return The texture for this sampler.
+       */
+      Texture* getTexture() const;
 
-        /**
-         * Binds the texture of this sampler to the renderer and applies the sampler state.
-         */
-        void bind();
+      /**
+       * Binds the texture of this sampler to the renderer and applies the sampler state.
+       */
+      void bind();
 
     private:
 
-        /**
-         * Constructor.
-         */
-        Sampler(Texture* texture);
+      /**
+       * Constructor.
+       */
+      Sampler(Texture* texture);
 
-        /**
-         * Hidden copy assignment operator.
-         */
-        Sampler& operator=(const Sampler&);
+      /**
+       * Hidden copy assignment operator.
+       */
+      Sampler& operator=(const Sampler&);
 
-        Texture* _texture;
-        Wrap _wrapS;
-        Wrap _wrapT;
-        Wrap _wrapR;
-        Filter _minFilter;
-        Filter _magFilter;
+      Texture* _texture;
+      Wrap _wrapS;
+      Wrap _wrapT;
+      Wrap _wrapR;
+      Filter _minFilter;
+      Filter _magFilter;
     };
 
     /**
@@ -175,7 +175,7 @@ public:
      *
      * @param path The image resource path.
      * @param generateMipmaps true to auto-generate a full mipmap chain, false otherwise.
-     * 
+     *
      * @return The new texture, or nullptr if the texture could not be loaded/created.
      * @script{create}
      */
@@ -200,7 +200,7 @@ public:
      * @param format Format of the texture data.
      * @param width Width of the texture data. If type is TEX_CUBE, then this is the cube face width.
      * @param height Height of the texture data. If type is TEX_CUBE, then this is the cube face height.
-     * @param data Raw texture data (expected to be tightly packed). If the type parameter is set 
+     * @param data Raw texture data (expected to be tightly packed). If the type parameter is set
      *   to TEXTURE_CUBE, then data is expected to be each face stored back contiguously within the
      *   array.
      * @param generateMipmaps True to generate a full mipmap chain, false otherwise.
@@ -233,8 +233,8 @@ public:
 
     /**
      * Set texture data to replace current texture image.
-     * 
-     * @param data Raw texture data (expected to be tightly packed). If the type parameter is set 
+     *
+     * @param data Raw texture data (expected to be tightly packed). If the type parameter is set
      *   to TEXTURE_CUBE, then data is expected to be each face stored back contiguously within the
      *   array.
      */
@@ -299,7 +299,7 @@ public:
      */
     TextureHandle getHandle() const;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -352,6 +352,6 @@ private:
     GLint _internalFormat;
     GLenum _texelType;
     size_t _bpp;
-};
+  };
 
 }

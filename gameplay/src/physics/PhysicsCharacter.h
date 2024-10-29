@@ -7,24 +7,24 @@
 namespace gameplay
 {
 
-/**
- * Defines a physics controller class for a game character.
- *
- * This can be used to control the movements and collisions of a character
- * in a game. It interacts with the Physics system to apply gravity and handle
- * collisions, however dynamics are not applied to the character directly by the
- * physics system. Instead, the character's movement is controlled directly by the
- * PhysicsCharacter class. This results in a more responsive and typical game
- * character than would be possible if trying to move a character by applying
- * physical simulation with forces.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Collision_Objects
- */
-class PhysicsCharacter : public PhysicsGhostObject
-{
+  /**
+   * Defines a physics controller class for a game character.
+   *
+   * This can be used to control the movements and collisions of a character
+   * in a game. It interacts with the Physics system to apply gravity and handle
+   * collisions, however dynamics are not applied to the character directly by the
+   * physics system. Instead, the character's movement is controlled directly by the
+   * PhysicsCharacter class. This results in a more responsive and typical game
+   * character than would be possible if trying to move a character by applying
+   * physical simulation with forces.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Collision_Objects
+   */
+  class PhysicsCharacter : public PhysicsGhostObject
+  {
     friend class Node;
 
-public:
+  public:
 
     /**
      * @see PhysicsCollisionObject::getType
@@ -105,7 +105,7 @@ public:
      * The velocity is maintained until this method is called again. The final velocity
      * of the character is determined by product of the current velocity, right and
      * forward vectors.
-     * 
+     *
      * @param x The x coordinate of the velocity vector.
      * @param y The y coordinate of the velocity vector.
      * @param z The z coordinate of the velocity vector.
@@ -187,14 +187,14 @@ public:
      */
     void jump(float height, bool force = false);
 
-protected:
+  protected:
 
     /**
      * @see PhysicsCollisionObject::getCollisionObject
      */
     btCollisionObject* getCollisionObject() const;
 
-private:
+  private:
 
     /**
      * Creates a new PhysicsCharacter.
@@ -218,7 +218,7 @@ private:
 
     /**
      * Creates a physics character from the specified properties object.
-     * 
+     *
      * @param node The node to create a physics character for; note that the node must have
      *      a model attached to it prior to creating a physics character for it.
      * @param properties The properties object defining the physics character (must have namespace equal to 'character').
@@ -246,13 +246,13 @@ private:
     {
     public:
 
-        ActionInterface(PhysicsCharacter* character);
+      ActionInterface(PhysicsCharacter* character);
 
-        void updateAction(btCollisionWorld* collisionWorld, btScalar deltaTimeStep);
+      void updateAction(btCollisionWorld* collisionWorld, btScalar deltaTimeStep);
 
-        void debugDraw(btIDebugDraw* debugDrawer);
-        
-        PhysicsCharacter* character;
+      void debugDraw(btIDebugDraw* debugDrawer);
+
+      PhysicsCharacter* character;
     };
 
     void updateAction(btCollisionWorld* collisionWorld, btScalar deltaTimeStep);
@@ -273,6 +273,6 @@ private:
     bool _physicsEnabled;
     float _mass;
     ActionInterface* _actionInterface;
-};
+  };
 
 }

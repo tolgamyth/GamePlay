@@ -11,23 +11,23 @@
 namespace gameplay
 {
 
-/**
- * Defines a class for drawing groups of sprites.
- *
- * This class provides efficient rendering and sorting of two-dimensional
- * sprites. Only a single texture and effect can be used with a SpriteBatch.
- * This limitation promotes efficient batching by using texture atlases and
- * implicit sorting to minimize state changes. Therefore, it is highly
- * recommended to combine multiple small textures into larger texture atlases
- * where possible when drawing sprites.
- */
-class SpriteBatch
-{
+  /**
+   * Defines a class for drawing groups of sprites.
+   *
+   * This class provides efficient rendering and sorting of two-dimensional
+   * sprites. Only a single texture and effect can be used with a SpriteBatch.
+   * This limitation promotes efficient batching by using texture atlases and
+   * implicit sorting to minimize state changes. Therefore, it is highly
+   * recommended to combine multiple small textures into larger texture atlases
+   * where possible when drawing sprites.
+   */
+  class SpriteBatch
+  {
     friend class Bundle;
     friend class Font;
     friend class Text;
 
-public:
+  public:
 
     /**
      * Creates a new SpriteBatch for drawing sprites with the given texture.
@@ -50,7 +50,7 @@ public:
      * @param texturePath The path of the texture for this sprite batch.
      * @param effect An optional effect to use with the SpriteBatch.
      * @param initialCapacity An optional initial capacity of the batch (number of sprites).
-     * 
+     *
      * @return A new SpriteBatch for drawing sprites using the given texture.
      * @script{create}
      */
@@ -77,7 +77,7 @@ public:
      * @param texture The texture for this sprite batch.
      * @param effect An optional effect to use with the SpriteBatch.
      * @param initialCapacity An optional initial capacity of the batch (number of sprites).
-     * 
+     *
      * @return A new SpriteBatch for drawing sprites using the given texture.
      * @script{create}
      */
@@ -105,7 +105,7 @@ public:
 
     /**
      * Draws a single sprite.
-     * 
+     *
      * @param dst The destination rectangle.
      * @param src The source rectangle.
      * @param color The color to tint the sprite. Use white for no tint.
@@ -114,7 +114,7 @@ public:
 
     /**
      * Draws a single sprite.
-     * 
+     *
      * @param dst The destination position.
      * @param src The source rectangle.
      * @param scale The X and Y scale.
@@ -134,11 +134,11 @@ public:
      * @param rotationAngle The rotation angle in radians.
      */
     void draw(const Vector3& dst, const Rectangle& src, const Vector2& scale, const Vector4& color,
-              const Vector2& rotationPoint, float rotationAngle);
+      const Vector2& rotationPoint, float rotationAngle);
 
     /**
      * Draws a single sprite, rotated around rotationPoint by rotationAngle.
-     * 
+     *
      * @param dst The destination position.
      * @param width The source width.
      * @param height The source height.
@@ -153,11 +153,11 @@ public:
      * @param positionIsCenter Specified whether the given destination is to be the center of the sprite or not (if not, it is treated as the bottom-left).
      */
     void draw(const Vector3& dst, float width, float height, float u1, float v1, float u2, float v2, const Vector4& color,
-              const Vector2& rotationPoint, float rotationAngle, bool positionIsCenter = false);
-    
+      const Vector2& rotationPoint, float rotationAngle, bool positionIsCenter = false);
+
     /**
      * Draws a single sprite, rotated around rotationPoint by rotationAngle.
-     * 
+     *
      * @param x The destination x position.
      * @param y The destination y position.
      * @param z The destination z position.
@@ -174,11 +174,11 @@ public:
      * @param positionIsCenter Specified whether the given destination is to be the center of the sprite or not (if not, it is treated as the bottom-left).
      */
     void draw(float x, float y, float z, float width, float height, float u1, float v1, float u2, float v2, const Vector4& color,
-              const Vector2& rotationPoint, float rotationAngle, bool positionIsCenter = false);
+      const Vector2& rotationPoint, float rotationAngle, bool positionIsCenter = false);
 
     /**
      * Draws a single sprite, rotated about the implied up vector.
-     * 
+     *
      * @param position The destination position.
      * @param right The right vector of the sprite quad (should be normalized).
      * @param forward The forward vector of the sprite quad (should be normalized).
@@ -193,12 +193,12 @@ public:
      *                      (e.g. Use Vector2(0.5f, 0.5f) to rotate around the quad's center.)
      * @param rotationAngle The rotation angle in radians.
      */
-    void draw(const Vector3& position, const Vector3& right, const Vector3& forward, float width, float height, 
-              float u1, float v1, float u2, float v2, const Vector4& color, const Vector2& rotationPoint, float rotationAngle);
+    void draw(const Vector3& position, const Vector3& right, const Vector3& forward, float width, float height,
+      float u1, float v1, float u2, float v2, const Vector4& color, const Vector2& rotationPoint, float rotationAngle);
 
     /**
      * Draws a single sprite.
-     * 
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      * @param width The sprite width.
@@ -213,7 +213,7 @@ public:
 
     /**
      * Draws a single sprite, clipped within a rectangle.
-     * 
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      * @param width The sprite width.
@@ -229,7 +229,7 @@ public:
 
     /**
      * Draws a single sprite, clipped within a rectangle.
-     * 
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      * @param z The z coordinate.
@@ -246,7 +246,7 @@ public:
 
     /**
      * Draws a single sprite.
-     * 
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      * @param z The z coordinate.
@@ -266,26 +266,26 @@ public:
      */
     struct SpriteVertex
     {
-        /** Vertex position x */
-        float x;
-        /** Vertex position y */
-        float y;
-        /** Vertex position z */
-        float z;
-        /** Vertex texture u */
-        float u;
-        /** Vertex texture v */
-        float v;
-        /** Vertex color red component */
-        float r;
-        /** Vertex color green component */
-        float g;
-        /** Vertex color blue component */
-        float b;
-        /** Vertex color alpha component */
-        float a;
+      /** Vertex position x */
+      float x;
+      /** Vertex position y */
+      float y;
+      /** Vertex position z */
+      float z;
+      /** Vertex texture u */
+      float u;
+      /** Vertex texture v */
+      float v;
+      /** Vertex color red component */
+      float r;
+      /** Vertex color green component */
+      float g;
+      /** Vertex color blue component */
+      float b;
+      /** Vertex color alpha component */
+      float a;
     };
-    
+
     /**
      * Draws an array of vertices.
      *
@@ -297,7 +297,7 @@ public:
      * @param indexCount The number of indices within the index array.
      */
     void draw(SpriteBatch::SpriteVertex* vertices, unsigned int vertexCount, unsigned short* indices, unsigned int indexCount);
-    
+
     /**
      * Finishes sprite drawing.
      *
@@ -307,7 +307,7 @@ public:
     void finish();
 
     /**
-     * Gets the texture sampler. 
+     * Gets the texture sampler.
      *
      * This return texture sampler is used when sampling the texture in the
      * effect. This can be modified for controlling sampler setting such as
@@ -328,7 +328,7 @@ public:
 
     /**
      * Gets the material used by this batch.
-     * 
+     *
      * @return The material.
      */
     Material* getMaterial() const;
@@ -347,12 +347,12 @@ public:
 
     /**
      * Gets the projection matrix for the SpriteBatch.
-     * 
+     *
      * @return The projection matrix.
      */
     const Matrix& getProjectionMatrix() const;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -361,14 +361,14 @@ private:
 
     /**
      * Copy constructor.
-     * 
+     *
      * @param copy The SpriteBatch to copy.
      */
     SpriteBatch(const SpriteBatch& copy);
 
     /**
      * Adds a single sprite to a SpriteVertex array.
-     * 
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      * @param width The sprite width.
@@ -384,7 +384,7 @@ private:
 
     /**
      * Adds a single sprite to a SpriteVertex array, clipped within a rectangle.
-     * 
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      * @param width The sprite width.
@@ -407,6 +407,6 @@ private:
     float _textureWidthRatio;
     float _textureHeightRatio;
     mutable Matrix _projectionMatrix;
-};
+  };
 
 }

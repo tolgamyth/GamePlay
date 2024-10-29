@@ -9,19 +9,19 @@
 namespace gameplay
 {
 
-/**
- * Defines an image control.
- *
- * This allows forms to display seperate images from arbitrary files not specified in the theme.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class ImageControl : public Control
-{
+  /**
+   * Defines an image control.
+   *
+   * This allows forms to display seperate images from arbitrary files not specified in the theme.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class ImageControl : public Control
+  {
     friend class Container;
     friend class ControlFactory;
 
-public:
+  public:
 
     /**
      * Creates a new ImageControl.
@@ -103,7 +103,7 @@ public:
      */
     const Rectangle& getRegionDst() const;
 
-protected:
+  protected:
 
     ImageControl();
 
@@ -111,13 +111,13 @@ protected:
 
     /**
      * Creates a new ImageControl.
-     * 
+     *
      * @param style The control's custom style.
      * @param properties A properties object containing a definition of the ImageControl (optional).
      *
      * @return The new ImageControl.
      * @script{create}
-      * 
+      *
       */
     static Control* create(Theme::Style* style, Properties* properties = nullptr);
 
@@ -133,7 +133,7 @@ protected:
      */
     void updateBounds();
 
-private:
+  private:
 
     ImageControl(const ImageControl& copy);
 
@@ -146,9 +146,9 @@ private:
     // One over texture width and height, for use when calculating UVs from a new source region.
     float _tw;
     float _th;
-    
+
     // Calculated UVs.
     Theme::UVs _uvs;
-};
+  };
 
 }

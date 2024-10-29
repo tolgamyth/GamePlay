@@ -8,24 +8,24 @@
 namespace gameplay
 {
 
-/**
- * Defines a frame buffer object that may contain one or more render targets and optionally
- * a depth-stencil target.
- *
- * Frame buffers can be created and used for off-screen rendering, which is useful for
- * techniques such as shadow mapping and post-processing. Render targets within a frame
- * buffer can be both written to and read (by calling RenderTarget::getTexture).
- *
- * When binding a custom frame buffer, you should always store the return value of
- * FrameBuffer::bind and restore it when you are finished drawing to your frame buffer.
- *
- * To bind the default frame buffer, call FrameBuffer::bindDefault.
- */
-class FrameBuffer : public Ref
-{
+  /**
+   * Defines a frame buffer object that may contain one or more render targets and optionally
+   * a depth-stencil target.
+   *
+   * Frame buffers can be created and used for off-screen rendering, which is useful for
+   * techniques such as shadow mapping and post-processing. Render targets within a frame
+   * buffer can be both written to and read (by calling RenderTarget::getTexture).
+   *
+   * When binding a custom frame buffer, you should always store the return value of
+   * FrameBuffer::bind and restore it when you are finished drawing to your frame buffer.
+   *
+   * To bind the default frame buffer, call FrameBuffer::bindDefault.
+   */
+  class FrameBuffer : public Ref
+  {
     friend class Game;
 
-public:
+  public:
 
     /**
      * Creates a new, empty FrameBuffer object.
@@ -191,7 +191,7 @@ public:
      */
     static FrameBuffer* getCurrent();
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -226,6 +226,6 @@ private:
     static std::vector<FrameBuffer*> _frameBuffers;
     static FrameBuffer* _defaultFrameBuffer;
     static FrameBuffer* _currentFrameBuffer;
-};
+  };
 
 }

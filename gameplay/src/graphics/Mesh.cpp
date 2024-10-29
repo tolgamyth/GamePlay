@@ -5,36 +5,36 @@
 namespace gameplay
 {
 
-Mesh::Mesh(const VertexFormat& vertexFormat) 
-    : _vertexFormat(vertexFormat), _vertexCount(0), _vertexBuffer(0), _primitiveType(TRIANGLES), 
-      _partCount(0), _parts(nullptr), _dynamic(false)
-{
-}
+  Mesh::Mesh(const VertexFormat& vertexFormat)
+    : _vertexFormat(vertexFormat), _vertexCount(0), _vertexBuffer(0), _primitiveType(TRIANGLES),
+    _partCount(0), _parts(nullptr), _dynamic(false)
+  {
+  }
 
-Mesh::~Mesh()
-{
+  Mesh::~Mesh()
+  {
     if (_parts)
     {
-        for (unsigned int i = 0; i < _partCount; ++i)
-        {
-            SAFE_DELETE(_parts[i]);
-        }
-        SAFE_DELETE_ARRAY(_parts);
+      for (unsigned int i = 0; i < _partCount; ++i)
+      {
+        SAFE_DELETE(_parts[i]);
+      }
+      SAFE_DELETE_ARRAY(_parts);
     }
 
     if (_vertexBuffer)
     {
-        glDeleteBuffers(1, &_vertexBuffer);
-        _vertexBuffer = 0;
+      glDeleteBuffers(1, &_vertexBuffer);
+      _vertexBuffer = 0;
     }
-}
+  }
 
-Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic)
-{
+  Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic)
+  {
     GLuint vbo;
-    GL_ASSERT( glGenBuffers(1, &vbo) );
-    GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, vbo) );
-    GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+    GL_ASSERT(glGenBuffers(1, &vbo));
+    GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vbo));
+    GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW));
 
     Mesh* mesh = new Mesh(vertexFormat);
     mesh->_vertexCount = vertexCount;
@@ -42,11 +42,11 @@ Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCoun
     mesh->_dynamic = dynamic;
 
     return mesh;
-}
+  }
 
 
-Mesh* Mesh::createQuad(float x, float y, float width, float height, float s1, float t1, float s2, float t2)
-{
+  Mesh* Mesh::createQuad(float x, float y, float width, float height, float s1, float t1, float s2, float t2)
+  {
     float x2 = x + width;
     float y2 = y + height;
 
@@ -67,18 +67,18 @@ Mesh* Mesh::createQuad(float x, float y, float width, float height, float s1, fl
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), 4, false);
     if (mesh == nullptr)
     {
-        GP_ERROR("Failed to create mesh.");
-        return nullptr;
+      GP_ERROR("Failed to create mesh.");
+      return nullptr;
     }
 
     mesh->_primitiveType = TRIANGLE_STRIP;
     mesh->setVertexData(vertices, 0, 4);
 
     return mesh;
-}
+  }
 
-Mesh* Mesh::createQuadFullscreen()
-{
+  Mesh* Mesh::createQuadFullscreen()
+  {
     float x = -1.0f;
     float y = -1.0f;
     float x2 = 1.0f;
@@ -100,18 +100,18 @@ Mesh* Mesh::createQuadFullscreen()
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), 4, false);
     if (mesh == nullptr)
     {
-        GP_ERROR("Failed to create mesh.");
-        return nullptr;
+      GP_ERROR("Failed to create mesh.");
+      return nullptr;
     }
 
     mesh->_primitiveType = TRIANGLE_STRIP;
     mesh->setVertexData(vertices, 0, 4);
 
     return mesh;
-}
+  }
 
-Mesh* Mesh::createQuad(const Vector3& p1, const Vector3& p2, const Vector3& p3, const Vector3& p4)
-{
+  Mesh* Mesh::createQuad(const Vector3& p1, const Vector3& p2, const Vector3& p3, const Vector3& p4)
+  {
     // Calculate the normal vector of the plane.
     Vector3 v1, v2, n;
     Vector3::subtract(p2, p1, &v1);
@@ -137,23 +137,23 @@ Mesh* Mesh::createQuad(const Vector3& p1, const Vector3& p2, const Vector3& p3, 
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), 4, false);
     if (mesh == nullptr)
     {
-        GP_ERROR("Failed to create mesh.");
-        return nullptr;
+      GP_ERROR("Failed to create mesh.");
+      return nullptr;
     }
 
     mesh->_primitiveType = TRIANGLE_STRIP;
     mesh->setVertexData(vertices, 0, 4);
 
     return mesh;
-}
+  }
 
-Mesh* Mesh::createLines(Vector3* points, unsigned int pointCount)
-{
+  Mesh* Mesh::createLines(Vector3* points, unsigned int pointCount)
+  {
     assert(points);
     assert(pointCount);
 
-    float* vertices = new float[pointCount*3];
-    memcpy(vertices, points, pointCount*3*sizeof(float));
+    float* vertices = new float[pointCount * 3];
+    memcpy(vertices, points, pointCount * 3 * sizeof(float));
 
     VertexFormat::Element elements[] =
     {
@@ -162,9 +162,9 @@ Mesh* Mesh::createLines(Vector3* points, unsigned int pointCount)
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 1), pointCount, false);
     if (mesh == nullptr)
     {
-        GP_ERROR("Failed to create mesh.");
-        SAFE_DELETE_ARRAY(vertices);
-        return nullptr;
+      GP_ERROR("Failed to create mesh.");
+      SAFE_DELETE_ARRAY(vertices);
+      return nullptr;
     }
 
     mesh->_primitiveType = LINE_STRIP;
@@ -172,10 +172,10 @@ Mesh* Mesh::createLines(Vector3* points, unsigned int pointCount)
 
     SAFE_DELETE_ARRAY(vertices);
     return mesh;
-}
+  }
 
-Mesh* Mesh::createBoundingBox(const BoundingBox& box)
-{
+  Mesh* Mesh::createBoundingBox(const BoundingBox& box)
+  {
     Vector3 corners[8];
     box.getCorners(corners);
 
@@ -187,14 +187,14 @@ Mesh* Mesh::createBoundingBox(const BoundingBox& box)
         corners[0].x, corners[0].y, corners[0].z,
         corners[7].x, corners[7].y, corners[7].z,
         corners[4].x, corners[4].y, corners[4].z,
-        corners[3].x, corners[3].y, corners[3].z, 
+        corners[3].x, corners[3].y, corners[3].z,
         corners[0].x, corners[0].y, corners[0].z,
         corners[0].x, corners[0].y, corners[0].z,
         corners[1].x, corners[1].y, corners[1].z,
         corners[2].x, corners[2].y, corners[2].z,
-        corners[3].x, corners[3].y, corners[3].z, 
+        corners[3].x, corners[3].y, corners[3].z,
         corners[4].x, corners[4].y, corners[4].z,
-        corners[5].x, corners[5].y, corners[5].z, 
+        corners[5].x, corners[5].y, corners[5].z,
         corners[2].x, corners[2].y, corners[2].z,
         corners[1].x, corners[1].y, corners[1].z,
         corners[6].x, corners[6].y, corners[6].z,
@@ -208,139 +208,139 @@ Mesh* Mesh::createBoundingBox(const BoundingBox& box)
     Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 1), 18, false);
     if (mesh == nullptr)
     {
-        GP_ERROR("Failed to create mesh.");
-        return nullptr;
+      GP_ERROR("Failed to create mesh.");
+      return nullptr;
     }
 
     mesh->_primitiveType = LINE_STRIP;
     mesh->setVertexData(vertices, 0, 18);
 
     return mesh;
-}
+  }
 
-const char* Mesh::getUrl() const
-{
+  const char* Mesh::getUrl() const
+  {
     return _url.c_str();
-}
+  }
 
-const VertexFormat& Mesh::getVertexFormat() const
-{
+  const VertexFormat& Mesh::getVertexFormat() const
+  {
     return _vertexFormat;
-}
+  }
 
-unsigned int Mesh::getVertexCount() const
-{
+  unsigned int Mesh::getVertexCount() const
+  {
     return _vertexCount;
-}
+  }
 
-unsigned int Mesh::getVertexSize() const
-{
+  unsigned int Mesh::getVertexSize() const
+  {
     return _vertexFormat.getVertexSize();
-}
+  }
 
-VertexBufferHandle Mesh::getVertexBuffer() const
-{
+  VertexBufferHandle Mesh::getVertexBuffer() const
+  {
     return _vertexBuffer;
-}
+  }
 
-bool Mesh::isDynamic() const
-{
+  bool Mesh::isDynamic() const
+  {
     return _dynamic;
-}
+  }
 
-Mesh::PrimitiveType Mesh::getPrimitiveType() const
-{
+  Mesh::PrimitiveType Mesh::getPrimitiveType() const
+  {
     return _primitiveType;
-}
+  }
 
-void Mesh::setPrimitiveType(PrimitiveType type)
-{
+  void Mesh::setPrimitiveType(PrimitiveType type)
+  {
     _primitiveType = type;
-}
+  }
 
-void* Mesh::mapVertexBuffer()
-{
-    GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer) );
+  void* Mesh::mapVertexBuffer()
+  {
+    GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer));
 
     return (void*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-}
+  }
 
-bool Mesh::unmapVertexBuffer()
-{
+  bool Mesh::unmapVertexBuffer()
+  {
     return glUnmapBuffer(GL_ARRAY_BUFFER);
-}
+  }
 
-void Mesh::setVertexData(const void* vertexData, unsigned int vertexStart, unsigned int vertexCount)
-{
-    GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer) );
+  void Mesh::setVertexData(const void* vertexData, unsigned int vertexStart, unsigned int vertexCount)
+  {
+    GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer));
 
     if (vertexStart == 0 && vertexCount == 0)
     {
-        GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, _vertexFormat.getVertexSize() * _vertexCount, vertexData, _dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+      GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, _vertexFormat.getVertexSize() * _vertexCount, vertexData, _dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW));
     }
     else
     {
-        if (vertexCount == 0)
-        {
-            vertexCount = _vertexCount - vertexStart;
-        }
+      if (vertexCount == 0)
+      {
+        vertexCount = _vertexCount - vertexStart;
+      }
 
-        GL_ASSERT( glBufferSubData(GL_ARRAY_BUFFER, vertexStart * _vertexFormat.getVertexSize(), vertexCount * _vertexFormat.getVertexSize(), vertexData) );
+      GL_ASSERT(glBufferSubData(GL_ARRAY_BUFFER, vertexStart * _vertexFormat.getVertexSize(), vertexCount * _vertexFormat.getVertexSize(), vertexData));
     }
-}
+  }
 
-MeshPart* Mesh::addPart(PrimitiveType primitiveType, IndexFormat indexFormat, unsigned int indexCount, bool dynamic)
-{
+  MeshPart* Mesh::addPart(PrimitiveType primitiveType, IndexFormat indexFormat, unsigned int indexCount, bool dynamic)
+  {
     MeshPart* part = MeshPart::create(this, _partCount, primitiveType, indexFormat, indexCount, dynamic);
     if (part)
     {
-        // Increase size of part array and copy old subets into it.
-        MeshPart** oldParts = _parts;
-        _parts = new MeshPart*[_partCount + 1];
-        for (unsigned int i = 0; i < _partCount; ++i)
-        {
-            _parts[i] = oldParts[i];
-        }
+      // Increase size of part array and copy old subets into it.
+      MeshPart** oldParts = _parts;
+      _parts = new MeshPart * [_partCount + 1];
+      for (unsigned int i = 0; i < _partCount; ++i)
+      {
+        _parts[i] = oldParts[i];
+      }
 
-        // Add new part to array.
-        _parts[_partCount++] = part;
+      // Add new part to array.
+      _parts[_partCount++] = part;
 
-        // Delete old part array.
-        SAFE_DELETE_ARRAY(oldParts);
+      // Delete old part array.
+      SAFE_DELETE_ARRAY(oldParts);
     }
 
     return part;
-}
+  }
 
-unsigned int Mesh::getPartCount() const
-{
+  unsigned int Mesh::getPartCount() const
+  {
     return _partCount;
-}
+  }
 
-MeshPart* Mesh::getPart(unsigned int index)
-{
+  MeshPart* Mesh::getPart(unsigned int index)
+  {
     assert(_parts);
     return _parts[index];
-}
+  }
 
-const BoundingBox& Mesh::getBoundingBox() const
-{
+  const BoundingBox& Mesh::getBoundingBox() const
+  {
     return _boundingBox;
-}
+  }
 
-void Mesh::setBoundingBox(const BoundingBox& box)
-{
+  void Mesh::setBoundingBox(const BoundingBox& box)
+  {
     _boundingBox = box;
-}
+  }
 
-const BoundingSphere& Mesh::getBoundingSphere() const
-{
+  const BoundingSphere& Mesh::getBoundingSphere() const
+  {
     return _boundingSphere;
-}
+  }
 
-void Mesh::setBoundingSphere(const BoundingSphere& sphere)
-{
+  void Mesh::setBoundingSphere(const BoundingSphere& sphere)
+  {
     _boundingSphere = sphere;
-}
+  }
 
 }

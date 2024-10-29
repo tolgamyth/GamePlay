@@ -7,18 +7,18 @@
 namespace gameplay
 {
 
-/**
- * Defines a container that contains zero or more controls.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class Container : public Control
-{
+  /**
+   * Defines a container that contains zero or more controls.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class Container : public Control
+  {
     friend class Form;
     friend class Control;
     friend class ControlFactory;
 
-public:
+  public:
 
     /**
      * Constant used to auto-hide scrollbars.
@@ -30,10 +30,10 @@ public:
      */
     enum Scroll
     {
-        SCROLL_NONE        = 0,
-        SCROLL_HORIZONTAL  = 0x01,
-        SCROLL_VERTICAL    = 0x02,
-        SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
+      SCROLL_NONE = 0,
+      SCROLL_HORIZONTAL = 0x01,
+      SCROLL_VERTICAL = 0x02,
+      SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
     };
 
     /**
@@ -41,12 +41,12 @@ public:
      */
     enum Direction
     {
-        UP = 0x01,
-        DOWN = 0x02,
-        LEFT = 0x04,
-        RIGHT = 0x08,
-        NEXT = 0x10,
-        PREVIOUS = 0x20
+      UP = 0x01,
+      DOWN = 0x02,
+      LEFT = 0x04,
+      RIGHT = 0x08,
+      NEXT = 0x10,
+      PREVIOUS = 0x20
     };
 
     /**
@@ -78,17 +78,17 @@ public:
      */
     Layout* getLayout();
 
-	/**
-	 * Sets the layout type for this container.
-	 *
-	 * @param type The new layout type for the container.
-	 */
-	void setLayout(Layout::Type type);
+    /**
+     * Sets the layout type for this container.
+     *
+     * @param type The new layout type for the container.
+     */
+    void setLayout(Layout::Type type);
 
     /**
      * Adds a new control to this container.
      *
-	 * @param control The control to add.
+   * @param control The control to add.
      *
      * @return The index assigned to the new Control.
      */
@@ -277,7 +277,7 @@ public:
      * @return This container's active control.
      */
     Control* getActiveControl() const;
-    
+
     /**
      * Sets the active control for this container.
      *
@@ -303,7 +303,7 @@ public:
      */
     virtual void setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight = 1.0f);
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -476,31 +476,31 @@ protected:
      * Scrollbar horizontal image.
      */
     Theme::ThemeImage* _scrollBarRightCap;
-    /** 
+    /**
      * Flag representing whether scrolling is enabled, and in which directions.
      */
     Scroll _scroll;
-    /** 
+    /**
      * Scroll bar bounds.
      */
     Rectangle _scrollBarBounds;
-    /** 
+    /**
      * How far this layout has been scrolled in each direction.
      */
     Vector2 _scrollPosition;
-    /** 
+    /**
      * Whether the scrollbars should auto-hide. Default is false.
      */
     bool _scrollBarsAutoHide;
-    /** 
+    /**
      * Used to animate scrollbars fading out.
      */
     float _scrollBarOpacity;
-    /** 
+    /**
      * Whether the user is currently touching / holding the mouse down within this layout's container.
      */
     bool _scrolling;
-    /** 
+    /**
      * First scrolling touch x position.
      */
     int _scrollingVeryFirstX;
@@ -510,51 +510,51 @@ protected:
     int _scrollingVeryFirstY;
     /**
      * First scrolling touch x position since last change in direction.
-     */ 
+     */
     int _scrollingFirstX;
-    /** 
+    /**
      * First scrolling touch y position since last change in direction.
-     */ 
+     */
     int _scrollingFirstY;
-    /** 
+    /**
      * The last y position when scrolling.
-     */ 
+     */
     int _scrollingLastX;
-    /** 
+    /**
      * The last x position when scrolling.
-     */ 
+     */
     int _scrollingLastY;
-    /** 
+    /**
      * Time we started scrolling horizontally.
-     */ 
+     */
     double _scrollingStartTimeX;
-    /** 
+    /**
      * Time we started scrolling vertically.
-     */ 
+     */
     double _scrollingStartTimeY;
-    /** 
+    /**
      * The last time we were scrolling.
      */
     double _scrollingLastTime;
-    /** 
+    /**
      * Speed to continue scrolling at after touch release or a scroll-wheel event.
-     */ 
+     */
     Vector2 _scrollingVelocity;
-    /** 
+    /**
      * Friction dampens velocity.
-     */ 
+     */
     float _scrollingFriction;
     /**
      * Amount to add to scrolling velocity on a scroll-wheel event;
      */
     float _scrollWheelSpeed;
-    /** 
+    /**
      * Are we scrolling to the right?
-     */ 
+     */
     bool _scrollingRight;
-    /** 
+    /**
      * Are we scrolling down?
-     */ 
+     */
     bool _scrollingDown;
     /**
      * Locked to scrolling vertically by grabbing the scrollbar with the mouse.
@@ -565,7 +565,7 @@ protected:
      */
     bool _scrollingMouseHorizontally;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -574,8 +574,8 @@ private:
 
     static const int MAX_CONTACT_INDICES = 10;
 
-	bool moveFocusNextPrevious(Direction direction);
-	bool moveFocusDirectional(Direction direction);
+    bool moveFocusNextPrevious(Direction direction);
+    bool moveFocusDirectional(Direction direction);
 
     // Starts scrolling at the given horizontal and vertical speeds.
     void startScrolling(float x, float y, bool resetTime = true);
@@ -593,6 +593,6 @@ private:
     bool _contactIndices[MAX_CONTACT_INDICES];
     bool _initializedWithScroll;
     bool _scrollWheelRequiresFocus;
-};
+  };
 
 }

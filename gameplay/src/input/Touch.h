@@ -3,12 +3,12 @@
 namespace gameplay
 {
 
-/**
- * Defines a touch screen event.
- */
-class Touch
-{
-public:
+  /**
+   * Defines a touch screen event.
+   */
+  class Touch
+  {
+  public:
 
     /**
      * Maximum simultaneous touch points supported.
@@ -20,17 +20,17 @@ public:
      */
     enum TouchEvent
     {
-        TOUCH_PRESS,
-        TOUCH_RELEASE,
-        TOUCH_MOVE
+      TOUCH_PRESS,
+      TOUCH_RELEASE,
+      TOUCH_MOVE
     };
 
-private:
+  private:
 
     /**
      * Constructor. Used internally.
      */
     Touch();
-};
+  };
 
 }

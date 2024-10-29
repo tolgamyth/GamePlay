@@ -6,23 +6,23 @@
 namespace gameplay
 {
 
-class PhysicsVehicleWheel;
+  class PhysicsVehicleWheel;
 
-/**
- * Defines a class for vehicle physics.
- *
- * In addition to its own properties defined below, a vehicle has available
- * to it all of the properties of a rigid body such as shape, mass, friction,
- * etc which correspond to the vehicle body:
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Collision_Objects
- */
-class PhysicsVehicle : public PhysicsCollisionObject
-{
+  /**
+   * Defines a class for vehicle physics.
+   *
+   * In addition to its own properties defined below, a vehicle has available
+   * to it all of the properties of a rigid body such as shape, mass, friction,
+   * etc which correspond to the vehicle body:
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Collision_Objects
+   */
+  class PhysicsVehicle : public PhysicsCollisionObject
+  {
     friend class Node;
     friend class PhysicsVehicleWheel;
 
-public:
+  public:
 
     /**
      * @see PhysicsCollisionObject#getType
@@ -51,7 +51,7 @@ public:
 
     /**
      * Gets the wheel at the specified index.
-     * 
+     *
      * @param i index of wheel.
      * @return the wheel at the specified index.
      */
@@ -278,18 +278,18 @@ public:
      */
     void setDownforce(float downforce);
 
-protected:
+  protected:
 
     /**
      * @see PhysicsCollisionObject::getCollisionObject
      */
     btCollisionObject* getCollisionObject() const;
 
-private:
+  private:
 
     /**
      * Creates a vehicle based on the specified rigid body parameters and some 'safe' defaults.
-     * 
+     *
      * @param node The node to create a rigid body for; note that the node must have
      *      a model attached to it prior to creating a rigid body for it.
      * @param shape The rigid body shape construction information.
@@ -299,7 +299,7 @@ private:
 
     /**
      * Creates a vehicle based on the given rigid body and some 'safe' defaults.
-     * 
+     *
      * @param node The node to create a rigid body for; note that the node must have
      *      a model attached to it prior to creating a rigid body for it.
      * @param rigidBody The rigid body.
@@ -318,7 +318,7 @@ private:
 
     /**
      * Creates a vehicle physics object from the specified properties object.
-     * 
+     *
      * @param node The node to create a vehicle for; note that the node must have
      *      a model attached to it prior to creating a vehicle for it.
      * @param properties The properties object defining the vehicle (must have type equal to 'VEHICLE').
@@ -384,6 +384,6 @@ private:
     btVehicleRaycaster* _vehicleRaycaster;
     btRaycastVehicle* _vehicle;
     std::vector<PhysicsVehicleWheel*> _wheels;
-};
+  };
 
 }

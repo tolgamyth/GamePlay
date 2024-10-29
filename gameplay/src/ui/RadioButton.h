@@ -7,21 +7,21 @@
 namespace gameplay
 {
 
-/**
- * Defines a radio button control.
- *
- * Radio buttons can be toggled between two states.
- * A radio button can belong to a group, and only one radio button
- * from a group can be selected at one time.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class RadioButton : public Button
-{
+  /**
+   * Defines a radio button control.
+   *
+   * Radio buttons can be toggled between two states.
+   * A radio button can belong to a group, and only one radio button
+   * from a group can be selected at one time.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class RadioButton : public Button
+  {
     friend class Container;
     friend class ControlFactory;
 
-public:
+  public:
 
     /**
      * Creates a new RadioButton.
@@ -81,7 +81,7 @@ public:
      */
     const char* getGroupId() const;
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -152,7 +152,7 @@ protected:
      * The RadioButton's group ID.
      */
     std::string _groupId;
-    
+
     /**
      * Whether the RadioButton is currently selected.
      */
@@ -163,9 +163,9 @@ protected:
      */
     Theme::ThemeImage* _image;
 
-private:
+  private:
 
     RadioButton(const RadioButton& copy);
-};
+  };
 
 }

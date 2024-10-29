@@ -138,10 +138,10 @@ namespace gameplay
   {
     if (_pausingSource != source)
     {
-      auto iter = std::find_if(_playingSources.begin(), _playingSources.end(), 
-                                [source](const auto ptr) {
-                                  return ptr == source;
-                                });
+      auto iter = std::find_if(_playingSources.begin(), _playingSources.end(),
+        [source](const auto ptr) {
+          return ptr == source;
+        });
 
       if (iter != _playingSources.end())
       {

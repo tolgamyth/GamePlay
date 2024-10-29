@@ -7,27 +7,27 @@
 namespace gameplay
 {
 
-PhysicsConstraint::PhysicsConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
+  PhysicsConstraint::PhysicsConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
     : _a(a), _b(b), _constraint(nullptr)
-{
-}
+  {
+  }
 
-PhysicsConstraint::~PhysicsConstraint()
-{
+  PhysicsConstraint::~PhysicsConstraint()
+  {
     // Remove the physics rigid bodies' references to this constraint.
     if (_a)
-        _a->removeConstraint(this);
+      _a->removeConstraint(this);
     if (_b)
-        _b->removeConstraint(this);
+      _b->removeConstraint(this);
 
     // Remove the constraint from the physics world and delete the Bullet object.
     assert(Game::getInstance()->getPhysicsController());
     Game::getInstance()->getPhysicsController()->removeConstraint(this);
     SAFE_DELETE(_constraint);
-}
+  }
 
-Vector3 PhysicsConstraint::centerOfMassMidpoint(const Node* a, const Node* b)
-{
+  Vector3 PhysicsConstraint::centerOfMassMidpoint(const Node* a, const Node* b)
+  {
     assert(a);
     assert(b);
 
@@ -37,17 +37,17 @@ Vector3 PhysicsConstraint::centerOfMassMidpoint(const Node* a, const Node* b)
 
     tA = getWorldCenterOfMass(a);
     tB = getWorldCenterOfMass(b);
-    
+
     Vector3 d(tA, tB);
     d.scale(0.5f);
     Vector3 c(tA);
     c.add(d);
 
     return c;
-}
+  }
 
-Quaternion PhysicsConstraint::getRotationOffset(const Node* node, const Vector3& point)
-{
+  Quaternion PhysicsConstraint::getRotationOffset(const Node* node, const Vector3& point)
+  {
     assert(node);
 
     // Create a translation matrix that translates to the given origin.
@@ -60,15 +60,15 @@ Quaternion PhysicsConstraint::getRotationOffset(const Node* node, const Vector3&
     Matrix mi;
     node->getWorldMatrix().invert(&mi);
     mi.multiply(m);
-    
+
     Quaternion r;
     mi.getRotation(&r);
 
     return r;
-}
+  }
 
-Vector3 PhysicsConstraint::getTranslationOffset(const Node* node, const Vector3& point)
-{
+  Vector3 PhysicsConstraint::getTranslationOffset(const Node* node, const Vector3& point)
+  {
     assert(node);
 
     // Create a translation matrix that translates to the given origin.
@@ -81,7 +81,7 @@ Vector3 PhysicsConstraint::getTranslationOffset(const Node* node, const Vector3&
     Matrix mi;
     node->getWorldMatrix().invert(&mi);
     mi.multiply(m);
-    
+
     Vector3 t;
     mi.getTranslation(&t);
 
@@ -91,14 +91,14 @@ Vector3 PhysicsConstraint::getTranslationOffset(const Node* node, const Vector3&
     t.x *= s.x;
     t.y *= s.y;
     t.z *= s.z;
-    
+
     t = offsetByCenterOfMass(node, t);
 
     return t;
-}
+  }
 
-btTransform PhysicsConstraint::getTransformOffset(const Node* node, const Vector3& origin)
-{
+  btTransform PhysicsConstraint::getTransformOffset(const Node* node, const Vector3& origin)
+  {
     assert(node);
 
     // Create a translation matrix that translates to the given origin.
@@ -114,7 +114,7 @@ btTransform PhysicsConstraint::getTransformOffset(const Node* node, const Vector
 
     Quaternion r;
     mi.getRotation(&r);
-    
+
     Vector3 t;
     mi.getTranslation(&t);
 
@@ -124,21 +124,21 @@ btTransform PhysicsConstraint::getTransformOffset(const Node* node, const Vector
     t.x *= s.x;
     t.y *= s.y;
     t.z *= s.z;
-    
+
     t = offsetByCenterOfMass(node, t);
 
     return btTransform(BQ(r), BV(t));
-}
+  }
 
-Vector3 PhysicsConstraint::getWorldCenterOfMass(const Node* node)
-{
+  Vector3 PhysicsConstraint::getWorldCenterOfMass(const Node* node)
+  {
     assert(node);
 
     const BoundingSphere& sphere = node->getBoundingSphere();
     if (!(sphere.center.isZero() && sphere.radius == 0))
     {
-        // The world-space center of mass is the sphere's center.
-        return sphere.center;
+      // The world-space center of mass is the sphere's center.
+      return sphere.center;
     }
 
     // Warn the user that the node has no bounding volume.
@@ -147,13 +147,13 @@ Vector3 PhysicsConstraint::getWorldCenterOfMass(const Node* node)
     Vector3 center;
     node->getWorldMatrix().transformPoint(&center);
     return center;
-}
+  }
 
-Vector3 PhysicsConstraint::offsetByCenterOfMass(const Node* node, const Vector3& v)
-{
+  Vector3 PhysicsConstraint::offsetByCenterOfMass(const Node* node, const Vector3& v)
+  {
     assert(node && node->getCollisionObject() && node->getCollisionObject()->_motionState);
     btVector3 centerOfMassOffset = node->getCollisionObject()->_motionState->_centerOfMassOffset.getOrigin();
     return Vector3(v.x + centerOfMassOffset.x(), v.y + centerOfMassOffset.y(), v.z + centerOfMassOffset.z());
-}
+  }
 
 }

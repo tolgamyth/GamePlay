@@ -309,9 +309,9 @@ void BillboardSample::loadBillboards()
   for (unsigned int i = 0; i < BILLBOARD_COUNT; i++)
   {
     auto& node = _billboards.emplace_back(Node::create());
-    
+
     Model* model = Model::create(mesh);
-    
+
     node->setDrawable(model);
     _scene->addNode(node);
 

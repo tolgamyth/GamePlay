@@ -36,8 +36,8 @@ namespace gameplay
       // playing sources. When the source is deleted afterwards, it should be removed
       // from controller's set regardless of its playing state.
       AudioController* audioController = Game::getInstance()->getAudioController();
-      
-	  assert(audioController);
+
+      assert(audioController);
       audioController->removePlayingSource(this);
 
       AL_CHECK(alDeleteSources(1, &_alSource));

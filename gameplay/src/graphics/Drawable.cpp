@@ -6,23 +6,23 @@
 namespace gameplay
 {
 
-Drawable::Drawable()
+  Drawable::Drawable()
     : _node(nullptr)
-{
-}
+  {
+  }
 
-Drawable::~Drawable()
-{
-}
+  Drawable::~Drawable()
+  {
+  }
 
-Node* Drawable::getNode() const
-{
+  Node* Drawable::getNode() const
+  {
     return _node;
-}
+  }
 
-void Drawable::setNode(Node* node)
-{
+  void Drawable::setNode(Node* node)
+  {
     _node = node;
-}
+  }
 
 }

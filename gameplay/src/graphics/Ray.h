@@ -5,20 +5,20 @@
 namespace gameplay
 {
 
-class Frustum;
-class Plane;
-class BoundingSphere;
-class BoundingBox;
+  class Frustum;
+  class Plane;
+  class BoundingSphere;
+  class BoundingBox;
 
 
-/**
- * Defines a 3-dimensional ray.
- *
- * Rays direction vector are always normalized.
- */
-class Ray
-{
-public:
+  /**
+   * Defines a 3-dimensional ray.
+   *
+   * Rays direction vector are always normalized.
+   */
+  class Ray
+  {
+  public:
 
     /**
      * Represents when a 3D entity does not intersect a ray.
@@ -40,7 +40,7 @@ public:
 
     /**
      * Constructs a new ray initialized to the specified values.
-     * 
+     *
      * @param originX The x coordinate of the origin.
      * @param originY The y coordinate of the origin.
      * @param originZ The z coordinate of the origin.
@@ -78,7 +78,7 @@ public:
 
     /**
      * Sets the ray's origin.
-     * 
+     *
      * @param x The x coordinate of the origin.
      * @param y The y coordinate of the origin.
      * @param z The z coordinate of the origin.
@@ -101,7 +101,7 @@ public:
 
     /**
      * Sets the ray's direction.
-     * 
+     *
      * @param x The x coordinate of the direction.
      * @param y The y coordinate of the direction.
      * @param z The z coordinate of the direction.
@@ -112,7 +112,7 @@ public:
      * Tests whether this ray intersects the specified bounding sphere.
      *
      * @param sphere The bounding sphere to test intersection with.
-     * 
+     *
      * @return The distance from the origin of this ray to the bounding object or
      *     INTERSECTS_NONE if this ray does not intersect the bounding object.
      */
@@ -122,7 +122,7 @@ public:
      * Tests whether this ray intersects the specified bounding box.
      *
      * @param box The bounding box to test intersection with.
-     * 
+     *
      * @return The distance from the origin of this ray to the bounding object or
      *     INTERSECTS_NONE if this ray does not intersect the bounding object.
      */
@@ -132,7 +132,7 @@ public:
      * Tests whether this ray intersects the specified frustum.
      *
      * @param frustum The frustum to test intersection with.
-     * 
+     *
      * @return The distance from the origin of this ray to the frustum or
      *     INTERSECTS_NONE if this ray does not intersect the frustum.
      */
@@ -143,7 +143,7 @@ public:
      * from the origin of the ray to the plane.
      *
      * @param plane The plane to test intersection with.
-     * 
+     *
      * @return The distance from the origin of this ray to the plane or
      *     INTERSECTS_NONE if this ray does not intersect the plane.
      */
@@ -173,13 +173,13 @@ public:
 
     /**
      * Transforms this ray by the given matrix.
-     * 
+     *
      * @param matrix The matrix to transform by.
      * @return This ray, after the transformation occurs.
      */
     inline Ray& operator*=(const Matrix& matrix);
 
-private:
+  private:
 
     /**
      * Normalizes the ray.
@@ -188,16 +188,16 @@ private:
 
     Vector3 _origin;        // The ray origin position.
     Vector3 _direction;     // The ray direction vector.
-};
+  };
 
-/**
- * Transforms the given ray by the given matrix.
- * 
- * @param matrix The matrix to transform by.
- * @param ray The ray to transform.
- * @return The resulting transformed ray.
- */
-inline const Ray operator*(const Matrix& matrix, const Ray& ray);
+  /**
+   * Transforms the given ray by the given matrix.
+   *
+   * @param matrix The matrix to transform by.
+   * @param ray The ray to transform.
+   * @return The resulting transformed ray.
+   */
+  inline const Ray operator*(const Matrix& matrix, const Ray& ray);
 
 }
 

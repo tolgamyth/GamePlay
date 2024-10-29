@@ -6,163 +6,163 @@
 namespace gameplay
 {
 
-Joint::Joint(const char* id)
+  Joint::Joint(const char* id)
     : Node(id), _jointMatrixDirty(true)
-{
-}
+  {
+  }
 
-Joint::~Joint()
-{
-}
+  Joint::~Joint()
+  {
+  }
 
-Joint* Joint::create(const char* id)
-{
+  Joint* Joint::create(const char* id)
+  {
     return new Joint(id);
-}
+  }
 
-Node* Joint::cloneSingleNode(NodeCloneContext &context) const
-{
+  Node* Joint::cloneSingleNode(NodeCloneContext& context) const
+  {
     Joint* copy = Joint::create(getId());
     assert(copy);
     context.registerClonedNode(this, copy);
     copy->_bindPose = _bindPose;
     Node::cloneInto(copy, context);
     return copy;
-}
+  }
 
-Node::Type Joint::getType() const
-{
+  Node::Type Joint::getType() const
+  {
     return Node::JOINT;
-}
+  }
 
-const char* Joint::getTypeName() const
-{
+  const char* Joint::getTypeName() const
+  {
     return "Joint";
-}
+  }
 
-Scene* Joint::getScene() const
-{
+  Scene* Joint::getScene() const
+  {
     // Overrides Node::getScene() to search the node our skins.
     for (const SkinReference* itr = &_skin; itr && itr->skin; itr = itr->next)
     {
-        Model* model = itr->skin ? itr->skin->getModel() : nullptr;
-        if (model)
+      Model* model = itr->skin ? itr->skin->getModel() : nullptr;
+      if (model)
+      {
+        Node* node = model->getNode();
+        if (node)
         {
-            Node* node = model->getNode();
-            if (node)
-            {
-                Scene* scene = node->getScene();
-                if (scene)
-                    return scene;
-            }
+          Scene* scene = node->getScene();
+          if (scene)
+            return scene;
         }
+      }
     }
 
     return Node::getScene();
-}
+  }
 
-void Joint::transformChanged()
-{
+  void Joint::transformChanged()
+  {
     Node::transformChanged();
     _jointMatrixDirty = true;
-}
+  }
 
-void Joint::updateJointMatrix(const Matrix& bindShape, Vector4* matrixPalette)
-{
+  void Joint::updateJointMatrix(const Matrix& bindShape, Vector4* matrixPalette)
+  {
     // Note: If more than one MeshSkin influences this Joint, we need to skip
     // the _jointMatrixDirty optimization since updateJointMatrix() may be
     // called multiple times a frame with different bindShape matrices (and
     // different matrixPallete pointers).
     if (_skin.next || _jointMatrixDirty)
     {
-        _jointMatrixDirty = false;
+      _jointMatrixDirty = false;
 
-        static Matrix t;
-        Matrix::multiply(Node::getWorldMatrix(), getInverseBindPose(), &t);
-        Matrix::multiply(t, bindShape, &t);
+      static Matrix t;
+      Matrix::multiply(Node::getWorldMatrix(), getInverseBindPose(), &t);
+      Matrix::multiply(t, bindShape, &t);
 
-        assert(matrixPalette);
-        matrixPalette[0].set(t.m[0], t.m[4], t.m[8], t.m[12]);
-        matrixPalette[1].set(t.m[1], t.m[5], t.m[9], t.m[13]);
-        matrixPalette[2].set(t.m[2], t.m[6], t.m[10], t.m[14]);
+      assert(matrixPalette);
+      matrixPalette[0].set(t.m[0], t.m[4], t.m[8], t.m[12]);
+      matrixPalette[1].set(t.m[1], t.m[5], t.m[9], t.m[13]);
+      matrixPalette[2].set(t.m[2], t.m[6], t.m[10], t.m[14]);
     }
-}
+  }
 
-const Matrix& Joint::getInverseBindPose() const
-{
+  const Matrix& Joint::getInverseBindPose() const
+  {
     return _bindPose;
-}
+  }
 
-void Joint::setInverseBindPose(const Matrix& m)
-{
+  void Joint::setInverseBindPose(const Matrix& m)
+  {
     _bindPose = m;
     _jointMatrixDirty = true;
-}
+  }
 
-void Joint::addSkin(MeshSkin* skin)
-{
+  void Joint::addSkin(MeshSkin* skin)
+  {
     if (!_skin.skin)
     {
-        // Store skin in root reference
-        _skin.skin = skin;
+      // Store skin in root reference
+      _skin.skin = skin;
     }
     else
     {
-        // Add a new SkinReference to the end of our list
-        SkinReference* ref = &_skin;
-        while (ref->next)
-        {
-            ref = ref->next;
-        }
-        ref->next = new SkinReference();
-        ref->next->skin = skin;
+      // Add a new SkinReference to the end of our list
+      SkinReference* ref = &_skin;
+      while (ref->next)
+      {
+        ref = ref->next;
+      }
+      ref->next = new SkinReference();
+      ref->next->skin = skin;
     }
-}
+  }
 
-void Joint::removeSkin(MeshSkin* skin)
-{
+  void Joint::removeSkin(MeshSkin* skin)
+  {
     if (_skin.skin == skin)
     {
-        // Skin is our root referenced skin
-        _skin.skin = nullptr;
+      // Skin is our root referenced skin
+      _skin.skin = nullptr;
 
-        // Shift the next skin reference down to the root
-        if (_skin.next)
-        {
-            SkinReference* tmp = _skin.next;
-            _skin.skin = tmp->skin;
-            _skin.next = tmp->next;
-            tmp->next = nullptr; // prevent deletion
-            SAFE_DELETE(tmp);
-        }
+      // Shift the next skin reference down to the root
+      if (_skin.next)
+      {
+        SkinReference* tmp = _skin.next;
+        _skin.skin = tmp->skin;
+        _skin.next = tmp->next;
+        tmp->next = nullptr; // prevent deletion
+        SAFE_DELETE(tmp);
+      }
     }
     else
     {
-        // Search for the entry referencing this skin
-        SkinReference* ref = &_skin;
-        while (SkinReference* tmp = ref->next)
+      // Search for the entry referencing this skin
+      SkinReference* ref = &_skin;
+      while (SkinReference* tmp = ref->next)
+      {
+        if (tmp->skin == skin)
         {
-            if (tmp->skin == skin)
-            {
-                // Link this refernce out
-                ref->next = tmp->next;
-                tmp->next = nullptr; // prevent deletion
-                SAFE_DELETE(tmp);
-                break;
-            }
-            ref = tmp;
+          // Link this refernce out
+          ref->next = tmp->next;
+          tmp->next = nullptr; // prevent deletion
+          SAFE_DELETE(tmp);
+          break;
         }
+        ref = tmp;
+      }
     }
-}
+  }
 
-Joint::SkinReference::SkinReference()
+  Joint::SkinReference::SkinReference()
     : skin(nullptr), next(nullptr)
-{
-}
+  {
+  }
 
-Joint::SkinReference::~SkinReference()
-{
+  Joint::SkinReference::~SkinReference()
+  {
     SAFE_DELETE(next);
-}
+  }
 
 }

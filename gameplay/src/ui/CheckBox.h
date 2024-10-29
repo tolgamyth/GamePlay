@@ -8,19 +8,19 @@
 namespace gameplay
 {
 
-/**
- * Defines a checkbox control.  
- *
- * This is a button that can be enabled or disabled.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class CheckBox : public Button
-{
+  /**
+   * Defines a checkbox control.
+   *
+   * This is a button that can be enabled or disabled.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class CheckBox : public Button
+  {
     friend class Container;
     friend class ControlFactory;
 
-public:
+  public:
 
     /**
      * Creates a new CheckBox.
@@ -69,7 +69,7 @@ public:
      */
     virtual void addListener(Control::Listener* listener, int eventFlags);
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -139,12 +139,12 @@ protected:
      */
     Theme::ThemeImage* _image;
 
-private:
+  private:
 
     /*
      * Constructor.
      */
     CheckBox(const CheckBox& copy);
-};
+  };
 
 }

@@ -7,20 +7,20 @@
 namespace gameplay
 {
 
-/**
- * Defines an audio listener in 3D space.
- *
- * The audio listener represents where you are listening from.
- * In a 3D scene this is usually the active camera.
- * 
- * @see Scene::bindAudioListenerToCamera
- */
-class AudioListener : public Camera::Listener
-{
+  /**
+   * Defines an audio listener in 3D space.
+   *
+   * The audio listener represents where you are listening from.
+   * In a 3D scene this is usually the active camera.
+   *
+   * @see Scene::bindAudioListenerToCamera
+   */
+  class AudioListener : public Camera::Listener
+  {
     friend class AudioController;
     friend class Game;
 
-public:
+  public:
 
     /**
      * Gets the single instance of the audio listener.
@@ -45,7 +45,7 @@ public:
 
     /**
      * Sets the position of the audio source.
-     * 
+     *
      * @param x The x coordinate of the position.
      * @param y The y coordinate of the position.
      * @param z The z coordinate of the position.
@@ -82,7 +82,7 @@ public:
 
     /**
      * Sets the velocity of the audio source
-     * 
+     *
      * @param x The x coordinate of the velocity.
      * @param y The y coordinate of the velocity.
      * @param z The z coordinate of the velocity.
@@ -92,7 +92,7 @@ public:
     /**
      * Gets the float pointer to the orientation of the audio listener.
      * Orientation is represented as 6 floats. (forward.x, forward.y, forward.z, up.x, up.y, up.z).
-     * 
+     *
      * @return Pointer to the 6 orientation float values.
      * @script{ignore}
      */
@@ -122,7 +122,7 @@ public:
 
     /**
      * Sets the orientation of the audio listener.
-     * 
+     *
      * @param forwardX The x coordinate of the forward vector.
      * @param forwardY The y coordinate of the forward vector.
      * @param forwardZ The z coordinate of the forward vector.
@@ -156,7 +156,7 @@ public:
     */
     ~AudioListener();
 
-private:
+  private:
 
     /**
     * @see Camera::Listener::cameraChanged
@@ -168,6 +168,6 @@ private:
     Vector3 _velocity;
     Vector3 _orientation[2];
     Camera* _camera;
-};
+  };
 
 }

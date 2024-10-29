@@ -127,11 +127,11 @@ namespace gameplay
     // Release __fontEffect since the SpriteBatch keeps a reference to it
     SAFE_RELEASE(__fontEffect)
 
-    if (batch == nullptr)
-    {
-      GP_WARN("Failed to create batch for font.");
-      return nullptr;
-    }
+      if (batch == nullptr)
+      {
+        GP_WARN("Failed to create batch for font.");
+        return nullptr;
+      }
 
     // Add linear filtering for better font quality.
     Texture::Sampler* sampler = batch->getSampler();

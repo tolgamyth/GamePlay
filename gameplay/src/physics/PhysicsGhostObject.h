@@ -7,20 +7,20 @@
 namespace gameplay
 {
 
-/**
- * Defines a physics ghost object.
- *
- * It is a collision volume that does not participate in the physics
- * simulation but can be used the test against other phyics collision objects.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Collision_Objects
- */
-class PhysicsGhostObject : public PhysicsCollisionObject, public Transform::Listener
-{
+  /**
+   * Defines a physics ghost object.
+   *
+   * It is a collision volume that does not participate in the physics
+   * simulation but can be used the test against other phyics collision objects.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Collision_Objects
+   */
+  class PhysicsGhostObject : public PhysicsCollisionObject, public Transform::Listener
+  {
     friend class Node;
     friend class PhysicsController;
 
-public:
+  public:
 
     /**
      * @see PhysicsCollisionObject::getType
@@ -32,18 +32,18 @@ public:
      */
     void transformChanged(Transform* transform, long cookie);
 
-protected:
+  protected:
 
     /**
      * @see PhysicsCollisionObject::getCollisionObject
      */
     btCollisionObject* getCollisionObject() const;
 
-protected:
+  protected:
 
     /**
      * Constructor.
-     * 
+     *
      * @param node The node to attach the ghost object to.
      * @param shape The collision shape definition for the ghost object.
      * @param group Group identifier
@@ -58,7 +58,7 @@ protected:
 
     /**
      * Creates a ghost object from the specified properties object.
-     * 
+     *
      * @param node The node to create a ghost object for; note that the node must have
      *      a model attached to it prior to creating a ghost object for it.
      * @param properties The properties object defining the ghost object (must have namespace equal to 'ghost').
@@ -70,6 +70,6 @@ protected:
      * Pointer to the Bullet ghost collision object.
      */
     btPairCachingGhostObject* _ghostObject;
-};
+  };
 
 }

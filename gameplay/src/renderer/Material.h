@@ -7,27 +7,27 @@
 namespace gameplay
 {
 
-class NodeCloneContext;
+  class NodeCloneContext;
 
-/**
- * Defines a material for an object to be rendered.
- *
- * This class encapsulates a set of rendering techniques that can be used to render an
- * object. This class facilitates loading of techniques using specified shaders or
- * material files (.material). When multiple techniques are loaded using a material file,
- * the current technique for an object can be set at runtime.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Materials
- */
-class Material : public RenderState
-{
+  /**
+   * Defines a material for an object to be rendered.
+   *
+   * This class encapsulates a set of rendering techniques that can be used to render an
+   * object. This class facilitates loading of techniques using specified shaders or
+   * material files (.material). When multiple techniques are loaded using a material file,
+   * the current technique for an object can be set at runtime.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Materials
+   */
+  class Material : public RenderState
+  {
     friend class Technique;
     friend class Pass;
     friend class RenderState;
     friend class Node;
     friend class Model;
 
-public:
+  public:
 
     /**
      * Pass creation callback function definition.
@@ -35,12 +35,12 @@ public:
     typedef std::string(*PassCallback)(Pass*, void*);
 
     /**
-     * Creates a material using the data from the Properties object defined at the specified URL, 
+     * Creates a material using the data from the Properties object defined at the specified URL,
      * where the URL is of the format "<file-path>.<extension>#<namespace-id>/<namespace-id>/.../<namespace-id>"
-     * (and "#<namespace-id>/<namespace-id>/.../<namespace-id>" is optional). 
-     * 
+     * (and "#<namespace-id>/<namespace-id>/.../<namespace-id>" is optional).
+     *
      * @param url The URL pointing to the Properties object defining the material.
-     * 
+     *
      * @return A new Material or nullptr if there was an error.
      * @script{create}
      */
@@ -67,8 +67,8 @@ public:
 
     /**
      * Creates a material from the specified properties object.
-     * 
-     * @param materialProperties The properties object defining the 
+     *
+     * @param materialProperties The properties object defining the
      *      material (must have namespace equal to 'material').
      * @return A new Material.
      * @script{create}
@@ -82,7 +82,7 @@ public:
      * given effect.
      *
      * @param effect Effect for the new material.
-     * 
+     *
      * @return A new Material.
      * @script{create}
      */
@@ -97,7 +97,7 @@ public:
      * @param vshPath Path to the vertex shader file.
      * @param fshPath Path to the fragment shader file.
      * @param defines New-line delimited list of preprocessor defines.
-     * 
+     *
      * @return A new Material.
      * @script{create}
      */
@@ -114,7 +114,7 @@ public:
      * Returns the technique at the specified index in this material.
      *
      * @param index The index of the technique to return.
-     * 
+     *
      * @return The specified technique.
      */
     Technique* getTechniqueByIndex(unsigned int index) const;
@@ -123,7 +123,7 @@ public:
      * Returns the technique with the specified ID in this material.
      *
      * @param id The ID of the technique to return.
-     * 
+     *
      * @return The specified technique.
      */
     Technique* getTechnique(const char* id) const;
@@ -136,7 +136,7 @@ public:
     Technique* getTechnique() const;
 
     /**
-     * Sets the current material technique. 
+     * Sets the current material technique.
      *
      * @param id ID of the technique to set.
      */
@@ -147,7 +147,7 @@ public:
      */
     void setNodeBinding(Node* node);
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -158,7 +158,7 @@ private:
      * Constructor.
      */
     Material(const Material& m);
-    
+
     /**
      * Destructor.
      */
@@ -166,13 +166,13 @@ private:
 
     /**
      * Clones this material.
-     * 
+     *
      * @param context The clone context.
-     * 
+     *
      * @return The newly created material.
      * @script{create}
      */
-    Material* clone(NodeCloneContext &context) const;
+    Material* clone(NodeCloneContext& context) const;
 
     /**
      * Creates a new material with optional pass callback function.
@@ -196,6 +196,6 @@ private:
 
     Technique* _currentTechnique;
     std::vector<Technique*> _techniques;
-};
+  };
 
 }

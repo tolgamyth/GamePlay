@@ -9,31 +9,31 @@
 namespace gameplay
 {
 
-class BoundingBox;
-class BoundingSphere;
-class NodeCloneContext;
-class ScriptListener;
+  class BoundingBox;
+  class BoundingSphere;
+  class NodeCloneContext;
+  class ScriptListener;
 
-/**
- * Defines a 3-dimensional transformation.
- *
- * When using the scale, rotate, and translate methods, only the
- * transform's corresponding scale, rotation, or translation
- * component is updated (it is not as if the scale, rotate, or translate
- * is applied to the transform's matrix).
- *
- * Note: To construct a Transform from a transformation matrix stored as a Matrix,
- * first decompose the Matrix into its separate translation, scale, and rotation
- * components using matrix.decompose(Vector3, Quaternion, Vector3) and then pass
- * those arguments to the appropriate constructor or set methods of Transform.
- */
-class Transform : public AnimationTarget, public ScriptTarget
-{
+  /**
+   * Defines a 3-dimensional transformation.
+   *
+   * When using the scale, rotate, and translate methods, only the
+   * transform's corresponding scale, rotation, or translation
+   * component is updated (it is not as if the scale, rotate, or translate
+   * is applied to the transform's matrix).
+   *
+   * Note: To construct a Transform from a transformation matrix stored as a Matrix,
+   * first decompose the Matrix into its separate translation, scale, and rotation
+   * components using matrix.decompose(Vector3, Quaternion, Vector3) and then pass
+   * those arguments to the appropriate constructor or set methods of Transform.
+   */
+  class Transform : public AnimationTarget, public ScriptTarget
+  {
     GP_SCRIPT_EVENTS_START();
     GP_SCRIPT_EVENT(transformChanged, "<Transform>");
     GP_SCRIPT_EVENTS_END();
 
-public:
+  public:
 
     /**
      * Scale animation property. Data=scale
@@ -115,7 +115,7 @@ public:
      */
     static void resumeTransformChanged();
 
-    /** 
+    /**
      * Gets whether all transform changed events are suspended.
      *
      * @return TRUE if transform changed events are suspended; FALSE if transform changed events are not suspended.
@@ -129,15 +129,15 @@ public:
     {
     public:
 
-        virtual ~Listener() { }
+      virtual ~Listener() { }
 
-        /**
-         * Handles when an transform has changed.
-         *
-         * @param transform The Transform object that was changed.
-         * @param cookie Cookie value that was specified when the listener was registered.
-         */
-        virtual void transformChanged(Transform* transform, long cookie) = 0;
+      /**
+       * Handles when an transform has changed.
+       *
+       * @param transform The Transform object that was changed.
+       * @param cookie Cookie value that was specified when the listener was registered.
+       */
+      virtual void transformChanged(Transform* transform, long cookie) = 0;
     };
 
     /**
@@ -254,7 +254,7 @@ public:
      * of this transform in the specified Vector3.
      *
      * @param axis The vector to store the axis of rotation.
-     * 
+     *
      * @return The angle of rotation.
      */
     float getRotation(Vector3* axis) const;
@@ -291,7 +291,7 @@ public:
      * @return The translation factor along the z-axis.
      */
     float getTranslationZ() const;
-    
+
     /**
      * Returns the forward vector for this Transform.
      */
@@ -299,7 +299,7 @@ public:
 
     /**
      * Returns the forward vector for this Transform.
-     * 
+     *
      * @param dst The vector to store the result in.
      */
     void getForwardVector(Vector3* dst) const;
@@ -323,7 +323,7 @@ public:
 
     /**
      * Returns the up vector for this Transform.
-     * 
+     *
      * @param dst The vector to store the result in.
      */
     void getUpVector(Vector3* dst) const;
@@ -347,7 +347,7 @@ public:
 
     /**
      * Returns the left vector for this Transform.
-     * 
+     *
      * @param dst The vector to store the result in.
      */
     void getLeftVector(Vector3* dst) const;
@@ -777,11 +777,11 @@ public:
 
     /**
      * Removes a transform listener.
-     * 
+     *
      * @param listener The listener to remove.
      */
     void removeListener(Transform::Listener* listener);
-    
+
     /**
      * @see AnimationTarget::getAnimationPropertyComponentCount
      */
@@ -797,22 +797,22 @@ public:
      */
     void setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight = 1.0f);
 
-protected:
+  protected:
 
     /**
      * Transform Listener.
      */
     struct TransformListener
     {
-        /**
-         * Listener for Transform events.
-         */
-        Listener* listener;
+      /**
+       * Listener for Transform events.
+       */
+      Listener* listener;
 
-        /**
-         * An optional long value that is specified to the Listener's callback.
-         */
-        long cookie;
+      /**
+       * An optional long value that is specified to the Listener's callback.
+       */
+      long cookie;
     };
 
     /**
@@ -821,10 +821,10 @@ protected:
      */
     enum MatrixDirtyBits
     {
-        DIRTY_TRANSLATION = 0x01,
-        DIRTY_SCALE = 0x02,
-        DIRTY_ROTATION = 0x04,
-        DIRTY_NOTIFY = 0x08
+      DIRTY_TRANSLATION = 0x01,
+      DIRTY_SCALE = 0x02,
+      DIRTY_ROTATION = 0x04,
+      DIRTY_NOTIFY = 0x08
     };
 
     /**
@@ -832,7 +832,7 @@ protected:
      */
     void dirty(char matrixDirtyBits);
 
-    /** 
+    /**
      * Determines if the specified matrix dirty bit is set.
      *
      * @param matrixDirtyBits the matrix dirty bit to check for dirtiness.
@@ -840,7 +840,7 @@ protected:
      */
     bool isDirty(char matrixDirtyBits) const;
 
-    /** 
+    /**
      * Adds the specified transform to the list of transforms waiting to be notified of a change.
      * Sets the DIRTY_NOTIFY bit on the transform.
      */
@@ -853,49 +853,49 @@ protected:
 
     /**
      * Copies from data from this node into transform for the purpose of cloning.
-     * 
+     *
      * @param transform The transform to copy into.
      * @param context The clone context.
      */
-    void cloneInto(Transform* transform, NodeCloneContext &context) const;
+    void cloneInto(Transform* transform, NodeCloneContext& context) const;
 
     /**
      * The scale component of the Transform.
      */
     Vector3 _scale;
 
-    /** 
+    /**
      * The rotation component of the Transform.
      */
     Quaternion _rotation;
-    
-    /** 
+
+    /**
      * The translation component of the Transform.
      */
     Vector3 _translation;
-    
-    /** 
+
+    /**
      * The Matrix representation of the Transform.
      */
     mutable Matrix _matrix;
-    
-    /** 
+
+    /**
      * Matrix dirty bits flag.
      */
     mutable char _matrixDirtyBits;
-    
-    /** 
+
+    /**
      * List of TransformListener's on the Transform.
      */
     std::list<TransformListener>* _listeners;
 
-private:
-   
+  private:
+
     void applyAnimationValueRotation(AnimationValue* value, unsigned int index, float blendWeight);
 
     static int _suspendTransformChanged;
     static std::vector<Transform*> _transformsChanged;
-    
-};
+
+  };
 
 }

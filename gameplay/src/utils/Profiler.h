@@ -22,7 +22,7 @@ namespace gameplay
       auto end = std::chrono::high_resolution_clock::now();
       float elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - _start).count();
       std::cout << "Time taken for " << _name << ": "
-        << elapsed/1000.f
+        << elapsed / 1000.f
         << " milliseconds" << std::endl;
 
       FreeConsole();

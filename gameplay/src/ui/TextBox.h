@@ -6,37 +6,37 @@
 namespace gameplay
 {
 
-/**
- * Defines a text control. 
- *
- * Listeners can listen for a TEXT_CHANGED event, and then query the text box
- * for the last keypress it received.
- * On mobile device you can tap or click within the text box to
- * bring up the virtual keyboard.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class TextBox : public Label
-{
+  /**
+   * Defines a text control.
+   *
+   * Listeners can listen for a TEXT_CHANGED event, and then query the text box
+   * for the last keypress it received.
+   * On mobile device you can tap or click within the text box to
+   * bring up the virtual keyboard.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class TextBox : public Label
+  {
     friend class Container;
     friend class ControlFactory;
 
-public:
+  public:
 
     /**
      * Input modes. Default is Text.
      */
     enum InputMode
     {
-        /**
-         * Text: Text is displayed directly.
-         */
-        TEXT = 0x01,
+      /**
+       * Text: Text is displayed directly.
+       */
+      TEXT = 0x01,
 
-        /**
-         * Password: Text is replaced by _passwordChar, which is '*' by default.
-         */
-        PASSWORD = 0x02
+      /**
+       * Password: Text is replaced by _passwordChar, which is '*' by default.
+       */
+      PASSWORD = 0x02
     };
 
     /**
@@ -114,9 +114,9 @@ public:
     /**
      * Update the text being edited.
      */
-    void setText(char const *text) override;
+    void setText(char const* text) override;
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -163,7 +163,7 @@ protected:
      * @param evt The key event that occurred.
      * @param key If evt is KEY_PRESS or KEY_RELEASE then key is the key code from Keyboard::Key.
      *            If evt is KEY_CHAR then key is the unicode value of the character.
-     * 
+     *
      * @see Keyboard::KeyEvent
      * @see Keyboard::Key
      */
@@ -214,7 +214,7 @@ protected:
      * The previous position of the TextBox's caret.
      */
     Vector2 _prevCaretLocation;
-    
+
     /**
      * The last character that was entered into the TextBox.
      */
@@ -224,7 +224,7 @@ protected:
      * The font size to be used in the TextBox.
      */
     unsigned int _fontSize;
-    
+
     /**
      * The Theme::Image for the TextBox's caret.
      */
@@ -250,7 +250,7 @@ protected:
      */
     bool _shiftPressed = false;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -260,6 +260,6 @@ private:
     void setCaretLocation(int x, int y);
 
     void getCaretLocation(Vector2* p);
-};
+  };
 
 }

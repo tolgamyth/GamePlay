@@ -9,19 +9,19 @@
 namespace gameplay
 {
 
-/**
- * Defines a slider control.
- *
- * A slider consists of a marker (grabber) that can slide along a track between two end-caps.
- * 
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class Slider : public Label
-{
+  /**
+   * Defines a slider control.
+   *
+   * A slider consists of a marker (grabber) that can slide along a track between two end-caps.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class Slider : public Label
+  {
     friend class Container;
     friend class ControlFactory;
 
-public:
+  public:
 
     /**
      * Creates a new Slider.
@@ -104,8 +104,8 @@ public:
 
     /**
      * Sets if the slider value text is rendered below the control.
-     * 
-     * @param visible If the slider value text is rendered below the control. 
+     *
+     * @param visible If the slider value text is rendered below the control.
      */
     void setValueTextVisible(bool visible);
 
@@ -118,15 +118,15 @@ public:
 
     /**
      * Sets the slider value text alignment.
-     * 
-     * @param alignment the slider value text alignment. 
+     *
+     * @param alignment the slider value text alignment.
      */
     void setValueTextAlignment(Font::Justify alignment);
 
     /**
      * Gets the slider value text alignment.
      *
-     * @return The slider value text alignment. 
+     * @return The slider value text alignment.
      */
     Font::Justify getValueTextAlignment() const;
 
@@ -156,7 +156,7 @@ public:
      */
     void addListener(Control::Listener* listener, int eventFlags);
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -232,17 +232,17 @@ protected:
      * The minimum value for the Slider.
      */
     float _min;
-    
+
     /**
      * The maximum value for the Slider
      */
     float _max;
-    
+
     /**
      * The Slider's step size.
      */
     float _step;
-    
+
     /**
      * The Slider's current value.
      */
@@ -257,17 +257,17 @@ protected:
      * The image for the minimum slider value.
      */
     Theme::ThemeImage* _minImage;
-    
+
     /**
      * The image for the maximum slider value.
      */
     Theme::ThemeImage* _maxImage;
-    
+
     /**
      * The image for the slider track.
      */
     Theme::ThemeImage* _trackImage;
-    
+
     /**
      * The image for the slider marker.
      */
@@ -288,7 +288,7 @@ protected:
      */
     unsigned int _valueTextPrecision;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -305,6 +305,6 @@ private:
     float _trackHeight;
 
     float _gamepadValue;
-};
+  };
 
 }

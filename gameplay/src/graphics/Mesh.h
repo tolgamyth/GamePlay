@@ -9,29 +9,29 @@
 namespace gameplay
 {
 
-class MeshPart;
-class Material;
-class Model;
+  class MeshPart;
+  class Material;
+  class Model;
 
-/**
- * Defines a mesh supporting various vertex formats and 1 or more
- * MeshPart(s) to define how the vertices are connected.
- */
-class Mesh : public Ref
-{
+  /**
+   * Defines a mesh supporting various vertex formats and 1 or more
+   * MeshPart(s) to define how the vertices are connected.
+   */
+  class Mesh : public Ref
+  {
     friend class Model;
     friend class Bundle;
 
-public:
+  public:
 
     /**
      * Defines supported index formats.
      */
     enum IndexFormat
     {
-        INDEX8 = GL_UNSIGNED_BYTE,
-        INDEX16 = GL_UNSIGNED_SHORT,
-        INDEX32 = GL_UNSIGNED_INT
+      INDEX8 = GL_UNSIGNED_BYTE,
+      INDEX16 = GL_UNSIGNED_SHORT,
+      INDEX32 = GL_UNSIGNED_INT
     };
 
     /**
@@ -39,11 +39,11 @@ public:
      */
     enum PrimitiveType
     {
-        TRIANGLES = GL_TRIANGLES,
-        TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
-        LINES = GL_LINES,
-        LINE_STRIP = GL_LINE_STRIP,
-        POINTS = GL_POINTS
+      TRIANGLES = GL_TRIANGLES,
+      TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
+      LINES = GL_LINES,
+      LINE_STRIP = GL_LINE_STRIP,
+      POINTS = GL_POINTS
     };
 
     /**
@@ -52,7 +52,7 @@ public:
      * @param vertexFormat The vertex format.
      * @param vertexCount The number of vertices.
      * @param dynamic true if the mesh is dynamic; false otherwise.
-     * 
+     *
      * @return The created mesh.
      * @script{create}
      */
@@ -69,7 +69,7 @@ public:
      * @param p2 The second point.
      * @param p3 The third point.
      * @param p4 The fourth point.
-     * 
+     *
      * @return The created mesh.
      * @script{create}
      */
@@ -77,7 +77,7 @@ public:
 
     /**
      * Constructs a new textured 2D quad.
-     * 
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      * @param width The width of the quad.
@@ -86,7 +86,7 @@ public:
      * @param t1 The T texture coordinate of the bottom left point.
      * @param s2 The S texture coordinate of the top right point.
      * @param t2 The T texture coordinate of the top right point.
-     * 
+     *
      * @return The newly created mesh.
      * @script{create}
      */
@@ -100,7 +100,7 @@ public:
      *
      * This method returns a mesh describing a fullscreen quad using
      * normalized device coordinates for vertex positions.
-     * 
+     *
      * @return The newly created mesh.
      * @script{create}
      */
@@ -111,10 +111,10 @@ public:
      *
      * The mesh contains only position data using lines to connect the vertices.
      * This is useful for drawing basic color elements into a scene.
-     * 
+     *
      * @param points The array of points.
      * @param pointCount The number of points.
-     * 
+     *
      * @return The newly created mesh.
      * @script{create}
      */
@@ -126,7 +126,7 @@ public:
      * The mesh contains only position data using lines to connect the vertices.
      *
      * @param box The BoundingBox that will be used to create the mesh.
-     * 
+     *
      * @return The newly created bounding box mesh.
      * @script{create}
      */
@@ -180,7 +180,7 @@ public:
      * Returns the primitive type of the vertices in the mesh.
      *
      * The default primitive type for a Mesh is TRIANGLES.
-     * 
+     *
      * @return The primitive type.
      *
      * @see setPrimitiveType(PrimitiveType)
@@ -247,7 +247,7 @@ public:
      * @param indexFormat The format of the indices. SHORT or INT.
      * @param indexCount The number of indices to be contained in the part.
      * @param dynamic true if the index data is dynamic; false otherwise.
-     * 
+     *
      * @return The newly created/added mesh part.
      */
     MeshPart* addPart(PrimitiveType primitiveType, Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic = false);
@@ -261,16 +261,16 @@ public:
 
     /**
      * Gets a MeshPart by index.
-     * 
+     *
      * @param index The index of the MeshPart to get.
-     * 
+     *
      * @return The MeshPart at the specified index.
      */
     MeshPart* getPart(unsigned int index);
 
     /**
      * Returns the bounding box for the points in this mesh.
-     * 
+     *
      * Only meshes loaded from bundle files are imported with valid
      * bounding volumes. Programmatically created meshes will contain
      * empty bounding volumes until the setBoundingBox and/or
@@ -281,7 +281,7 @@ public:
      * a bounding volume that is not necessarily tight fighting on the
      * Mesh vertices. Instead, the bounding volume will be an approximation
      * that contains all possible vertex positions in all possible poses after
-     * skinning is applied. This is necessary since skinning vertices 
+     * skinning is applied. This is necessary since skinning vertices
      * result in vertex positions that lie outside the original mesh bounds
      * and could otherwise result in a bounding volume that does not fully
      * contain an animated/skinned mesh.
@@ -310,7 +310,7 @@ public:
      * a bounding volume that is not necessarily tight fighting on the
      * Mesh vertices. Instead, the bounding volume will be an approximation
      * that contains all possible vertex positions in all possible poses after
-     * skinning is applied. This is necessary since skinning vertices 
+     * skinning is applied. This is necessary since skinning vertices
      * result in vertex positions that lie outside the original mesh bounds
      * and could otherwise result in a bounding volume that does not fully
      * contain an animated/skinned mesh.
@@ -331,7 +331,7 @@ public:
      */
     virtual ~Mesh();
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -358,6 +358,6 @@ private:
     bool _dynamic;
     BoundingBox _boundingBox;
     BoundingSphere _boundingSphere;
-};
+  };
 
 }

@@ -3,28 +3,28 @@
 namespace gameplay
 {
 
-/**
- * Defines a class providing a basic logging system for a game.
- *
- * By default, this class logs messages using the gameplay::print function, which
- * is implemented in a platform dependent manner and typically prints to stderr
- * as well as to other possibly platform specific locations. Logging behavior
- * can be modified for a specific log level by passing a custom C or Lua logging
- * function to the Logger::set method. Logging can also be toggled using the
- * setEnabled method.
- */
-class Logger
-{
-public:
+  /**
+   * Defines a class providing a basic logging system for a game.
+   *
+   * By default, this class logs messages using the gameplay::print function, which
+   * is implemented in a platform dependent manner and typically prints to stderr
+   * as well as to other possibly platform specific locations. Logging behavior
+   * can be modified for a specific log level by passing a custom C or Lua logging
+   * function to the Logger::set method. Logging can also be toggled using the
+   * setEnabled method.
+   */
+  class Logger
+  {
+  public:
 
-    /** 
+    /**
      * Enumeration of valid log levels.
      */
     enum Level
     {
-        LEVEL_INFO = 0,
-        LEVEL_WARN = 1,
-        LEVEL_ERROR = 2
+      LEVEL_INFO = 0,
+      LEVEL_WARN = 1,
+      LEVEL_ERROR = 2
     };
 
     /**
@@ -74,7 +74,7 @@ public:
     /**
      * Sets a Lua function as the log handler for the specified log level.
      *
-     * When a call to log is made with the given level, the specified 
+     * When a call to log is made with the given level, the specified
      * Lua function will be called to handle the request.
      *
      * Passing nullptr for logFunction restores the default log behavior for this level.
@@ -84,14 +84,14 @@ public:
      */
     static void set(Level level, const char* logFunction);
 
-private:
+  private:
 
     struct State
     {
-        State();
-        void (*logFunctionC) (Level, const char*);
-        const char* logFunctionLua;
-        bool enabled;
+      State();
+      void (*logFunctionC) (Level, const char*);
+      const char* logFunctionLua;
+      bool enabled;
     };
 
     /**
@@ -116,6 +116,6 @@ private:
 
     static State _state[3];
 
-};
+  };
 
 }

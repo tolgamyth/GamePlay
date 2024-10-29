@@ -12,23 +12,23 @@ class SpriteBatchSample : public Sample
 {
 public:
 
-    SpriteBatchSample();
+  SpriteBatchSample();
 
-    void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
+  void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
 
 protected:
 
-    void initialize();
+  void initialize();
 
-    void finalize();
+  void finalize();
 
-    void update(float elapsedTime);
+  void update(float elapsedTime);
 
-    void render(float elapsedTime);
+  void render(float elapsedTime);
 
 private:
 
-    Font* _font;
-    SpriteBatch* _spriteBatch;
-    Matrix _worldViewProjectionMatrix;
+  Font* _font;
+  SpriteBatch* _spriteBatch;
+  Matrix _worldViewProjectionMatrix;
 };

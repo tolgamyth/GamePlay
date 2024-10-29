@@ -278,7 +278,7 @@ namespace gameplay
       {
         AudioSource* audioSource = AudioSource::create(p);
         node->setAudioSource(audioSource);
-            SAFE_RELEASE(audioSource);
+        SAFE_RELEASE(audioSource);
         break;
       }
       case SceneNodeProperty::MATERIAL:

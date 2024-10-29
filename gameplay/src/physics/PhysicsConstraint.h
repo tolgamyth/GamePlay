@@ -5,23 +5,23 @@
 
 namespace gameplay
 {
-    class PhysicsRigidBody;
-    class Node;
+  class PhysicsRigidBody;
+  class Node;
 
-/**
- * Defines the base class for physics constraints.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Constraints
- */
-class PhysicsConstraint
-{
+  /**
+   * Defines the base class for physics constraints.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Constraints
+   */
+  class PhysicsConstraint
+  {
     friend class PhysicsController;
     friend class PhysicsRigidBody;
 
-public:
+  public:
     /**
      * Gets the impulse needed to break the constraint.
-     * 
+     *
      * @return The impulse needed to break the constraint.
      */
     inline float getBreakingImpulse() const;
@@ -31,28 +31,28 @@ public:
      * (if an impulse greater than or equal to the given
      * value is applied to the constraint, the constraint
      * will be broken).
-     * 
+     *
      * @param impulse The impulse needed to break the constraint.
      */
     inline void setBreakingImpulse(float impulse);
 
     /**
      * Gets whether the constraint is enabled or not.
-     * 
+     *
      * @return Whether the constraint is enabled or not.
      */
     inline bool isEnabled() const;
 
     /**
      * Sets whether the constraint is enabled or not.
-     * 
+     *
      * @param enabled Whether the constraint is enabled or not.
      */
     inline void setEnabled(bool enabled);
 
     /**
      * Calculates the midpoint between the given nodes' centers of mass.
-     * 
+     *
      * @param a The first node.
      * @param b The second node.
      */
@@ -60,7 +60,7 @@ public:
 
     /**
      * Calculates the rotation offset to the given point in the given node's local space.
-     * 
+     *
      * @param node The node to calculate a rotation offset for.
      * @param point The point to calculate the rotation offset to.
      */
@@ -68,13 +68,13 @@ public:
 
     /**
      * Calculates the translation offset to the given point in the given node's local space.
-     * 
+     *
      * @param node The node to calculate a translation offset for.
      * @param point The point to calculate the translation offset to.
      */
     static Vector3 getTranslationOffset(const Node* node, const Vector3& point);
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -87,11 +87,11 @@ protected:
     virtual ~PhysicsConstraint();
 
     /**
-     * Calculates the transform to be used as the offset (i.e. "frame in" 
+     * Calculates the transform to be used as the offset (i.e. "frame in"
      * parameter in Bullet terms) to the given constraint origin.
      */
     static btTransform getTransformOffset(const Node* node, const Vector3& origin);
-    
+
     /**
      * Calculates the center of mass in world space of the given node.
      */
@@ -106,17 +106,17 @@ protected:
      * Pointer to the one rigid body bound by this constraint.
      */
     PhysicsRigidBody* _a;
-    
+
     /**
      * Pointer to the other rigid body bound by this constraint.
      */
     PhysicsRigidBody* _b;
-    
+
     /**
      * Pointer to the Bullet constraint.
      */
     btTypedConstraint* _constraint;
-};
+  };
 
 }
 

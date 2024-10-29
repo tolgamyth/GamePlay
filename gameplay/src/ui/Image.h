@@ -5,22 +5,22 @@
 namespace gameplay
 {
 
-/**
- * Defines an image buffer of RGB or RGBA color data.
- *
- * Currently only supports loading from .png image files.
- */
-class Image : public Ref
-{
-public:
+  /**
+   * Defines an image buffer of RGB or RGBA color data.
+   *
+   * Currently only supports loading from .png image files.
+   */
+  class Image : public Ref
+  {
+  public:
 
     /**
      * Defines the set of supported color formats.
      */
     enum Format
     {
-        RGB,
-        RGBA
+      RGB,
+      RGBA
     };
 
     /**
@@ -73,7 +73,7 @@ public:
      */
     inline unsigned int getWidth() const;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -94,7 +94,7 @@ private:
     Format _format;
     unsigned int _width;
     unsigned int _height;
-};
+  };
 
 }
 

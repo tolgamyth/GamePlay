@@ -6,8 +6,8 @@
 namespace gameplay
 {
 
-PhysicsSpringConstraint::PhysicsSpringConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
-{
+  PhysicsSpringConstraint::PhysicsSpringConstraint(PhysicsRigidBody* a, PhysicsRigidBody* b)
+  {
     assert(a && a->_body);
     assert(b && b->_body);
 
@@ -17,11 +17,11 @@ PhysicsSpringConstraint::PhysicsSpringConstraint(PhysicsRigidBody* a, PhysicsRig
 
     Vector3 origin = centerOfMassMidpoint(a->getNode(), b->getNode());
     _constraint = bullet_new<btGeneric6DofSpringConstraint>(*a->_body, *b->_body, getTransformOffset(a->getNode(), origin), getTransformOffset(b->getNode(), origin), true);
-}
+  }
 
-PhysicsSpringConstraint::PhysicsSpringConstraint(PhysicsRigidBody* a, const Quaternion& rotationOffsetA, const Vector3& translationOffsetA,
-                                                 PhysicsRigidBody* b, const Quaternion& rotationOffsetB, const Vector3& translationOffsetB)
-{
+  PhysicsSpringConstraint::PhysicsSpringConstraint(PhysicsRigidBody* a, const Quaternion& rotationOffsetA, const Vector3& translationOffsetA,
+    PhysicsRigidBody* b, const Quaternion& rotationOffsetB, const Vector3& translationOffsetB)
+  {
     assert(a && a->_body && a->getNode());
     assert(b && b->_body && b->getNode());
 
@@ -41,31 +41,31 @@ PhysicsSpringConstraint::PhysicsSpringConstraint(PhysicsRigidBody* a, const Quat
     btTransform frameInA(BQ(rotationOffsetA), BV(tA));
     btTransform frameInB(BQ(rotationOffsetB), BV(tB));
     _constraint = bullet_new<btGeneric6DofSpringConstraint>(*a->_body, *b->_body, frameInA, frameInB, true);
-}
+  }
 
-PhysicsSpringConstraint::~PhysicsSpringConstraint()
-{
+  PhysicsSpringConstraint::~PhysicsSpringConstraint()
+  {
     // Used
-}
+  }
 
-void PhysicsSpringConstraint::setStrength(SpringProperty property, float strength)
-{
+  void PhysicsSpringConstraint::setStrength(SpringProperty property, float strength)
+  {
     assert(_constraint);
     if (strength < MATH_EPSILON)
-        ((btGeneric6DofSpringConstraint*)_constraint)->enableSpring(property, false);
+      ((btGeneric6DofSpringConstraint*)_constraint)->enableSpring(property, false);
     else
     {
-        ((btGeneric6DofSpringConstraint*)_constraint)->enableSpring(property, true);
-        ((btGeneric6DofSpringConstraint*)_constraint)->setStiffness(property, strength);
-        ((btGeneric6DofSpringConstraint*)_constraint)->setEquilibriumPoint(property);
+      ((btGeneric6DofSpringConstraint*)_constraint)->enableSpring(property, true);
+      ((btGeneric6DofSpringConstraint*)_constraint)->setStiffness(property, strength);
+      ((btGeneric6DofSpringConstraint*)_constraint)->setEquilibriumPoint(property);
     }
-}
+  }
 
-void PhysicsSpringConstraint::setDamping(SpringProperty property, float damping)
-{
+  void PhysicsSpringConstraint::setDamping(SpringProperty property, float damping)
+  {
     assert(_constraint);
     ((btGeneric6DofSpringConstraint*)_constraint)->setDamping(property, damping);
     ((btGeneric6DofSpringConstraint*)_constraint)->setEquilibriumPoint(property);
-}
+  }
 
 }

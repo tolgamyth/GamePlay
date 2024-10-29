@@ -12,34 +12,34 @@ class MeshPrimitiveSample : public Sample
 {
 public:
 
-    MeshPrimitiveSample();
+  MeshPrimitiveSample();
 
-    void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
+  void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
 
 protected:
 
-    void initialize();
+  void initialize();
 
-    void finalize();
+  void finalize();
 
-    void update(float elapsedTime);
+  void update(float elapsedTime);
 
-    void render(float elapsedTime);
+  void render(float elapsedTime);
 
 private:
 
-    static Material* createMaterial();
+  static Material* createMaterial();
 
-    static MeshBatch* createMeshBatch(Mesh::PrimitiveType primitiveType);
+  static MeshBatch* createMeshBatch(Mesh::PrimitiveType primitiveType);
 
-    Font* _font;
-    Model* _triangles;
-    Model* _triangleStrip;
-    Model* _lineStrip;
-    Model* _lines;
-    Model* _points;
-    Matrix _viewProjectionMatrix;
-    Vector2 _touchPoint;
-    Vector2 _tilt;
-    std::list<Text*> _text;
+  Font* _font;
+  Model* _triangles;
+  Model* _triangleStrip;
+  Model* _lineStrip;
+  Model* _lines;
+  Model* _points;
+  Matrix _viewProjectionMatrix;
+  Vector2 _touchPoint;
+  Vector2 _tilt;
+  std::list<Text*> _text;
 };

@@ -74,7 +74,7 @@ namespace gameplay
   Game::~Game()
   {
     SAFE_DELETE(_scriptTarget);
-	SAFE_DELETE(_scriptController);
+    SAFE_DELETE(_scriptController);
 
     // Do not call any virtual functions from the destructor.
     // Finalization is done from outside this class.
@@ -186,7 +186,7 @@ namespace gameplay
       const char* scriptPath = _properties->getString("script");
       if (scriptPath)
       {
-            _scriptTarget = new GameScriptTarget();
+        _scriptTarget = new GameScriptTarget();
         _scriptTarget->addScript(scriptPath);
       }
       else
@@ -195,7 +195,7 @@ namespace gameplay
         Properties* sns = _properties->getNamespace("scripts", true);
         if (sns)
         {
-                _scriptTarget = new GameScriptTarget();
+          _scriptTarget = new GameScriptTarget();
 
           // Define a macro to simplify defining the following script callback registrations
 #define GP_REG_GAME_SCRIPT_CB(e) if (sns->exists(#e)) _scriptTarget->addScriptCallback(GP_GET_SCRIPT_EVENT(GameScriptTarget, e), sns->getString(#e))
@@ -245,7 +245,7 @@ namespace gameplay
         _scriptTarget->fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(GameScriptTarget, finalize));
 
       // Destroy script target so no more script events are fired
-        SAFE_DELETE(_scriptTarget);
+      SAFE_DELETE(_scriptTarget);
 
       // Shutdown scripting system first so that any objects allocated in script are released before our subsystems are released
       _scriptController->finalize();
@@ -258,15 +258,15 @@ namespace gameplay
       }
 
       _animationController->finalize();
-        SAFE_DELETE(_animationController);
+      SAFE_DELETE(_animationController);
 
       _audioController->finalize();
-        SAFE_DELETE(_audioController);
+      SAFE_DELETE(_audioController);
 
       _physicsController->finalize();
-        SAFE_DELETE(_physicsController);
+      SAFE_DELETE(_physicsController);
       _aiController->finalize();
-        SAFE_DELETE(_aiController);
+      SAFE_DELETE(_aiController);
 
       ControlFactory::finalize();
 
@@ -275,11 +275,11 @@ namespace gameplay
       // Note: we do not clean up the script controller here
       // because users can call Game::exit() from a script.
 
-        SAFE_DELETE(_audioListener);
+      SAFE_DELETE(_audioListener);
       FrameBuffer::finalize();
       RenderState::finalize();
 
-        SAFE_DELETE(_properties);
+      SAFE_DELETE(_properties);
 
       _state = UNINITIALIZED;
     }

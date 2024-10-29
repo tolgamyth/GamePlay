@@ -6,20 +6,20 @@
 namespace gameplay
 {
 
-class Animation;
-class AnimationValue;
-class NodeCloneContext;
+  class Animation;
+  class AnimationValue;
+  class NodeCloneContext;
 
-/**
- * Defines an interface allowing animation to target
- * an object for changing its animation properties.
- */
-class AnimationTarget
-{
+  /**
+   * Defines an interface allowing animation to target
+   * an object for changing its animation properties.
+   */
+  class AnimationTarget
+  {
     friend class Animation;
     friend class AnimationClip;
 
-public:
+  public:
 
     /**
      * Creates an animation on this target from a set of key value and key time pairs.
@@ -144,15 +144,15 @@ public:
      */
     Animation* getAnimation(const char* id = nullptr) const;
 
-protected:
+  protected:
 
     /**
      * The type of animation target.
      */
     enum TargetType
     {
-        SCALAR,
-        TRANSFORM
+      SCALAR,
+      TRANSFORM
     };
 
     /**
@@ -165,14 +165,14 @@ protected:
      */
     virtual ~AnimationTarget();
 
-	/**
-     * Gets the TargetType's property ID value for the specified property ID string.
-     *
-     * @param type The TargetType of the AnimationTarget.
-     * @param propertyIdStr The property ID string.
-     * @return The property ID value for the property ID string; -1 if the propertyIdStr does not exist
-     *    for the TargetType.
-     */
+    /**
+       * Gets the TargetType's property ID value for the specified property ID string.
+       *
+       * @param type The TargetType of the AnimationTarget.
+       * @param propertyIdStr The property ID string.
+       * @return The property ID value for the property ID string; -1 if the propertyIdStr does not exist
+       *    for the TargetType.
+       */
     virtual int getPropertyId(TargetType type, const char* propertyIdStr);
 
     /**
@@ -202,7 +202,7 @@ protected:
      * @param target The target to copy into.
      * @param context The clone context.
      */
-    void cloneInto(AnimationTarget* target, NodeCloneContext &context) const;
+    void cloneInto(AnimationTarget* target, NodeCloneContext& context) const;
 
     /**
      * The target's type.
@@ -212,7 +212,7 @@ protected:
      */
     TargetType _targetType;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -241,5 +241,5 @@ private:
 
     std::vector<Animation::Channel*>* _animationChannels;   // Collection of all animation channels that target the AnimationTarget
 
-};
+  };
 }

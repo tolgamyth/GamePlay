@@ -5,26 +5,26 @@
 namespace gameplay
 {
 
-/**
- * Defines a font for text rendering.
- */
-class Font : public Ref
-{
+  /**
+   * Defines a font for text rendering.
+   */
+  class Font : public Ref
+  {
     friend class Bundle;
     friend class Text;
     friend class TextBox;
 
-public:
+  public:
 
     /**
      * Defines the set of allowable font styles.
      */
     enum Style
     {
-        PLAIN = 0,
-        BOLD = 1,
-        ITALIC = 2,
-        BOLD_ITALIC = 4
+      PLAIN = 0,
+      BOLD = 1,
+      ITALIC = 2,
+      BOLD_ITALIC = 4
     };
 
     /**
@@ -32,21 +32,21 @@ public:
      */
     enum Justify
     {
-        ALIGN_LEFT = 0x01,
-        ALIGN_HCENTER = 0x02,
-        ALIGN_RIGHT = 0x04,
-        ALIGN_TOP = 0x10,
-        ALIGN_VCENTER = 0x20,
-        ALIGN_BOTTOM = 0x40,
-        ALIGN_TOP_LEFT = ALIGN_TOP | ALIGN_LEFT,
-        ALIGN_VCENTER_LEFT = ALIGN_VCENTER | ALIGN_LEFT,
-        ALIGN_BOTTOM_LEFT = ALIGN_BOTTOM | ALIGN_LEFT,
-        ALIGN_TOP_HCENTER = ALIGN_TOP | ALIGN_HCENTER,
-        ALIGN_VCENTER_HCENTER = ALIGN_VCENTER | ALIGN_HCENTER,
-        ALIGN_BOTTOM_HCENTER = ALIGN_BOTTOM | ALIGN_HCENTER,
-        ALIGN_TOP_RIGHT = ALIGN_TOP | ALIGN_RIGHT,
-        ALIGN_VCENTER_RIGHT = ALIGN_VCENTER | ALIGN_RIGHT,
-        ALIGN_BOTTOM_RIGHT = ALIGN_BOTTOM | ALIGN_RIGHT
+      ALIGN_LEFT = 0x01,
+      ALIGN_HCENTER = 0x02,
+      ALIGN_RIGHT = 0x04,
+      ALIGN_TOP = 0x10,
+      ALIGN_VCENTER = 0x20,
+      ALIGN_BOTTOM = 0x40,
+      ALIGN_TOP_LEFT = ALIGN_TOP | ALIGN_LEFT,
+      ALIGN_VCENTER_LEFT = ALIGN_VCENTER | ALIGN_LEFT,
+      ALIGN_BOTTOM_LEFT = ALIGN_BOTTOM | ALIGN_LEFT,
+      ALIGN_TOP_HCENTER = ALIGN_TOP | ALIGN_HCENTER,
+      ALIGN_VCENTER_HCENTER = ALIGN_VCENTER | ALIGN_HCENTER,
+      ALIGN_BOTTOM_HCENTER = ALIGN_BOTTOM | ALIGN_HCENTER,
+      ALIGN_TOP_RIGHT = ALIGN_TOP | ALIGN_RIGHT,
+      ALIGN_VCENTER_RIGHT = ALIGN_VCENTER | ALIGN_RIGHT,
+      ALIGN_BOTTOM_RIGHT = ALIGN_BOTTOM | ALIGN_RIGHT
     };
 
     /**
@@ -54,8 +54,8 @@ public:
      */
     enum Format
     {
-        BITMAP = 0,
-        DISTANCE_FIELD = 1
+      BITMAP = 0,
+      DISTANCE_FIELD = 1
     };
 
     /**
@@ -121,7 +121,7 @@ public:
      * @param rightToLeft Whether to draw text from right to left.
      */
     void drawText(const char* text, int x, int y, const Vector4& color, unsigned int size = 0,
-                  bool rightToLeft = false);
+      bool rightToLeft = false);
 
     /**
      * Draws the specified text in a solid color, with a scaling factor.
@@ -137,7 +137,7 @@ public:
      * @param rightToLeft Whether to draw text from right to left.
      */
     void drawText(const char* text, int x, int y, float red, float green, float blue, float alpha, unsigned int size = 0,
-                  bool rightToLeft = false);
+      bool rightToLeft = false);
 
     /**
      * Draws the specified text within a rectangular area, with a specified alignment and scale.
@@ -153,8 +153,8 @@ public:
      * @param clip A region to clip text within after applying justification to the viewport area.
      */
     void drawText(const char* text, const Rectangle& area, const Vector4& color, unsigned int size = 0,
-                  Justify justify = ALIGN_TOP_LEFT, bool wrap = true, bool rightToLeft = false,
-                  const Rectangle& clip = Rectangle(0, 0, 0, 0));
+      Justify justify = ALIGN_TOP_LEFT, bool wrap = true, bool rightToLeft = false,
+      const Rectangle& clip = Rectangle(0, 0, 0, 0));
 
     /**
      * Finishes text batching for this font and renders all drawn text.
@@ -184,7 +184,7 @@ public:
      *                within the given viewport; true for bounds that are guaranteed to fit the entire string of text.
      */
     void measureText(const char* text, const Rectangle& clip, unsigned int size, Rectangle* out,
-                     Justify justify = ALIGN_TOP_LEFT, bool wrap = true, bool ignoreClip = false);
+      Justify justify = ALIGN_TOP_LEFT, bool wrap = true, bool ignoreClip = false);
 
     /**
      * Returns current character spacing for this font in percentage of fonts size.
@@ -211,14 +211,14 @@ public:
      * Get an character index into a string corresponding to the character nearest the given location within the clip region.
      */
     int getIndexAtLocation(const char* text, const Rectangle& clip, unsigned int size, const Vector2& inLocation,
-                           Vector2* outLocation, Justify justify = ALIGN_TOP_LEFT, bool wrap = true, bool rightToLeft = false);
+      Vector2* outLocation, Justify justify = ALIGN_TOP_LEFT, bool wrap = true, bool rightToLeft = false);
 
     /**
      * Get the location of the character at the given index.
      */
     void getLocationAtIndex(const char* text, const Rectangle& clip, unsigned int size, Vector2* outLocation,
-                            const unsigned int destIndex, Justify justify = ALIGN_TOP_LEFT, bool wrap = true,
-                            bool rightToLeft = false);
+      const unsigned int destIndex, Justify justify = ALIGN_TOP_LEFT, bool wrap = true,
+      bool rightToLeft = false);
 
     /**
      * Gets the sprite batch used to draw this Font.
@@ -239,7 +239,7 @@ public:
      */
     static Justify getJustify(const char* justify);
 
-private:
+  private:
 
     /**
      * Defines a font glyph within the texture map for a font.
@@ -247,30 +247,30 @@ private:
     class Glyph
     {
     public:
-        /**
-         * Glyph character code (decimal value).
-         */
-        unsigned int code;
+      /**
+       * Glyph character code (decimal value).
+       */
+      unsigned int code;
 
-        /**
-         * Glyph width (in pixels).
-         */
-        unsigned int width;
+      /**
+       * Glyph width (in pixels).
+       */
+      unsigned int width;
 
-        /**
-         * Glyph left side bearing (in pixels).
-         */
-        int bearingX;
+      /**
+       * Glyph left side bearing (in pixels).
+       */
+      int bearingX;
 
-        /**
-         * Glyph horizontal advance (in pixels).
-         */
-        unsigned int advance;
+      /**
+       * Glyph horizontal advance (in pixels).
+       */
+      unsigned int advance;
 
-        /**
-         * Glyph texture coordinates.
-         */
-        float uvs[4];
+      /**
+       * Glyph texture coordinates.
+       */
+      float uvs[4];
     };
 
     /**
@@ -312,21 +312,21 @@ private:
     static Font* create(const char* family, Style style, unsigned int size, Glyph* glyphs, int glyphCount, Texture* texture, Font::Format format);
 
     void getMeasurementInfo(const char* text, const Rectangle& area, unsigned int size, Justify justify, bool wrap, bool rightToLeft,
-                            std::vector<int>* xPositions, int* yPosition, std::vector<unsigned int>* lineLengths);
+      std::vector<int>* xPositions, int* yPosition, std::vector<unsigned int>* lineLengths);
 
     int getIndexOrLocation(const char* text, const Rectangle& clip, unsigned int size, const Vector2& inLocation, Vector2* outLocation,
-                           const int destIndex = -1, Justify justify = ALIGN_TOP_LEFT, bool wrap = true, bool rightToLeft = false);
+      const int destIndex = -1, Justify justify = ALIGN_TOP_LEFT, bool wrap = true, bool rightToLeft = false);
 
     unsigned int getTokenWidth(const char* token, unsigned length, unsigned int size, float scale);
 
     unsigned int getReversedTokenLength(const char* token, const char* bufStart);
 
     int handleDelimiters(const char** token, const unsigned int size, const int iteration, const int areaX, int* xPos, int* yPos, unsigned int* lineLength,
-                         std::vector<int>::const_iterator* xPositionsIt, std::vector<int>::const_iterator xPositionsEnd, unsigned int* charIndex = nullptr,
-                         const Vector2* stopAtPosition = nullptr, const int currentIndex = -1, const int destIndex = -1);
+      std::vector<int>::const_iterator* xPositionsIt, std::vector<int>::const_iterator xPositionsEnd, unsigned int* charIndex = nullptr,
+      const Vector2* stopAtPosition = nullptr, const int currentIndex = -1, const int destIndex = -1);
 
     void addLineInfo(const Rectangle& area, int lineWidth, int lineLength, Justify hAlign,
-                     std::vector<int>* xPositions, std::vector<unsigned int>* lineLengths, bool rightToLeft);
+      std::vector<int>* xPositions, std::vector<unsigned int>* lineLengths, bool rightToLeft);
 
     Font* findClosestSize(int size);
 
@@ -346,6 +346,6 @@ private:
     SpriteBatch* _batch;
     Rectangle _viewport;
     MaterialParameter* _cutoffParam;
-};
+  };
 
 }

@@ -5,57 +5,57 @@
 namespace gameplay
 {
 
-class Button;
-class Container;
-class Form;
-class JoystickControl;
-class Platform;
+  class Button;
+  class Container;
+  class Form;
+  class JoystickControl;
+  class Platform;
 
-/**
- * Defines a gamepad interface for handling input from joysticks and buttons.
- *
- * A gamepad can be either physical or virtual. Most platform support up to 4
- * gamepad controllers connected simulataneously.
- */
-class Gamepad
-{
+  /**
+   * Defines a gamepad interface for handling input from joysticks and buttons.
+   *
+   * A gamepad can be either physical or virtual. Most platform support up to 4
+   * gamepad controllers connected simulataneously.
+   */
+  class Gamepad
+  {
     friend class Platform;
     friend class Game;
     friend class Button;
 
-public:
+  public:
 
     /**
      *  Gamepad events.
      */
     enum GamepadEvent
     {
-        CONNECTED_EVENT,
-        DISCONNECTED_EVENT
+      CONNECTED_EVENT,
+      DISCONNECTED_EVENT
     };
 
     /**
      * Gamepad buttons.
      */
     enum ButtonMapping
-    {        
-        BUTTON_A,
-        BUTTON_B,
-        BUTTON_X,
-        BUTTON_Y,
-        BUTTON_L1,
-        BUTTON_L2,
-        BUTTON_L3,
-        BUTTON_R1,
-        BUTTON_R2,
-        BUTTON_R3,
-        BUTTON_UP,
-        BUTTON_DOWN,
-        BUTTON_LEFT,
-        BUTTON_RIGHT,
-        BUTTON_MENU1,
-        BUTTON_MENU2,
-        BUTTON_MENU3
+    {
+      BUTTON_A,
+      BUTTON_B,
+      BUTTON_X,
+      BUTTON_Y,
+      BUTTON_L1,
+      BUTTON_L2,
+      BUTTON_L3,
+      BUTTON_R1,
+      BUTTON_R2,
+      BUTTON_R3,
+      BUTTON_UP,
+      BUTTON_DOWN,
+      BUTTON_LEFT,
+      BUTTON_RIGHT,
+      BUTTON_MENU1,
+      BUTTON_MENU2,
+      BUTTON_MENU3
     };
 
     /**
@@ -65,14 +65,14 @@ public:
      */
     unsigned int getButtonCount() const;
 
-    /** 
+    /**
      * Gets whether the given button is currently pressed down.
      *
      * @param button The enum of the button on the gamepad to get the state for.
      * @return Whether the button is currently pressed or not.
      */
     bool isButtonDown(ButtonMapping button) const;
-    
+
     /**
      * Gets the number of joysticks on the gamepad.
      *
@@ -143,20 +143,20 @@ public:
      */
     void draw();
 
-private:
+  private:
 
     /**
      * Constructs a gamepad from the specified .form file.
      *
      * @param formPath The path the the .form file.
-     */ 
+     */
     Gamepad(const char* formPath);
 
     /**
      * Constructs a physical gamepad.
      *
      * @param handle The gamepad handle
-     * @param buttonCount the number of buttons on the gamepad. 
+     * @param buttonCount the number of buttons on the gamepad.
      * @param joystickCount the number of joysticks on the gamepad.
      * @param triggerCount the number of triggers on the gamepad.
      * @param name The product/device name.
@@ -168,7 +168,7 @@ private:
      */
     Gamepad(const Gamepad& copy);
 
-    /** 
+    /**
      * Destructor.
      */
     virtual ~Gamepad();
@@ -196,7 +196,7 @@ private:
     void setJoystickValue(unsigned int index, float x, float y);
 
     void setTriggerValue(unsigned int index, float value);
-    
+
     void bindGamepadControls(Container* container);
 
     GamepadHandle _handle;
@@ -210,6 +210,6 @@ private:
     unsigned int _buttons;
     Vector2 _joysticks[2];
     float _triggers[2];
-};
+  };
 
 }

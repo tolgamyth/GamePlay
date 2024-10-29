@@ -3,19 +3,19 @@
 namespace gameplay
 {
 
-/**
- * Defines the base class for game objects that require lifecycle management.
- *
- * This class provides reference counting support for game objects that
- * contain system resources or data that is normally long lived and
- * referenced from possibly several sources at the same time. The built-in
- * reference counting eliminates the need for programmers to manually
- * keep track of object ownership and having to worry about when to
- * safely delete such objects.
- */
-class Ref
-{
-public:
+  /**
+   * Defines the base class for game objects that require lifecycle management.
+   *
+   * This class provides reference counting support for game objects that
+   * contain system resources or data that is normally long lived and
+   * referenced from possibly several sources at the same time. The built-in
+   * reference counting eliminates the need for programmers to manually
+   * keep track of object ownership and having to worry about when to
+   * safely delete such objects.
+   */
+  class Ref
+  {
+  public:
 
     /**
      * Increments the reference count of this object.
@@ -42,7 +42,7 @@ public:
      */
     unsigned int getRefCount() const;
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -51,7 +51,7 @@ protected:
 
     /**
      * Copy constructor.
-     * 
+     *
      * @param copy The Ref object to copy.
      */
     Ref(const Ref& copy);
@@ -61,7 +61,7 @@ protected:
      */
     virtual ~Ref();
 
-private:
+  private:
 
     unsigned int _refCount;
 
@@ -71,6 +71,6 @@ private:
     static void printLeaks();
     void* __record;
 #endif
-};
+  };
 
 }

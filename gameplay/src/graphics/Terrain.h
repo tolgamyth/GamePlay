@@ -12,110 +12,110 @@
 namespace gameplay
 {
 
-class TerrainPatch;
-class TerrainAutoBindingResolver;
+  class TerrainPatch;
+  class TerrainAutoBindingResolver;
 
-/**
- * Defines a Terrain that is capable of rendering large landscapes from 2D heightmap images.
- *
- * Terrains can be constructed from several different heightmap sources:
- *
- * 1. Basic intensity image (PNG), where the intensity of pixel represents the height of the
- *    terrain.
- * 2. 24-bit high precision heightmap image (PNG), which can be generated from a mesh using
- *    gameplay-encoder.
- * 3. 8-bit or 16-bit RAW heightmap image using PC byte ordering (little endian), which is
- *    compatible with many external tools such as World Machine, Unity and more. The file
- *    extension must be either .raw or .r16 for RAW files.
- *
- * Physics/collision is supported by setting a rigid body collision object on the Node that
- * the terrain is attached to. The collision shape should be specified using
- * PhysicsCollisionShape::heightfield(), which will utilize the internal height array of the
- * terrain to define the collision shape. Define a collision object in this way will allow
- * the terrain to automatically interact with other rigid bodies, characters and vehicles in
- * the scene.
- *
- * Surface detail is provided via texture splatting, where multiple texture layers can be added
- * along with blend maps to define how different layers blend with each other. These layers
- * can be defined in terrain properties files, as well as with the setLayer method. The number
- * of supported layers depends on the target hardware, although typically 2-3 levels is
- * sufficient. Multiple blend maps for different layers can be packed into different channels
- * of a single texture for more efficient texture utilization. Levels can be applied across
- * the entire terrain, or in more complex cases, for individual patches only.
- *
- * Surface lighting is achieved with either vertex normals or with a normal map. If a
- * normal map is used, it should be an object-space normal map containing normal vectors for
- * the entire terrain, encoded into the red, green and blue channels of the texture. This is
- * useful as a replacement for vertex normals, especially when using level-of-detail, since
- * it allows you to provide high quality normal vectors regardless of the tessellation or
- * LOD of the terrain. This also eliminates lighting artifacts/popping from LOD changes,
- * which commonly occurs when vertex normals are used. A terrain normal map can only be
- * specified at creation time, since it requires omission of vertex normal information in
- * the generated terrain geometry data.
- *
- * Internally, Terrain is broken into smaller, more manageable patches, which can be culled
- * separately for more efficient rendering. The size of the terrain patches can be controlled
- * via the patchSize property. Patches can be previewed by enabling the DEBUG_PATCHES flag
- * via the setFlag method. Other terrain behavior can also be enabled and disabled using terrain
- * flags.
- *
- * Level of detail (LOD) is supported using a technique that is similar to texture mipmapping.
- * A distance-to-camera based test, using a simple screen-space error metric is used to decide
- * the appropriate LOD for a terrain patch. The number of LOD levels is 1 by default (which
- * means only the base level is used), but can be specified via the detailLevels property.
- * Using too large a number for detailLevels can result in excessive popping in the distance
- * for very hilly terrains, so a smaller number (2-3) often works best in these cases.
- *
- * Finally, when LOD is enabled, cracks can begin to appear between terrain patches of
- * different LOD levels. If the cracks are only minor (depends on your terrain topology
- * and textures used), an acceptable approach might be to simply use a background clear
- * color that closely matches your terrain to make the cracks much less visible. However,
- * often that is not acceptable, so the Terrain class also supports a simple solution called
- * "vertical skirts". When enabled (via the skirtScale parameter in the terrain file), a vertical
- * edge will extend down along the sides of all terrain patches, which fills in the crack.
- * This is a very fast approach as it adds only a small number of triangles per patch and requires
- * zero extra CPU time or draw calls, which are often needed for more complex stitching
- * approaches. In practice, the skirts are often not noticeable at all unless the LOD variation
- * is very large and the terrain is excessively hilly on the edge of a LOD transition.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Terrain
- */
-class Terrain : public Ref, public Drawable, public Transform::Listener
-{
+  /**
+   * Defines a Terrain that is capable of rendering large landscapes from 2D heightmap images.
+   *
+   * Terrains can be constructed from several different heightmap sources:
+   *
+   * 1. Basic intensity image (PNG), where the intensity of pixel represents the height of the
+   *    terrain.
+   * 2. 24-bit high precision heightmap image (PNG), which can be generated from a mesh using
+   *    gameplay-encoder.
+   * 3. 8-bit or 16-bit RAW heightmap image using PC byte ordering (little endian), which is
+   *    compatible with many external tools such as World Machine, Unity and more. The file
+   *    extension must be either .raw or .r16 for RAW files.
+   *
+   * Physics/collision is supported by setting a rigid body collision object on the Node that
+   * the terrain is attached to. The collision shape should be specified using
+   * PhysicsCollisionShape::heightfield(), which will utilize the internal height array of the
+   * terrain to define the collision shape. Define a collision object in this way will allow
+   * the terrain to automatically interact with other rigid bodies, characters and vehicles in
+   * the scene.
+   *
+   * Surface detail is provided via texture splatting, where multiple texture layers can be added
+   * along with blend maps to define how different layers blend with each other. These layers
+   * can be defined in terrain properties files, as well as with the setLayer method. The number
+   * of supported layers depends on the target hardware, although typically 2-3 levels is
+   * sufficient. Multiple blend maps for different layers can be packed into different channels
+   * of a single texture for more efficient texture utilization. Levels can be applied across
+   * the entire terrain, or in more complex cases, for individual patches only.
+   *
+   * Surface lighting is achieved with either vertex normals or with a normal map. If a
+   * normal map is used, it should be an object-space normal map containing normal vectors for
+   * the entire terrain, encoded into the red, green and blue channels of the texture. This is
+   * useful as a replacement for vertex normals, especially when using level-of-detail, since
+   * it allows you to provide high quality normal vectors regardless of the tessellation or
+   * LOD of the terrain. This also eliminates lighting artifacts/popping from LOD changes,
+   * which commonly occurs when vertex normals are used. A terrain normal map can only be
+   * specified at creation time, since it requires omission of vertex normal information in
+   * the generated terrain geometry data.
+   *
+   * Internally, Terrain is broken into smaller, more manageable patches, which can be culled
+   * separately for more efficient rendering. The size of the terrain patches can be controlled
+   * via the patchSize property. Patches can be previewed by enabling the DEBUG_PATCHES flag
+   * via the setFlag method. Other terrain behavior can also be enabled and disabled using terrain
+   * flags.
+   *
+   * Level of detail (LOD) is supported using a technique that is similar to texture mipmapping.
+   * A distance-to-camera based test, using a simple screen-space error metric is used to decide
+   * the appropriate LOD for a terrain patch. The number of LOD levels is 1 by default (which
+   * means only the base level is used), but can be specified via the detailLevels property.
+   * Using too large a number for detailLevels can result in excessive popping in the distance
+   * for very hilly terrains, so a smaller number (2-3) often works best in these cases.
+   *
+   * Finally, when LOD is enabled, cracks can begin to appear between terrain patches of
+   * different LOD levels. If the cracks are only minor (depends on your terrain topology
+   * and textures used), an acceptable approach might be to simply use a background clear
+   * color that closely matches your terrain to make the cracks much less visible. However,
+   * often that is not acceptable, so the Terrain class also supports a simple solution called
+   * "vertical skirts". When enabled (via the skirtScale parameter in the terrain file), a vertical
+   * edge will extend down along the sides of all terrain patches, which fills in the crack.
+   * This is a very fast approach as it adds only a small number of triangles per patch and requires
+   * zero extra CPU time or draw calls, which are often needed for more complex stitching
+   * approaches. In practice, the skirts are often not noticeable at all unless the LOD variation
+   * is very large and the terrain is excessively hilly on the edge of a LOD transition.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Terrain
+   */
+  class Terrain : public Ref, public Drawable, public Transform::Listener
+  {
     friend class Node;
     friend class PhysicsController;
     friend class PhysicsRigidBody;
     friend class TerrainPatch;
     friend class TerrainAutoBindingResolver;
 
-public:
+  public:
 
     /**
      * Terrain flags.
      */
     enum Flags
     {
-        /**
-         * Draw terrain patches different colors (off by default).
-         */
-        DEBUG_PATCHES = 1,
+      /**
+       * Draw terrain patches different colors (off by default).
+       */
+      DEBUG_PATCHES = 1,
 
-        /**
-         * Enables view frustum culling (on by default).
-         *
-         * Frustum culling uses the scene's active camera. The terrain must be attached
-         * to a node that is within a scene for this to work.
-         */
-        FRUSTUM_CULLING = 2,
+      /**
+       * Enables view frustum culling (on by default).
+       *
+       * Frustum culling uses the scene's active camera. The terrain must be attached
+       * to a node that is within a scene for this to work.
+       */
+      FRUSTUM_CULLING = 2,
 
-         /**
-          * Enables level of detail (on by default).
-          *
-          * This flag enables or disables level of detail, however it does nothing if
-          * "detailLevels" was not set to a value greater than 1 in the terrain
-          * properties file at creation time.
-          */
-         LEVEL_OF_DETAIL = 8
+      /**
+       * Enables level of detail (on by default).
+       *
+       * This flag enables or disables level of detail, however it does nothing if
+       * "detailLevels" was not set to a value greater than 1 in the terrain
+       * properties file at creation time.
+       */
+      LEVEL_OF_DETAIL = 8
     };
 
     /**
@@ -172,8 +172,8 @@ public:
      * @script{create}
      */
     static Terrain* create(HeightField* heightfield, const Vector3& scale = Vector3::one(), unsigned int patchSize = 32,
-                           unsigned int detailLevels = 1, float skirtScale = 0.0f, const char* normalMapPath = nullptr,
-                           const char* materialPath = nullptr);
+      unsigned int detailLevels = 1, float skirtScale = 0.0f, const char* normalMapPath = nullptr,
+      const char* materialPath = nullptr);
 
     /**
      * Determines if the specified terrain flag is currently set.
@@ -258,15 +258,15 @@ public:
      * @script{ignore}
      */
     bool setLayer(int index, const char* texturePath, const Vector2& textureRepeat = Vector2::one(),
-                  const char* blendPath = nullptr, int blendChannel = 0,
-                  int row = -1, int column = -1);
+      const char* blendPath = nullptr, int blendChannel = 0,
+      int row = -1, int column = -1);
 
     /**
      * @see Drawable#draw
      */
     unsigned int draw(bool wireframe = false);
 
-protected:
+  protected:
 
     /**
      * @see Drawable::setNode
@@ -278,7 +278,7 @@ protected:
      */
     Drawable* clone(NodeCloneContext& context);
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -303,9 +303,9 @@ private:
     /**
      * Internal method for creating terrain.
      */
-    static Terrain* create(HeightField* heightfield, const Vector3& scale, 
-        unsigned int patchSize, unsigned int detailLevels, float skirtScale, 
-        const char* normalMapPath, const char* materialPath, Properties* properties);
+    static Terrain* create(HeightField* heightfield, const Vector3& scale,
+      unsigned int patchSize, unsigned int detailLevels, float skirtScale,
+      const char* normalMapPath, const char* materialPath, Properties* properties);
 
     /**
      * Internal method for creating terrain.
@@ -337,6 +337,6 @@ private:
     mutable Matrix _inverseWorldMatrix;
     mutable unsigned int _dirtyFlags;
     BoundingBox _boundingBox;
-};
+  };
 
 }

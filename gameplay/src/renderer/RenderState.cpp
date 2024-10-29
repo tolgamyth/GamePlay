@@ -223,7 +223,7 @@ namespace gameplay
         for (const auto& [key, value] : _autoBindings) {
           applyAutoBinding(key.c_str(), value.c_str());
         }
-        
+
         // Alternatives
         //std::ranges::for_each(_autoBindings, [this](const auto& binding) {
         //  applyAutoBinding(binding.first.c_str(), binding.second.c_str());

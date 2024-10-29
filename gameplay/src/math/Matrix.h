@@ -6,43 +6,43 @@
 namespace gameplay
 {
 
-class Plane;
-class Quaternion;
+  class Plane;
+  class Quaternion;
 
-/**
- * Defines a 4 x 4 floating point matrix representing a 3D transformation.
- *
- * Vectors are treated as columns, resulting in a matrix that is represented as follows,
- * where x, y and z are the translation components of the matrix:
- *
- * 1  0  0  x
- * 0  1  0  y
- * 0  0  1  z
- * 0  0  0  1
- *
- * This matrix class is directly compatible with OpenGL since its elements are
- * laid out in memory exactly as they are expected by OpenGL.
- * The matrix uses column-major format such that array indices increase down column first.
- * Since matrix multiplication is not commutative, multiplication must be done in the
- * correct order when combining transformations. Suppose we have a translation
- * matrix T and a rotation matrix R. To first rotate an object around the origin
- * and then translate it, you would multiply the two matrices as TR.
- *
- * Likewise, to first translate the object and then rotate it, you would do RT.
- * So generally, matrices must be multiplied in the reverse order in which you
- * want the transformations to take place (this also applies to
- * the scale, rotate, and translate methods below; these methods are convenience
- * methods for post-multiplying by a matrix representing a scale, rotation, or translation).
- *
- * In the case of repeated local transformations (i.e. rotate around the Z-axis by 0.76 radians,
- * then translate by 2.1 along the X-axis, then ...), it is better to use the Transform class
- * (which is optimized for that kind of usage).
- *
- * @see Transform
- */
-class Matrix
-{
-public:
+  /**
+   * Defines a 4 x 4 floating point matrix representing a 3D transformation.
+   *
+   * Vectors are treated as columns, resulting in a matrix that is represented as follows,
+   * where x, y and z are the translation components of the matrix:
+   *
+   * 1  0  0  x
+   * 0  1  0  y
+   * 0  0  1  z
+   * 0  0  0  1
+   *
+   * This matrix class is directly compatible with OpenGL since its elements are
+   * laid out in memory exactly as they are expected by OpenGL.
+   * The matrix uses column-major format such that array indices increase down column first.
+   * Since matrix multiplication is not commutative, multiplication must be done in the
+   * correct order when combining transformations. Suppose we have a translation
+   * matrix T and a rotation matrix R. To first rotate an object around the origin
+   * and then translate it, you would multiply the two matrices as TR.
+   *
+   * Likewise, to first translate the object and then rotate it, you would do RT.
+   * So generally, matrices must be multiplied in the reverse order in which you
+   * want the transformations to take place (this also applies to
+   * the scale, rotate, and translate methods below; these methods are convenience
+   * methods for post-multiplying by a matrix representing a scale, rotation, or translation).
+   *
+   * In the case of repeated local transformations (i.e. rotate around the Z-axis by 0.76 radians,
+   * then translate by 2.1 along the X-axis, then ...), it is better to use the Transform class
+   * (which is optimized for that kind of usage).
+   *
+   * @see Transform
+   */
+  class Matrix
+  {
+  public:
 
     /**
      * Stores the columns of this 4x4 matrix.
@@ -80,7 +80,7 @@ public:
      * @param m44 The fourth element of the fourth row.
      */
     Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24,
-           float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
+      float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
 
     /**
      * Creates a matrix initialized to the specified column-major array.
@@ -152,8 +152,8 @@ public:
      * @param dst A matrix to store the result in.
      */
     static void createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
-                             float targetCenterX, float targetCenterY, float targetCenterZ,
-                             float upX, float upY, float upZ, Matrix* dst);
+      float targetCenterX, float targetCenterY, float targetCenterZ,
+      float upX, float upY, float upZ, Matrix* dst);
 
     /**
      * Builds a perspective projection matrix based on a field of view and returns by value.
@@ -211,7 +211,7 @@ public:
      * @param dst A matrix to store the result in.
      */
     static void createOrthographicOffCenter(float left, float right, float bottom, float top,
-                                            float zNearPlane, float zFarPlane, Matrix* dst);
+      float zNearPlane, float zFarPlane, Matrix* dst);
 
     /**
      * Creates a spherical billboard that rotates around a specified object position.
@@ -228,7 +228,7 @@ public:
      * @param dst A matrix to store the result in.
      */
     static void createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
-                                const Vector3& cameraUpVector, Matrix* dst);
+      const Vector3& cameraUpVector, Matrix* dst);
 
     /**
      * Creates a spherical billboard that rotates around a specified object position with
@@ -247,8 +247,8 @@ public:
      * @param dst A matrix to store the result in.
      */
     static void createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
-                                const Vector3& cameraUpVector, const Vector3& cameraForwardVector,
-                                Matrix* dst);
+      const Vector3& cameraUpVector, const Vector3& cameraForwardVector,
+      Matrix* dst);
 
     /**
      * Fills in an existing Matrix so that it reflects the coordinate system about a specified Plane.
@@ -317,15 +317,15 @@ public:
      */
     static void createRotationZ(float angle, Matrix* dst);
 
-	/**
-	* Creates a matrix describing the yaw, pitch and roll rotations
-	*
-	* @param yaw The yaw angle (in radians)
-	* @param pitch The pitch angle (in radians)
-	* @param roll The roll angle (in radians)
-	* @param dst A matrix to store the result in.
-	*/
-	static void createFromEuler(float yaw, float pitch, float roll, Matrix* dst);
+    /**
+    * Creates a matrix describing the yaw, pitch and roll rotations
+    *
+    * @param yaw The yaw angle (in radians)
+    * @param pitch The pitch angle (in radians)
+    * @param roll The roll angle (in radians)
+    * @param dst A matrix to store the result in.
+    */
+    static void createFromEuler(float yaw, float pitch, float roll, Matrix* dst);
 
 
     /**
@@ -409,7 +409,7 @@ public:
      * Gets the rotational component of this matrix in the specified quaternion.
      *
      * @param rotation A quaternion to receive the rotation.
-     * 
+     *
      * @return true if the rotation is successfully extracted, false otherwise.
      */
     bool getRotation(Quaternion* rotation) const;
@@ -474,7 +474,7 @@ public:
      * Stores the inverse of this matrix in the specified matrix.
      *
      * @param dst A matrix to store the invert of this matrix in.
-     * 
+     *
      * @return true if the the matrix can be inverted, false otherwise.
      */
     bool invert(Matrix* dst) const;
@@ -701,7 +701,7 @@ public:
      * @param m44 The fourth element of the fourth row.
      */
     void set(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24,
-             float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
+      float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
 
     /**
      * Sets the values of this matrix to those in the specified column-major array.
@@ -861,17 +861,17 @@ public:
 
     /**
      * Calculates the sum of this matrix with the given matrix.
-     * 
+     *
      * Note: this does not modify this matrix.
-     * 
+     *
      * @param m The matrix to add.
      * @return The matrix sum.
      */
     inline const Matrix operator+(const Matrix& m) const;
-    
+
     /**
      * Adds the given matrix to this matrix.
-     * 
+     *
      * @param m The matrix to add.
      * @return This matrix, after the addition occurs.
      */
@@ -879,9 +879,9 @@ public:
 
     /**
      * Calculates the difference of this matrix with the given matrix.
-     * 
+     *
      * Note: this does not modify this matrix.
-     * 
+     *
      * @param m The matrix to subtract.
      * @return The matrix difference.
      */
@@ -889,7 +889,7 @@ public:
 
     /**
      * Subtracts the given matrix from this matrix.
-     * 
+     *
      * @param m The matrix to subtract.
      * @return This matrix, after the subtraction occurs.
      */
@@ -897,18 +897,18 @@ public:
 
     /**
      * Calculates the negation of this matrix.
-     * 
+     *
      * Note: this does not modify this matrix.
-     * 
+     *
      * @return The negation of this matrix.
      */
     inline const Matrix operator-() const;
 
     /**
      * Calculates the matrix product of this matrix with the given matrix.
-     * 
+     *
      * Note: this does not modify this matrix.
-     * 
+     *
      * @param m The matrix to multiply by.
      * @return The matrix product.
      */
@@ -916,62 +916,62 @@ public:
 
     /**
      * Right-multiplies this matrix by the given matrix.
-     * 
+     *
      * @param m The matrix to multiply by.
      * @return This matrix, after the multiplication occurs.
      */
     inline Matrix& operator*=(const Matrix& m);
-    
-private:
+
+  private:
 
     static void createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
-                                      const Vector3& cameraUpVector, const Vector3* cameraForwardVector,
-                                      Matrix* dst);
-};
+      const Vector3& cameraUpVector, const Vector3* cameraForwardVector,
+      Matrix* dst);
+  };
 
-/**
- * Transforms the given vector by the given matrix.
- * 
- * Note: this treats the given vector as a vector and not as a point.
- * 
- * @param v The vector to transform.
- * @param m The matrix to transform by.
- * @return This vector, after the transformation occurs.
- */
-inline Vector3& operator*=(Vector3& v, const Matrix& m);
+  /**
+   * Transforms the given vector by the given matrix.
+   *
+   * Note: this treats the given vector as a vector and not as a point.
+   *
+   * @param v The vector to transform.
+   * @param m The matrix to transform by.
+   * @return This vector, after the transformation occurs.
+   */
+  inline Vector3& operator*=(Vector3& v, const Matrix& m);
 
-/**
- * Transforms the given vector by the given matrix.
- * 
- * Note: this treats the given vector as a vector and not as a point.
- * 
- * @param m The matrix to transform by.
- * @param v The vector to transform.
- * @return The resulting transformed vector.
- */
-inline const Vector3 operator*(const Matrix& m, const Vector3& v);
+  /**
+   * Transforms the given vector by the given matrix.
+   *
+   * Note: this treats the given vector as a vector and not as a point.
+   *
+   * @param m The matrix to transform by.
+   * @param v The vector to transform.
+   * @return The resulting transformed vector.
+   */
+  inline const Vector3 operator*(const Matrix& m, const Vector3& v);
 
-/**
- * Transforms the given vector by the given matrix.
- * 
- * Note: this treats the given vector as a vector and not as a point.
- * 
- * @param v The vector to transform.
- * @param m The matrix to transform by.
- * @return This vector, after the transformation occurs.
- */
-inline Vector4& operator*=(Vector4& v, const Matrix& m);
+  /**
+   * Transforms the given vector by the given matrix.
+   *
+   * Note: this treats the given vector as a vector and not as a point.
+   *
+   * @param v The vector to transform.
+   * @param m The matrix to transform by.
+   * @return This vector, after the transformation occurs.
+   */
+  inline Vector4& operator*=(Vector4& v, const Matrix& m);
 
-/**
- * Transforms the given vector by the given matrix.
- * 
- * Note: this treats the given vector as a vector and not as a point.
- * 
- * @param m The matrix to transform by.
- * @param v The vector to transform.
- * @return The resulting transformed vector.
- */
-inline const Vector4 operator*(const Matrix& m, const Vector4& v);
+  /**
+   * Transforms the given vector by the given matrix.
+   *
+   * Note: this treats the given vector as a vector and not as a point.
+   *
+   * @param m The matrix to transform by.
+   * @param v The vector to transform.
+   * @return The resulting transformed vector.
+   */
+  inline const Vector4 operator*(const Matrix& m, const Vector4& v);
 
 }
 

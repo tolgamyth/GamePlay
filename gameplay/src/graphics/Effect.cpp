@@ -58,7 +58,7 @@ namespace gameplay
     {
       // Found an exiting effect with this id, so increase its ref count and return it.
       assert(itr->second);
-	  itr->second->addRef();
+      itr->second->addRef();
       return itr->second;
     }
 

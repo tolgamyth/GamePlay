@@ -60,7 +60,7 @@ namespace gameplay
       //    break;
       //  }
       //}
-      
+
       // Use this instead
       std::erase_if(__buffers, [this](const auto& buffer) { return this == buffer; });
     }

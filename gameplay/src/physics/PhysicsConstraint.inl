@@ -3,28 +3,28 @@
 namespace gameplay
 {
 
-inline float PhysicsConstraint::getBreakingImpulse() const
-{
+  inline float PhysicsConstraint::getBreakingImpulse() const
+  {
     assert(_constraint);
     return _constraint->getBreakingImpulseThreshold();
-}
+  }
 
-inline void PhysicsConstraint::setBreakingImpulse(float impulse)
-{
+  inline void PhysicsConstraint::setBreakingImpulse(float impulse)
+  {
     assert(_constraint);
     _constraint->setBreakingImpulseThreshold(impulse);
-}
+  }
 
-inline bool PhysicsConstraint::isEnabled() const
-{
+  inline bool PhysicsConstraint::isEnabled() const
+  {
     assert(_constraint);
     return _constraint->isEnabled();
-}
+  }
 
-inline void PhysicsConstraint::setEnabled(bool enabled)
-{
+  inline void PhysicsConstraint::setEnabled(bool enabled)
+  {
     assert(_constraint);
     _constraint->setEnabled(enabled);
-}
+  }
 
 }

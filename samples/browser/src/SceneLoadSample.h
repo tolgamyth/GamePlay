@@ -12,29 +12,29 @@ class SceneLoadSample : public Sample
 {
 public:
 
-    SceneLoadSample();
+  SceneLoadSample();
 
-    void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
+  void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
 
-    void keyEvent(Keyboard::KeyEvent evt, int key);
+  void keyEvent(Keyboard::KeyEvent evt, int key);
 
 protected:
 
-    void initialize();
+  void initialize();
 
-    void finalize();
+  void finalize();
 
-    void update(float elapsedTime);
+  void update(float elapsedTime);
 
-    void render(float elapsedTime);
+  void render(float elapsedTime);
 
 private:
 
-    bool initializeMaterials(Node* node);
+  bool initializeMaterials(Node* node);
 
-    bool drawScene(Node* node);
+  bool drawScene(Node* node);
 
-    Font* _font;
-    Scene* _scene;
-    bool _wireFrame;
+  Font* _font;
+  Scene* _scene;
+  bool _wireFrame;
 };

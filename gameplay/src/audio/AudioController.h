@@ -3,30 +3,30 @@
 namespace gameplay
 {
 
-class AudioListener;
-class AudioSource;
+  class AudioListener;
+  class AudioSource;
 
-/**
- * Defines a class for controlling game audio.
- */
-class AudioController
-{
+  /**
+   * Defines a class for controlling game audio.
+   */
+  class AudioController
+  {
     friend class Game;
     friend class AudioSource;
 
-public:
+  public:
 
-  /**
-   * Constructor.
-   */
-  AudioController();
-    
-  /**
-    * Destructor.
-    */
-  virtual ~AudioController();
+    /**
+     * Constructor.
+     */
+    AudioController();
 
-private:
+    /**
+      * Destructor.
+      */
+    virtual ~AudioController();
+
+  private:
 
     /**
      * Controller initialize.
@@ -54,7 +54,7 @@ private:
     void update(float elapsedTime);
 
     void addPlayingSource(AudioSource* source);
-    
+
     void removePlayingSource(AudioSource* source);
 
     static void streamingThreadProc(void* arg);
@@ -68,6 +68,6 @@ private:
     bool _streamingThreadActive;
     std::unique_ptr<std::thread> _streamingThread;
     std::unique_ptr<std::mutex> _streamingMutex;
-};
+  };
 
 }

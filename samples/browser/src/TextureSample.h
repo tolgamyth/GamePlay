@@ -12,25 +12,25 @@ class TextureSample : public Sample
 {
 public:
 
-    TextureSample();
+  TextureSample();
 
-    void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
+  void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
 
 protected:
 
-    void initialize();
+  void initialize();
 
-    void finalize();
+  void finalize();
 
-    void update(float elapsedTime);
+  void update(float elapsedTime);
 
-    void render(float elapsedTime);
+  void render(float elapsedTime);
 
 private:
 
-    bool drawScene(Node* node);
+  bool drawScene(Node* node);
 
-    Font* _font;
-    Scene* _scene;
-    float _zOffset;
+  Font* _font;
+  Scene* _scene;
+  float _zOffset;
 };

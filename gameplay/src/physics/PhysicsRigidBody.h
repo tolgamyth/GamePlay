@@ -9,19 +9,19 @@
 namespace gameplay
 {
 
-class Node;
-class PhysicsConstraint;
+  class Node;
+  class PhysicsConstraint;
 
-/**
- * Defines a class for physics rigid bodies.
- *
- * A rigid body can receive forces and torque to make your objects react to other collision
- * objects around it.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Collision_Objects
- */
-class PhysicsRigidBody : public PhysicsCollisionObject, public Transform::Listener
-{
+  /**
+   * Defines a class for physics rigid bodies.
+   *
+   * A rigid body can receive forces and torque to make your objects react to other collision
+   * objects around it.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Collision_Objects
+   */
+  class PhysicsRigidBody : public PhysicsCollisionObject, public Transform::Listener
+  {
     friend class Node;
     friend class PhysicsCharacter;
     friend class PhysicsVehicle;
@@ -34,83 +34,83 @@ class PhysicsRigidBody : public PhysicsCollisionObject, public Transform::Listen
     friend class PhysicsSocketConstraint;
     friend class PhysicsSpringConstraint;
 
-public:
+  public:
 
     /**
      * Rigid body construction parameters.
      */
     struct Parameters
     {
-        /**
-         * The mass of the rigid body, in kilograms.
-         */
-        float mass;
+      /**
+       * The mass of the rigid body, in kilograms.
+       */
+      float mass;
 
-        /**
-         * The friction of the rigid body (non-zero values give best simulation results).
-         */
-        float friction;
+      /**
+       * The friction of the rigid body (non-zero values give best simulation results).
+       */
+      float friction;
 
-        /**
-         * The restitution of the rigid body (this controls the bounciness of
-         * the rigid body; use zero for best simulation results).
-         */
-        float restitution;
+      /**
+       * The restitution of the rigid body (this controls the bounciness of
+       * the rigid body; use zero for best simulation results).
+       */
+      float restitution;
 
-        /**
-         * The percentage of linear velocity lost per second (between 0.0 and 1.0).
-         */
-        float linearDamping;
+      /**
+       * The percentage of linear velocity lost per second (between 0.0 and 1.0).
+       */
+      float linearDamping;
 
-        /**
-         * The percentage of angular velocity lost per second (between 0.0 and 1.0).
-         */
-        float angularDamping;
+      /**
+       * The percentage of angular velocity lost per second (between 0.0 and 1.0).
+       */
+      float angularDamping;
 
-        /**
-         * Whether the rigid body is kinematic.
-         */
-        bool kinematic;
+      /**
+       * Whether the rigid body is kinematic.
+       */
+      bool kinematic;
 
-        /**
-         * The anisotropic friction term for the rigid body.
-         */
-        Vector3 anisotropicFriction;
+      /**
+       * The anisotropic friction term for the rigid body.
+       */
+      Vector3 anisotropicFriction;
 
-        /**
-         * Linear factor for the rigid body. x, y, z coordinates correspond to world 
-         * space motion along these axes. Use 1.0 to allow or 0.0 to disallow motion 
-         * along certain axis.
-         */
-        Vector3 linearFactor;
+      /**
+       * Linear factor for the rigid body. x, y, z coordinates correspond to world
+       * space motion along these axes. Use 1.0 to allow or 0.0 to disallow motion
+       * along certain axis.
+       */
+      Vector3 linearFactor;
 
-        /**
-         * Angular factor for the rigid body. x, y, z coordinates correspond to world 
-         * space rotation along these axes. Use 1.0 to allow or 0.0 to disallow rotation
-         * along certain axis.
-         */
-        Vector3 angularFactor;
+      /**
+       * Angular factor for the rigid body. x, y, z coordinates correspond to world
+       * space rotation along these axes. Use 1.0 to allow or 0.0 to disallow rotation
+       * along certain axis.
+       */
+      Vector3 angularFactor;
 
-        /**
-         * Constructor.
-         */
-        Parameters() : mass(0.0f), friction(0.5f), restitution(0.0f),
-            linearDamping(0.0f), angularDamping(0.0f),
-            kinematic(false), anisotropicFriction(Vector3::one()), linearFactor(Vector3::one()), angularFactor(Vector3::one())
-        {
-        }
+      /**
+       * Constructor.
+       */
+      Parameters() : mass(0.0f), friction(0.5f), restitution(0.0f),
+        linearDamping(0.0f), angularDamping(0.0f),
+        kinematic(false), anisotropicFriction(Vector3::one()), linearFactor(Vector3::one()), angularFactor(Vector3::one())
+      {
+      }
 
-        /**
-         * Constructor.
-         */
-        Parameters(float mass, float friction = 0.5f, float restitution = 0.0f,
-            float linearDamping = 0.0f, float angularDamping = 0.0f, bool kinematic = false,
-            const Vector3& anisotropicFriction = Vector3::one(), const Vector3& linearFactor = Vector3::one(), 
-            const Vector3& angularFactor = Vector3::one())
-            : mass(mass), friction(friction), restitution(restitution), linearDamping(linearDamping), angularDamping(angularDamping),
-              kinematic(kinematic), anisotropicFriction(anisotropicFriction), linearFactor(linearFactor), angularFactor(angularFactor)
-        {
-        }
+      /**
+       * Constructor.
+       */
+      Parameters(float mass, float friction = 0.5f, float restitution = 0.0f,
+        float linearDamping = 0.0f, float angularDamping = 0.0f, bool kinematic = false,
+        const Vector3& anisotropicFriction = Vector3::one(), const Vector3& linearFactor = Vector3::one(),
+        const Vector3& angularFactor = Vector3::one())
+        : mass(mass), friction(friction), restitution(restitution), linearDamping(linearDamping), angularDamping(angularDamping),
+        kinematic(kinematic), anisotropicFriction(anisotropicFriction), linearFactor(linearFactor), angularFactor(angularFactor)
+      {
+      }
     };
 
     /**
@@ -127,14 +127,14 @@ public:
 
     /**
      * Gets the rigid body's friction.
-     * 
+     *
      * @return The friction.
      */
     inline float getFriction() const;
 
     /**
      * Sets the rigid body's friction.
-     * 
+     *
      * @param friction The friction.
      */
     inline void setFriction(float friction);
@@ -148,7 +148,7 @@ public:
 
     /**
      * Sets the rigid body's restitution (or bounciness).
-     * 
+     *
      * @param restitution The restitution.
      */
     inline void setRestitution(float restitution);
@@ -169,7 +169,7 @@ public:
 
     /**
      * Sets the rigid body's linear and angular damping.
-     * 
+     *
      * @param linearDamping The linear damping; between 0.0 (minimum) and 1.0 (maximum).
      * @param angularDamping The angular damping; between 0.0 (minimum) and 1.0 (maximum).
      */
@@ -177,21 +177,21 @@ public:
 
     /**
      * Gets the rigid body's linear velocity.
-     * 
+     *
      * @return The linear velocity.
      */
     inline Vector3 getLinearVelocity() const;
 
     /**
      * Sets the rigid body's linear velocity.
-     * 
+     *
      * @param velocity The linear velocity.
      */
     inline void setLinearVelocity(const Vector3& velocity);
 
     /**
      * Sets the rigid body's linear velocity.
-     * 
+     *
      * @param x The x coordinate of the linear velocity vector.
      * @param y The y coordinate of the linear velocity vector.
      * @param z The z coordinate of the linear velocity vector.
@@ -200,21 +200,21 @@ public:
 
     /**
      * Gets the rigid body's angular velocity.
-     * 
+     *
      * @return The angular velocity.
      */
     inline Vector3 getAngularVelocity() const;
 
     /**
      * Sets the rigid body's angular velocity.
-     * 
+     *
      * @param velocity The angular velocity.
      */
     inline void setAngularVelocity(const Vector3& velocity);
 
     /**
      * Sets the rigid body's angular velocity.
-     * 
+     *
      * @param x The x coordinate of the angular velocity vector.
      * @param y The y coordinate of the angular velocity vector.
      * @param z The z coordinate of the angular velocity vector.
@@ -223,21 +223,21 @@ public:
 
     /**
      * Gets the rigid body's anisotropic friction.
-     * 
+     *
      * @return The anisotropic friction.
      */
     inline Vector3 getAnisotropicFriction() const;
 
     /**
      * Sets the rigid body's anisotropic friction.
-     * 
+     *
      * @param friction The anisotropic friction.
      */
     inline void setAnisotropicFriction(const Vector3& friction);
 
     /**
      * Sets the rigid body's anisotropic friction.
-     * 
+     *
      * @param x The x coordinate of the anisotropic friction.
      * @param y The y coordinate of the anisotropic friction.
      * @param z The z coordinate of the anisotropic friction.
@@ -247,21 +247,21 @@ public:
     /**
      * Gets the gravity that affects the rigid body (this can
      * be different from the global gravity; @see setGravity(Vector3)).
-     * 
+     *
      * @return The gravity.
      */
     inline Vector3 getGravity() const;
 
     /**
      * Sets the rigid body's gravity (this overrides the global gravity for this rigid body).
-     * 
+     *
      * @param gravity The gravity.
      */
     inline void setGravity(const Vector3& gravity);
 
     /**
      * Sets the rigid body's gravity (this overrides the global gravity for this rigid body).
-     * 
+     *
      * @param x The x coordinate of the gravity vector.
      * @param y The y coordinate of the gravity vector.
      * @param z The z coordinate of the gravity vector.
@@ -270,25 +270,25 @@ public:
 
     /**
      * Gets the rigid body's angular factor.
-     * 
+     *
      * @return The angular factor.
      */
     inline Vector3 getAngularFactor() const;
 
     /**
-     * Sets the rigid body's angular factor.  x, y, z coordinates correspond to world 
-     * space rotation along these axes. Use 1.0 to allow or 0.0 to disallow rotation 
+     * Sets the rigid body's angular factor.  x, y, z coordinates correspond to world
+     * space rotation along these axes. Use 1.0 to allow or 0.0 to disallow rotation
      * along certain axis.
-     * 
+     *
      * @param angularFactor angular factor vector
      */
     inline void setAngularFactor(const Vector3& angularFactor);
 
     /**
-     * Sets the rigid body's angular factor.  x, y, z coordinates correspond to world 
-     * space rotation along these axes. Use 1.0 to allow or 0.0 to disallow rotation 
+     * Sets the rigid body's angular factor.  x, y, z coordinates correspond to world
+     * space rotation along these axes. Use 1.0 to allow or 0.0 to disallow rotation
      * along certain axis.
-     * 
+     *
      * @param x The x coordinate of the angular factor vector.
      * @param y The y coordinate of the angular factor vector.
      * @param z The z coordinate of the angular factor vector.
@@ -297,25 +297,25 @@ public:
 
     /**
      * Gets the rigid body's linear factor.
-     * 
+     *
      * @return The linear factor.
      */
     inline Vector3 getLinearFactor() const;
 
     /**
-     * Sets the rigid body's linear factor.  x, y, z coordinates correspond to world 
-     * space motion along these axes. Use 1.0 to allow or 0.0 to disallow motion 
+     * Sets the rigid body's linear factor.  x, y, z coordinates correspond to world
+     * space motion along these axes. Use 1.0 to allow or 0.0 to disallow motion
      * along certain axis.
-     * 
+     *
      * @param linearFactor linear factor vector
      */
     inline void setLinearFactor(const Vector3& linearFactor);
 
     /**
-     * Sets the rigid body's linear factor.  x, y, z coordinates correspond to world 
-     * space motion along these axes. Use 1.0 to allow or 0.0 to disallow motion 
+     * Sets the rigid body's linear factor.  x, y, z coordinates correspond to world
+     * space motion along these axes. Use 1.0 to allow or 0.0 to disallow motion
      * along certain axis.
-     * 
+     *
      * @param x The x coordinate of the linear factor vector.
      * @param y The y coordinate of the linear factor vector.
      * @param z The z coordinate of the linear factor vector.
@@ -324,7 +324,7 @@ public:
 
     /**
      * Sets whether the rigid body is a kinematic rigid body or not.
-     * 
+     *
      * @param kinematic Whether the rigid body is kinematic or not.
      */
     void setKinematic(bool kinematic);
@@ -338,7 +338,7 @@ public:
 
     /**
      * Gets the height at the given point (only for rigid bodies of type HEIGHTFIELD).
-     * 
+     *
      * @param x The x position, in world space.
      * @param z The z position, in world space.
      * @return The height at the given point, or zero if this is not a heightfield rigid body.
@@ -356,7 +356,7 @@ public:
      * Applies the given force to the rigid body (optionally, from the given relative position).
      * Note that the total force applied depends on the duration of the next frame.
      * If you want to apply an "impulse" irrespective of the frame duration, consider using applyImpulse.
-     * 
+     *
      * @param force The force to be applied.
      * @param relativePosition The relative position from which to apply the force.
      */
@@ -364,7 +364,7 @@ public:
 
     /**
      * Applies the given force impulse to the rigid body (optionally, from the given relative position).
-     * 
+     *
      * @param impulse The force impulse to be applied.
      * @param relativePosition The relative position from which to apply the force.
      */
@@ -372,30 +372,30 @@ public:
 
     /**
      * Applies the given torque to the rigid body.
-     * 
+     *
      * @param torque The torque to be applied.
      */
     void applyTorque(const Vector3& torque);
 
     /**
      * Applies the given torque impulse to the rigid body.
-     * 
+     *
      * @param torque The torque impulse to be applied.
      */
     void applyTorqueImpulse(const Vector3& torque);
 
-protected:
+  protected:
 
     /**
      * @see PhysicsCollisionObject::getCollisionObject
      */
     btCollisionObject* getCollisionObject() const;
 
-private:
+  private:
 
     /**
      * Creates a rigid body.
-     * 
+     *
      * @param node The node to create a rigid body for; note that the node must have
      *      a model attached to it prior to creating a rigid body for it.
      * @param shape The rigid body shape construction information.
@@ -417,7 +417,7 @@ private:
 
     /**
      * Creates a rigid body from the specified properties object.
-     * 
+     *
      * @param node The node to create a rigid body for; note that the node must have a model attached to it prior to creating a rigid body for it.
      * @param properties The properties object defining the rigid body.
      * @param nspace The namespace expected (default is "RIGID_BODY").
@@ -442,7 +442,7 @@ private:
     std::vector<PhysicsConstraint*>* _constraints;
     bool _inDestructor;
 
-};
+  };
 
 }
 

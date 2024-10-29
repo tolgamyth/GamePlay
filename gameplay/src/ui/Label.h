@@ -6,19 +6,19 @@
 namespace gameplay
 {
 
-/**
- * Defines a label control.
- * 
- * This is capable of rendering text within its border.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class Label : public Control
-{
+  /**
+   * Defines a label control.
+   *
+   * This is capable of rendering text within its border.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class Label : public Control
+  {
     friend class Container;
-	friend class ControlFactory;
+    friend class ControlFactory;
 
-public:
+  public:
 
     /**
      * Creates a new label.
@@ -67,7 +67,7 @@ public:
      */
     virtual void addListener(Control::Listener* listener, int eventFlags);
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -79,16 +79,16 @@ protected:
      */
     virtual ~Label();
 
-	/**
-	* Create a new label control.
-	*
-	* @param style The control's custom style.
-	* @param properties A properties object containing a definition of the label (optional).
-	*
-	* @return The new label.
-	* @script{create}
-	*/
-	static Control* create(Theme::Style* style, Properties* properties);
+    /**
+    * Create a new label control.
+    *
+    * @param style The control's custom style.
+    * @param properties A properties object containing a definition of the label (optional).
+    *
+    * @return The new label.
+    * @script{create}
+    */
+    static Control* create(Theme::Style* style, Properties* properties);
 
     /**
      * @see Control::initialize
@@ -129,7 +129,7 @@ protected:
      * The font being used to display the label.
      */
     Font* _font;
-    
+
     /**
      * The text color being used to display the label.
      */
@@ -140,12 +140,12 @@ protected:
      */
     Rectangle _textBounds;
 
-private:
+  private:
 
     /**
      * Constructor.
      */
     Label(const Label& copy);
-};
+  };
 
 }

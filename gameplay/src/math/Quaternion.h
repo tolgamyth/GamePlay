@@ -7,42 +7,42 @@
 namespace gameplay
 {
 
-class Matrix;
+  class Matrix;
 
-/**
- * Defines a 4-element quaternion that represents the orientation of an object in space.
- *
- * Quaternions are typically used as a replacement for euler angles and rotation matrices as a way to achieve smooth interpolation and avoid gimbal lock.
- *
- * Note that this quaternion class does not automatically keep the quaternion normalized. Therefore, care must be taken to normalize the quaternion when necessary, by calling the normalize method.
- * This class provides three methods for doing quaternion interpolation: lerp, slerp, and squad.
- *
- * lerp (linear interpolation): the interpolation curve gives a straight line in quaternion space. It is simple and fast to compute. The only problem is that it does not provide constant angular velocity. Note that a constant velocity is not necessarily a requirement for a curve;
- * slerp (spherical linear interpolation): the interpolation curve forms a great arc on the quaternion unit sphere. Slerp provides constant angular velocity;
- * squad (spherical spline interpolation): interpolating between a series of rotations using slerp leads to the following problems:
- * - the curve is not smooth at the control points;
- * - the angular velocity is not constant;
- * - the angular velocity is not continuous at the control points.
- *
- * Since squad is continuously differentiable, it remedies the first and third problems mentioned above.
- * The slerp method provided here is intended for interpolation of principal rotations. It treats +q and -q as the same principal rotation and is at liberty to use the negative of either input. The resulting path is always the shorter arc.
- *
- * The lerp method provided here interpolates strictly in quaternion space. Note that the resulting path may pass through the origin if interpolating between a quaternion and its exact negative.
- *
- * As an example, consider the following quaternions:
- *
- * q1 = (0.6, 0.8, 0.0, 0.0),
- * q2 = (0.0, 0.6, 0.8, 0.0),
- * q3 = (0.6, 0.0, 0.8, 0.0), and
- * q4 = (-0.8, 0.0, -0.6, 0.0).
- * For the point p = (1.0, 1.0, 1.0), the following figures show the trajectories of p using lerp, slerp, and squad.
- */
-class Quaternion
-{
+  /**
+   * Defines a 4-element quaternion that represents the orientation of an object in space.
+   *
+   * Quaternions are typically used as a replacement for euler angles and rotation matrices as a way to achieve smooth interpolation and avoid gimbal lock.
+   *
+   * Note that this quaternion class does not automatically keep the quaternion normalized. Therefore, care must be taken to normalize the quaternion when necessary, by calling the normalize method.
+   * This class provides three methods for doing quaternion interpolation: lerp, slerp, and squad.
+   *
+   * lerp (linear interpolation): the interpolation curve gives a straight line in quaternion space. It is simple and fast to compute. The only problem is that it does not provide constant angular velocity. Note that a constant velocity is not necessarily a requirement for a curve;
+   * slerp (spherical linear interpolation): the interpolation curve forms a great arc on the quaternion unit sphere. Slerp provides constant angular velocity;
+   * squad (spherical spline interpolation): interpolating between a series of rotations using slerp leads to the following problems:
+   * - the curve is not smooth at the control points;
+   * - the angular velocity is not constant;
+   * - the angular velocity is not continuous at the control points.
+   *
+   * Since squad is continuously differentiable, it remedies the first and third problems mentioned above.
+   * The slerp method provided here is intended for interpolation of principal rotations. It treats +q and -q as the same principal rotation and is at liberty to use the negative of either input. The resulting path is always the shorter arc.
+   *
+   * The lerp method provided here interpolates strictly in quaternion space. Note that the resulting path may pass through the origin if interpolating between a quaternion and its exact negative.
+   *
+   * As an example, consider the following quaternions:
+   *
+   * q1 = (0.6, 0.8, 0.0, 0.0),
+   * q2 = (0.0, 0.6, 0.8, 0.0),
+   * q3 = (0.6, 0.0, 0.8, 0.0), and
+   * q4 = (-0.8, 0.0, -0.6, 0.0).
+   * For the point p = (1.0, 1.0, 1.0), the following figures show the trajectories of p using lerp, slerp, and squad.
+   */
+  class Quaternion
+  {
     friend class Curve;
     friend class Transform;
 
-public:
+  public:
 
     /**
      * The x-value of the quaternion's vector component.
@@ -138,16 +138,16 @@ public:
      */
     bool isZero() const;
 
-	/**
-	* Creates this quaternion equal to the rotation from the specified euler angles
-	* and stores the result in dst.
-	*
-	* @param yaw The yaw angle (in radians)
-	* @param pitch The pitch angle (in radians)
-	* @param roll The roll angle (in radians)
-	* @param dst A quaternion to store the result in.
-	*/
-	static void createFromEuler(float yaw, float pitch, float roll, Quaternion* dst);
+    /**
+    * Creates this quaternion equal to the rotation from the specified euler angles
+    * and stores the result in dst.
+    *
+    * @param yaw The yaw angle (in radians)
+    * @param pitch The pitch angle (in radians)
+    * @param roll The roll angle (in radians)
+    * @param dst A quaternion to store the result in.
+    */
+    static void createFromEuler(float yaw, float pitch, float roll, Quaternion* dst);
 
     /**
      * Creates a quaternion equal to the rotational part of the specified matrix
@@ -168,16 +168,16 @@ public:
      */
     static void createFromAxisAngle(const Vector3& axis, float angle, Quaternion* dst);
 
-	/**
-	* Calculates (in radians) the yaw, pitch and roll angles of this quaternion
-	* and stores the results in the specified pointers.
-	*
-	* @param yaw The returned yaw angle
-	* @param pitch The returned pitch angle
-	* @param roll The returned roll angle
-	*/
-	void computeEuler(float* yaw, float* pitch, float* roll);
-	
+    /**
+    * Calculates (in radians) the yaw, pitch and roll angles of this quaternion
+    * and stores the results in the specified pointers.
+    *
+    * @param yaw The returned yaw angle
+    * @param pitch The returned pitch angle
+    * @param roll The returned roll angle
+    */
+    void computeEuler(float* yaw, float* pitch, float* roll);
+
     /**
      * Sets this quaternion to the conjugate of itself.
      */
@@ -211,7 +211,7 @@ public:
      * quaternion is already unit-length.
      *
      * @param dst A quaternion to store the inverse in.
-     * 
+     *
      * @return true if the inverse can be computed, false otherwise.
      */
     bool inverse(Quaternion* dst) const;
@@ -251,17 +251,17 @@ public:
      */
     void normalize(Quaternion* dst) const;
 
-	/**
-	* Rotate the specified point by this quaternion
-	* and stores the result in dst
-	*
-	* Note: The point must normalized.
-	*
-	* @param point The vector to rotate.
-	* @param dst The vector to store the result.
+    /**
+    * Rotate the specified point by this quaternion
+    * and stores the result in dst
+    *
+    * Note: The point must normalized.
+    *
+    * @param point The vector to rotate.
+    * @param dst The vector to store the result.
 
-	*/
-	void rotatePoint(const Vector3& point, Vector3* dst) const;
+    */
+    void rotatePoint(const Vector3& point, Vector3* dst) const;
 
     /**
      * Sets the elements of the quaternion to the specified values.
@@ -289,7 +289,7 @@ public:
 
     /**
      * Sets the quaternion equal to the rotation from the specified axis and angle.
-     * 
+     *
      * @param axis The axis of rotation.
      * @param angle The angle of rotation (in radians).
      */
@@ -311,7 +311,7 @@ public:
      * Converts this Quaternion4f to axis-angle notation. The axis is normalized.
      *
      * @param e The Vector3f which stores the axis.
-     * 
+     *
      * @return The angle (in radians).
      */
     float toAxisAngle(Vector3* e) const;
@@ -328,7 +328,7 @@ public:
      * @param dst A quaternion to store the result in.
      */
     static void lerp(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst);
-    
+
     /**
      * Interpolates between two quaternions using spherical linear interpolation.
      *
@@ -345,7 +345,7 @@ public:
      * @param dst A quaternion to store the result in.
      */
     static void slerp(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst);
-    
+
     /**
      * Interpolates over a series of quaternions using spherical spline interpolation.
      *
@@ -367,9 +367,9 @@ public:
 
     /**
      * Calculates the quaternion product of this quaternion with the given quaternion.
-     * 
+     *
      * Note: this does not modify this quaternion.
-     * 
+     *
      * @param q The quaternion to multiply.
      * @return The quaternion product.
      */
@@ -377,13 +377,13 @@ public:
 
     /**
      * Multiplies this quaternion with the given quaternion.
-     * 
+     *
      * @param q The quaternion to multiply.
      * @return This quaternion, after the multiplication occurs.
      */
     inline Quaternion& operator*=(const Quaternion& q);
 
-private:
+  private:
 
     /**
      * Interpolates between two quaternions using spherical linear interpolation.
@@ -412,7 +412,7 @@ private:
     static void slerp(float q1x, float q1y, float q1z, float q1w, float q2x, float q2y, float q2z, float q2w, float t, float* dstx, float* dsty, float* dstz, float* dstw);
 
     static void slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst);
-};
+  };
 
 }
 

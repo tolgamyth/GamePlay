@@ -12,22 +12,22 @@
 namespace gameplay
 {
 
-/**
- * Defines a text block of characters to be drawn.
- *
- * Text can be attached to a node.
- */
-class Text : public Ref, public Drawable, public AnimationTarget
-{
+  /**
+   * Defines a text block of characters to be drawn.
+   *
+   * Text can be attached to a node.
+   */
+  class Text : public Ref, public Drawable, public AnimationTarget
+  {
     friend class Node;
-    
-public:
-    
+
+  public:
+
     /**
      * Opacity property. Data=opacity
      */
     static const int ANIMATE_OPACITY = 1;
-    
+
     /**
      * Color property. Data = red, green, blue, alpha
      */
@@ -47,7 +47,7 @@ public:
      * @return A Text object.
      */
     static Text* create(const char* fontPath, const char* str, const Vector4& color = Vector4::one(), unsigned int size = 0);
-    
+
     /**
      * Creates text from a properties object.
      *
@@ -55,63 +55,63 @@ public:
      * @return The tile set created.
      */
     static Text* create(Properties* properties);
-    
+
     /**
      * Sets the text to be drawn.
      *
      * @param str The text string to be drawn.
      */
     void setText(const char* str);
-    
+
     /**
      * Get the string that will be drawn from this Text object.
      *
      * @return The text string to be drawn.
      */
     const char* getText() const;
-    
+
     /**
      * Gets the size of the text to be drawn.
      *
      * @return The size of the text to be drawn.
      */
     unsigned int getSize() const;
-    
+
     /**
      * Set the width to draw the text within.
      *
      * @param width The width to draw the text.
      */
     void setWidth(float width);
-    
+
     /**
      * Gets the width of the text.
      *
      * @return The width of the text.
      */
     float getWidth() const;
-    
+
     /**
      * Set the height of text to be drawn within.
      *
      * @param height The height to draw the text.
      */
     void setHeight(float height);
-    
+
     /**
      * Gets the width of the text.
      *
      * @return The overall width of the text.
      */
     float getHeight() const;
-    
+
     /**
      * Sets if the the text is wrapped by the text width.
-     * 
+     *
      * @param wrap true if the the text is wrapped by the text width.
      */
     void setWrap(bool wrap);
-    
+
     /**
      * Gets if the the text is wrapped by the text width.
      *
@@ -120,14 +120,14 @@ public:
      * @return true if the the text is wrapped by the text width.
      */
     bool getWrap() const;
-    
+
     /**
      * Sets if the text is rendered right-to-left.
      *
      * @param rightToLeft true if the text is rendered right-to-left, false if left-to-right.
      */
     void setRightToLeft(bool rightToLeft);
-    
+
     /**
      * Sets if the text is rendered right-to-left.
      *
@@ -136,7 +136,7 @@ public:
      * @return rightToLeft true if the text is rendered right-to-left, false if left-to-right.
      */
     bool getRightToLeft() const;
-    
+
     /**
      * Sets the justification to align the text within the text bounds.
      *
@@ -150,7 +150,7 @@ public:
      * @return The text justification alignment.
      */
     Font::Justify getJustify() const;
-    
+
     /**
      * Sets the local clipping region for this text.
      *
@@ -159,7 +159,7 @@ public:
      * @param clip The clipping region for this text.
      */
     void setClip(const Rectangle& clip);
-    
+
     /**
      * Gets the local clipping region for this text.
      *
@@ -170,7 +170,7 @@ public:
      * @return clip The clipping region for this text.
      */
     const Rectangle& getClip() const;
-    
+
     /**
      * Sets the opacity for the sprite.
      *
@@ -179,7 +179,7 @@ public:
      * @param opacity The opacity for the sprite.
      */
     void setOpacity(float opacity);
-    
+
     /**
      * Gets the opacity for the sprite.
      *
@@ -188,14 +188,14 @@ public:
      * @return The opacity for the sprite.
      */
     float getOpacity() const;
-    
+
     /**
      * Sets the color (RGBA) for the sprite.
      *
      * @param color The color(RGBA) for the sprite.
      */
     void setColor(const Vector4& color);
-    
+
     /**
      * Gets the color (RGBA) for the sprite.
      *
@@ -207,8 +207,8 @@ public:
      * @see Drawable::draw
      */
     unsigned int draw(bool wireframe = false);
-    
-protected:
+
+  protected:
 
     /**
      * Constructor
@@ -224,33 +224,33 @@ protected:
      * operator=
      */
     Text& operator=(const Text& text);
-    
+
     /**
      * @see Drawable::clone
      */
-    Drawable* clone(NodeCloneContext &context);
+    Drawable* clone(NodeCloneContext& context);
 
     /**
      * @see AnimationTarget::getPropertyId
      */
     int getPropertyId(TargetType type, const char* propertyIdStr);
-    
+
     /**
      * @see AnimationTarget::getAnimationPropertyComponentCount
      */
     unsigned int getAnimationPropertyComponentCount(int propertyId) const;
-    
+
     /**
      * @see AnimationTarget::getAnimationProperty
      */
     void getAnimationPropertyValue(int propertyId, AnimationValue* value);
-    
+
     /**
      * @see AnimationTarget::setAnimationProperty
      */
     void setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight = 1.0f);
-    
-private:
+
+  private:
 
     Font* _font;
     Font* _drawFont;
@@ -264,6 +264,6 @@ private:
     Rectangle _clip;
     float _opacity;
     Vector4 _color;
-};
-    
+  };
+
 }

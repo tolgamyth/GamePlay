@@ -3,24 +3,24 @@
 namespace gameplay
 {
 
-inline unsigned char* Image::getData() const
-{
+  inline unsigned char* Image::getData() const
+  {
     return _data;
-}
+  }
 
-inline Image::Format Image::getFormat() const
-{
+  inline Image::Format Image::getFormat() const
+  {
     return _format;
-}
+  }
 
-inline unsigned int Image::getHeight() const
-{
+  inline unsigned int Image::getHeight() const
+  {
     return _height;
-}
-        
-inline unsigned int Image::getWidth() const
-{
+  }
+
+  inline unsigned int Image::getWidth() const
+  {
     return _width;
-}
+  }
 
 }

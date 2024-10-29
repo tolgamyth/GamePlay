@@ -9,18 +9,18 @@
 namespace gameplay
 {
 
-/**
- * Defines a button control. 
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class Button : public Label
-{
+  /**
+   * Defines a button control.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class Button : public Label
+  {
     friend class Container;
     friend class Gamepad;
     friend class ControlFactory;
 
-public:
+  public:
 
     /**
      * Creates a new Button.
@@ -33,7 +33,7 @@ public:
      */
     static Button* create(const char* id, Theme::Style* style = nullptr);
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -73,18 +73,18 @@ protected:
     /**
      * Gets the data binding index for this control.
      *
-     * @return The data binding index for control. 
+     * @return The data binding index for control.
      */
     const unsigned int getDataBinding() const;
 
     /**
      * Sets the data binding provider for this control.
      *
-     * @param dataBinding The data binding index for control. 
+     * @param dataBinding The data binding index for control.
      */
     void setDataBinding(unsigned int dataBinding);
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -93,6 +93,6 @@ private:
 
     unsigned int _dataBinding;
 
-};
+  };
 
 }

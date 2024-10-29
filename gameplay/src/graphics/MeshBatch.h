@@ -5,14 +5,14 @@
 namespace gameplay
 {
 
-class Material;
+  class Material;
 
-/**
- * Defines a class for rendering multiple mesh into a single draw call on the graphics device.
- */
-class MeshBatch
-{
-public:
+  /**
+   * Defines a class for rendering multiple mesh into a single draw call on the graphics device.
+   */
+  class MeshBatch
+  {
+  public:
 
     /**
      * Creates a new mesh batch.
@@ -140,7 +140,7 @@ public:
      */
     void draw();
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -179,7 +179,7 @@ private:
     unsigned short* _indicesPtr;
     bool _started;
 
-};
+  };
 
 }
 

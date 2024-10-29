@@ -685,9 +685,9 @@ namespace gameplay
     while (space != nullptr)
     {
       auto& image = imageList->_images.emplace_back(ThemeImage::create(tw, th, space, color));
-      
+
       assert(image);
-      
+
       space = properties->getNextNamespace();
     }
 

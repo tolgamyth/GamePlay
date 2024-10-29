@@ -6,29 +6,29 @@
 namespace gameplay
 {
 
-/**
- * Defines a container for depth and stencil targets in a frame buffer object.
- */
-class DepthStencilTarget : public Ref
-{
+  /**
+   * Defines a container for depth and stencil targets in a frame buffer object.
+   */
+  class DepthStencilTarget : public Ref
+  {
     friend class FrameBuffer;
 
-public:
+  public:
 
     /**
      * Defines the accepted formats for DepthStencilTargets.
      */
     enum Format
     {
-        /**
-         * A target with depth data.
-         */
-        DEPTH,
+      /**
+       * A target with depth data.
+       */
+      DEPTH,
 
-        /**
-         * A target with depth data and stencil data.
-         */
-        DEPTH_STENCIL
+      /**
+       * A target with depth data and stencil data.
+       */
+      DEPTH_STENCIL
     };
 
     /**
@@ -88,7 +88,7 @@ public:
      */
     bool isPacked() const;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -112,6 +112,6 @@ private:
     unsigned int _width;
     unsigned int _height;
     bool _packed;
-};
+  };
 
 }

@@ -12,54 +12,54 @@ class PhysicsCollisionObjectSample : public Sample, Control::Listener
 {
 public:
 
-    PhysicsCollisionObjectSample();
+  PhysicsCollisionObjectSample();
 
-    void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
+  void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
 
-    void keyEvent(Keyboard::KeyEvent evt, int key);
+  void keyEvent(Keyboard::KeyEvent evt, int key);
 
-    void controlEvent(Control* control, EventType evt);
+  void controlEvent(Control* control, EventType evt);
 
 protected:
 
-    void initialize();
+  void initialize();
 
-    void finalize();
+  void finalize();
 
-    void update(float elapsedTime);
+  void update(float elapsedTime);
 
-    void render(float elapsedTime);
+  void render(float elapsedTime);
 
 private:
 
-    bool drawScene(Node* node);
+  bool drawScene(Node* node);
 
-    bool bindLights(Node* node);
+  bool bindLights(Node* node);
 
-    void fireProjectile(const Ray& ray);
+  void fireProjectile(const Ray& ray);
 
-    void incrementDebugDraw();
+  void incrementDebugDraw();
 
-    void toggleWireframe();
+  void toggleWireframe();
 
-    enum ObjectsTypes
-    {
-        SPHERE = 0, 
-        BOX = 1,
-        CAPSULE = 2,
-        DUCK = 3
-    };
+  enum ObjectsTypes
+  {
+    SPHERE = 0,
+    BOX = 1,
+    CAPSULE = 2,
+    DUCK = 3
+  };
 
-    Font* _font;
-    Scene* _scene;
-    Node* _lightNode;
-    Form* _form;
-    int _objectType;
-    bool _throw;
-    int _drawDebug;
-    bool _wireFrame;
-    std::vector<const char*> _collisionObjectPaths;
-    std::vector<const char*> _nodeIds;
-    std::vector<const char*> _nodeNames;
-    std::vector<Vector4> _colors;
+  Font* _font;
+  Scene* _scene;
+  Node* _lightNode;
+  Form* _form;
+  int _objectType;
+  bool _throw;
+  int _drawDebug;
+  bool _wireFrame;
+  std::vector<const char*> _collisionObjectPaths;
+  std::vector<const char*> _nodeIds;
+  std::vector<const char*> _nodeNames;
+  std::vector<Vector4> _colors;
 };

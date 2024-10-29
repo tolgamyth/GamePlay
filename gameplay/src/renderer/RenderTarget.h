@@ -6,16 +6,16 @@
 namespace gameplay
 {
 
-/**
- * Defines a linear area of display memory and usually resides 
- * in the display memory of the graphics device.
- */
-class RenderTarget : public Ref
-{
+  /**
+   * Defines a linear area of display memory and usually resides
+   * in the display memory of the graphics device.
+   */
+  class RenderTarget : public Ref
+  {
     friend class FrameBuffer;
 
-public:
- 
+  public:
+
     /**
      * Create a RenderTarget and add it to the list of available RenderTargets.
      *
@@ -81,8 +81,8 @@ public:
      * @return The height.
      */
     unsigned int getHeight() const;
- 
-private:
+
+  private:
 
     /**
      * Constructor.
@@ -101,6 +101,6 @@ private:
 
     std::string _id;
     Texture* _texture;
-};
+  };
 
 }

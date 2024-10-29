@@ -4,167 +4,167 @@
 namespace gameplay
 {
 
-// Fraction of slider to scroll when mouse scrollwheel is used.
-static const float SCROLLWHEEL_FRACTION = 0.1f;
-// Fraction of slider to scroll for a delta of 1.0f when a gamepad or keyboard is used.
-static const float MOVE_FRACTION = 0.005f;
+  // Fraction of slider to scroll when mouse scrollwheel is used.
+  static const float SCROLLWHEEL_FRACTION = 0.1f;
+  // Fraction of slider to scroll for a delta of 1.0f when a gamepad or keyboard is used.
+  static const float MOVE_FRACTION = 0.005f;
 
-Slider::Slider() : _min(0.0f), _max(0.0f), _step(0.0f), _value(0.0f), _delta(0.0f), _minImage(nullptr),
+  Slider::Slider() : _min(0.0f), _max(0.0f), _step(0.0f), _value(0.0f), _delta(0.0f), _minImage(nullptr),
     _maxImage(nullptr), _trackImage(nullptr), _markerImage(nullptr), _valueTextVisible(false),
-    _valueTextAlignment(Font::ALIGN_BOTTOM_HCENTER), _valueTextPrecision(0), _valueText(""), 
+    _valueTextAlignment(Font::ALIGN_BOTTOM_HCENTER), _valueTextPrecision(0), _valueText(""),
     _trackHeight(0.0f), _gamepadValue(0.0f)
-{
+  {
     _canFocus = true;
-}
+  }
 
-Slider::~Slider()
-{
-}
+  Slider::~Slider()
+  {
+  }
 
-Slider* Slider::create(const char* id, Theme::Style* style)
-{
+  Slider* Slider::create(const char* id, Theme::Style* style)
+  {
     Slider* slider = new Slider();
     slider->_id = id ? id : "";
     slider->initialize("Slider", style, nullptr);
     return slider;
-}
+  }
 
-Control* Slider::create(Theme::Style* style, Properties* properties)
-{
+  Control* Slider::create(Theme::Style* style, Properties* properties)
+  {
     Slider* slider = new Slider();
     slider->initialize("Slider", style, properties);
     return slider;
-}
+  }
 
-void Slider::initialize(const char* typeName, Theme::Style* style, Properties* properties)
-{
+  void Slider::initialize(const char* typeName, Theme::Style* style, Properties* properties)
+  {
     Label::initialize(typeName, style, properties);
 
     if (properties)
     {
-        _min = properties->getFloat("min");
-        _max = properties->getFloat("max");
-        _value = properties->getFloat("value");
-        _step = properties->getFloat("step");
-        _valueTextVisible = properties->getBool("valueTextVisible");
-        _valueTextPrecision = properties->getInt("valueTextPrecision");
+      _min = properties->getFloat("min");
+      _max = properties->getFloat("max");
+      _value = properties->getFloat("value");
+      _step = properties->getFloat("step");
+      _valueTextVisible = properties->getBool("valueTextVisible");
+      _valueTextPrecision = properties->getInt("valueTextPrecision");
 
-        if (properties->exists("valueTextAlignment"))
-        {
-            _valueTextAlignment = Font::getJustify(properties->getString("valueTextAlignment"));
-        }
+      if (properties->exists("valueTextAlignment"))
+      {
+        _valueTextAlignment = Font::getJustify(properties->getString("valueTextAlignment"));
+      }
     }
 
     // Force value text to be updated
     setValue(_value);
-}
+  }
 
-const char* Slider::getTypeName() const
-{
+  const char* Slider::getTypeName() const
+  {
     return "Slider";
-}
+  }
 
-void Slider::setMin(float min)
-{
+  void Slider::setMin(float min)
+  {
     _min = min;
-}
+  }
 
-float Slider::getMin() const
-{
+  float Slider::getMin() const
+  {
     return _min;
-}
+  }
 
-void Slider::setMax(float max)
-{
+  void Slider::setMax(float max)
+  {
     _max = max;
-}
+  }
 
-float Slider::getMax() const
-{
+  float Slider::getMax() const
+  {
     return _max;
-}
+  }
 
-void Slider::setStep(float step)
-{
+  void Slider::setStep(float step)
+  {
     _step = step;
-}
+  }
 
-float Slider::getStep() const
-{
+  float Slider::getStep() const
+  {
     return _step;
-}
+  }
 
-float Slider::getValue() const
-{
+  float Slider::getValue() const
+  {
     return _value;
-}
+  }
 
-void Slider::setValue(float value)
-{
+  void Slider::setValue(float value)
+  {
     value = MATH_CLAMP(value, _min, _max);
 
     if (value != _value)
     {
-        _value = value;
-        notifyListeners(Control::Listener::VALUE_CHANGED);
+      _value = value;
+      notifyListeners(Control::Listener::VALUE_CHANGED);
     }
 
     // Always update value text if it's visible
     if (_valueTextVisible)
     {
-        char s[32];
-        sprintf(s, "%.*f", _valueTextPrecision, _value);
-        _valueText = s;
+      char s[32];
+      sprintf(s, "%.*f", _valueTextPrecision, _value);
+      _valueText = s;
     }
-}
+  }
 
-void Slider::setValueTextVisible(bool valueTextVisible)
-{
+  void Slider::setValueTextVisible(bool valueTextVisible)
+  {
     if (valueTextVisible != _valueTextVisible)
     {
-        _valueTextVisible = valueTextVisible;
-        if (_autoSize & AUTO_SIZE_HEIGHT)
-            setDirty(DIRTY_BOUNDS);
+      _valueTextVisible = valueTextVisible;
+      if (_autoSize & AUTO_SIZE_HEIGHT)
+        setDirty(DIRTY_BOUNDS);
     }
-}
+  }
 
-bool Slider::isValueTextVisible() const
-{
+  bool Slider::isValueTextVisible() const
+  {
     return _valueTextVisible;
-}
+  }
 
-void Slider::setValueTextAlignment(Font::Justify alignment)
-{
+  void Slider::setValueTextAlignment(Font::Justify alignment)
+  {
     _valueTextAlignment = alignment;
-}
+  }
 
-Font::Justify Slider::getValueTextAlignment() const
-{
+  Font::Justify Slider::getValueTextAlignment() const
+  {
     return _valueTextAlignment;
-}
+  }
 
-void Slider::setValueTextPrecision(unsigned int precision)
-{
+  void Slider::setValueTextPrecision(unsigned int precision)
+  {
     _valueTextPrecision = precision;
-}
+  }
 
-unsigned int Slider::getValueTextPrecision() const
-{
+  unsigned int Slider::getValueTextPrecision() const
+  {
     return _valueTextPrecision;
-}
+  }
 
-void Slider::addListener(Control::Listener* listener, int eventFlags)
-{
+  void Slider::addListener(Control::Listener* listener, int eventFlags)
+  {
     if ((eventFlags & Control::Listener::TEXT_CHANGED) == Control::Listener::TEXT_CHANGED)
     {
-        GP_ERROR("TEXT_CHANGED event is not applicable to Slider.");
+      GP_ERROR("TEXT_CHANGED event is not applicable to Slider.");
     }
 
     Control::addListener(listener, eventFlags);
-}
+  }
 
-void Slider::updateValue(int x, int y)
-{
+  void Slider::updateValue(int x, int y)
+  {
     State state = getState();
 
     // Horizontal case.
@@ -175,170 +175,170 @@ void Slider::updateValue(int x, int y)
     const Rectangle& markerRegion = _markerImage->getRegion();
 
     float markerPosition = (x - markerRegion.width * 0.5f) / (_viewportBounds.width - markerRegion.width);
-            
+
     if (markerPosition > 1.0f)
     {
-        markerPosition = 1.0f;
+      markerPosition = 1.0f;
     }
     else if (markerPosition < 0.0f)
     {
-        markerPosition = 0.0f;
+      markerPosition = 0.0f;
     }
 
     float value = (markerPosition * (_max - _min)) + _min;
     if (_step > 0.0f)
-    {            
-        int numSteps = round(value / _step);
-        value = _step * numSteps;
+    {
+      int numSteps = round(value / _step);
+      value = _step * numSteps;
     }
 
     setValue(value);
-}
+  }
 
-bool Slider::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
-{
+  bool Slider::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
+  {
     State state = getState();
 
     switch (evt)
     {
     case Touch::TOUCH_PRESS:
-        updateValue(x, y);
-        return true;
+      updateValue(x, y);
+      return true;
 
     case Touch::TOUCH_MOVE:
-        if (state == ACTIVE)
-        {
-            updateValue(x, y);
-            return true;
-        }
-        break;
+      if (state == ACTIVE)
+      {
+        updateValue(x, y);
+        return true;
+      }
+      break;
     }
 
     return Control::touchEvent(evt, x, y, contactIndex);
-}
+  }
 
-static bool isScrollable(Container* container)
-{
+  static bool isScrollable(Container* container)
+  {
     if (container->getScroll() != Container::SCROLL_NONE)
-        return true;
+      return true;
 
     Container* parent = static_cast<Container*>(container->getParent());
     return parent ? isScrollable(parent) : false;
-}
+  }
 
-bool Slider::mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelDelta)
-{
+  bool Slider::mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelDelta)
+  {
     switch (evt)
     {
-        case Mouse::MOUSE_WHEEL:
+    case Mouse::MOUSE_WHEEL:
+    {
+      if (hasFocus() && !isScrollable(_parent))
+      {
+        float total = _max - _min;
+        float value = _value + (total * SCROLLWHEEL_FRACTION) * wheelDelta;
+
+        if (_step > 0.0f)
         {
-            if (hasFocus() && !isScrollable(_parent))
-            {
-                float total = _max - _min;
-                float value = _value + (total * SCROLLWHEEL_FRACTION) * wheelDelta;
-
-                if (_step > 0.0f)
-                {            
-                    int numSteps = round(value / _step);
-                    value = _step * numSteps;
-                }
-
-                setValue(value);
-                return true;
-            }
-            break;
+          int numSteps = round(value / _step);
+          value = _step * numSteps;
         }
 
-        default:
-            break;
+        setValue(value);
+        return true;
+      }
+      break;
+    }
+
+    default:
+      break;
     }
 
     // Return false to fall through to touch handling
     return false;
-}
+  }
 
-bool Slider::gamepadJoystickEvent(Gamepad* gamepad, unsigned int index)
-{
+  bool Slider::gamepadJoystickEvent(Gamepad* gamepad, unsigned int index)
+  {
     // The right analog stick can be used to change a slider's value.
     if (index == 1)
     {
-        Vector2 joy;
-        gamepad->getJoystickValues(index, &joy);
-        _gamepadValue = _value;
-        _delta = joy.x;
-        return true;
+      Vector2 joy;
+      gamepad->getJoystickValues(index, &joy);
+      _gamepadValue = _value;
+      _delta = joy.x;
+      return true;
     }
     return Label::gamepadJoystickEvent(gamepad, index);
-}
+  }
 
-bool Slider::keyEvent(Keyboard::KeyEvent evt, int key)
-{
+  bool Slider::keyEvent(Keyboard::KeyEvent evt, int key)
+  {
     switch (evt)
     {
     case Keyboard::KEY_PRESS:
-        switch (key)
+      switch (key)
+      {
+      case Keyboard::KEY_LEFT_ARROW:
+        if (_step > 0.0f)
         {
-        case Keyboard::KEY_LEFT_ARROW:
-            if (_step > 0.0f)
-            {
-                setValue(std::max(_value - _step, _min));
-            }
-            else
-            {
-                setValue(std::max(_value - (_max - _min) * MOVE_FRACTION, _min));
-            }
-            return true;
-
-        case Keyboard::KEY_RIGHT_ARROW:
-            if (_step > 0.0f)
-            {
-                setValue(std::min(_value + _step, _max));
-            }
-            else
-            {
-                setValue(std::min(_value + (_max - _min) * MOVE_FRACTION, _max));
-            }
-            return true;
+          setValue(std::max(_value - _step, _min));
         }
-        break;
+        else
+        {
+          setValue(std::max(_value - (_max - _min) * MOVE_FRACTION, _min));
+        }
+        return true;
+
+      case Keyboard::KEY_RIGHT_ARROW:
+        if (_step > 0.0f)
+        {
+          setValue(std::min(_value + _step, _max));
+        }
+        else
+        {
+          setValue(std::min(_value + (_max - _min) * MOVE_FRACTION, _max));
+        }
+        return true;
+      }
+      break;
     }
 
     return Control::keyEvent(evt, key);
-}
+  }
 
-void Slider::update(float elapsedTime)
-{
+  void Slider::update(float elapsedTime)
+  {
     Label::update(elapsedTime);
 
     if (_delta != 0.0f)
     {
-        float total = _max - _min;
+      float total = _max - _min;
 
-        if (_step > 0.0f)
-        {
-            _gamepadValue += (total * MOVE_FRACTION) * _delta;
-            int numSteps = round(_gamepadValue / _step);
-            setValue(_step * numSteps);
-        }
-        else
-        {
-            setValue(_value + (total * MOVE_FRACTION) * _delta);
-        }
+      if (_step > 0.0f)
+      {
+        _gamepadValue += (total * MOVE_FRACTION) * _delta;
+        int numSteps = round(_gamepadValue / _step);
+        setValue(_step * numSteps);
+      }
+      else
+      {
+        setValue(_value + (total * MOVE_FRACTION) * _delta);
+      }
     }
-}
+  }
 
-void Slider::updateState(State state)
-{
+  void Slider::updateState(State state)
+  {
     Label::updateState(state);
 
     _minImage = getImage("minCap", state);
     _maxImage = getImage("maxCap", state);
     _markerImage = getImage("marker", state);
     _trackImage = getImage("track", state);
-}
+  }
 
-void Slider::updateBounds()
-{
+  void Slider::updateBounds()
+  {
     Label::updateBounds();
 
     // Compute height of track (max of track, min/max and marker
@@ -349,17 +349,17 @@ void Slider::updateBounds()
 
     if (_autoSize & AUTO_SIZE_HEIGHT)
     {
-        float height = _bounds.height + _trackHeight;
-        if (_valueTextVisible)
-            height += getFontSize(NORMAL);
-        setHeightInternal(height);
+      float height = _bounds.height + _trackHeight;
+      if (_valueTextVisible)
+        height += getFontSize(NORMAL);
+      setHeightInternal(height);
     }
-}
+  }
 
-unsigned int Slider::drawImages(Form* form, const Rectangle& clip)
-{
+  unsigned int Slider::drawImages(Form* form, const Rectangle& clip)
+  {
     if (!(_minImage && _maxImage && _markerImage && _trackImage))
-        return 0;
+      return 0;
 
     // TODO: Vertical slider.
 
@@ -396,51 +396,51 @@ unsigned int Slider::drawImages(Form* form, const Rectangle& clip)
     float startY, endY;
     if (_text.length() > 0)
     {
-        if (_valueTextVisible)
+      if (_valueTextVisible)
+      {
+        // Both label and value text are visible.
+        // Draw slider in the middle.
+        startY = fontSize;
+        endY = _viewportBounds.height - fontSize;
+      }
+      else
+      {
+        // Only label is visible
+        if (getTextAlignment(state) & ALIGN_BOTTOM)
         {
-            // Both label and value text are visible.
-            // Draw slider in the middle.
-            startY = fontSize;
-            endY = _viewportBounds.height - fontSize;
+          // Draw slider above label
+          startY = 0;
+          endY = _viewportBounds.height - fontSize;
         }
         else
         {
-            // Only label is visible
-            if (getTextAlignment(state) & ALIGN_BOTTOM)
-            {
-                // Draw slider above label
-                startY = 0;
-                endY = _viewportBounds.height - fontSize;
-            }
-            else
-            {
-                // Draw slider below label
-                startY = fontSize;
-                endY = _viewportBounds.height;
-            }
+          // Draw slider below label
+          startY = fontSize;
+          endY = _viewportBounds.height;
         }
+      }
     }
     else if (_valueTextVisible)
     {
-        // Only value text is visible.
-        if (_valueTextAlignment & ALIGN_BOTTOM)
-        {
-            // Draw slider above value text
-            startY = 0;
-            endY = _viewportBounds.height - fontSize;
-        }
-        else
-        {
-            // Draw slider below value text
-            startY = fontSize;
-            endY = _viewportBounds.height;
-        }
+      // Only value text is visible.
+      if (_valueTextAlignment & ALIGN_BOTTOM)
+      {
+        // Draw slider above value text
+        startY = 0;
+        endY = _viewportBounds.height - fontSize;
+      }
+      else
+      {
+        // Draw slider below value text
+        startY = fontSize;
+        endY = _viewportBounds.height;
+      }
     }
     else
     {
-        // Only the slider track is visible
-        startY = 0;
-        endY = _viewportBounds.height;
+      // Only the slider track is visible
+      startY = 0;
+      endY = _viewportBounds.height;
     }
 
     // Compute midpoint of track location
@@ -469,26 +469,26 @@ unsigned int Slider::drawImages(Form* form, const Rectangle& clip)
     finishBatch(form, batch);
 
     return 4;
-}
+  }
 
-unsigned int Slider::drawText(Form* form, const Rectangle& clip)
-{
+  unsigned int Slider::drawText(Form* form, const Rectangle& clip)
+  {
     unsigned int drawCalls = Label::drawText(form, clip);
 
     if (_valueTextVisible && _font)
     {
-        Control::State state = getState();
-        unsigned int fontSize = getFontSize(state);
+      Control::State state = getState();
+      unsigned int fontSize = getFontSize(state);
 
-        SpriteBatch* batch = _font->getSpriteBatch(fontSize);
-        startBatch(form, batch);
-        _font->drawText(_valueText.c_str(), _textBounds, _textColor, fontSize, _valueTextAlignment, true, getTextRightToLeft(state), _viewportClipBounds);
-        finishBatch(form, batch);
+      SpriteBatch* batch = _font->getSpriteBatch(fontSize);
+      startBatch(form, batch);
+      _font->drawText(_valueText.c_str(), _textBounds, _textColor, fontSize, _valueTextAlignment, true, getTextRightToLeft(state), _viewportClipBounds);
+      finishBatch(form, batch);
 
-        ++drawCalls;
+      ++drawCalls;
     }
 
     return drawCalls;
-}
+  }
 
 }

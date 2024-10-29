@@ -370,7 +370,7 @@ namespace gameplay
     }
 
     // Load materials for all patches
-    std::ranges::for_each(terrain->_patches, 
+    std::ranges::for_each(terrain->_patches,
       [](const auto& patch) {patch->updateMaterial(); });
 
     return terrain;

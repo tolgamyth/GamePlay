@@ -11,41 +11,41 @@ using namespace gameplay;
 class SpriteSample : public Sample
 {
 public:
-    
-    enum Movement
-    {
-        WALK_FORWARD    = (1 << 0),
-        WALK_BACKWARD   = (1 << 1),
-    };
 
-    SpriteSample();
+  enum Movement
+  {
+    WALK_FORWARD = (1 << 0),
+    WALK_BACKWARD = (1 << 1),
+  };
 
-    void keyEvent(Keyboard::KeyEvent evt, int key);
-    
-    void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
+  SpriteSample();
+
+  void keyEvent(Keyboard::KeyEvent evt, int key);
+
+  void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
 
 protected:
 
-    void initialize();
+  void initialize();
 
-    void finalize();
+  void finalize();
 
-    void update(float elapsedTime);
+  void update(float elapsedTime);
 
-    void render(float elapsedTime);
+  void render(float elapsedTime);
 
 private:
-    
-    bool drawScene(Node* node);
-    
-    float getTime() const;
 
-    Font* _font;
-    Scene* _scene;
-    Node* _cameraNode;
-    Sprite* _playerSprite;
-    Node* _playerNode;
-    Animation* _playerAnimation;
-    int _playerMovement;
-    
+  bool drawScene(Node* node);
+
+  float getTime() const;
+
+  Font* _font;
+  Scene* _scene;
+  Node* _cameraNode;
+  Sprite* _playerSprite;
+  Node* _playerNode;
+  Animation* _playerAnimation;
+  int _playerMovement;
+
 };

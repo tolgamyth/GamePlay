@@ -5,20 +5,20 @@
 namespace gameplay
 {
 
-/**
- * Defines a control representing a joystick (axis).
- *
- * This is used in virtual Gamepad instances.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class JoystickControl : public Control
-{
+  /**
+   * Defines a control representing a joystick (axis).
+   *
+   * This is used in virtual Gamepad instances.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class JoystickControl : public Control
+  {
     friend class Container;
     friend class Gamepad;
-	friend class ControlFactory;
+    friend class ControlFactory;
 
-public:
+  public:
 
     /**
      * Creates a new Joystick control.
@@ -55,7 +55,7 @@ public:
 
     /**
      * Gets the value (2-dimensional direction) of the joystick.
-     * 
+     *
      * @return The value of the joystick.
      */
     const Vector2& getValue() const;
@@ -63,7 +63,7 @@ public:
     /**
      * Sets the image size of the inner region of the joystick. Does not do anything if there is no
      * inner image region defined.
-     * 
+     *
      * @param size The size of the inner region of the joystick. (x, y) == (width, height)
      * @param isWidthPercentage If the width value should be computed as a percentage of the relative size of this control
      * @param isHeightPercentage If the height value should be computed as a percentage of the relative size of this control
@@ -73,7 +73,7 @@ public:
     /**
      * Gets the image size of the inner region of the joystick. Returns (0,0) if there is no inner image
      * region defined.
-     * 
+     *
      * @param isWidthPercentage Set to true if the width value is a percentage value of the relative size of this control
      * @param isHeightPercentage Set to true if the height value is a percentage value of the relative size of this control
      *
@@ -84,7 +84,7 @@ public:
     /**
      * Sets the image size of the outer region of the joystick. Does not do anything if there is no
      * outer image region defined.
-     * 
+     *
      * @param size The size of the outer region of the joystick. (x, y) == (width, height)
      * @param isWidthPercentage If the width value should be computed as a percentage of the relative size of this control
      * @param isHeightPercentage If the height value should be computed as a percentage of the relative size of this control
@@ -97,14 +97,14 @@ public:
      *
      * @param isWidthPercentage Set to true if the width value is a percentage value of the relative size of this control
      * @param isHeightPercentage Set to true if the height value is a percentage value of the relative size of this control
-     * 
+     *
      * @return The image size of the outer region of the joystick. (x, y) == (width, height)
      */
     const Vector2& getOuterRegionSize(bool* isWidthPercentage = nullptr, bool* isHeightPercentage = nullptr) const;
 
     /**
      * Sets whether relative positioning is enabled or not.
-     * 
+     *
      * Note: The default behavior is absolute positioning, and not relative.
      *
      * @param relative Whether relative positioning should be enabled or not.
@@ -113,7 +113,7 @@ public:
 
     /**
      * Gets whether absolute positioning is enabled or not.
-     * 
+     *
      * Note: The default behavior is absolute positioning, and not relative.
      *
      * @return <code>true</code> if relative positioning is enabled; <code>false</code> otherwise.
@@ -149,8 +149,8 @@ public:
      */
     bool isRadiusPercentage() const;
 
-protected:
-    
+  protected:
+
     /**
      * Constructor.
      */
@@ -166,7 +166,7 @@ protected:
      *
      * @param style The style to apply to this joystick.
      * @param properties A properties object containing a definition of the joystick.
-	 *
+   *
      * @return The new joystick.
      */
     static Control* create(Theme::Style* style, Properties* properties = nullptr);
@@ -200,7 +200,7 @@ protected:
      */
     unsigned int drawImages(Form* form, const Rectangle& clip);
 
-private:
+  private:
 
     JoystickControl(const JoystickControl& copy);
 
@@ -212,7 +212,7 @@ private:
 
     Vector2 getPixelSize(const Theme::ThemeImage* image) const;
 
-    Theme::ThemeImage * getNonEmptyImage(const char* id, Control::State state);
+    Theme::ThemeImage* getNonEmptyImage(const char* id, Control::State state);
 
     void updateAbsoluteSizes();
 
@@ -231,6 +231,6 @@ private:
     Vector2 _value;
     Vector2 _displacement;
     unsigned int _index;
-};
+  };
 
 }

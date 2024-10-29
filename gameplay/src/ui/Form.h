@@ -14,30 +14,30 @@
 namespace gameplay
 {
 
-class Theme;
+  class Theme;
 
-/**
- * Defines a form that is a root container that contains zero or more controls.
- *
- * This can also be attached on a scene Node to support 3D forms.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class Form : public Drawable, public Container
-{
+  /**
+   * Defines a form that is a root container that contains zero or more controls.
+   *
+   * This can also be attached on a scene Node to support 3D forms.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class Form : public Drawable, public Container
+  {
     friend class Platform;
     friend class Game;
     friend class Gamepad;
     friend class Control;
     friend class Container;
 
-public:
+  public:
 
     /**
      * Creates a form from a .form properties file.
-     * 
-     * @param url The URL pointing to the Properties object defining the form. 
-     * 
+     *
+     * @param url The URL pointing to the Properties object defining the form.
+     *
      * @return The new form or nullptr if there was an error.
      * @script{create}
      */
@@ -45,14 +45,14 @@ public:
 
     /**
      * Create a new Form.
-	 *
-	 * The specified style defines the visual style for the form. If nullptr is passed
-	 * for the style, the default UI theme is used. All controls attached to this
-	 * form will inherit the theme that contains the form's style.
+   *
+   * The specified style defines the visual style for the form. If nullptr is passed
+   * for the style, the default UI theme is used. All controls attached to this
+   * form will inherit the theme that contains the form's style.
      *
      * @param id The Form's ID.
      * @param style The Form's custom style (optional - may be nullptr).
-	 * @param layoutType The form's layout type (optional).
+   * @param layoutType The form's layout type (optional).
      *
      * @return The new Form.
      * @script{create}
@@ -67,7 +67,7 @@ public:
      * @return A form with the given ID, or null if one was not found.
      */
     static Form* getForm(const char* id);
-    
+
     /**
      * Returns the currently active control within the UI system.
      *
@@ -139,8 +139,8 @@ public:
      */
     void setBatchingEnabled(bool enabled);
 
-private:
-    
+  private:
+
     /**
      * Constructor.
      */
@@ -159,7 +159,7 @@ private:
     /**
      * @see Drawable::clone
      */
-    Drawable* clone(NodeCloneContext &context);
+    Drawable* clone(NodeCloneContext& context);
 
     /**
      * @see Control::initialize
@@ -278,6 +278,6 @@ private:
     Matrix _projectionMatrix;           // Projection matrix to be set on SpriteBatch objects when rendering the form
     std::vector<SpriteBatch*> _batches;
     bool _batched;
-};
+  };
 
 }

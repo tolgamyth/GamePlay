@@ -3,17 +3,17 @@
 namespace gameplay
 {
 
-class Node;
-class NodeCloneContext;
+  class Node;
+  class NodeCloneContext;
 
-/**
- * Defines a drawable object that can be attached to a Node.
- */
-class Drawable
-{
+  /**
+   * Defines a drawable object that can be attached to a Node.
+   */
+  class Drawable
+  {
     friend class Node;
 
-public:
+  public:
 
     /**
      * Constructor.
@@ -41,7 +41,7 @@ public:
      */
     Node* getNode() const;
 
-protected:
+  protected:
 
     /**
      * Clones the drawable and returns a new drawable.
@@ -62,6 +62,6 @@ protected:
      * Node this drawable is attached to.
      */
     Node* _node;
-};
+  };
 
 }

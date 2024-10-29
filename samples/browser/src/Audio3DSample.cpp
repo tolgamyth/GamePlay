@@ -294,7 +294,7 @@ void Audio3DSample::addSound(const std::string& file)
     node = _cubeNode->clone();
     node->setId(file.c_str());
     node->setAudioSource(audioSource);
-        audioSource->release();
+    audioSource->release();
 
     _audioNodes[path] = node;
     node->addRef();

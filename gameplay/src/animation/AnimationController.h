@@ -8,44 +8,44 @@
 namespace gameplay
 {
 
-/**
- * Defines a class for controlling game animation.
- */
-class AnimationController
-{
+  /**
+   * Defines a class for controlling game animation.
+   */
+  class AnimationController
+  {
     friend class Game;
     friend class Animation;
     friend class AnimationClip;
     friend class SceneLoader;
 
-public:
+  public:
 
-  /**
-   * Constructor.
-   */
-  AnimationController();
+    /**
+     * Constructor.
+     */
+    AnimationController();
 
-  /**
-   * Destructor.
-   */
-  ~AnimationController();
+    /**
+     * Destructor.
+     */
+    ~AnimationController();
 
-    /** 
+    /**
      * Stops all AnimationClips currently playing on the AnimationController.
      */
     void stopAllAnimations();
-       
-private:
+
+  private:
 
     /**
      * The states that the AnimationController may be in.
      */
     enum State
     {
-        RUNNING,
-        IDLE,
-        PAUSED,
-        STOPPED
+      RUNNING,
+      IDLE,
+      PAUSED,
+      STOPPED
     };
 
     /**
@@ -74,7 +74,7 @@ private:
      * Resumes the AnimationController.
      */
     void resume();
-    
+
     /**
      * Pauses the AnimationController.
      */
@@ -89,15 +89,15 @@ private:
      * Unschedules an AnimationClip.
      */
     void unschedule(AnimationClip* clip);
-    
+
     /**
      * Callback for when the controller receives a frame update event.
      */
     void update(float elapsedTime);
-    
+
     State _state;                                 // The current state of the AnimationController.
     std::list<AnimationClip*> _runningClips;      // A list of running AnimationClips.
-};
+  };
 
 }
 

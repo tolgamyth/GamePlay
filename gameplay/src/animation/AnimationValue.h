@@ -5,14 +5,14 @@
 namespace gameplay
 {
 
-/**
- * Defines a running animation value which can have one or more floats.
- */
-class AnimationValue
-{
+  /**
+   * Defines a running animation value which can have one or more floats.
+   */
+  class AnimationValue
+  {
     friend class AnimationClip;
 
-public:
+  public:
 
     /**
      * Gets the value at the specified index.
@@ -49,7 +49,7 @@ public:
      */
     void setFloats(unsigned int index, float* values, unsigned int count);
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -80,6 +80,6 @@ private:
     unsigned int _componentSize;    // The number of bytes of memory the property is.
     float* _value;                  // The current value of the property.
 
-};
+  };
 
 }

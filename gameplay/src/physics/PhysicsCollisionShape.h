@@ -6,30 +6,30 @@
 
 namespace gameplay
 {
-    class Node;
-    class Properties;
+  class Node;
+  class Properties;
 
-/**
- * Defines the physics collision shape class that all supported shapes derive from.
- */
-class PhysicsCollisionShape : public Ref
-{
+  /**
+   * Defines the physics collision shape class that all supported shapes derive from.
+   */
+  class PhysicsCollisionShape : public Ref
+  {
     friend class PhysicsController;
     friend class PhysicsRigidBody;
 
-public:
+  public:
 
     /**
      * Defines the supported collision shape types.
      */
     enum Type
     {
-        SHAPE_NONE,
-        SHAPE_BOX,
-        SHAPE_SPHERE,
-        SHAPE_CAPSULE,
-        SHAPE_MESH,
-        SHAPE_HEIGHTFIELD
+      SHAPE_NONE,
+      SHAPE_BOX,
+      SHAPE_SPHERE,
+      SHAPE_CAPSULE,
+      SHAPE_MESH,
+      SHAPE_HEIGHTFIELD
     };
 
     /**
@@ -37,85 +37,85 @@ public:
      * during collision shape construction time.
      *
      * Use the static methods on the PhysicsCollisionShape class to return
-     * 
+     *
      */
     struct Definition
     {
-        friend class PhysicsCollisionShape;
-        friend class PhysicsController;
-        friend class PhysicsRigidBody;
-        friend class PhysicsCharacter;
-        friend class PhysicsGhostObject;
+      friend class PhysicsCollisionShape;
+      friend class PhysicsController;
+      friend class PhysicsRigidBody;
+      friend class PhysicsCharacter;
+      friend class PhysicsGhostObject;
 
     public:
 
-        /**
-         * Constructor.
-         */
-        Definition();
+      /**
+       * Constructor.
+       */
+      Definition();
 
-        /** 
-         * Constructs a new Definition that is a copy of the specified Definition.
-         *
-         * @param definition The Definition to copy.
-         */ 
-        Definition(const Definition& definition);
+      /**
+       * Constructs a new Definition that is a copy of the specified Definition.
+       *
+       * @param definition The Definition to copy.
+       */
+      Definition(const Definition& definition);
 
-        /**
-         * Assigns the specified Definition as the Definition.
-         *
-         * @param definition The Definition to assign to the Definition.
-         */
-        Definition& operator=(const Definition& definition);
-        
-        /**
-         * Destructor.
-         */
-        ~Definition();
+      /**
+       * Assigns the specified Definition as the Definition.
+       *
+       * @param definition The Definition to assign to the Definition.
+       */
+      Definition& operator=(const Definition& definition);
 
-        /**
-         * Determines if this is an empty/undefined collision shape definition.
-         */
-        bool isEmpty() const;
+      /**
+       * Destructor.
+       */
+      ~Definition();
+
+      /**
+       * Determines if this is an empty/undefined collision shape definition.
+       */
+      bool isEmpty() const;
 
     private:
 
-        /**
-         * Creates a PhysicsCollisionShape::Definition object from the given properties object (for the given node).
-         * 
-         * @param node The node to create the PhysicsCollisionShape::Definition object for.
-         * @param properties The properties object to create the PhysicsCollisionShape::Definition object from.
-         * @return A PhysicsCollisionShape::Definition object.
-         */
-        static Definition create(Node* node, Properties* properties);
+      /**
+       * Creates a PhysicsCollisionShape::Definition object from the given properties object (for the given node).
+       *
+       * @param node The node to create the PhysicsCollisionShape::Definition object for.
+       * @param properties The properties object to create the PhysicsCollisionShape::Definition object from.
+       * @return A PhysicsCollisionShape::Definition object.
+       */
+      static Definition create(Node* node, Properties* properties);
 
-        // Shape type.
-        PhysicsCollisionShape::Type type;
+      // Shape type.
+      PhysicsCollisionShape::Type type;
 
-        // Shape data.
-        struct BoxData { float center[3], extents[3]; };
-        struct SphereData { float center[3]; float radius; };
-        struct CapsuleData { float center[3]; float radius, height; };
+      // Shape data.
+      struct BoxData { float center[3], extents[3]; };
+      struct SphereData { float center[3]; float radius; };
+      struct CapsuleData { float center[3]; float radius, height; };
 
-        union
-        {
-            /** @script{ignore} */
-            BoxData box;
-            /** @script{ignore} */
-            SphereData sphere;
-            /** @script{ignore} */
-            CapsuleData capsule;
-            /** @script{ignore} */
-            HeightField* heightfield;
-            /** @script{ignore} */
-            Mesh* mesh;
-        } data;
+      union
+      {
+        /** @script{ignore} */
+        BoxData box;
+        /** @script{ignore} */
+        SphereData sphere;
+        /** @script{ignore} */
+        CapsuleData capsule;
+        /** @script{ignore} */
+        HeightField* heightfield;
+        /** @script{ignore} */
+        Mesh* mesh;
+      } data;
 
-        // Whether the shape definition is explicit, or if it is inherited from node bounds.
-        bool isExplicit;
+      // Whether the shape definition is explicit, or if it is inherited from node bounds.
+      bool isExplicit;
 
-        // Whether the center position is absolute or relative to the node position.
-        bool centerAbsolute;
+      // Whether the center position is absolute or relative to the node position.
+      bool centerAbsolute;
     };
 
     /**
@@ -133,7 +133,7 @@ public:
      */
     btCollisionShape* getShape() const
     {
-        return _shape;
+      return _shape;
     }
 
     /**
@@ -215,7 +215,7 @@ public:
      * height are the dimensions of the passed in height array and maxHeight is the maximum
      * height value in the height array.
      *
-     * Heightfield rigid bodies are always assumed be Y-up (height value on the Y axis) and 
+     * Heightfield rigid bodies are always assumed be Y-up (height value on the Y axis) and
      * be centered around the X and Z axes.
      *
      * The heightfield can be scaled once a PhysicsRigidBody has been created for it, using the
@@ -234,21 +234,21 @@ public:
      */
     static PhysicsCollisionShape::Definition mesh(Mesh* mesh);
 
-private:
+  private:
 
     struct MeshData
     {
-        float* vertexData;
-        std::vector<unsigned char*> indexData;
+      float* vertexData;
+      std::vector<unsigned char*> indexData;
     };
 
     struct HeightfieldData
     {
-        HeightField* heightfield;
-        bool inverseIsDirty;
-        Matrix inverse;
-        float minHeight;
-        float maxHeight;
+      HeightField* heightfield;
+      bool inverseIsDirty;
+      Matrix inverse;
+      float minHeight;
+      float maxHeight;
     };
 
     /**
@@ -256,7 +256,7 @@ private:
      */
     PhysicsCollisionShape(Type type, btCollisionShape* shape, btStridingMeshInterface* meshInterface = nullptr);
 
-    /** 
+    /**
      * Hidden copy constructor.
      */
     PhysicsCollisionShape(const PhysicsCollisionShape& copy);
@@ -278,12 +278,12 @@ private:
     // Shape specific cached data
     union
     {
-        /** @script{ignore} */
-        MeshData* meshData;
-        /** @script{ignore} */
-        HeightfieldData* heightfieldData;
+      /** @script{ignore} */
+      MeshData* meshData;
+      /** @script{ignore} */
+      HeightfieldData* heightfieldData;
     } _shapeData;
 
-};
+  };
 
 }

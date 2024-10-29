@@ -7,36 +7,36 @@
 namespace gameplay
 {
 
-class Node;
-class NodeCloneContext;
+  class Node;
+  class NodeCloneContext;
 
-/**
- * Defines a light. 
- *
- * There are 3 types of lights that can be created
- * directional, point and spot lights.
- */
-class Light : public Ref
-{
+  /**
+   * Defines a light.
+   *
+   * There are 3 types of lights that can be created
+   * directional, point and spot lights.
+   */
+  class Light : public Ref
+  {
     friend class Node;
 
-public:
+  public:
 
     /**
      * Defines the supported light types.
      */
     enum Type
     {
-        DIRECTIONAL = 1,
-        POINT = 2,
-        SPOT = 3
+      DIRECTIONAL = 1,
+      POINT = 2,
+      SPOT = 3
     };
 
     /**
      * Creates a directional light.
-     * 
+     *
      * @param color Color of the light.
-     * 
+     *
      * @return The new directional light.
      * @script{create}
      */
@@ -44,11 +44,11 @@ public:
 
     /**
      * Creates a directional light.
-     * 
+     *
      * @param red The red channel.
      * @param green The green channel.
      * @param blue The blue channel.
-     * 
+     *
      * @return The new directional light.
      * @script{create}
      */
@@ -56,10 +56,10 @@ public:
 
     /**
      * Creates a point light.
-     * 
+     *
      * @param color The light's color.
      * @param range The light's range.
-     * 
+     *
      * @return The new point light.
      * @script{create}
      */
@@ -67,12 +67,12 @@ public:
 
     /**
      * Creates a point light.
-     * 
+     *
      * @param red The red channel.
      * @param green The green channel.
      * @param blue The blue channel.
      * @param range The light's range.
-     * 
+     *
      * @return The new point light.
      * @script{create}
      */
@@ -80,12 +80,12 @@ public:
 
     /**
      * Creates a spot light.
-     * 
+     *
      * @param color The light's color.
      * @param range The light's range.
      * @param innerAngle The light's inner angle (in radians).
      * @param outerAngle The light's outer angle (in radians).
-     * 
+     *
      * @return The new spot light.
      * @script{create}
      */
@@ -93,14 +93,14 @@ public:
 
     /**
      * Creates a spot light.
-     * 
+     *
      * @param red The red channel.
      * @param green The green channel.
      * @param blue The blue channel.
      * @param range The light's range.
      * @param innerAngle The light's inner angle (in radians).
      * @param outerAngle The light's outer angle (in radians).
-     * 
+     *
      * @return The new spot light.
      * @script{create}
      */
@@ -131,28 +131,28 @@ public:
 
     /**
      * Returns the light type.
-     * 
+     *
      * @return The light type.
      */
     Type getLightType() const;
 
     /**
      * Gets the light color.
-     * 
+     *
      * @return The light color.
      */
     const Vector3& getColor() const;
 
     /**
      * Sets the light color.
-     * 
+     *
      * @param color The light color to set.
      */
     void setColor(const Vector3& color);
 
     /**
      * Sets the light color.
-     * 
+     *
      * @param red The red channel.
      * @param green The green channel.
      * @param blue The blue channel.
@@ -161,13 +161,13 @@ public:
 
     /**
      * Returns the node associated with this light.
-     * 
+     *
      * @return The node associated with this light.
      */
     Node* getNode() const;
 
     /**
-     * Returns the Range of the point or spot light. 
+     * Returns the Range of the point or spot light.
      *
      * @return The range of the point or spot light.
      */
@@ -229,7 +229,7 @@ public:
      */
     float getOuterAngleCos() const;
 
-private:
+  private:
 
     /**
      * Directional light data.
@@ -237,9 +237,9 @@ private:
     class Directional
     {
     public:
-        Vector3 color;
+      Vector3 color;
 
-        Directional(const Vector3& color);
+      Directional(const Vector3& color);
     };
 
     /**
@@ -248,11 +248,11 @@ private:
     class Point
     {
     public:
-        Vector3 color;
-        float range;
-        float rangeInverse;
+      Vector3 color;
+      float range;
+      float rangeInverse;
 
-        Point(const Vector3& color, float range);
+      Point(const Vector3& color, float range);
     };
 
     /**
@@ -261,15 +261,15 @@ private:
     class Spot
     {
     public:
-        Vector3 color;
-        float range;
-        float rangeInverse;
-        float innerAngle;
-        float innerAngleCos;
-        float outerAngle;
-        float outerAngleCos;
+      Vector3 color;
+      float range;
+      float rangeInverse;
+      float innerAngle;
+      float innerAngleCos;
+      float outerAngle;
+      float outerAngleCos;
 
-        Spot(const Vector3& color, float range, float innerAngle, float outerAngle);
+      Spot(const Vector3& color, float range, float innerAngle, float outerAngle);
     };
 
     /**
@@ -289,31 +289,31 @@ private:
 
     /**
      * Sets the node associated with this light.
-     * 
+     *
      * @param node The node to be associated with this light.
      */
     void setNode(Node* node);
 
     /**
      * Clones the light and returns a new light.
-     * 
+     *
      * @param context The clone context.
      * @return The newly created light.
      */
     Light* clone(NodeCloneContext& context);
 
     Light::Type _type;
-    
+
     union
     {
-        /** @script{ignore} */
-        Directional* _directional;
-        /** @script{ignore} */
-        Point* _point;
-        /** @script{ignore} */
-        Spot* _spot;
+      /** @script{ignore} */
+      Directional* _directional;
+      /** @script{ignore} */
+      Point* _point;
+      /** @script{ignore} */
+      Spot* _spot;
     };
     Node* _node;
-};
+  };
 
 }

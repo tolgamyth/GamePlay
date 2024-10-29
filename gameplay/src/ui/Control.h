@@ -14,16 +14,16 @@
 namespace gameplay
 {
 
-class Container;
-class Form;
+  class Container;
+  class Form;
 
-/**
- * Defines the base class for all controls.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
- */
-class Control : public Ref, public AnimationTarget, public ScriptTarget
-{
+  /**
+   * Defines the base class for all controls.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
+   */
+  class Control : public Ref, public AnimationTarget, public ScriptTarget
+  {
     friend class Form;
     friend class Container;
 
@@ -31,38 +31,38 @@ class Control : public Ref, public AnimationTarget, public ScriptTarget
     GP_SCRIPT_EVENT(controlEvent, "<Control>[Control::Listener::EventType]");
     GP_SCRIPT_EVENTS_END();
 
-public:
+  public:
 
     /**
      * The possible states a control can be in.
      */
     enum State
     {
-        /**
-         * State of an enabled but inactive control.
-         */
-        NORMAL = 0x01,
+      /**
+       * State of an enabled but inactive control.
+       */
+      NORMAL = 0x01,
 
-        /**
-         * State of a control when it is currently in focus.
-         */
-        FOCUS = 0x02,
+      /**
+       * State of a control when it is currently in focus.
+       */
+      FOCUS = 0x02,
 
-        /**
-         * State of a control that is currently being acted on,
-         * e.g. through touch or mouse-click events.
-         */
-        ACTIVE = 0x04,
+      /**
+       * State of a control that is currently being acted on,
+       * e.g. through touch or mouse-click events.
+       */
+      ACTIVE = 0x04,
 
-        /**
-         * State of a control that has been disabled.
-         */
-        DISABLED = 0x08,
+      /**
+       * State of a control that has been disabled.
+       */
+      DISABLED = 0x08,
 
-        /**
-         * When a mouse is in use, the state of a control the cursor is over.
-         */
-        HOVER = 0x10,
+      /**
+       * When a mouse is in use, the state of a control the cursor is over.
+       */
+      HOVER = 0x10,
     };
 
     /**
@@ -70,26 +70,26 @@ public:
      */
     enum Alignment
     {
-        // Specify horizontal alignment, use default vertical alignment (ALIGN_TOP).
-        ALIGN_LEFT = 0x01,
-        ALIGN_HCENTER = 0x02,
-        ALIGN_RIGHT = 0x04,
-    
-        // Specify vertical alignment, use default horizontal alignment (ALIGN_LEFT).
-        ALIGN_TOP = 0x10,
-        ALIGN_VCENTER = 0x20,
-        ALIGN_BOTTOM = 0x40,
+      // Specify horizontal alignment, use default vertical alignment (ALIGN_TOP).
+      ALIGN_LEFT = 0x01,
+      ALIGN_HCENTER = 0x02,
+      ALIGN_RIGHT = 0x04,
 
-        // Specify both vertical and horizontal alignment.
-        ALIGN_TOP_LEFT = ALIGN_TOP | ALIGN_LEFT,
-        ALIGN_VCENTER_LEFT = ALIGN_VCENTER | ALIGN_LEFT,
-        ALIGN_BOTTOM_LEFT = ALIGN_BOTTOM | ALIGN_LEFT,
-        ALIGN_TOP_HCENTER = ALIGN_TOP | ALIGN_HCENTER,
-        ALIGN_VCENTER_HCENTER = ALIGN_VCENTER | ALIGN_HCENTER,
-        ALIGN_BOTTOM_HCENTER = ALIGN_BOTTOM | ALIGN_HCENTER,
-        ALIGN_TOP_RIGHT = ALIGN_TOP | ALIGN_RIGHT,
-        ALIGN_VCENTER_RIGHT = ALIGN_VCENTER | ALIGN_RIGHT,
-        ALIGN_BOTTOM_RIGHT = ALIGN_BOTTOM | ALIGN_RIGHT
+      // Specify vertical alignment, use default horizontal alignment (ALIGN_LEFT).
+      ALIGN_TOP = 0x10,
+      ALIGN_VCENTER = 0x20,
+      ALIGN_BOTTOM = 0x40,
+
+      // Specify both vertical and horizontal alignment.
+      ALIGN_TOP_LEFT = ALIGN_TOP | ALIGN_LEFT,
+      ALIGN_VCENTER_LEFT = ALIGN_VCENTER | ALIGN_LEFT,
+      ALIGN_BOTTOM_LEFT = ALIGN_BOTTOM | ALIGN_LEFT,
+      ALIGN_TOP_HCENTER = ALIGN_TOP | ALIGN_HCENTER,
+      ALIGN_VCENTER_HCENTER = ALIGN_VCENTER | ALIGN_HCENTER,
+      ALIGN_BOTTOM_HCENTER = ALIGN_BOTTOM | ALIGN_HCENTER,
+      ALIGN_TOP_RIGHT = ALIGN_TOP | ALIGN_RIGHT,
+      ALIGN_VCENTER_RIGHT = ALIGN_VCENTER | ALIGN_RIGHT,
+      ALIGN_BOTTOM_RIGHT = ALIGN_BOTTOM | ALIGN_RIGHT
     };
 
     /**
@@ -97,25 +97,25 @@ public:
      */
     enum AutoSize
     {
-        /**
-         * No auto sizing is applied.
-         */
-        AUTO_SIZE_NONE = 0x00,
+      /**
+       * No auto sizing is applied.
+       */
+      AUTO_SIZE_NONE = 0x00,
 
-        /**
-         * The control's width is set to tightly fit its contents.
-         */
-        AUTO_SIZE_WIDTH = 0x01,
+      /**
+       * The control's width is set to tightly fit its contents.
+       */
+      AUTO_SIZE_WIDTH = 0x01,
 
-        /**
-        * The control's height is set to tightly fit its contents.
-        */
-        AUTO_SIZE_HEIGHT = 0x02,
+      /**
+      * The control's height is set to tightly fit its contents.
+      */
+      AUTO_SIZE_HEIGHT = 0x02,
 
-        /**
-         * The control's width and height are set to tightly fit its contents.
-         */
-        AUTO_SIZE_BOTH = (AUTO_SIZE_WIDTH | AUTO_SIZE_HEIGHT)
+      /**
+       * The control's width and height are set to tightly fit its contents.
+       */
+      AUTO_SIZE_BOTH = (AUTO_SIZE_WIDTH | AUTO_SIZE_HEIGHT)
     };
 
     /**
@@ -126,76 +126,76 @@ public:
     {
     public:
 
+      /**
+       * Defines the Listener's event types.
+       */
+      enum EventType
+      {
         /**
-         * Defines the Listener's event types.
+         * Mouse-down or touch-press event.
          */
-        enum EventType
-        {
-            /**
-             * Mouse-down or touch-press event.
-             */
-            PRESS           = 0x01,
-
-            /**
-             * Mouse-up or touch-release event.
-             */
-            RELEASE         = 0x02,
-
-            /**
-             * Event triggered after consecutive PRESS and RELEASE events take place
-             * within the bounds of a control.
-             */
-            CLICK           = 0x04,
-
-            /**
-             * Event triggered when the value of a slider, check box, or radio button
-             * changes.
-             */
-            VALUE_CHANGED   = 0x08,
-
-            /**
-             * Event triggered when the contents of a text box are modified.
-             */
-            TEXT_CHANGED    = 0x10,
-
-            /**
-             * Event triggered when a control is clicked with the middle mouse button.
-             */
-            MIDDLE_CLICK    = 0x20,
-
-            /**
-             * Event triggered when a control is clicked with the right mouse button.
-             */
-            RIGHT_CLICK     = 0x40,
-
-            /**
-             * Event triggered when a control is activated in another manner (such as pressing enter in text control)
-             */
-            ACTIVATED       = 0x80,
-
-            /**
-             * Event triggered when a control gains focus.
-             */
-            FOCUS_GAINED    = 0x200,
-
-            /**
-             * Event triggered when a control loses focus.
-             */
-            FOCUS_LOST      = 0x400
-        };
-
-        /*
-         * Destructor.
-         */
-        virtual ~Listener() { }
+        PRESS = 0x01,
 
         /**
-         * Method called by controls when an event is triggered.
-         * 
-         * @param control The control triggering the event.
-         * @param evt The event triggered.
+         * Mouse-up or touch-release event.
          */
-        virtual void controlEvent(Control* control, EventType evt) = 0;
+        RELEASE = 0x02,
+
+        /**
+         * Event triggered after consecutive PRESS and RELEASE events take place
+         * within the bounds of a control.
+         */
+        CLICK = 0x04,
+
+        /**
+         * Event triggered when the value of a slider, check box, or radio button
+         * changes.
+         */
+        VALUE_CHANGED = 0x08,
+
+        /**
+         * Event triggered when the contents of a text box are modified.
+         */
+        TEXT_CHANGED = 0x10,
+
+        /**
+         * Event triggered when a control is clicked with the middle mouse button.
+         */
+        MIDDLE_CLICK = 0x20,
+
+        /**
+         * Event triggered when a control is clicked with the right mouse button.
+         */
+        RIGHT_CLICK = 0x40,
+
+        /**
+         * Event triggered when a control is activated in another manner (such as pressing enter in text control)
+         */
+        ACTIVATED = 0x80,
+
+        /**
+         * Event triggered when a control gains focus.
+         */
+        FOCUS_GAINED = 0x200,
+
+        /**
+         * Event triggered when a control loses focus.
+         */
+        FOCUS_LOST = 0x400
+      };
+
+      /*
+       * Destructor.
+       */
+      virtual ~Listener() { }
+
+      /**
+       * Method called by controls when an event is triggered.
+       *
+       * @param control The control triggering the event.
+       * @param evt The event triggered.
+       */
+      virtual void controlEvent(Control* control, EventType evt) = 0;
     };
 
     /**
@@ -256,12 +256,12 @@ public:
      */
     const char* getId() const;
 
-	/**
-	 * Sets this control's ID string.
-	 *
-	 * @param id The new control ID.
-	 */
-	void setId(const char* id);
+    /**
+     * Sets this control's ID string.
+     *
+     * @param id The new control ID.
+     */
+    void setId(const char* id);
 
     /**
      * Get the x coordinate of this control.
@@ -419,7 +419,7 @@ public:
      * Get the absolute bounds of this control, in pixels, including border and padding,
      * before clipping.
      *
-     * The absolute bounds of a control represents its final computed bounds after all 
+     * The absolute bounds of a control represents its final computed bounds after all
      * alignment, auto sizing, relative position and sizing has been computed. The
      * returned bounds is in absolute coordinates, relative to the control's top-most
      * parent container (usually its form).
@@ -483,7 +483,7 @@ public:
     void setBorder(float top, float bottom, float left, float right, unsigned char states = STATE_ALL);
 
     /**
-     * Get the measurements of this control's border for a given state. 
+     * Get the measurements of this control's border for a given state.
      *
      * @return This control's border.
      */
@@ -644,7 +644,7 @@ public:
      * @return The blend color of this control's cursor.
      */
     const Vector4& getCursorColor(State state);
-    
+
     /**
      * Get the texture coordinates of this control's cursor for a given state.
      *
@@ -777,7 +777,7 @@ public:
     void setOpacity(float opacity, unsigned char states = STATE_ALL);
 
     /**
-     * Get the opacity of this control for a given state. 
+     * Get the opacity of this control for a given state.
      *
      * @param state The state to get this property from.
      *
@@ -785,12 +785,12 @@ public:
      */
     float getOpacity(State state = NORMAL) const;
 
-	/**
-	 * Enables/Disables a control. 
-	 *
-	 * @param enabled true if the control is enabled; false if disabled.
-	 */
-	virtual void setEnabled(bool enabled);
+    /**
+     * Enables/Disables a control.
+     *
+     * @param enabled true if the control is enabled; false if disabled.
+     */
+    virtual void setEnabled(bool enabled);
 
     /**
      * Get whether this control is currently enabled.
@@ -930,7 +930,7 @@ public:
     Control* getParent() const;
 
     /**
-     * Determines if this control is a child (at any level of hierarchy) of the 
+     * Determines if this control is a child (at any level of hierarchy) of the
      * specified control.
      *
      * @param control The control to check.
@@ -959,7 +959,7 @@ public:
 
     /**
      * Removes a listener from this control.
-     * 
+     *
      * @param listener The listener to remove.
      */
     virtual void removeListener(Control::Listener* listener);
@@ -979,7 +979,7 @@ public:
      */
     virtual void setAnimationPropertyValue(int propertyId, AnimationValue* value, float blendWeight = 1.0f);
 
-protected:
+  protected:
 
     /**
      *  Constant value representing an unset or invalid contact index.
@@ -1111,7 +1111,7 @@ protected:
      *            If evt is KEY_CHAR then key is the unicode value of the character.
      *
      * @return Whether the key event was consumed by this control.
-     * 
+     *
      * @see Keyboard::KeyEvent
      * @see Keyboard::Key
      */
@@ -1142,7 +1142,7 @@ protected:
      * Gamepad callback on gamepad trigger changes.
      *
      * @param gamepad The gamepad whose one or more buttons have changed.
-     * @param index The index of the trigger that changed. 
+     * @param index The index of the trigger that changed.
      */
     virtual bool gamepadTriggerEvent(Gamepad* gamepad, unsigned int index);
 
@@ -1359,9 +1359,9 @@ protected:
      */
     static bool parseCoordPair(const char* s, float* v1, float* v2, bool* v1Percentage, bool* v2Percentage);
 
-    /** 
+    /**
      * The Control's ID.
-     */ 
+     */
     std::string _id;
 
     /**
@@ -1413,22 +1413,22 @@ protected:
      * Flag for whether the Control consumes input events.
      */
     bool _consumeInputEvents;
-    
+
     /**
      * The Control's Alignment
      */
     Alignment _alignment;
-    
+
     /**
      * The Control's auto size mode.
      */
     AutoSize _autoSize;
-    
+
     /**
      * Listeners map of EventType's to a list of Listeners.
      */
     std::map<Control::Listener::EventType, std::list<Control::Listener*>*>* _listeners;
-    
+
     /**
      * The Control's Theme::Style.
      */
@@ -1443,7 +1443,7 @@ protected:
      * The current opacity of the control.
      */
     float _opacity;
-    
+
     /**
      * The z-order of the control.
      */
@@ -1474,11 +1474,11 @@ protected:
      */
     Container* _parent;
 
-private:
+  private:
 
     /*
      * Constructor.
-     */    
+     */
     Control(const Control& copy);
 
     bool updateBoundsInternal(const Vector2& offset);
@@ -1506,6 +1506,6 @@ private:
     bool _styleOverridden;
     Theme::Skin* _skin;
 
-};
+  };
 
 }

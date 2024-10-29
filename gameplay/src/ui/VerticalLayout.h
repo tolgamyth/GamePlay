@@ -6,18 +6,18 @@
 namespace gameplay
 {
 
-/**
- * Defines a vertical layout.
- *
- * Controls are placed next to one another vertically until
- * the bottom-most edge of the container is reached.
- */
-class VerticalLayout : public Layout
-{
+  /**
+   * Defines a vertical layout.
+   *
+   * Controls are placed next to one another vertically until
+   * the bottom-most edge of the container is reached.
+   */
+  class VerticalLayout : public Layout
+  {
     friend class Form;
     friend class Container;
 
-public:
+  public:
 
     /**
      * Set whether this layout will start laying out controls from the bottom of the container.
@@ -55,7 +55,7 @@ public:
      */
     void setSpacing(int spacing);
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -88,7 +88,7 @@ protected:
      */
     int _spacing;
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -102,6 +102,6 @@ private:
      */
     static VerticalLayout* create();
 
-};
+  };
 
 }

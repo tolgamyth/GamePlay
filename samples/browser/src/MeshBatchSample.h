@@ -12,37 +12,37 @@ class MeshBatchSample : public Sample
 {
 public:
 
-    MeshBatchSample();
+  MeshBatchSample();
 
-    void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
+  void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
 
 protected:
 
-    void initialize();
+  void initialize();
 
-    void finalize();
+  void finalize();
 
-    void update(float elapsedTime);
+  void update(float elapsedTime);
 
-    void render(float elapsedTime);
+  void render(float elapsedTime);
 
 private:
 
-    void addTriangle(int x, int y);
+  void addTriangle(int x, int y);
 
-    struct Vertex
-    {
-        Vector3 position;
-        Vector3 color;
+  struct Vertex
+  {
+    Vector3 position;
+    Vector3 color;
 
-        Vertex() { }
+    Vertex() { }
 
-        Vertex(const Vector3& position, const Vector3& color) : position(position), color(color) { }
-    };
+    Vertex(const Vector3& position, const Vector3& color) : position(position), color(color) { }
+  };
 
-    Font* _font;
-    MeshBatch* _meshBatch;
-    Matrix _worldViewProjectionMatrix;
-    std::vector<Vertex> _vertices;
-    double _lastTriangleAdded;
+  Font* _font;
+  MeshBatch* _meshBatch;
+  Matrix _worldViewProjectionMatrix;
+  std::vector<Vertex> _vertices;
+  double _lastTriangleAdded;
 };

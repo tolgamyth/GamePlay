@@ -324,7 +324,7 @@ namespace gameplay
       if (id == nullptr)
         return (*itr)->_animation;
 
-      for (auto& channel :*_animationChannels)
+      for (auto& channel : *_animationChannels)
       {
         assert(channel);
         assert(channel->_animation);
@@ -439,9 +439,9 @@ namespace gameplay
       }
 
       for (const auto& channelPtr : *_animationChannels) {
-        
+
         assert(channelPtr);
-        
+
         if (channelPtr->_animation->_id.compare(id) == 0) {
           // Found!
           return channelPtr;

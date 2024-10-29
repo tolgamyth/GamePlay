@@ -12,24 +12,24 @@ class TriangleSample : public Sample
 {
 public:
 
-    TriangleSample();
+  TriangleSample();
 
-    void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
+  void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
 
 protected:
 
-    void initialize();
+  void initialize();
 
-    void finalize();
+  void finalize();
 
-    void update(float elapsedTime);
+  void update(float elapsedTime);
 
-    void render(float elapsedTime);
+  void render(float elapsedTime);
 
 private:
 
-    Font* _font;
-    Model* _model;
-    float _spinDirection;
-    Matrix _worldViewProjectionMatrix;
+  Font* _font;
+  Model* _model;
+  float _spinDirection;
+  Matrix _worldViewProjectionMatrix;
 };

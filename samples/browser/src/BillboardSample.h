@@ -9,48 +9,48 @@ using namespace gameplay;
 /**
  * Sample for 3D billboarding with cloud sprites
  */
-class BillboardSample: public Sample
+class BillboardSample : public Sample
 {
 public:
 
-    BillboardSample();
-    
-    void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
-    
-    void keyEvent(Keyboard::KeyEvent evt, int key);
-   
-    bool mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelDelta);
+  BillboardSample();
 
-    void gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad);
+  void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
+
+  void keyEvent(Keyboard::KeyEvent evt, int key);
+
+  bool mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelDelta);
+
+  void gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad);
 
 protected:
 
-    void initialize();
+  void initialize();
 
-    void finalize();
+  void finalize();
 
-    void update(float elapsedTime);
+  void update(float elapsedTime);
 
-    void render(float elapsedTime);
-
-private:
-
-	void loadGround();
-
-    void loadBillboards();
-
-    bool drawScene(Node* node);
+  void render(float elapsedTime);
 
 private:
 
-    FirstPersonCamera _camera;
-	std::vector<Node*> _billboards;
-    Font* _font;
-	Scene* _scene;
-	Model* _ground;
-    Gamepad* _gamepad;
-    unsigned int _moveFlags;
-    int _prevX;
-    int _prevY;
-    bool _buttonPressed;
+  void loadGround();
+
+  void loadBillboards();
+
+  bool drawScene(Node* node);
+
+private:
+
+  FirstPersonCamera _camera;
+  std::vector<Node*> _billboards;
+  Font* _font;
+  Scene* _scene;
+  Model* _ground;
+  Gamepad* _gamepad;
+  unsigned int _moveFlags;
+  int _prevX;
+  int _prevY;
+  bool _buttonPressed;
 };

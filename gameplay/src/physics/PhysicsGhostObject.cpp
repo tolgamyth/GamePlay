@@ -6,9 +6,9 @@
 namespace gameplay
 {
 
-PhysicsGhostObject::PhysicsGhostObject(Node* node, const PhysicsCollisionShape::Definition& shape, int group, int mask)
+  PhysicsGhostObject::PhysicsGhostObject(Node* node, const PhysicsCollisionShape::Definition& shape, int group, int mask)
     : PhysicsCollisionObject(node, group, mask), _ghostObject(nullptr)
-{
+  {
     Vector3 centerOfMassOffset;
     PhysicsController* physicsController = Game::getInstance()->getPhysicsController();
     assert(physicsController);
@@ -31,10 +31,10 @@ PhysicsGhostObject::PhysicsGhostObject(Node* node, const PhysicsCollisionShape::
 
     assert(_node);
     _node->addListener(this);
-}
+  }
 
-PhysicsGhostObject::~PhysicsGhostObject()
-{
+  PhysicsGhostObject::~PhysicsGhostObject()
+  {
     assert(_node);
     _node->removeListener(this);
 
@@ -42,56 +42,56 @@ PhysicsGhostObject::~PhysicsGhostObject()
     Game::getInstance()->getPhysicsController()->removeCollisionObject(this, true);
 
     SAFE_DELETE(_ghostObject);
-}
+  }
 
-PhysicsGhostObject* PhysicsGhostObject::create(Node* node, Properties* properties)
-{
+  PhysicsGhostObject* PhysicsGhostObject::create(Node* node, Properties* properties)
+  {
     // Check if the properties is valid and has a valid namespace.
     if (!properties || !(strcmp(properties->getNamespace(), "collisionObject") == 0))
     {
-        GP_ERROR("Failed to load ghost object from properties object: must be non-null object and have namespace equal to 'collisionObject'.");
-        return nullptr;
+      GP_ERROR("Failed to load ghost object from properties object: must be non-null object and have namespace equal to 'collisionObject'.");
+      return nullptr;
     }
 
     // Check that the type is specified and correct.
     const char* type = properties->getString("type");
     if (!type)
     {
-        GP_ERROR("Failed to load ghost object from properties object; required attribute 'type' is missing.");
-        return nullptr;
+      GP_ERROR("Failed to load ghost object from properties object; required attribute 'type' is missing.");
+      return nullptr;
     }
     if (strcmp(type, "GHOST_OBJECT") != 0)
     {
-        GP_ERROR("Failed to load ghost object from properties object; attribute 'type' must be equal to 'GHOST_OBJECT'.");
-        return nullptr;
+      GP_ERROR("Failed to load ghost object from properties object; attribute 'type' must be equal to 'GHOST_OBJECT'.");
+      return nullptr;
     }
 
     // Load the physics collision shape definition.
     PhysicsCollisionShape::Definition shape = PhysicsCollisionShape::Definition::create(node, properties);
     if (shape.isEmpty())
     {
-        GP_ERROR("Failed to create collision shape during ghost object creation.");
-        return nullptr;
+      GP_ERROR("Failed to create collision shape during ghost object creation.");
+      return nullptr;
     }
 
     // Create the ghost object.
     PhysicsGhostObject* ghost = new PhysicsGhostObject(node, shape);
 
     return ghost;
-}
+  }
 
-PhysicsCollisionObject::Type PhysicsGhostObject::getType() const
-{
+  PhysicsCollisionObject::Type PhysicsGhostObject::getType() const
+  {
     return GHOST_OBJECT;
-}
+  }
 
-btCollisionObject* PhysicsGhostObject::getCollisionObject() const
-{
+  btCollisionObject* PhysicsGhostObject::getCollisionObject() const
+  {
     return _ghostObject;
-}
+  }
 
-void PhysicsGhostObject::transformChanged(Transform* transform, long cookie)
-{
+  void PhysicsGhostObject::transformChanged(Transform* transform, long cookie)
+  {
     assert(_motionState);
     assert(_ghostObject);
 
@@ -100,6 +100,6 @@ void PhysicsGhostObject::transformChanged(Transform* transform, long cookie)
 
     // Update the transform on the ghost object.
     _motionState->getWorldTransform(_ghostObject->getWorldTransform());
-}
+  }
 
 }

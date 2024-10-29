@@ -228,10 +228,10 @@ namespace gameplay
       // to each element of _controls, resulting in a range of _focusIndex values.
       // std::ranges::max : This finds the maximum value directly from the transformed range of focus indices, simplifying the code.
       int maxFocusIndex = 0;
-      if(!_controls.empty())
+      if (!_controls.empty())
         maxFocusIndex = std::ranges::max(_controls | std::views::transform([](const Control* c) {
-          return c->getFocusIndex();
-        }));
+        return c->getFocusIndex();
+          }));
 
       control->setFocusIndex(maxFocusIndex + 1);
     }

@@ -2,17 +2,17 @@
 
 namespace gameplay
 {
-/**
- * Defines a math utility class.
- *
- * This is primarily used for optimized internal math operations.
- */
-class MathUtil
-{
+  /**
+   * Defines a math utility class.
+   *
+   * This is primarily used for optimized internal math operations.
+   */
+  class MathUtil
+  {
     friend class Matrix;
     friend class Vector3;
 
-public:
+  public:
 
     /**
      * Updates the given scalar towards the given target using a smoothing function.
@@ -43,7 +43,7 @@ public:
      */
     static void smooth(float* x, float target, float elapsedTime, float riseTime, float fallTime);
 
-private:
+  private:
 
     inline static void addMatrix(const float* m, float scalar, float* dst);
 
@@ -66,7 +66,7 @@ private:
     inline static void crossVector3(const float* v1, const float* v2, float* dst);
 
     MathUtil();
-};
+  };
 
 }
 

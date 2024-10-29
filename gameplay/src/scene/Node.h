@@ -18,23 +18,23 @@
 namespace gameplay
 {
 
-class Scene;
-class Camera;
-class Light;
-class AudioSource;
-class AIAgent;
-class Drawable;
+  class Scene;
+  class Camera;
+  class Light;
+  class AudioSource;
+  class AIAgent;
+  class Drawable;
 
-/**
- * Defines a hierarchical structure of objects in 3D transformation spaces.
- *
- * This object allow you to attach components to a scene such as:
- * Drawable's(Model, Camera, Light, PhysicsCollisionObject, AudioSource, etc.
- *
- * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Node
- */
-class Node : public Transform, public Ref
-{
+  /**
+   * Defines a hierarchical structure of objects in 3D transformation spaces.
+   *
+   * This object allow you to attach components to a scene such as:
+   * Drawable's(Model, Camera, Light, PhysicsCollisionObject, AudioSource, etc.
+   *
+   * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Node
+   */
+  class Node : public Transform, public Ref
+  {
     friend class Scene;
     friend class SceneLoader;
     friend class Bundle;
@@ -49,15 +49,15 @@ class Node : public Transform, public Ref
     GP_SCRIPT_EVENT(stateUpdate, "<Node><AIState>f");
     GP_SCRIPT_EVENTS_END();
 
-public:
+  public:
 
     /**
      * Defines the types of nodes.
      */
     enum Type
     {
-        NODE = 1,
-        JOINT
+      NODE = 1,
+      JOINT
     };
 
     /**
@@ -536,10 +536,10 @@ public:
      * @param mask Bitmask to filter groups of objects to collide with this one.
      */
     PhysicsCollisionObject* setCollisionObject(PhysicsCollisionObject::Type type,
-                                               const PhysicsCollisionShape::Definition& shape = PhysicsCollisionShape::box(),
-                                               PhysicsRigidBody::Parameters* rigidBodyParameters = nullptr,
-                                               int group = PHYSICS_COLLISION_GROUP_DEFAULT,
-                                               int mask = PHYSICS_COLLISION_MASK_DEFAULT);
+      const PhysicsCollisionShape::Definition& shape = PhysicsCollisionShape::box(),
+      PhysicsRigidBody::Parameters* rigidBodyParameters = nullptr,
+      int group = PHYSICS_COLLISION_GROUP_DEFAULT,
+      int mask = PHYSICS_COLLISION_MASK_DEFAULT);
     /**
      * Sets the physics collision object for this node using the data from the Properties object defined at the specified URL,
      * where the URL is of the format "<file-path>.<extension>#<namespace-id>/<namespace-id>/.../<namespace-id>"
@@ -606,7 +606,7 @@ public:
      */
     Node* clone() const;
 
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -625,7 +625,7 @@ protected:
      *
      * @return Pointer to the newly created node.
      */
-    virtual Node* cloneSingleNode(NodeCloneContext &context) const;
+    virtual Node* cloneSingleNode(NodeCloneContext& context) const;
 
     /**
      * Recursively clones this node and its children.
@@ -634,7 +634,7 @@ protected:
      *
      * @return The newly created node.
      */
-    Node* cloneRecursive(NodeCloneContext &context) const;
+    Node* cloneRecursive(NodeCloneContext& context) const;
 
     /**
      * Copies the data from this node into the given node.
@@ -642,7 +642,7 @@ protected:
      * @param node The node to copy the data to.
      * @param context The clone context.
      */
-    void cloneInto(Node* node, NodeCloneContext &context) const;
+    void cloneInto(Node* node, NodeCloneContext& context) const;
 
     /**
      * Removes this node from its parent.
@@ -691,13 +691,13 @@ protected:
      * @param exactMatch true if only nodes whose ID exactly matches the specified ID are returned,
      *        or false if nodes that start with the given ID are returned.
      * @param skipSkin Set true to skip skin hierarchy, initial find may set false to include skin hierarchy.
-     * 
+     *
      * @return The number of matches found.
      * @script{ignore}
      */
     unsigned int findNodes(const char* id, std::vector<Node*>& nodes, bool recursive, bool exactMatch, bool skipSkin) const;
 
-private:
+  private:
 
     /**
      * Hidden copy constructor.
@@ -711,7 +711,7 @@ private:
 
     PhysicsCollisionObject* setCollisionObject(Properties* properties);
 
-protected:
+  protected:
 
     /** The scene this node is attached to. */
     Scene* _scene;
@@ -728,7 +728,7 @@ protected:
     /** The number of child nodes. */
     unsigned int _childCount;
     /** If this node is enabled. Maybe different if parent is enabled/disabled. */
-    bool _enabled; 
+    bool _enabled;
     /** Tags assigned to this node. */
     std::map<std::string, std::string>* _tags;
     /** The drawble component attached to this node. */
@@ -751,15 +751,15 @@ protected:
     mutable BoundingSphere _bounds;
     /** The dirty bits used for optimization. */
     mutable int _dirtyBits;
-};
+  };
 
-/**
- * NodeCloneContext represents the context data that is kept when cloning a node.
- * The NodeCloneContext is used to make sure objects don't get cloned twice.
- */
-class NodeCloneContext
-{
-public:
+  /**
+   * NodeCloneContext represents the context data that is kept when cloning a node.
+   * The NodeCloneContext is used to make sure objects don't get cloned twice.
+   */
+  class NodeCloneContext
+  {
+  public:
 
     /**
      * Constructor.
@@ -805,7 +805,7 @@ public:
      */
     void registerClonedNode(const Node* original, Node* clone);
 
-private:
+  private:
 
     /**
      * Hidden copy constructor.
@@ -819,6 +819,6 @@ private:
 
     std::map<const Animation*, Animation*> _clonedAnimations;
     std::map<const Node*, Node*> _clonedNodes;
-};
+  };
 
 }

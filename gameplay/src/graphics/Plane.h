@@ -5,20 +5,20 @@
 namespace gameplay
 {
 
-class BoundingSphere;
-class BoundingBox;
-class Frustum;
-class Ray;
+  class BoundingSphere;
+  class BoundingBox;
+  class Frustum;
+  class Ray;
 
-/**
- * Defines a plane which is a flat surface with 2 sides.
- *
- * The plane is represented as a plane using a 3D vector normal and a
- * distance value (stored as a negative value).
- */
-class Plane
-{
-public:
+  /**
+   * Defines a plane which is a flat surface with 2 sides.
+   *
+   * The plane is represented as a plane using a 3D vector normal and a
+   * distance value (stored as a negative value).
+   */
+  class Plane
+  {
+  public:
 
     /**
      * Represents when a 3D entity intersects a plane.
@@ -50,7 +50,7 @@ public:
 
     /**
      * Constructs a new plane from the specified values.
-     * 
+     *
      * @param normalX The x coordinate of the normal.
      * @param normalY The y coordinate of the normal.
      * @param normalZ The z coordinate of the normal.
@@ -86,7 +86,7 @@ public:
 
     /**
      * Sets the plane's normal.
-     * 
+     *
      * @param x The x coordinate of the normal.
      * @param y The y coordinate of the normal.
      * @param z The z coordinate of the normal.
@@ -130,7 +130,7 @@ public:
      * Tests whether this plane intersects the specified bounding sphere.
      *
      * @param sphere The bounding sphere to test intersection with.
-     * 
+     *
      * @return Plane::INTERSECTS_BACK if the specified bounding object is in the negative half-space of
      *  this plane, Plane::INTERSECTS_FRONT if it is in the positive half-space of this plane,
      *  and Plane::INTERSECTS_INTERSECTING if it intersects this plane.
@@ -141,7 +141,7 @@ public:
      * Tests whether this plane intersects the specified bounding box.
      *
      * @param box The bounding box to test intersection with.
-     * 
+     *
      * @return Plane::INTERSECTS_BACK if the specified bounding object is in the negative half-space of
      *  this plane, Plane::INTERSECTS_FRONT if it is in the positive half-space of this plane,
      *  and Plane::INTERSECTS_INTERSECTING if it intersects this plane.
@@ -152,7 +152,7 @@ public:
      * Tests whether this plane intersects the specified frustum.
      *
      * @param frustum The frustum to test intersection with.
-     * 
+     *
      * @return Plane::INTERSECTS_BACK if the specified frustum is in the negative half-space of
      *  this plane, Plane::INTERSECTS_FRONT if it is in the positive half-space of this plane,
      *  and Plane::INTERSECTS_INTERSECTING if it intersects this plane.
@@ -163,7 +163,7 @@ public:
      * Tests whether this plane intersects the specified plane.
      *
      * @param plane The plane to test intersection with.
-     * 
+     *
      * @return Plane::INTERSECTS_BACK if the specified plane is in the negative half-space of
      *  this plane, Plane::INTERSECTS_FRONT if it is in the positive half-space of this plane,
      *  and Plane::INTERSECTS_INTERSECTING if it intersects this plane.
@@ -174,7 +174,7 @@ public:
      * Tests whether this plane intersects the specified ray.
      *
      * @param ray The ray to test intersection with.
-     * 
+     *
      * @return Plane::INTERSECTS_BACK if the specified ray is in the negative half-space of
      *  this plane, Plane::INTERSECTS_FRONT if it is in the positive half-space of this plane,
      *  and Plane::INTERSECTS_INTERSECTING if it intersects this plane.
@@ -183,9 +183,9 @@ public:
 
     /**
      * Determines whether the given plane is parallel to this plane.
-     * 
+     *
      * @param plane The plane to test.
-     * 
+     *
      * @return true if the given plane is parallel to this plane; false otherwise.
      */
     bool isParallel(const Plane& plane) const;
@@ -214,13 +214,13 @@ public:
 
     /**
      * Transforms this plane by the given matrix.
-     * 
+     *
      * @param matrix The matrix to transform by.
      * @return This plane, after the transformation occurs.
      */
     inline Plane& operator*=(const Matrix& matrix);
 
-private:
+  private:
 
     /**
      * Normalizes this plane.
@@ -229,16 +229,16 @@ private:
 
     Vector3 _normal;    // The normal vector of the Plane.
     float _distance;    // The distance of the Plane along its normal from the origin.
-};
+  };
 
-/**
- * Transforms the given plane by the given matrix.
- * 
- * @param matrix The matrix to transform by.
- * @param plane The plane to transform.
- * @return The resulting transformed plane.
- */
-inline const Plane operator*(const Matrix& matrix, const Plane& plane);
+  /**
+   * Transforms the given plane by the given matrix.
+   *
+   * @param matrix The matrix to transform by.
+   * @param plane The plane to transform.
+   * @return The resulting transformed plane.
+   */
+  inline const Plane operator*(const Matrix& matrix, const Plane& plane);
 
 }
 
