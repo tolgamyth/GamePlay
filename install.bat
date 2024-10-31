@@ -7,9 +7,9 @@ REM
 REM Helps prevent repo bloat due to large binary files
 REM
 
-set prefix=https://github.com/gameplay3d/GamePlay/releases/download/v3.0.0
+set prefix=https://github.com/gameplay3d/gameplay/releases/download/v4.0.0
 
-set filename=gameplay-deps
+set filename=gameplay-deps-windows.zip
 
 echo Downloading %filename%.zip from %prefix%
 %~d0

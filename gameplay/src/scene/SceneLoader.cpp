@@ -143,12 +143,10 @@ namespace gameplay
     if (physics)
       loadPhysics(physics);
 
-    // Clean up all loaded properties objects.
-    std::map<std::string, Properties*>::iterator iter = _propertiesFromFile.begin();
-    for (; iter != _propertiesFromFile.end(); ++iter)
-    {
-      SAFE_DELETE(iter->second);
-    }
+    std::erase_if(_propertiesFromFile, [](auto& pair) {
+      SAFE_DELETE(pair.second);
+      return true; // erase each of them
+      });
 
     // Clean up the .scene file's properties object.
     SAFE_DELETE(properties);
@@ -167,9 +165,8 @@ namespace gameplay
     }
 
     // Process children
-    for (size_t i = 0, count = sceneNode._children.size(); i < count; ++i)
-    {
-      applyTags(sceneNode._children[i]);
+    for (auto& node : sceneNode._children) {
+      applyTags(node);
     }
   }
 
@@ -206,7 +203,7 @@ namespace gameplay
     SceneNodeProperty prop(type, str, index, isUrl);
 
     // Parse for wildcharacter character (only supported on the URL attribute)
-    if (type == SceneNodeProperty::URL)
+    if (type & SceneNodeProperty::URL)
     {
       if (str.length() > 1 && str.at(str.length() - 1) == '*')
       {
