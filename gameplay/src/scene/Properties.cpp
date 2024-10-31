@@ -950,11 +950,13 @@ namespace gameplay
     // Search for variable in this Properties object
     if (_variables)
     {
-      for (size_t i = 0, count = _variables->size(); i < count; ++i)
+      auto it = std::ranges::find_if(*_variables, [name](const Property& property) {
+          return property.name == name;
+        });
+
+      if (it != _variables->end())
       {
-        Property& prop = (*_variables)[i];
-        if (prop.name == name)
-          return prop.value.c_str();
+        return it->value.c_str();
       }
     }
 

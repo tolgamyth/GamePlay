@@ -127,6 +127,12 @@ namespace gameplay
 
     PhysicsConstraint* loadSpringConstraint(const Properties* constraint, PhysicsRigidBody* rbA, PhysicsRigidBody* rbB);
 
+    void processExactMatchNode(SceneNode& sceneNode, Node* parent, const std::string& id);
+
+    void processPartialMatchNodes(SceneNode& sceneNode, Node* parent, const std::string& id);
+
+    void processExternalFile(SceneNode& sceneNode, Node* parent, const std::string& file, const std::string& id);
+
     std::map<std::string, Properties*> _propertiesFromFile; // Holds the properties object for a given file.
     std::map<std::string, Properties*> _properties;         // Holds the properties object for a given URL.
     std::vector<SceneAnimation> _animations;                // Holds the animations declared in the .scene file.

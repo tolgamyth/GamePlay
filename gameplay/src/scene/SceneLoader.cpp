@@ -143,12 +143,10 @@ namespace gameplay
     if (physics)
       loadPhysics(physics);
 
-    // Clean up all loaded properties objects.
-    std::map<std::string, Properties*>::iterator iter = _propertiesFromFile.begin();
-    for (; iter != _propertiesFromFile.end(); ++iter)
-    {
-      SAFE_DELETE(iter->second);
-    }
+    std::erase_if(_propertiesFromFile, [](auto& pair) {
+      SAFE_DELETE(pair.second);
+      return true; // erase each of them
+      });
 
     // Clean up the .scene file's properties object.
     SAFE_DELETE(properties);
@@ -167,9 +165,8 @@ namespace gameplay
     }
 
     // Process children
-    for (size_t i = 0, count = sceneNode._children.size(); i < count; ++i)
-    {
-      applyTags(sceneNode._children[i]);
+    for (auto& node : sceneNode._children) {
+      applyTags(node);
     }
   }
 
@@ -206,7 +203,7 @@ namespace gameplay
     SceneNodeProperty prop(type, str, index, isUrl);
 
     // Parse for wildcharacter character (only supported on the URL attribute)
-    if (type == SceneNodeProperty::URL)
+    if (type & SceneNodeProperty::URL)
     {
       if (str.length() > 1 && str.at(str.length() - 1) == '*')
       {
@@ -221,9 +218,9 @@ namespace gameplay
 
   void SceneLoader::applyNodeProperties(const Properties* sceneProperties, unsigned int typeFlags)
   {
-    for (size_t i = 0, count = _sceneNodes.size(); i < count; ++i)
+    for (auto& node : _sceneNodes)
     {
-      applyNodeProperties(_sceneNodes[i], sceneProperties, typeFlags);
+      applyNodeProperties(node, sceneProperties, typeFlags);
     }
   }
 
@@ -235,15 +232,15 @@ namespace gameplay
       SceneNodeProperty& snp = sceneNode._properties[i];
       if (typeFlags & snp._type)
       {
-        for (size_t k = 0, ncount = sceneNode._nodes.size(); k < ncount; ++k)
-          applyNodeProperty(sceneNode, sceneNode._nodes[k], sceneProperties, snp);
+        for (auto& node : sceneNode._nodes)
+          applyNodeProperty(sceneNode, node, sceneProperties, snp);
       }
     }
 
     // Apply properties to child nodes
-    for (size_t i = 0, ccount = sceneNode._children.size(); i < ccount; ++i)
+    for (auto& child : sceneNode._children)
     {
-      applyNodeProperties(sceneNode._children[i], sceneProperties, typeFlags);
+      applyNodeProperties(child, sceneProperties, typeFlags);
     }
   }
 
@@ -486,103 +483,17 @@ namespace gameplay
         // IDs equal to IDs that were in the original GPB file but were changed in the scene file?
         if (sceneNode._exactMatch)
         {
-          Node* node = parent ? parent->findNode(id.c_str()) : _scene->findNode(id.c_str());
-          if (node)
-          {
-            node->setId(sceneNode._nodeID);
-          }
-          else
-          {
-            GP_ERROR("Could not find node '%s' in main scene GPB file.", id.c_str());
-          }
-          sceneNode._nodes.push_back(node);
+          processExactMatchNode(sceneNode, parent, id);
         }
         else
         {
-          // Search for nodes using a partial match
-          std::vector<Node*> nodes;
-          unsigned int nodeCount = parent ? parent->findNodes(id.c_str(), nodes, true, false) : _scene->findNodes(id.c_str(), nodes, true, false);
-          if (nodeCount > 0)
-          {
-            for (unsigned int k = 0; k < nodeCount; ++k)
-            {
-              // Construct a new node ID using _nodeID plus the remainder of the partial match.
-              Node* node = nodes[k];
-              std::string newID(sceneNode._nodeID);
-              newID += (node->getId() + id.length());
-              node->setId(newID.c_str());
-              sceneNode._nodes.push_back(node);
-            }
-          }
-          else
-          {
-            GP_ERROR("Could not find any nodes matching '%s' in main scene GPB file.", id.c_str());
-          }
+          processPartialMatchNodes(sceneNode, parent, id);
         }
       }
+      // An external file was referenced, so load the node(s) from file and then insert it into the scene with the new ID.
       else
       {
-        // An external file was referenced, so load the node(s) from file and then insert it into the scene with the new ID.
-
-        // TODO: Revisit this to determine if we should cache Bundle objects for the duration of the scene
-        // load to prevent constantly creating/destroying the same externally referenced bundles each time
-        // a url with a file is encountered.
-        Bundle* tmpBundle = Bundle::create(file.c_str());
-        if (tmpBundle)
-        {
-          if (sceneNode._exactMatch)
-          {
-            Node* node = tmpBundle->loadNode(id.c_str(), _scene);
-            if (node)
-            {
-              node->setId(sceneNode._nodeID);
-              parent ? parent->addChild(node) : _scene->addNode(node);
-              sceneNode._nodes.push_back(node);
-              SAFE_RELEASE(node);
-            }
-            else
-            {
-              GP_ERROR("Could not load node '%s' from GPB file '%s'.", id.c_str(), file.c_str());
-            }
-          }
-          else
-          {
-            // Search for nodes in the package using a partial match
-            unsigned int objectCount = tmpBundle->getObjectCount();
-            unsigned int matchCount = 0;
-            for (unsigned int k = 0; k < objectCount; ++k)
-            {
-              const char* objid = tmpBundle->getObjectId(k);
-              if (strstr(objid, id.c_str()) == objid)
-              {
-                // This object ID matches (starts with).
-                // Try to load this object as a Node.
-                Node* node = tmpBundle->loadNode(objid);
-                if (node)
-                {
-                  // Construct a new node ID using _nodeID plus the remainder of the partial match.
-                  std::string newID(sceneNode._nodeID);
-                  newID += (node->getId() + id.length());
-                  node->setId(newID.c_str());
-                  parent ? parent->addChild(node) : _scene->addNode(node);
-                  sceneNode._nodes.push_back(node);
-                  SAFE_RELEASE(node);
-                  matchCount++;
-                }
-              }
-            }
-            if (matchCount == 0)
-            {
-              GP_ERROR("Could not find any nodes matching '%s' in GPB file '%s'.", id.c_str(), file.c_str());
-            }
-          }
-
-          SAFE_RELEASE(tmpBundle);
-        }
-        else
-        {
-          GP_ERROR("Failed to load GPB file '%s' for node stitching.", file.c_str());
-        }
+        processExternalFile(sceneNode, parent, file, id);
       }
 
       // Remove the 'url' node property since we are done applying it.
@@ -611,12 +522,11 @@ namespace gameplay
     }
 
     // Apply to child nodes
-    for (size_t i = 0, count = sceneNode._nodes.size(); i < count; ++i)
+    for (auto& parent : sceneNode._nodes)
     {
-      Node* parent = sceneNode._nodes[i];
-      for (size_t j = 0, childCount = sceneNode._children.size(); j < childCount; ++j)
+      for (auto& child : sceneNode._children)
       {
-        applyNodeUrls(sceneNode._children[j], parent);
+        applyNodeUrls(child, parent);
       }
     }
   }
@@ -1276,41 +1186,131 @@ namespace gameplay
     return physicsConstraint;
   }
 
+  // TODO use string references instead pointers
   void splitURL(const std::string& url, std::string* file, std::string* id)
   {
-    if (url.empty())
-    {
-      // This is allowed since many scene node properties do not use the URL.
+    if (url.empty()) {
+      return; // Early exit if the URL is empty.
+    }
+
+    id->clear();
+    file->clear();
+
+    size_t loc = url.rfind("#");
+    if (loc != std::string::npos) {
+      *file = url.substr(0, loc);
+      *id = url.substr(loc + 1);
+    }
+    else {
+      *file = url; // No '#' means the entire URL is the file.
+    }
+
+    // Check if the file exists
+    if (!file->empty() && FileSystem::fileExists(file->c_str())) {
+      // If the file exists, the ID is already set correctly.
       return;
     }
 
-    // Check if the url references a file (otherwise, it only references some sort of ID)
-    size_t loc = url.rfind("#");
-    if (loc != std::string::npos)
+    // If the file does not exist, clear it and set the ID to the original URL
+    file->clear();
+    *id = url;
+  }
+
+  void SceneLoader::processExactMatchNode(SceneNode& sceneNode, Node* parent, const std::string& id)
+  {
+    Node* node = parent ? parent->findNode(id.c_str()) : _scene->findNode(id.c_str());
+    if (node) {
+      node->setId(sceneNode._nodeID);
+      sceneNode._nodes.push_back(node);
+    }
+    else {
+      GP_ERROR("Could not find node '%s' in main scene GPB file.", id.c_str());
+    }
+  }
+
+  void SceneLoader::processPartialMatchNodes(SceneNode& sceneNode, Node* parent, const std::string& id)
+  {
+    // Search for nodes using a partial match
+    std::vector<Node*> nodes;
+    unsigned int nodeCount = parent ? parent->findNodes(id.c_str(), nodes, true, false) : _scene->findNodes(id.c_str(), nodes, true, false);
+    if (nodeCount > 0)
     {
-      *file = url.substr(0, loc);
-      if (FileSystem::fileExists(file->c_str()))
+      for (unsigned int k = 0; k < nodeCount; ++k)
       {
-        *id = url.substr(loc + 1);
-      }
-      else
-      {
-        *file = std::string();
-        *id = url;
+        // Construct a new node ID using _nodeID plus the remainder of the partial match.
+        Node* node = nodes[k];
+        std::string newID(sceneNode._nodeID);
+        newID += (node->getId() + id.length());
+        node->setId(newID.c_str());
+        sceneNode._nodes.push_back(node);
       }
     }
     else
     {
-      if (FileSystem::fileExists(url.c_str()))
+      GP_ERROR("Could not find any nodes matching '%s' in main scene GPB file.", id.c_str());
+    }
+  }
+
+  void SceneLoader::processExternalFile(SceneNode& sceneNode, Node* parent, const std::string& file, const std::string& id)
+  {
+    // TODO: Revisit this to determine if we should cache Bundle objects for the duration of the scene
+    // load to prevent constantly creating/destroying the same externally referenced bundles each time
+    // a url with a file is encountered.
+    Bundle* tmpBundle = Bundle::create(file.c_str());
+    if (tmpBundle)
+    {
+      if (sceneNode._exactMatch)
       {
-        *file = url;
-        *id = std::string();
+        Node* node = tmpBundle->loadNode(id.c_str(), _scene);
+        if (node)
+        {
+          node->setId(sceneNode._nodeID);
+          parent ? parent->addChild(node) : _scene->addNode(node);
+          sceneNode._nodes.push_back(node);
+          SAFE_RELEASE(node);
+        }
+        else
+        {
+          GP_ERROR("Could not load node '%s' from GPB file '%s'.", id.c_str(), file.c_str());
+        }
       }
       else
       {
-        *file = std::string();
-        *id = url;
+        // Search for nodes in the package using a partial match
+        unsigned int objectCount = tmpBundle->getObjectCount();
+        unsigned int matchCount = 0;
+        for (unsigned int k = 0; k < objectCount; ++k)
+        {
+          const char* objid = tmpBundle->getObjectId(k);
+          if (strstr(objid, id.c_str()) == objid)
+          {
+            // This object ID matches (starts with).
+            // Try to load this object as a Node.
+            Node* node = tmpBundle->loadNode(objid);
+            if (node)
+            {
+              // Construct a new node ID using _nodeID plus the remainder of the partial match.
+              std::string newID(sceneNode._nodeID);
+              newID += (node->getId() + id.length());
+              node->setId(newID.c_str());
+              parent ? parent->addChild(node) : _scene->addNode(node);
+              sceneNode._nodes.push_back(node);
+              SAFE_RELEASE(node);
+              matchCount++;
+            }
+          }
+        }
+        if (matchCount == 0)
+        {
+          GP_ERROR("Could not find any nodes matching '%s' in GPB file '%s'.", id.c_str(), file.c_str());
+        }
       }
+
+      SAFE_RELEASE(tmpBundle);
+    }
+    else
+    {
+      GP_ERROR("Failed to load GPB file '%s' for node stitching.", file.c_str());
     }
   }
 
