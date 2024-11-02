@@ -246,16 +246,16 @@ namespace gameplay
 
   void SceneLoader::applyNodeProperty(SceneNode& sceneNode, Node* node, const Properties* sceneProperties, const SceneNodeProperty& snp)
   {
-    if (snp._type == SceneNodeProperty::AUDIO ||
-      snp._type == SceneNodeProperty::MATERIAL ||
-      snp._type == SceneNodeProperty::PARTICLE ||
-      snp._type == SceneNodeProperty::TERRAIN ||
-      snp._type == SceneNodeProperty::LIGHT ||
-      snp._type == SceneNodeProperty::CAMERA ||
-      snp._type == SceneNodeProperty::COLLISION_OBJECT ||
-      snp._type == SceneNodeProperty::SPRITE ||
-      snp._type == SceneNodeProperty::TILESET ||
-      snp._type == SceneNodeProperty::TEXT)
+    if (snp._type & SceneNodeProperty::AUDIO ||
+      snp._type & SceneNodeProperty::MATERIAL ||
+      snp._type & SceneNodeProperty::PARTICLE ||
+      snp._type & SceneNodeProperty::TERRAIN ||
+      snp._type & SceneNodeProperty::LIGHT ||
+      snp._type & SceneNodeProperty::CAMERA ||
+      snp._type & SceneNodeProperty::COLLISION_OBJECT ||
+      snp._type & SceneNodeProperty::SPRITE ||
+      snp._type & SceneNodeProperty::TILESET ||
+      snp._type & SceneNodeProperty::TEXT)
     {
       // Check to make sure the referenced properties object was loaded properly.
       Properties* p = _properties[snp._value];
@@ -325,7 +325,7 @@ namespace gameplay
       case SceneNodeProperty::COLLISION_OBJECT:
       {
         // Check to make sure the type of the namespace used to load the physics collision object is correct.
-        if (snp._type == SceneNodeProperty::COLLISION_OBJECT && strcmp(p->getNamespace(), "collisionObject") != 0)
+        if (snp._type & SceneNodeProperty::COLLISION_OBJECT && strcmp(p->getNamespace(), "collisionObject") != 0)
         {
           GP_ERROR("Attempting to set a physics collision object on a node using a '%s' definition.", p->getNamespace());
           return;

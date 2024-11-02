@@ -51,8 +51,7 @@ namespace gameplay
     assert(node);
 
     // Create a translation matrix that translates to the given origin.
-    Matrix m;
-    Matrix::createTranslation(point, &m);
+    Matrix m = Matrix::createTranslation(point);
 
     // Calculate the rotation offset to the rigid body by transforming 
     // the translation matrix above into the rigid body's local space 
@@ -72,8 +71,7 @@ namespace gameplay
     assert(node);
 
     // Create a translation matrix that translates to the given origin.
-    Matrix m;
-    Matrix::createTranslation(point, &m);
+    Matrix m = Matrix::createTranslation(point);
 
     // Calculate the translation offset to the rigid body by transforming 
     // the translation matrix above into the rigid body's local space 
@@ -102,8 +100,7 @@ namespace gameplay
     assert(node);
 
     // Create a translation matrix that translates to the given origin.
-    Matrix m;
-    Matrix::createTranslation(origin, &m);
+    Matrix m = Matrix::createTranslation(origin);
 
     // Calculate the translation and rotation offset to the rigid body
     // by transforming the translation matrix above into the rigid body's

@@ -152,8 +152,7 @@ void BillboardSample::render(float elapsedTime)
     Node* node = _billboards[i];
 
     // Rotate the node x/z to face the camera
-    Matrix m;
-    Matrix::createBillboard(node->getTranslationWorld(), camera->getNode()->getTranslationWorld(), camera->getNode()->getUpVectorWorld(), &m);
+    Matrix m = Matrix::createBillboard(node->getTranslationWorld(), camera->getNode()->getTranslationWorld(), camera->getNode()->getUpVectorWorld());
     Quaternion q;
     m.getRotation(&q);
     node->setRotation(q);

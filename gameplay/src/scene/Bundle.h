@@ -433,7 +433,7 @@ namespace gameplay
      * @param values A pointer to array of 16 floats.
      * @param transform The transform to set the values in.
      */
-    void setTransform(const float* values, Transform* transform);
+    void setTransform(const float& values, Transform* transform);
 
     /**
      * Resolves joint references for all pending mesh skins.

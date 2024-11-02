@@ -135,7 +135,7 @@ namespace gameplay
 
     // Bind an ortho projection to the material by default (user can override with setProjectionMatrix)
     Game* game = Game::getInstance();
-    Matrix::createOrthographicOffCenter(0, game->getViewport().width, game->getViewport().height, 0, 0, 1, &batch->_projectionMatrix);
+    batch->_projectionMatrix = Matrix::createOrthographicOffCenter(0, game->getViewport().width, game->getViewport().height, 0, 0, 1);
     material->getParameter("u_projectionMatrix")->bindValue(batch, &SpriteBatch::getProjectionMatrix);
 
     return batch;
@@ -273,8 +273,7 @@ namespace gameplay
       // Rotate all points the specified amount about the given point (about the up vector).
       static Vector3 u;
       Vector3::cross(right, forward, &u);
-      static Matrix rotation;
-      Matrix::createRotation(u, rotationAngle, &rotation);
+      static Matrix rotation = Matrix::createRotation(u, rotationAngle);
       p0 -= rp;
       p0 *= rotation;
       p0 += rp;

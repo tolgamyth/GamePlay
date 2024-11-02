@@ -132,8 +132,7 @@ namespace gameplay
       if (node)
       {
         setPosition(node->getTranslationWorld());
-        Vector3 up;
-        node->getWorldMatrix().getUpVector(&up);
+        Vector3 up = node->getWorldMatrix().getUpVector();
         setOrientation(node->getForwardVectorWorld(), up);
       }
       else

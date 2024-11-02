@@ -752,7 +752,7 @@ namespace gameplay
       SAFE_RELEASE(node);
       return nullptr;
     }
-    setTransform(transform, node);
+    setTransform(*transform, node);
 
     // Skip the parent ID.
     readString(_stream);
@@ -1828,12 +1828,12 @@ namespace gameplay
     return masterFont;
   }
 
-  void Bundle::setTransform(const float* values, Transform* transform)
+  void Bundle::setTransform(const float& values, Transform* transform)
   {
     assert(transform);
 
     // Load array into transform.
-    Matrix matrix(values);
+    Matrix matrix(&values);
     Vector3 scale, translation;
     Quaternion rotation;
     matrix.decompose(&scale, &rotation, &translation);

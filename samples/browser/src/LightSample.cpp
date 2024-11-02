@@ -237,13 +237,11 @@ void LightSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int c
     _modelNode->getWorldMatrix().transpose(&m);
 
     // Yaw in world frame
-    Vector3 yaw;
-    m.getUpVector(&yaw);
+    Vector3 yaw = m.getUpVector();
     _modelNode->rotate(yaw, MATH_DEG_TO_RAD(deltaX * 0.5f));
 
     // Roll in world frame
-    Vector3 pitch;
-    m.getRightVector(&pitch);
+    Vector3 pitch = m.getRightVector();
     _modelNode->rotate(pitch, MATH_DEG_TO_RAD(deltaY * 0.5f));
   }
   break;

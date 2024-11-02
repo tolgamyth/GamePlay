@@ -161,7 +161,7 @@ void MeshPrimitiveSample::initialize()
   // Create an orthographic projection matrix.
   float width = getWidth() / (float)getHeight();
   float height = 1.0f;
-  Matrix::createOrthographic(width, height, -1.0f, 1.0f, &_viewProjectionMatrix);
+  _viewProjectionMatrix = Matrix::createOrthographic(width, height, -1.0f, 1.0f);
 
   // Create a model for the triangle mesh. A model is an instance of a Mesh that can be drawn with a specified material.
   Mesh* triangleMesh = createTriangleMesh();

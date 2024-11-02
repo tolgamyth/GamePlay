@@ -537,31 +537,24 @@ namespace gameplay
 
   Vector3 Node::getForwardVectorWorld() const
   {
-    Vector3 vector;
-    getWorldMatrix().getForwardVector(&vector);
-    return vector;
+    return getWorldMatrix().getForwardVector();
   }
 
   Vector3 Node::getForwardVectorView() const
   {
-    Vector3 vector;
-    getWorldMatrix().getForwardVector(&vector);
+    Vector3 vector = getWorldMatrix().getForwardVector();
     getViewMatrix().transformVector(&vector);
     return vector;
   }
 
   Vector3 Node::getRightVectorWorld() const
   {
-    Vector3 vector;
-    getWorldMatrix().getRightVector(&vector);
-    return vector;
+    return getWorldMatrix().getRightVector();
   }
 
   Vector3 Node::getUpVectorWorld() const
   {
-    Vector3 vector;
-    getWorldMatrix().getUpVector(&vector);
-    return vector;
+    return getWorldMatrix().getUpVector();
   }
 
   Vector3 Node::getActiveCameraTranslationWorld() const

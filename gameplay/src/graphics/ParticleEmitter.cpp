@@ -904,7 +904,7 @@ namespace gameplay
       {
         if (p->_rotationSpeed != 0.0f && !p->_rotationAxis.isZero())
         {
-          Matrix::createRotation(p->_rotationAxis, p->_rotationSpeed * elapsedSecs, &_rotation);
+          _rotation = Matrix::createRotation(p->_rotationAxis, p->_rotationSpeed * elapsedSecs);
 
           _rotation.transformPoint(p->_velocity, &p->_velocity);
           _rotation.transformPoint(p->_acceleration, &p->_acceleration);
@@ -1006,10 +1006,8 @@ namespace gameplay
       assert(_node && _node->getScene() && _node->getScene()->getActiveCamera() && _node->getScene()->getActiveCamera()->getNode());
       const Matrix& cameraWorldMatrix = _node->getScene()->getActiveCamera()->getNode()->getWorldMatrix();
 
-      Vector3 right;
-      cameraWorldMatrix.getRightVector(&right);
-      Vector3 up;
-      cameraWorldMatrix.getUpVector(&up);
+      Vector3 right = cameraWorldMatrix.getRightVector();
+      Vector3 up = cameraWorldMatrix.getUpVector();
 
       for (unsigned int i = 0; i < _particleCount; i++)
       {

@@ -171,7 +171,6 @@
     <ClCompile Include="src\utils\Ref.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Profiler.h" />
     <ClInclude Include="src\ai\AIAgent.h" />
     <ClInclude Include="src\ai\AIController.h" />
     <ClInclude Include="src\ai\AIMessage.h" />
@@ -285,6 +284,7 @@
     <ClInclude Include="src\ui\VerticalLayout.h" />
     <ClInclude Include="src\utils\DebugNew.h" />
     <ClInclude Include="src\utils\Logger.h" />
+    <ClInclude Include="src\utils\Profiler.h" />
     <ClInclude Include="src\utils\Ref.h" />
     <ClInclude Include="src\utils\TimeListener.h" />
   </ItemGroup>

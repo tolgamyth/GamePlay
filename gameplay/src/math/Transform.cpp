@@ -108,7 +108,7 @@ namespace gameplay
 
         // Compose the matrix in TRS order since we use column-major matrices with column vectors and
         // multiply M*v (as opposed to XNA and DirectX that use row-major matrices with row vectors and multiply v*M).
-        Matrix::createTranslation(_translation, &_matrix);
+        _matrix = Matrix::createTranslation(_translation);
         if (hasRotation)
         {
           _matrix.rotate(_rotation);
@@ -165,7 +165,7 @@ namespace gameplay
   void Transform::getRotation(Matrix* rotation) const
   {
     assert(rotation);
-    Matrix::createRotation(_rotation, rotation);
+    *rotation = Matrix::createRotation(_rotation);
   }
 
   float Transform::getRotation(Vector3* axis) const
@@ -209,7 +209,7 @@ namespace gameplay
 
   void Transform::getForwardVector(Vector3* dst) const
   {
-    getMatrix().getForwardVector(dst);
+    *dst = getMatrix().getForwardVector();
   }
 
   Vector3 Transform::getBackVector() const
@@ -221,7 +221,7 @@ namespace gameplay
 
   void Transform::getBackVector(Vector3* dst) const
   {
-    getMatrix().getBackVector(dst);
+    *dst = getMatrix().getBackVector();
   }
 
   Vector3 Transform::getUpVector() const
@@ -233,7 +233,7 @@ namespace gameplay
 
   void Transform::getUpVector(Vector3* dst) const
   {
-    getMatrix().getUpVector(dst);
+    *dst = getMatrix().getUpVector();
   }
 
   Vector3 Transform::getDownVector() const
@@ -245,7 +245,7 @@ namespace gameplay
 
   void Transform::getDownVector(Vector3* dst) const
   {
-    getMatrix().getDownVector(dst);
+    *dst = getMatrix().getDownVector();
   }
 
   Vector3 Transform::getLeftVector() const
@@ -257,7 +257,7 @@ namespace gameplay
 
   void Transform::getLeftVector(Vector3* dst) const
   {
-    getMatrix().getLeftVector(dst);
+    *dst = getMatrix().getLeftVector();
   }
 
   Vector3 Transform::getRightVector() const
@@ -269,7 +269,7 @@ namespace gameplay
 
   void Transform::getRightVector(Vector3* dst) const
   {
-    getMatrix().getRightVector(dst);
+    *dst = getMatrix().getRightVector();
   }
 
   void Transform::rotate(float qx, float qy, float qz, float qw)
@@ -653,8 +653,7 @@ namespace gameplay
     // Force the current transform matrix to be updated.
     getMatrix();
 
-    Vector3 left;
-    _matrix.getLeftVector(&left);
+    Vector3 left = _matrix.getLeftVector();
     left.normalize();
     left.scale(amount);
 
@@ -669,8 +668,7 @@ namespace gameplay
     // Force the current transform matrix to be updated.
     getMatrix();
 
-    Vector3 up;
-    _matrix.getUpVector(&up);
+    Vector3 up = _matrix.getUpVector();
     up.normalize();
     up.scale(amount);
 
@@ -685,8 +683,7 @@ namespace gameplay
     // Force the current transform matrix to be updated.
     getMatrix();
 
-    Vector3 forward;
-    _matrix.getForwardVector(&forward);
+    Vector3 forward = _matrix.getForwardVector();
     forward.normalize();
     forward.scale(amount);
 

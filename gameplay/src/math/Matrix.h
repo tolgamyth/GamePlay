@@ -135,7 +135,7 @@ namespace gameplay
      * @param up The up vector.
      * @param dst A matrix to store the result in.
      */
-    static void createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up, Matrix* dst);
+    static Matrix createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up);
 
     /**
      * Creates a view matrix based on the specified input parameters.
@@ -151,9 +151,9 @@ namespace gameplay
      * @param upZ The up vector z-coordinate value.
      * @param dst A matrix to store the result in.
      */
-    static void createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
+    static Matrix createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
       float targetCenterX, float targetCenterY, float targetCenterZ,
-      float upX, float upY, float upZ, Matrix* dst);
+      float upX, float upY, float upZ);
 
     /**
      * Builds a perspective projection matrix based on a field of view and returns by value.
@@ -169,7 +169,7 @@ namespace gameplay
      * @param zFarPlane The distance to the far view plane.
      * @param dst A matrix to store the result in.
      */
-    static void createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane, Matrix* dst);
+    static Matrix createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane);
 
     /**
      * Creates an orthographic projection matrix.
@@ -180,7 +180,7 @@ namespace gameplay
      * @param zFarPlane The maximum z-value of the view volume.
      * @param dst A matrix to store the result in.
      */
-    static void createOrthographic(float width, float height, float zNearPlane, float zFarPlane, Matrix* dst);
+    static Matrix createOrthographic(float width, float height, float zNearPlane, float zFarPlane);
 
     /**
      * Creates an orthographic projection matrix.
@@ -210,8 +210,8 @@ namespace gameplay
      * @param zFarPlane The maximum z-value of the view volume.
      * @param dst A matrix to store the result in.
      */
-    static void createOrthographicOffCenter(float left, float right, float bottom, float top,
-      float zNearPlane, float zFarPlane, Matrix* dst);
+    static Matrix createOrthographicOffCenter(float left, float right, float bottom, float top,
+      float zNearPlane, float zFarPlane);
 
     /**
      * Creates a spherical billboard that rotates around a specified object position.
@@ -227,8 +227,8 @@ namespace gameplay
      * @param cameraUpVector The up vector of the camera.
      * @param dst A matrix to store the result in.
      */
-    static void createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
-      const Vector3& cameraUpVector, Matrix* dst);
+    static Matrix createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
+      const Vector3& cameraUpVector);
 
     /**
      * Creates a spherical billboard that rotates around a specified object position with
@@ -246,9 +246,8 @@ namespace gameplay
      * @param cameraForwardVector The forward vector of the camera, used if the positions are too close.
      * @param dst A matrix to store the result in.
      */
-    static void createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
-      const Vector3& cameraUpVector, const Vector3& cameraForwardVector,
-      Matrix* dst);
+    static Matrix createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
+      const Vector3& cameraUpVector, const Vector3& cameraForwardVector);
 
     /**
      * Fills in an existing Matrix so that it reflects the coordinate system about a specified Plane.
@@ -282,7 +281,7 @@ namespace gameplay
      * @param quat A quaternion describing a 3D orientation.
      * @param dst A matrix to store the result in.
      */
-    static void createRotation(const Quaternion& quat, Matrix* dst);
+    static Matrix createRotation(const Quaternion& quat);
 
     /**
      * Creates a rotation matrix from the specified axis and angle.
@@ -291,7 +290,7 @@ namespace gameplay
      * @param angle The angle (in radians).
      * @param dst A matrix to store the result in.
      */
-    static void createRotation(const Vector3& axis, float angle, Matrix* dst);
+    static Matrix createRotation(const Vector3& axis, float angle);
 
     /**
      * Creates a matrix describing a rotation around the x-axis.
@@ -299,7 +298,7 @@ namespace gameplay
      * @param angle The angle of rotation (in radians).
      * @param dst A matrix to store the result in.
      */
-    static void createRotationX(float angle, Matrix* dst);
+    static Matrix createRotationX(float angle);
 
     /**
      * Creates a matrix describing a rotation around the y-axis.
@@ -307,7 +306,7 @@ namespace gameplay
      * @param angle The angle of rotation (in radians).
      * @param dst A matrix to store the result in.
      */
-    static void createRotationY(float angle, Matrix* dst);
+    static Matrix createRotationY(float angle);
 
     /**
      * Creates a matrix describing a rotation around the z-axis.
@@ -315,7 +314,7 @@ namespace gameplay
      * @param angle The angle of rotation (in radians).
      * @param dst A matrix to store the result in.
      */
-    static void createRotationZ(float angle, Matrix* dst);
+    static Matrix createRotationZ(float angle);
 
     /**
     * Creates a matrix describing the yaw, pitch and roll rotations
@@ -325,7 +324,7 @@ namespace gameplay
     * @param roll The roll angle (in radians)
     * @param dst A matrix to store the result in.
     */
-    static void createFromEuler(float yaw, float pitch, float roll, Matrix* dst);
+    static Matrix createFromEuler(float yaw, float pitch, float roll);
 
 
     /**
@@ -334,7 +333,7 @@ namespace gameplay
      * @param translation The translation.
      * @param dst A matrix to store the result in.
      */
-    static void createTranslation(const Vector3& translation, Matrix* dst);
+    static Matrix createTranslation(const Vector3& translation);
 
     /**
      * Creates a translation matrix.
@@ -344,7 +343,7 @@ namespace gameplay
      * @param zTranslation The translation on the z-axis.
      * @param dst A matrix to store the result in.
      */
-    static void createTranslation(float xTranslation, float yTranslation, float zTranslation, Matrix* dst);
+    static Matrix createTranslation(float xTranslation, float yTranslation, float zTranslation);
 
     /**
      * Adds a scalar value to each component of this matrix.
@@ -426,42 +425,42 @@ namespace gameplay
      *
      * @param dst The destination vector.
      */
-    void getUpVector(Vector3* dst) const;
+    Vector3 getUpVector() const;
 
     /**
      * Gets the down vector of this matrix.
      *
      * @param dst The destination vector.
      */
-    void getDownVector(Vector3* dst) const;
+    Vector3 getDownVector() const;
 
     /**
      * Gets the left vector of this matrix.
      *
      * @param dst The destination vector.
      */
-    void getLeftVector(Vector3* dst) const;
+    Vector3 getLeftVector() const;
 
     /**
      * Gets the right vector of this matrix.
      *
      * @param dst The destination vector.
      */
-    void getRightVector(Vector3* dst) const;
+    Vector3 getRightVector() const;
 
     /**
      * Gets the forward vector of this matrix.
      *
      * @param dst The destination vector.
      */
-    void getForwardVector(Vector3* dst) const;
+    Vector3 getForwardVector() const;
 
     /**
      * Gets the backward vector of this matrix.
      *
      * @param dst The destination vector.
      */
-    void getBackVector(Vector3* dst) const;
+    Vector3 getBackVector() const;
 
     /**
      * Inverts this matrix.
@@ -924,9 +923,8 @@ namespace gameplay
 
   private:
 
-    static void createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
-      const Vector3& cameraUpVector, const Vector3* cameraForwardVector,
-      Matrix* dst);
+    static Matrix createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
+      const Vector3& cameraUpVector, const Vector3* cameraForwardVector);
   };
 
   /**

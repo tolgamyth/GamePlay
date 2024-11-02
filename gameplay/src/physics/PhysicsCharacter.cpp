@@ -283,7 +283,7 @@ namespace gameplay
     // Add forward velocity contribution.
     if (_forwardVelocity != 0)
     {
-      _node->getWorldMatrix().getForwardVector(&temp);
+      temp = _node->getWorldMatrix().getForwardVector();
       temp.normalize();
       temp *= -_forwardVelocity;
       _normalizedVelocity += btVector3(temp.x, temp.y, temp.z);
@@ -293,7 +293,7 @@ namespace gameplay
     // Add right velocity contribution.
     if (_rightVelocity != 0)
     {
-      _node->getWorldMatrix().getRightVector(&temp);
+      temp = _node->getWorldMatrix().getRightVector();
       temp.normalize();
       temp *= _rightVelocity;
       _normalizedVelocity += btVector3(temp.x, temp.y, temp.z);

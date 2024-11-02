@@ -45,7 +45,7 @@ void MeshBatchSample::initialize()
   // Create the font for drawing the framerate.
   _font = Font::create("res/ui/arial.gpb");
 
-  Matrix::createOrthographic(getWidth(), getHeight(), -1.0f, 1.0f, &_worldViewProjectionMatrix);
+  _worldViewProjectionMatrix = Matrix::createOrthographic(getWidth(), getHeight(), -1.0f, 1.0f);
   _meshBatch = createMeshBatch(Mesh::TRIANGLES);
 }
 

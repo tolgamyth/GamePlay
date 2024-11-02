@@ -197,8 +197,7 @@ namespace gameplay
     if (!vp.isEmpty())
     {
       Game* game = Game::getInstance();
-      Matrix projectionMatrix;
-      Matrix::createOrthographicOffCenter(vp.x, vp.width, vp.height, vp.y, 0, 1, &projectionMatrix);
+      Matrix projectionMatrix = Matrix::createOrthographicOffCenter(vp.x, vp.width, vp.height, vp.y, 0, 1);
       _batch->setProjectionMatrix(projectionMatrix);
     }
 

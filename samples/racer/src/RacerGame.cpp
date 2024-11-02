@@ -251,8 +251,7 @@ void RacerGame::update(float elapsedTime)
         Vector3 carPosition(carNode->getTranslation());
         Vector3 commandedPosition(carPosition + Vector3::unitY() * 4.0f - carNode->getBackVector() * 10.0f);
         cameraNode->translateSmooth(commandedPosition, dt, 0.2f);
-        Matrix m;
-        Matrix::createLookAt(cameraNode->getTranslation(), carPosition, Vector3::unitY(), &m);
+        Matrix m = Matrix::createLookAt(cameraNode->getTranslation(), carPosition, Vector3::unitY());
         m.transpose();
         Quaternion q;
         m.getRotation(&q);

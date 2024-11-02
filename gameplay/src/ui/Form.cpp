@@ -260,7 +260,7 @@ namespace gameplay
 
       // Setup an ortho matrix that maps to the current viewport
       const Rectangle& viewport = Game::getInstance()->getViewport();
-      Matrix::createOrthographicOffCenter(0, viewport.width, viewport.height, 0, 0, 1, &_projectionMatrix);
+      _projectionMatrix = Matrix::createOrthographicOffCenter(0, viewport.width, viewport.height, 0, 0, 1);
     }
 
     // Draw the form

@@ -474,13 +474,14 @@ namespace gameplay
 
           // Copy data from the parent into the child.
           derived->_properties = parent->_properties;
-          derived->_namespaces = std::vector<Properties*>();
+          derived->_namespaces.clear();
+          derived->_namespaces.reserve(parent->_namespaces.size());
 
-          for (const auto& nsp : parent->_namespaces)
-          {
-            assert(nsp);
-            derived->_namespaces.emplace_back(new Properties(*nsp));
-          }
+          std::ranges::transform(parent->_namespaces, std::back_inserter(derived->_namespaces),
+            [](const auto& ns) {
+              return new Properties(*ns);
+            });
+
           derived->rewind();
 
           // Take the original copy of the child and override the data copied from the parent.
@@ -951,7 +952,7 @@ namespace gameplay
     if (_variables)
     {
       auto it = std::ranges::find_if(*_variables, [name](const Property& property) {
-          return property.name == name;
+        return property.name == name;
         });
 
       if (it != _variables->end())

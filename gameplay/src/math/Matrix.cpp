@@ -60,18 +60,17 @@ namespace gameplay
     return m;
   }
 
-  void Matrix::createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up, Matrix* dst)
+  Matrix Matrix::createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up)
   {
-    createLookAt(eyePosition.x, eyePosition.y, eyePosition.z, targetPosition.x, targetPosition.y, targetPosition.z,
-      up.x, up.y, up.z, dst);
+    return createLookAt(eyePosition.x, eyePosition.y, eyePosition.z, targetPosition.x, targetPosition.y, targetPosition.z,
+      up.x, up.y, up.z);
   }
 
-  void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
+  Matrix Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
     float targetPositionX, float targetPositionY, float targetPositionZ,
-    float upX, float upY, float upZ, Matrix* dst)
+    float upX, float upY, float upZ)
   {
-    assert(dst);
-
+    Matrix dst;
     Vector3 eye(eyePositionX, eyePositionY, eyePositionZ);
     Vector3 target(targetPositionX, targetPositionY, targetPositionZ);
     Vector3 up(upX, upY, upZ);
@@ -89,103 +88,105 @@ namespace gameplay
     Vector3::cross(zaxis, xaxis, &yaxis);
     yaxis.normalize();
 
-    dst->m[0] = xaxis.x;
-    dst->m[1] = yaxis.x;
-    dst->m[2] = zaxis.x;
-    dst->m[3] = 0.0f;
+    dst.m[0] = xaxis.x;
+    dst.m[1] = yaxis.x;
+    dst.m[2] = zaxis.x;
+    dst.m[3] = 0.0f;
 
-    dst->m[4] = xaxis.y;
-    dst->m[5] = yaxis.y;
-    dst->m[6] = zaxis.y;
-    dst->m[7] = 0.0f;
+    dst.m[4] = xaxis.y;
+    dst.m[5] = yaxis.y;
+    dst.m[6] = zaxis.y;
+    dst.m[7] = 0.0f;
 
-    dst->m[8] = xaxis.z;
-    dst->m[9] = yaxis.z;
-    dst->m[10] = zaxis.z;
-    dst->m[11] = 0.0f;
+    dst.m[8] = xaxis.z;
+    dst.m[9] = yaxis.z;
+    dst.m[10] = zaxis.z;
+    dst.m[11] = 0.0f;
 
-    dst->m[12] = -Vector3::dot(xaxis, eye);
-    dst->m[13] = -Vector3::dot(yaxis, eye);
-    dst->m[14] = -Vector3::dot(zaxis, eye);
-    dst->m[15] = 1.0f;
+    dst.m[12] = -Vector3::dot(xaxis, eye);
+    dst.m[13] = -Vector3::dot(yaxis, eye);
+    dst.m[14] = -Vector3::dot(zaxis, eye);
+    dst.m[15] = 1.0f;
+    
+    return dst;
   }
 
-  void Matrix::createPerspective(float fieldOfView, float aspectRatio,
-    float zNearPlane, float zFarPlane, Matrix* dst)
+  Matrix Matrix::createPerspective(float fieldOfView, float aspectRatio,
+    float zNearPlane, float zFarPlane)
   {
-    assert(dst);
     assert(zFarPlane != zNearPlane);
 
     float f_n = 1.0f / (zFarPlane - zNearPlane);
     float theta = MATH_DEG_TO_RAD(fieldOfView) * 0.5f;
+    Matrix dst;
     if (fabs(fmod(theta, MATH_PIOVER2)) < MATH_EPSILON)
     {
       GP_ERROR("Invalid field of view value (%d) causes attempted calculation tan(%d), which is undefined.", fieldOfView, theta);
-      return;
+      return dst;
     }
     float divisor = tan(theta);
     assert(divisor);
     float factor = 1.0f / divisor;
 
-    memset(dst, 0, MATRIX_SIZE);
-
     assert(aspectRatio);
-    dst->m[0] = (1.0f / aspectRatio) * factor;
-    dst->m[5] = factor;
-    dst->m[10] = (-(zFarPlane + zNearPlane)) * f_n;
-    dst->m[11] = -1.0f;
-    dst->m[14] = -2.0f * zFarPlane * zNearPlane * f_n;
+    dst.m[0] = (1.0f / aspectRatio) * factor;
+    dst.m[5] = factor;
+    dst.m[10] = (-(zFarPlane + zNearPlane)) * f_n;
+    dst.m[11] = -1.0f;
+    dst.m[14] = -2.0f * zFarPlane * zNearPlane * f_n;
+
+    return dst;
   }
 
-  void Matrix::createOrthographic(float width, float height, float zNearPlane, float zFarPlane, Matrix* dst)
+  Matrix Matrix::createOrthographic(float width, float height, float zNearPlane, float zFarPlane)
   {
     float halfWidth = width / 2.0f;
     float halfHeight = height / 2.0f;
-    createOrthographicOffCenter(-halfWidth, halfWidth, -halfHeight, halfHeight, zNearPlane, zFarPlane, dst);
+    return createOrthographicOffCenter(-halfWidth, halfWidth, -halfHeight, halfHeight, zNearPlane, zFarPlane);
   }
 
-  void Matrix::createOrthographicOffCenter(float left, float right, float bottom, float top,
-    float zNearPlane, float zFarPlane, Matrix* dst)
+  Matrix Matrix::createOrthographicOffCenter(float left, float right, float bottom, float top,
+    float zNearPlane, float zFarPlane)
   {
-    assert(dst);
     assert(right != left);
     assert(top != bottom);
     assert(zFarPlane != zNearPlane);
 
-    memset(dst, 0, MATRIX_SIZE);
-    dst->m[0] = 2 / (right - left);
-    dst->m[5] = 2 / (top - bottom);
-    dst->m[12] = (left + right) / (left - right);
-    dst->m[10] = 1 / (zNearPlane - zFarPlane);
-    dst->m[13] = (top + bottom) / (bottom - top);
-    dst->m[14] = zNearPlane / (zNearPlane - zFarPlane);
-    dst->m[15] = 1;
+    Matrix dst;
+    dst.m[0] = 2 / (right - left);
+    dst.m[5] = 2 / (top - bottom);
+    dst.m[12] = (left + right) / (left - right);
+    dst.m[10] = 1 / (zNearPlane - zFarPlane);
+    dst.m[13] = (top + bottom) / (bottom - top);
+    dst.m[14] = zNearPlane / (zNearPlane - zFarPlane);
+    dst.m[15] = 1;
+    
+    return dst;
   }
 
-  void Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
-    const Vector3& cameraUpVector, Matrix* dst)
+  Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
+    const Vector3& cameraUpVector)
   {
-    createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, nullptr, dst);
+    return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, nullptr);
   }
 
-  void Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
-    const Vector3& cameraUpVector, const Vector3& cameraForwardVector,
-    Matrix* dst)
+  Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
+    const Vector3& cameraUpVector, const Vector3& cameraForwardVector)
   {
-    createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, &cameraForwardVector, dst);
+    return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, &cameraForwardVector);
   }
 
-  void Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
-    const Vector3& cameraUpVector, const Vector3* cameraForwardVector,
-    Matrix* dst)
+  Matrix Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
+    const Vector3& cameraUpVector, const Vector3* cameraForwardVector)
   {
     Vector3 delta(objectPosition, cameraPosition);
     bool isSufficientDelta = delta.lengthSquared() > MATH_EPSILON;
 
-    dst->setIdentity();
-    dst->m[3] = objectPosition.x;
-    dst->m[7] = objectPosition.y;
-    dst->m[11] = objectPosition.z;
+    Matrix dst;
+    dst.setIdentity();
+    dst.m[3] = objectPosition.x;
+    dst.m[7] = objectPosition.y;
+    dst.m[11] = objectPosition.z;
 
     // As per the contracts for the 2 variants of createBillboard, we need
     // either a safe default or a sufficient distance between object and camera.
@@ -194,18 +195,19 @@ namespace gameplay
       Vector3 target = isSufficientDelta ? cameraPosition : (objectPosition - *cameraForwardVector);
 
       // A billboard is the inverse of a lookAt rotation
-      Matrix lookAt;
-      createLookAt(objectPosition, target, cameraUpVector, &lookAt);
-      dst->m[0] = lookAt.m[0];
-      dst->m[1] = lookAt.m[4];
-      dst->m[2] = lookAt.m[8];
-      dst->m[4] = lookAt.m[1];
-      dst->m[5] = lookAt.m[5];
-      dst->m[6] = lookAt.m[9];
-      dst->m[8] = lookAt.m[2];
-      dst->m[9] = lookAt.m[6];
-      dst->m[10] = lookAt.m[10];
+      Matrix lookAt = createLookAt(objectPosition, target, cameraUpVector);
+      dst.m[0] = lookAt.m[0];
+      dst.m[1] = lookAt.m[4];
+      dst.m[2] = lookAt.m[8];
+      dst.m[4] = lookAt.m[1];
+      dst.m[5] = lookAt.m[5];
+      dst.m[6] = lookAt.m[9];
+      dst.m[8] = lookAt.m[2];
+      dst.m[9] = lookAt.m[6];
+      dst.m[10] = lookAt.m[10];
     }
+
+    return dst;
   }
 
   void Matrix::createReflection(const Plane& plane, Matrix* dst)
@@ -250,10 +252,8 @@ namespace gameplay
   }
 
 
-  void Matrix::createRotation(const Quaternion& q, Matrix* dst)
+  Matrix Matrix::createRotation(const Quaternion& q)
   {
-    assert(dst);
-
     float x2 = q.x + q.x;
     float y2 = q.y + q.y;
     float z2 = q.z + q.z;
@@ -267,32 +267,34 @@ namespace gameplay
     float wx2 = q.w * x2;
     float wy2 = q.w * y2;
     float wz2 = q.w * z2;
+    
+    Matrix dst;
 
-    dst->m[0] = 1.0f - yy2 - zz2;
-    dst->m[1] = xy2 + wz2;
-    dst->m[2] = xz2 - wy2;
-    dst->m[3] = 0.0f;
+    dst.m[0] = 1.0f - yy2 - zz2;
+    dst.m[1] = xy2 + wz2;
+    dst.m[2] = xz2 - wy2;
+    dst.m[3] = 0.0f;
 
-    dst->m[4] = xy2 - wz2;
-    dst->m[5] = 1.0f - xx2 - zz2;
-    dst->m[6] = yz2 + wx2;
-    dst->m[7] = 0.0f;
+    dst.m[4] = xy2 - wz2;
+    dst.m[5] = 1.0f - xx2 - zz2;
+    dst.m[6] = yz2 + wx2;
+    dst.m[7] = 0.0f;
 
-    dst->m[8] = xz2 + wy2;
-    dst->m[9] = yz2 - wx2;
-    dst->m[10] = 1.0f - xx2 - yy2;
-    dst->m[11] = 0.0f;
+    dst.m[8] = xz2 + wy2;
+    dst.m[9] = yz2 - wx2;
+    dst.m[10] = 1.0f - xx2 - yy2;
+    dst.m[11] = 0.0f;
 
-    dst->m[12] = 0.0f;
-    dst->m[13] = 0.0f;
-    dst->m[14] = 0.0f;
-    dst->m[15] = 1.0f;
+    dst.m[12] = 0.0f;
+    dst.m[13] = 0.0f;
+    dst.m[14] = 0.0f;
+    dst.m[15] = 1.0f;
+
+    return dst;
   }
 
-  void Matrix::createRotation(const Vector3& axis, float angle, Matrix* dst)
+  Matrix Matrix::createRotation(const Vector3& axis, float angle)
   {
-    assert(dst);
-
     float x = axis.x;
     float y = axis.y;
     float z = axis.z;
@@ -327,103 +329,106 @@ namespace gameplay
     float sy = s * y;
     float sz = s * z;
 
-    dst->m[0] = c + tx * x;
-    dst->m[1] = txy + sz;
-    dst->m[2] = txz - sy;
-    dst->m[3] = 0.0f;
+    Matrix dst;
+    dst.m[0] = c + tx * x;
+    dst.m[1] = txy + sz;
+    dst.m[2] = txz - sy;
+    dst.m[3] = 0.0f;
 
-    dst->m[4] = txy - sz;
-    dst->m[5] = c + ty * y;
-    dst->m[6] = tyz + sx;
-    dst->m[7] = 0.0f;
+    dst.m[4] = txy - sz;
+    dst.m[5] = c + ty * y;
+    dst.m[6] = tyz + sx;
+    dst.m[7] = 0.0f;
 
-    dst->m[8] = txz + sy;
-    dst->m[9] = tyz - sx;
-    dst->m[10] = c + tz * z;
-    dst->m[11] = 0.0f;
+    dst.m[8] = txz + sy;
+    dst.m[9] = tyz - sx;
+    dst.m[10] = c + tz * z;
+    dst.m[11] = 0.0f;
 
-    dst->m[12] = 0.0f;
-    dst->m[13] = 0.0f;
-    dst->m[14] = 0.0f;
-    dst->m[15] = 1.0f;
+    dst.m[12] = 0.0f;
+    dst.m[13] = 0.0f;
+    dst.m[14] = 0.0f;
+    dst.m[15] = 1.0f;
+    
+    return dst;
   }
 
-  void Matrix::createRotationX(float angle, Matrix* dst)
+  Matrix Matrix::createRotationX(float angle)
   {
-    assert(dst);
-
-    memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
+    Matrix dst(MATRIX_IDENTITY);
 
     float c = cos(angle);
     float s = sin(angle);
 
-    dst->m[5] = c;
-    dst->m[6] = s;
-    dst->m[9] = -s;
-    dst->m[10] = c;
+    dst.m[5] = c;
+    dst.m[6] = s;
+    dst.m[9] = -s;
+    dst.m[10] = c;
+
+    return dst;
   }
 
-  void Matrix::createRotationY(float angle, Matrix* dst)
+  Matrix Matrix::createRotationY(float angle)
   {
-    assert(dst);
-
-    memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
+    Matrix dst(MATRIX_IDENTITY);
 
     float c = cos(angle);
     float s = sin(angle);
 
-    dst->m[0] = c;
-    dst->m[2] = -s;
-    dst->m[8] = s;
-    dst->m[10] = c;
+    dst.m[0] = c;
+    dst.m[2] = -s;
+    dst.m[8] = s;
+    dst.m[10] = c;
+
+    return dst;
   }
 
-  void Matrix::createRotationZ(float angle, Matrix* dst)
+  Matrix Matrix::createRotationZ(float angle)
   {
-    assert(dst);
-
-    memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
+    Matrix dst(MATRIX_IDENTITY);
 
     float c = cos(angle);
     float s = sin(angle);
 
-    dst->m[0] = c;
-    dst->m[1] = s;
-    dst->m[4] = -s;
-    dst->m[5] = c;
+    dst.m[0] = c;
+    dst.m[1] = s;
+    dst.m[4] = -s;
+    dst.m[5] = c;
+
+    return dst;
   }
 
-  void Matrix::createFromEuler(float yaw, float pitch, float roll, Matrix* dst)
+  Matrix Matrix::createFromEuler(float yaw, float pitch, float roll)
   {
-    assert(dst);
+    Matrix dst(MATRIX_IDENTITY);
 
-    memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
-
-    dst->rotateY(yaw);
-    dst->rotateX(pitch);
-    dst->rotateZ(roll);
+    dst.rotateY(yaw);
+    dst.rotateX(pitch);
+    dst.rotateZ(roll);
+    
+    return dst;
   }
 
-  void Matrix::createTranslation(const Vector3& translation, Matrix* dst)
+  Matrix Matrix::createTranslation(const Vector3& translation)
   {
-    assert(dst);
+    Matrix dst(MATRIX_IDENTITY);
 
-    memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
-
-    dst->m[12] = translation.x;
-    dst->m[13] = translation.y;
-    dst->m[14] = translation.z;
+    dst.m[12] = translation.x;
+    dst.m[13] = translation.y;
+    dst.m[14] = translation.z;
+    
+    return dst;
   }
 
-  void Matrix::createTranslation(float xTranslation, float yTranslation, float zTranslation, Matrix* dst)
+  Matrix Matrix::createTranslation(float xTranslation, float yTranslation, float zTranslation)
   {
-    assert(dst);
+    Matrix dst(MATRIX_IDENTITY);
 
-    memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
-
-    dst->m[12] = xTranslation;
-    dst->m[13] = yTranslation;
-    dst->m[14] = zTranslation;
+    dst.m[12] = xTranslation;
+    dst.m[13] = yTranslation;
+    dst.m[14] = zTranslation;
+    
+    return dst;
   }
 
   void Matrix::add(float scalar)
@@ -592,58 +597,70 @@ namespace gameplay
     decompose(nullptr, nullptr, translation);
   }
 
-  void Matrix::getUpVector(Vector3* dst) const
+  Vector3 Matrix::getUpVector() const
   {
-    assert(dst);
+    Vector3 dst;
 
-    dst->x = m[4];
-    dst->y = m[5];
-    dst->z = m[6];
+    dst.x = m[4];
+    dst.y = m[5];
+    dst.z = m[6];
+
+    return dst;
   }
 
-  void Matrix::getDownVector(Vector3* dst) const
+  Vector3 Matrix::getDownVector() const
   {
-    assert(dst);
+    Vector3 dst;
 
-    dst->x = -m[4];
-    dst->y = -m[5];
-    dst->z = -m[6];
+    dst.x = -m[4];
+    dst.y = -m[5];
+    dst.z = -m[6];
+
+    return dst;
   }
 
-  void Matrix::getLeftVector(Vector3* dst) const
+  Vector3 Matrix::getLeftVector() const
   {
-    assert(dst);
+    Vector3 dst;
 
-    dst->x = -m[0];
-    dst->y = -m[1];
-    dst->z = -m[2];
+    dst.x = -m[0];
+    dst.y = -m[1];
+    dst.z = -m[2];
+
+    return dst;
   }
 
-  void Matrix::getRightVector(Vector3* dst) const
+  Vector3 Matrix::getRightVector() const
   {
-    assert(dst);
+    Vector3 dst;
 
-    dst->x = m[0];
-    dst->y = m[1];
-    dst->z = m[2];
+    dst.x = m[0];
+    dst.y = m[1];
+    dst.z = m[2];
+
+    return dst;
   }
 
-  void Matrix::getForwardVector(Vector3* dst) const
+  Vector3 Matrix::getForwardVector() const
   {
-    assert(dst);
+    Vector3 dst;
 
-    dst->x = -m[8];
-    dst->y = -m[9];
-    dst->z = -m[10];
+    dst.x = -m[8];
+    dst.y = -m[9];
+    dst.z = -m[10];
+
+    return dst;
   }
 
-  void Matrix::getBackVector(Vector3* dst) const
+  Vector3 Matrix::getBackVector() const
   {
-    assert(dst);
+    Vector3 dst;
 
-    dst->x = m[8];
-    dst->y = m[9];
-    dst->z = m[10];
+    dst.x = m[8];
+    dst.y = m[9];
+    dst.z = m[10];
+
+    return dst;
   }
 
   bool Matrix::invert()
@@ -753,8 +770,7 @@ namespace gameplay
 
   void Matrix::rotate(const Quaternion& q, Matrix* dst) const
   {
-    Matrix r;
-    createRotation(q, &r);
+    Matrix r = createRotation(q);
     multiply(*this, r, dst);
   }
 
@@ -765,8 +781,7 @@ namespace gameplay
 
   void Matrix::rotate(const Vector3& axis, float angle, Matrix* dst) const
   {
-    Matrix r;
-    createRotation(axis, angle, &r);
+    Matrix r = createRotation(axis, angle);
     multiply(*this, r, dst);
   }
 
@@ -777,8 +792,7 @@ namespace gameplay
 
   void Matrix::rotateX(float angle, Matrix* dst) const
   {
-    Matrix r;
-    createRotationX(angle, &r);
+    Matrix r = createRotationX(angle);
     multiply(*this, r, dst);
   }
 
@@ -789,8 +803,7 @@ namespace gameplay
 
   void Matrix::rotateY(float angle, Matrix* dst) const
   {
-    Matrix r;
-    createRotationY(angle, &r);
+    Matrix r = createRotationY(angle);
     multiply(*this, r, dst);
   }
 
@@ -801,8 +814,7 @@ namespace gameplay
 
   void Matrix::rotateZ(float angle, Matrix* dst) const
   {
-    Matrix r;
-    createRotationZ(angle, &r);
+    Matrix r = createRotationZ(angle);
     multiply(*this, r, dst);
   }
 
@@ -941,8 +953,7 @@ namespace gameplay
 
   void Matrix::translate(float x, float y, float z, Matrix* dst) const
   {
-    Matrix t;
-    createTranslation(x, y, z, &t);
+    Matrix t = createTranslation(x, y, z);
     multiply(*this, t, dst);
   }
 

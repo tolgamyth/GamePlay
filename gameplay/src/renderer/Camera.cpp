@@ -272,12 +272,12 @@ namespace gameplay
     {
       if (_type == PERSPECTIVE)
       {
-        Matrix::createPerspective(_fieldOfView, _aspectRatio, _nearPlane, _farPlane, &_projection);
+        _projection = Matrix::createPerspective(_fieldOfView, _aspectRatio, _nearPlane, _farPlane);
       }
       else
       {
         // Create an ortho projection with the origin at the bottom left of the viewport, +X to the right and +Y up.
-        Matrix::createOrthographic(_zoom[0], _zoom[1], _nearPlane, _farPlane, &_projection);
+        _projection = Matrix::createOrthographic(_zoom[0], _zoom[1], _nearPlane, _farPlane);
       }
 
       _bits &= ~CAMERA_DIRTY_PROJ;

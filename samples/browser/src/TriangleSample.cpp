@@ -54,7 +54,7 @@ void TriangleSample::initialize()
   // Create an orthographic projection matrix.
   float width = getWidth() / (float)getHeight();
   float height = 1.0f;
-  Matrix::createOrthographic(width, height, -1.0f, 1.0f, &_worldViewProjectionMatrix);
+  _worldViewProjectionMatrix = Matrix::createOrthographic(width, height, -1.0f, 1.0f);
 
   // Create the triangle mesh.
   Mesh* mesh = createTriangleMesh();

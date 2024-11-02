@@ -37,8 +37,7 @@ void WaterSample::initialize()
   _cameraNode->setTranslation(camStartPosition);
 
   Node* camPitchNode = Node::create();
-  Matrix m;
-  Matrix::createLookAt(_cameraNode->getTranslation(), Vector3::zero(), Vector3::unitY(), &m);
+  Matrix m = Matrix::createLookAt(_cameraNode->getTranslation(), Vector3::zero(), Vector3::unitY());
   camPitchNode->rotate(m);
   _cameraNode->addChild(camPitchNode);
   _scene->addNode(_cameraNode);
@@ -52,7 +51,7 @@ void WaterSample::initialize()
   _reflectCameraNode = Node::create("reflectCamNode");
   _reflectCameraNode->setTranslation(camStartPosition.x, -camStartPosition.y, camStartPosition.z);
   camPitchNode = Node::create();
-  Matrix::createLookAt(_reflectCameraNode->getTranslation(), Vector3::zero(), Vector3::unitY(), &m);
+  m = Matrix::createLookAt(_reflectCameraNode->getTranslation(), Vector3::zero(), Vector3::unitY());
   camPitchNode->rotate(m);
   _reflectCameraNode->addChild(camPitchNode);
   camera = Camera::createPerspective(45.f, Game::getInstance()->getAspectRatio(), 0.1f, 150.f);
