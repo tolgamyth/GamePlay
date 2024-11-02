@@ -5,7 +5,7 @@
 ADD_SAMPLE("Graphics", "Textures", TextureSample, 4);
 #endif
 
-Node* addQuadModelAndNode(Scene* scene, Mesh* mesh)
+Node* addQuadModelAndNode(Scene* scene, std::shared_ptr<Mesh> mesh)
 {
   Model* model = Model::create(mesh);
   Node* node = scene->addNode();
@@ -17,9 +17,9 @@ Node* addQuadModelAndNode(Scene* scene, Mesh* mesh)
 Node* addQuadModelAndNode(Scene* scene, float x, float y, float width, float height,
   float s1 = 0.0f, float t1 = 0.0f, float s2 = 1.0f, float t2 = 1.0f)
 {
-  Mesh* mesh = Mesh::createQuad(x, y, width, height, s1, t1, s2, t2);
+  auto mesh = Mesh::createQuad(x, y, width, height, s1, t1, s2, t2);
   Node* node = addQuadModelAndNode(scene, mesh);
-  SAFE_RELEASE(mesh);
+  //SAFE_RELEASE(mesh);
   return node;
 }
 
@@ -80,9 +80,10 @@ void TextureSample::initialize()
   }
   // Textured quad points
   {
-    Mesh* mesh = Mesh::createQuad(Vector3(0, cubeSize, 0), Vector3(0, 0, 0), Vector3(cubeSize, cubeSize, 0), Vector3(cubeSize, 0, 0));
+    auto mesh = Mesh::createQuad(Vector3(0, cubeSize, 0), Vector3(0, 0, 0), Vector3(cubeSize, cubeSize, 0), Vector3(cubeSize, 0, 0));
     Node* node = addQuadModelAndNode(_scene, mesh);
-    SAFE_RELEASE(mesh);
+    //SAFE_RELEASE(mesh);
+
     setTextureUnlitMaterial(dynamic_cast<Model*>(node->getDrawable()), "res/png/color-wheel.png");
     node->setTranslation(-14, cubeSize, 0);
     _scene->getActiveCamera()->project(getViewport(), node->getTranslationWorld(), &x, &y);

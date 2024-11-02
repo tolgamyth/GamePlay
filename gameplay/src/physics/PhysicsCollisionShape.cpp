@@ -78,7 +78,7 @@ namespace gameplay
 
     case PhysicsCollisionShape::SHAPE_MESH:
       assert(data.mesh);
-      data.mesh->addRef();
+      //data.mesh->addRef();
       break;
     }
   }
@@ -92,7 +92,7 @@ namespace gameplay
       break;
 
     case PhysicsCollisionShape::SHAPE_MESH:
-      SAFE_RELEASE(data.mesh);
+      //SAFE_RELEASE(data.mesh);
       break;
     }
   }
@@ -114,7 +114,7 @@ namespace gameplay
 
       case PhysicsCollisionShape::SHAPE_MESH:
         assert(data.mesh);
-        data.mesh->addRef();
+        //data.mesh->addRef();
         break;
       }
     }
@@ -440,7 +440,7 @@ namespace gameplay
   PhysicsCollisionShape::Definition PhysicsCollisionShape::mesh(Mesh* mesh)
   {
     assert(mesh);
-    mesh->addRef();
+    //mesh->addRef();
 
     Definition d;
     d.type = SHAPE_MESH;

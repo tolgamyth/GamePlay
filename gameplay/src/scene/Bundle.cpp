@@ -975,11 +975,11 @@ namespace gameplay
     std::string xref = readString(_stream);
     if (xref.length() > 1 && xref[0] == '#') // TODO: Handle full xrefs
     {
-      Mesh* mesh = loadMesh(xref.c_str() + 1, nodeId);
-      if (mesh)
+      auto mesh = loadMesh(xref.c_str() + 1, nodeId);
+      if (mesh.get())
       {
         Model* model = Model::create(mesh);
-        SAFE_RELEASE(mesh);
+        //SAFE_RELEASE(mesh);
 
         // Read skin.
         unsigned char hasSkin;
@@ -1355,12 +1355,12 @@ namespace gameplay
     return animation;
   }
 
-  Mesh* Bundle::loadMesh(const char* id)
+  std::shared_ptr<Mesh> Bundle::loadMesh(const char* id)
   {
     return loadMesh(id, nullptr);
   }
 
-  Mesh* Bundle::loadMesh(const char* id, const char* nodeId)
+  std::shared_ptr<Mesh> Bundle::loadMesh(const char* id, const char* nodeId)
   {
     assert(_stream);
     assert(id);
@@ -1390,7 +1390,7 @@ namespace gameplay
     }
 
     // Create mesh.
-    Mesh* mesh = Mesh::createMesh(meshData->vertexFormat, meshData->vertexCount, false);
+    auto mesh = Mesh::createMesh(meshData->vertexFormat, meshData->vertexCount, false);
     if (mesh == nullptr)
     {
       GP_ERROR("Failed to create mesh '%s'.", id);

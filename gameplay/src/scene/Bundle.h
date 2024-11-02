@@ -64,7 +64,7 @@ namespace gameplay
      * @return The loaded mesh, or nullptr if the mesh could not be loaded.
      * @script{create}
      */
-    Mesh* loadMesh(const char* id);
+    std::shared_ptr<Mesh> loadMesh(const char* id);
 
     /**
      * Loads a font with the specified ID from the bundle.
@@ -252,7 +252,7 @@ namespace gameplay
      *
      * @return The loaded mesh, or nullptr if the mesh could not be loaded.
      */
-    Mesh* loadMesh(const char* id, const char* nodeId);
+    std::shared_ptr<Mesh> loadMesh(const char* id, const char* nodeId);
 
     /**
      * Reads an unsigned int from the current file position.

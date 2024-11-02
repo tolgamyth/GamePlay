@@ -58,9 +58,11 @@ void LightSample::initialize()
   _directionalLightNode = Node::create("directionalLight");
   _directionalLightNode->setLight(directionalLight);
   SAFE_RELEASE(directionalLight);
-  Mesh* directionalLightQuadMesh = Mesh::createQuad(-0.3f, -0.3f, 0.6f, 0.6f);
+  
+  auto directionalLightQuadMesh = Mesh::createQuad(-0.3f, -0.3f, 0.6f, 0.6f);
   _directionalLightQuadModel = Model::create(directionalLightQuadMesh);
-  SAFE_RELEASE(directionalLightQuadMesh);
+  //SAFE_RELEASE(directionalLightQuadMesh);
+
   setUnlitMaterialTexture(_directionalLightQuadModel, "res/png/light-directional.png");
   _directionalLightNode->setDrawable(_directionalLightQuadModel);
   _directionalLightNode->setTranslation(0.0f, 0.0f, 7.0f);
@@ -71,9 +73,11 @@ void LightSample::initialize()
   _spotLightNode = Node::create("spotLight");
   _spotLightNode->setLight(spotLight);
   SAFE_RELEASE(spotLight);
-  Mesh* spotLightQuadMesh = Mesh::createQuad(-0.3f, -0.3f, 0.6f, 0.6f);
+
+  auto spotLightQuadMesh = Mesh::createQuad(-0.3f, -0.3f, 0.6f, 0.6f);
   _spotLightQuadModel = Model::create(spotLightQuadMesh);
-  SAFE_RELEASE(spotLightQuadMesh);
+  //SAFE_RELEASE(spotLightQuadMesh);
+
   setUnlitMaterialTexture(_spotLightQuadModel, "res/png/light-spot.png");
   _spotLightNode->setDrawable(_spotLightQuadModel);
   _spotLightNode->setTranslation(0.0f, 0.0f, 8.0f);
@@ -84,9 +88,11 @@ void LightSample::initialize()
   _pointLightNode = Node::create("pointLight");
   _pointLightNode->setLight(pointLight);
   SAFE_RELEASE(pointLight);
-  Mesh* pointLightQuadMesh = Mesh::createQuad(-0.3f, -0.3f, 0.6f, 0.6f);
+  
+  auto pointLightQuadMesh = Mesh::createQuad(-0.3f, -0.3f, 0.6f, 0.6f);
   _pointLightQuadModel = Model::create(pointLightQuadMesh);
-  SAFE_RELEASE(pointLightQuadMesh);
+  //SAFE_RELEASE(pointLightQuadMesh);
+
   setUnlitMaterialTexture(_pointLightQuadModel, "res/png/light-point.png");
   _pointLightNode->setDrawable(_pointLightQuadModel);
   _pointLightNode->setTranslation(0.0f, 0.0f, 8.0f);

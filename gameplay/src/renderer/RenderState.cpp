@@ -1,3 +1,5 @@
+#include <ranges>
+
 #include "framework/Base.h"
 #include "renderer/RenderState.h"
 #include "scene/Node.h"
@@ -471,25 +473,34 @@ namespace gameplay
     assert(renderState);
 
     // Clone parameters
-    for (std::map<std::string, std::string>::const_iterator it = _autoBindings.begin(); it != _autoBindings.end(); ++it)
+    for (const auto& [parameter, binder] : _autoBindings)
     {
-      renderState->setParameterAutoBinding(it->first.c_str(), it->second.c_str());
+      renderState->setParameterAutoBinding(parameter.c_str(), binder.c_str());
     }
-    for (std::vector<MaterialParameter*>::const_iterator it = _parameters.begin(); it != _parameters.end(); ++it)
-    {
-      const MaterialParameter* param = *it;
-      assert(param);
 
+    for (auto& param : _parameters | std::views::filter([](const auto& param) {
       // If this parameter is a method binding auto binding, don't clone it - it will get setup automatically
       // via the cloned auto bindings instead.
-      if (param->_type == MaterialParameter::METHOD && param->_value.method && param->_value.method->_autoBinding)
-        continue;
-
-      MaterialParameter* paramCopy = new MaterialParameter(param->getName());
+      return !(param->_type == MaterialParameter::METHOD && param->_value.method && param->_value.method->_autoBinding);
+      }))
+    {
+      assert(param);
+      auto& paramCopy = renderState->_parameters.emplace_back(new MaterialParameter(param->getName()));
       param->cloneInto(paramCopy);
-
-      renderState->_parameters.push_back(paramCopy);
     }
+
+    //for (auto& param : _parameters)
+    //{
+    //  assert(param);
+
+    //  // If this parameter is a method binding auto binding, don't clone it - it will get setup automatically
+    //  // via the cloned auto bindings instead.
+    //  if (param->_type == MaterialParameter::METHOD && param->_value.method && param->_value.method->_autoBinding)
+    //    continue;
+
+    //  auto& paramCopy = renderState->_parameters.emplace_back(new MaterialParameter(param->getName()));
+    //  param->cloneInto(paramCopy);
+    //}
 
     // Clone our state block
     if (_state)

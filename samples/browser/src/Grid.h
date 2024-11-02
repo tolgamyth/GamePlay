@@ -13,7 +13,7 @@ static const unsigned int DEFAULT_LINE_COUNT = 81;
  *
  * @return A new grid mesh or nullptr if there was an error.
  */
-Mesh* createGridMesh(unsigned int lineCount = DEFAULT_LINE_COUNT);
+std::shared_ptr<Mesh> createGridMesh(unsigned int lineCount = DEFAULT_LINE_COUNT);
 
 /**
  * Creates a model that contains a new grid mesh.

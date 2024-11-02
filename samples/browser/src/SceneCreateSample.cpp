@@ -5,7 +5,7 @@
 ADD_SAMPLE("Graphics", "Scene Creation", SceneCreateSample, 15);
 #endif
 
-static Mesh* createCubeMesh(float size = 1.0f)
+static std::shared_ptr<Mesh> createCubeMesh(float size = 1.0f)
 {
   float a = size * 0.5f;
   float vertices[] =
@@ -47,7 +47,8 @@ static Mesh* createCubeMesh(float size = 1.0f)
       VertexFormat::Element(VertexFormat::NORMAL, 3),
       VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
   };
-  Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), vertexCount, false);
+
+  auto mesh = Mesh::createMesh(VertexFormat(elements, 3), vertexCount, false);
   if (mesh == nullptr)
   {
     GP_ERROR("Failed to create mesh.");
@@ -56,6 +57,7 @@ static Mesh* createCubeMesh(float size = 1.0f)
   mesh->setVertexData(vertices, 0, vertexCount);
   MeshPart* meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
   meshPart->setIndexData(indices, 0, indexCount);
+
   return mesh;
 }
 
@@ -96,10 +98,10 @@ void SceneCreateSample::initialize()
   lightNode->rotateX(MATH_DEG_TO_RAD(-45.0f));
 
   // Create the cube mesh and model.
-  Mesh* cubeMesh = createCubeMesh();
+  auto cubeMesh = createCubeMesh();
   Model* cubeModel = Model::create(cubeMesh);
   // Release the mesh because the model now holds a reference to it.
-  SAFE_RELEASE(cubeMesh);
+  //SAFE_RELEASE(cubeMesh);
 
   // Create the material for the cube model and assign it to the first mesh part.
   Material* material = cubeModel->setMaterial("res/shaders/textured.vert", "res/shaders/textured.frag", "DIRECTIONAL_LIGHT_COUNT 1");

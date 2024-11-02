@@ -8,7 +8,7 @@ ADD_SAMPLE("Graphics", "Triangle", TriangleSample, 1);
 /**
  * Creates a triangle mesh with vertex colors.
  */
-static Mesh* createTriangleMesh()
+static std::shared_ptr<Mesh> createTriangleMesh()
 {
   // Calculate the vertices of the equilateral triangle.
   float a = 0.5f;     // length of the side
@@ -29,7 +29,8 @@ static Mesh* createTriangleMesh()
       VertexFormat::Element(VertexFormat::POSITION, 3),
       VertexFormat::Element(VertexFormat::COLOR, 3)
   };
-  Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+
+  auto mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
   if (mesh == nullptr)
   {
     GP_ERROR("Failed to create mesh.");
@@ -57,11 +58,11 @@ void TriangleSample::initialize()
   _worldViewProjectionMatrix = Matrix::createOrthographic(width, height, -1.0f, 1.0f);
 
   // Create the triangle mesh.
-  Mesh* mesh = createTriangleMesh();
+  auto mesh = createTriangleMesh();
 
   // Create a model for the triangle mesh. A model is an instance of a Mesh that can be drawn with a specified material.
   _model = Model::create(mesh);
-  SAFE_RELEASE(mesh);
+  //SAFE_RELEASE(mesh);
 
   // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
   // This sample doesn't use lighting so the unlit shader is used.

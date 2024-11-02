@@ -109,7 +109,8 @@ void ParticlesSample::addGrid(unsigned int lineCount)
       VertexFormat::Element(VertexFormat::POSITION, 3),
       VertexFormat::Element(VertexFormat::COLOR, 3)
   };
-  Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), pointCount, false);
+
+  auto mesh = Mesh::createMesh(VertexFormat(elements, 2), pointCount, false);
   if (mesh == nullptr)
     return;
 
@@ -118,7 +119,7 @@ void ParticlesSample::addGrid(unsigned int lineCount)
 
   Model* model = Model::create(mesh);
   model->setMaterial("res/common/particles/grid.material");
-  SAFE_RELEASE(mesh);
+  //SAFE_RELEASE(mesh);
 
   _scene->addNode("grid")->setDrawable(model);
   model->release();

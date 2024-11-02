@@ -26,7 +26,7 @@ namespace gameplay
     //  __vertexAttributeBindingCache.erase(itr);
     //}
 
-    SAFE_RELEASE(_mesh);
+    //SAFE_RELEASE(_mesh);
     SAFE_RELEASE(_effect);
     SAFE_DELETE_ARRAY(_attributes);
 
@@ -37,7 +37,7 @@ namespace gameplay
     }
   }
 
-  VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, Effect* effect)
+  VertexAttributeBinding* VertexAttributeBinding::create(std::shared_ptr<Mesh> mesh, Effect* effect)
   {
     assert(mesh);
 
@@ -71,7 +71,7 @@ namespace gameplay
     return create(nullptr, vertexFormat, vertexPointer, effect);
   }
 
-  VertexAttributeBinding* VertexAttributeBinding::create(Mesh* mesh, const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect)
+  VertexAttributeBinding* VertexAttributeBinding::create(std::shared_ptr<Mesh> mesh, const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect)
   {
     assert(effect);
 
@@ -135,7 +135,7 @@ namespace gameplay
     if (mesh)
     {
       b->_mesh = mesh;
-      mesh->addRef();
+      //mesh->addRef();
     }
 
     b->_effect = effect;

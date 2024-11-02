@@ -31,7 +31,7 @@ namespace gameplay
      * Creates a new Model.
      * @script{create}
      */
-    static Model* create(Mesh* mesh);
+    static Model* create(std::shared_ptr<Mesh> mesh);
 
     /**
      * Returns the Mesh for this Model.
@@ -150,7 +150,7 @@ namespace gameplay
     /**
      * Constructor.
      */
-    Model(Mesh* mesh);
+    Model(std::shared_ptr<Mesh> mesh);
 
     /**
      * Destructor. Hidden use release() instead.
@@ -186,7 +186,7 @@ namespace gameplay
 
     void validatePartCount();
 
-    Mesh* _mesh;
+    std::shared_ptr<Mesh> _mesh;
     Material* _material;
     unsigned int _partCount;
     Material** _partMaterials;

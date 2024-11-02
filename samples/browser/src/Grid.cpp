@@ -1,6 +1,6 @@
 #include "Grid.h"
 
-Mesh* createGridMesh(unsigned int lineCount)
+std::shared_ptr<Mesh> createGridMesh(unsigned int lineCount)
 {
   // There needs to be an odd number of lines
   lineCount |= 1;
@@ -70,7 +70,8 @@ Mesh* createGridMesh(unsigned int lineCount)
       VertexFormat::Element(VertexFormat::POSITION, 3),
       VertexFormat::Element(VertexFormat::COLOR, 3)
   };
-  Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), pointCount, false);
+  
+  auto mesh = Mesh::createMesh(VertexFormat(elements, 2), pointCount, false);
   if (mesh == nullptr)
   {
     return nullptr;
@@ -83,12 +84,12 @@ Mesh* createGridMesh(unsigned int lineCount)
 
 Model* createGridModel(unsigned int lineCount)
 {
-  Mesh* mesh = createGridMesh(lineCount);
+  auto mesh = createGridMesh(lineCount);
   if (!mesh)
     return nullptr;
 
   Model* model = Model::create(mesh);
-  mesh->release();
+  //mesh->release();
   assert(model);
   return model;
 }

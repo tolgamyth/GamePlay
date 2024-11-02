@@ -22,9 +22,9 @@ PostProcessSample::Compositor* PostProcessSample::Compositor::create(FrameBuffer
   SAFE_RELEASE(sampler);
   if (_quadModel == nullptr)
   {
-    Mesh* mesh = Mesh::createQuadFullscreen();
+    auto mesh = Mesh::createQuadFullscreen();
     _quadModel = Model::create(mesh);
-    SAFE_RELEASE(mesh);
+    //SAFE_RELEASE(mesh);
   }
 
   return new Compositor(srcBuffer, dstBuffer, material, techniqueId);

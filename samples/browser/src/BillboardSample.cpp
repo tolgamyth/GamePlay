@@ -276,10 +276,11 @@ bool BillboardSample::mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelD
 void BillboardSample::loadGround()
 {
   // Just a basic plane for this sample
-  Mesh* mesh = Mesh::createQuad(-(GROUND_WIDTH / 2.0f), -(GROUND_HEIGHT / 2.0f), GROUND_WIDTH, GROUND_HEIGHT);
+  auto mesh = Mesh::createQuad(-(GROUND_WIDTH / 2.0f), -(GROUND_HEIGHT / 2.0f), GROUND_WIDTH, GROUND_HEIGHT);
   Node* node = Node::create();
   _ground = Model::create(mesh);
-  SAFE_RELEASE(mesh);
+  //SAFE_RELEASE(mesh);
+
   node->setDrawable(_ground);
   _scene->addNode(node);
   node->rotateX(MATH_DEG_TO_RAD(90));
@@ -299,7 +300,7 @@ void BillboardSample::loadGround()
 
 void BillboardSample::loadBillboards()
 {
-  Mesh* mesh = Mesh::createQuad(-(BILLBOARD_WIDTH / 2.0f), -(BILLBOARD_HEIGHT / 2.0f), BILLBOARD_WIDTH, BILLBOARD_HEIGHT);
+  auto mesh = Mesh::createQuad(-(BILLBOARD_WIDTH / 2.0f), -(BILLBOARD_HEIGHT / 2.0f), BILLBOARD_WIDTH, BILLBOARD_HEIGHT);
   mesh->setBoundingSphere(BoundingSphere(Vector3::zero(), BILLBOARD_HEIGHT));
 
   Effect* effect = Effect::createFromFile("res/shaders/textured.vert", "res/shaders/textured.frag", "TEXTURE_DISCARD_ALPHA");
@@ -329,7 +330,7 @@ void BillboardSample::loadBillboards()
     node->translate(tx, (BILLBOARD_HEIGHT / 2.0f), tz);
   }
   SAFE_RELEASE(effect);
-  SAFE_RELEASE(mesh);
+  //SAFE_RELEASE(mesh);
 }
 
 void BillboardSample::gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad)

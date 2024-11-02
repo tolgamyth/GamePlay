@@ -9,15 +9,15 @@ namespace gameplay
 {
 
   Model::Model() : Drawable(),
-    _mesh(nullptr), _material(nullptr), _partCount(0), _partMaterials(nullptr), _skin(nullptr)
+    _material(nullptr), _partCount(0), _partMaterials(nullptr), _skin(nullptr)
   {
   }
 
-  Model::Model(Mesh* mesh) : Drawable(),
+  Model::Model(std::shared_ptr<Mesh> mesh) : Drawable(),
     _mesh(mesh), _material(nullptr), _partCount(0), _partMaterials(nullptr), _skin(nullptr)
   {
-    assert(mesh);
-    _partCount = mesh->getPartCount();
+    assert(_mesh);
+    _partCount = _mesh->getPartCount();
   }
 
   Model::~Model()
@@ -31,20 +31,20 @@ namespace gameplay
       }
       SAFE_DELETE_ARRAY(_partMaterials);
     }
-    SAFE_RELEASE(_mesh);
+    //SAFE_RELEASE(_mesh);
     SAFE_DELETE(_skin);
   }
 
-  Model* Model::create(Mesh* mesh)
+  Model* Model::create(std::shared_ptr<Mesh> mesh)
   {
     assert(mesh);
-    mesh->addRef();
+    //mesh->addRef();
     return new Model(mesh);
   }
 
   Mesh* Model::getMesh() const
   {
-    return _mesh;
+    return _mesh.get();
   }
 
   unsigned int Model::getMeshPartCount() const
@@ -344,7 +344,7 @@ namespace gameplay
           assert(pass);
           pass->bind();
           GL_ASSERT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-          if (!wireframe || !drawWireframe(_mesh))
+          if (!wireframe || !drawWireframe(_mesh.get()))
           {
             GL_ASSERT(glDrawArrays(_mesh->getPrimitiveType(), 0, _mesh->getVertexCount()));
           }
@@ -396,7 +396,7 @@ namespace gameplay
 
   Drawable* Model::clone(NodeCloneContext& context)
   {
-    Model* model = Model::create(getMesh());
+    Model* model = Model::create(_mesh);
     if (!model)
     {
       GP_ERROR("Failed to clone model.");

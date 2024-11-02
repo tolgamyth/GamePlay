@@ -266,7 +266,7 @@ namespace gameplay
       elements[2] = VertexFormat::Element(VertexFormat::TEXCOORD0, 2);
     }
     VertexFormat format(elements, _terrain->_normalMap ? 2 : 3);
-    Mesh* mesh = Mesh::createMesh(format, vertexCount);
+    auto mesh = Mesh::createMesh(format, vertexCount);
     mesh->setVertexData(vertices);
     mesh->setBoundingBox(BoundingBox(min, max));
     mesh->setBoundingSphere(BoundingSphere(center, center.distance(max)));
@@ -341,7 +341,7 @@ namespace gameplay
     // Add this level
     _levels.emplace_back(new Level())->model = Model::create(mesh);
 
-    mesh->release();
+    //mesh->release();
   }
 
   void TerrainPatch::deleteLayer(Layer* layer)

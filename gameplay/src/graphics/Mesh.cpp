@@ -29,14 +29,14 @@ namespace gameplay
     }
   }
 
-  Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic)
+  std::shared_ptr<Mesh> Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic)
   {
     GLuint vbo;
     GL_ASSERT(glGenBuffers(1, &vbo));
     GL_ASSERT(glBindBuffer(GL_ARRAY_BUFFER, vbo));
     GL_ASSERT(glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW));
 
-    Mesh* mesh = new Mesh(vertexFormat);
+    auto mesh = std::make_shared<Mesh>(vertexFormat);
     mesh->_vertexCount = vertexCount;
     mesh->_vertexBuffer = vbo;
     mesh->_dynamic = dynamic;
@@ -45,7 +45,7 @@ namespace gameplay
   }
 
 
-  Mesh* Mesh::createQuad(float x, float y, float width, float height, float s1, float t1, float s2, float t2)
+  std::shared_ptr<Mesh> Mesh::createQuad(float x, float y, float width, float height, float s1, float t1, float s2, float t2)
   {
     float x2 = x + width;
     float y2 = y + height;
@@ -64,7 +64,7 @@ namespace gameplay
         VertexFormat::Element(VertexFormat::NORMAL, 3),
         VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
     };
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), 4, false);
+    auto mesh = Mesh::createMesh(VertexFormat(elements, 3), 4, false);
     if (mesh == nullptr)
     {
       GP_ERROR("Failed to create mesh.");
@@ -77,7 +77,7 @@ namespace gameplay
     return mesh;
   }
 
-  Mesh* Mesh::createQuadFullscreen()
+  std::shared_ptr<Mesh> Mesh::createQuadFullscreen()
   {
     float x = -1.0f;
     float y = -1.0f;
@@ -97,7 +97,7 @@ namespace gameplay
         VertexFormat::Element(VertexFormat::POSITION, 2),
         VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
     };
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), 4, false);
+    auto mesh = Mesh::createMesh(VertexFormat(elements, 2), 4, false);
     if (mesh == nullptr)
     {
       GP_ERROR("Failed to create mesh.");
@@ -110,7 +110,7 @@ namespace gameplay
     return mesh;
   }
 
-  Mesh* Mesh::createQuad(const Vector3& p1, const Vector3& p2, const Vector3& p3, const Vector3& p4)
+  std::shared_ptr<Mesh> Mesh::createQuad(const Vector3& p1, const Vector3& p2, const Vector3& p3, const Vector3& p4)
   {
     // Calculate the normal vector of the plane.
     Vector3 v1, v2, n;
@@ -134,7 +134,7 @@ namespace gameplay
         VertexFormat::Element(VertexFormat::TEXCOORD0, 2)
     };
 
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 3), 4, false);
+    auto mesh = Mesh::createMesh(VertexFormat(elements, 3), 4, false);
     if (mesh == nullptr)
     {
       GP_ERROR("Failed to create mesh.");
@@ -147,7 +147,7 @@ namespace gameplay
     return mesh;
   }
 
-  Mesh* Mesh::createLines(Vector3* points, unsigned int pointCount)
+  std::shared_ptr<Mesh> Mesh::createLines(Vector3* points, unsigned int pointCount)
   {
     assert(points);
     assert(pointCount);
@@ -159,7 +159,8 @@ namespace gameplay
     {
         VertexFormat::Element(VertexFormat::POSITION, 3)
     };
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 1), pointCount, false);
+
+    auto mesh = Mesh::createMesh(VertexFormat(elements, 1), pointCount, false);
     if (mesh == nullptr)
     {
       GP_ERROR("Failed to create mesh.");
@@ -171,10 +172,11 @@ namespace gameplay
     mesh->setVertexData(vertices, 0, pointCount);
 
     SAFE_DELETE_ARRAY(vertices);
+
     return mesh;
   }
 
-  Mesh* Mesh::createBoundingBox(const BoundingBox& box)
+  std::shared_ptr<Mesh> Mesh::createBoundingBox(const BoundingBox& box)
   {
     Vector3 corners[8];
     box.getCorners(corners);
@@ -205,7 +207,7 @@ namespace gameplay
     {
         VertexFormat::Element(VertexFormat::POSITION, 3)
     };
-    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 1), 18, false);
+    auto mesh = Mesh::createMesh(VertexFormat(elements, 1), 18, false);
     if (mesh == nullptr)
     {
       GP_ERROR("Failed to create mesh.");

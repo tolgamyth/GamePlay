@@ -47,7 +47,7 @@ namespace gameplay
      * @return A VertexAttributeBinding for the requested parameters.
      * @script{create}
      */
-    static VertexAttributeBinding* create(Mesh* mesh, Effect* effect);
+    static VertexAttributeBinding* create(std::shared_ptr<Mesh> mesh, Effect* effect);
 
     /**
      * Creates a client-side vertex attribute binding.
@@ -105,13 +105,13 @@ namespace gameplay
      */
     VertexAttributeBinding& operator=(const VertexAttributeBinding&);
 
-    static VertexAttributeBinding* create(Mesh* mesh, const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect);
+    static VertexAttributeBinding* create(std::shared_ptr<Mesh> mesh, const VertexFormat& vertexFormat, void* vertexPointer, Effect* effect);
 
     void setVertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalize, GLsizei stride, void* pointer);
 
     GLuint _handle;
     VertexAttribute* _attributes;
-    Mesh* _mesh;
+    std::shared_ptr<Mesh> _mesh;
     Effect* _effect;
   };
 

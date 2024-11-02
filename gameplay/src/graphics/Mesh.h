@@ -17,12 +17,22 @@ namespace gameplay
    * Defines a mesh supporting various vertex formats and 1 or more
    * MeshPart(s) to define how the vertices are connected.
    */
-  class Mesh : public Ref
+  class Mesh
   {
     friend class Model;
     friend class Bundle;
 
   public:
+
+    /**
+     * Constructor.
+     */
+    Mesh(const VertexFormat& vertexFormat);
+
+    /**
+     * Destructor.
+     */
+    virtual ~Mesh();
 
     /**
      * Defines supported index formats.
@@ -56,7 +66,7 @@ namespace gameplay
      * @return The created mesh.
      * @script{create}
      */
-    static Mesh* createMesh(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic = false);
+    static std::shared_ptr<Mesh> createMesh(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic = false);
 
     /**
      * Creates a new textured 3D quad.
@@ -73,7 +83,7 @@ namespace gameplay
      * @return The created mesh.
      * @script{create}
      */
-    static Mesh* createQuad(const Vector3& p1, const Vector3& p2, const Vector3& p3, const Vector3& p4);
+    static std::shared_ptr<Mesh> createQuad(const Vector3& p1, const Vector3& p2, const Vector3& p3, const Vector3& p4);
 
     /**
      * Constructs a new textured 2D quad.
@@ -90,7 +100,7 @@ namespace gameplay
      * @return The newly created mesh.
      * @script{create}
      */
-    static Mesh* createQuad(float x, float y, float width, float height, float s1 = 0.0f, float t1 = 0.0f, float s2 = 1.0f, float t2 = 1.0f);
+    static std::shared_ptr<Mesh> createQuad(float x, float y, float width, float height, float s1 = 0.0f, float t1 = 0.0f, float s2 = 1.0f, float t2 = 1.0f);
 
     /**
      * Creates a new full-screen 2D quad.
@@ -104,7 +114,7 @@ namespace gameplay
      * @return The newly created mesh.
      * @script{create}
      */
-    static Mesh* createQuadFullscreen();
+    static std::shared_ptr<Mesh> createQuadFullscreen();
 
     /**
      * Creates lines between 2 or more points passed in as a Vector3 array.
@@ -118,7 +128,7 @@ namespace gameplay
      * @return The newly created mesh.
      * @script{create}
      */
-    static Mesh* createLines(Vector3* points, unsigned int pointCount);
+    static std::shared_ptr<Mesh> createLines(Vector3* points, unsigned int pointCount);
 
     /**
      * Creates a bounding box mesh when passed a BoundingBox.
@@ -130,7 +140,7 @@ namespace gameplay
      * @return The newly created bounding box mesh.
      * @script{create}
      */
-    static Mesh* createBoundingBox(const BoundingBox& box);
+    static std::shared_ptr<Mesh> createBoundingBox(const BoundingBox& box);
 
     /**
      * Returns a URL from which the mesh was loaded from.
@@ -326,17 +336,7 @@ namespace gameplay
      */
     void setBoundingSphere(const BoundingSphere& sphere);
 
-    /**
-     * Destructor.
-     */
-    virtual ~Mesh();
-
   private:
-
-    /**
-     * Constructor.
-     */
-    Mesh(const VertexFormat& vertexFormat);
 
     /**
      * Constructor.

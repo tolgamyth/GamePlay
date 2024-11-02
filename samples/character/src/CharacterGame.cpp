@@ -301,9 +301,8 @@ void CharacterGame::update(float elapsedTime)
 
     // Orient the character relative to the camera so he faces the direction we want to move.
     const Matrix& cameraMatrix = _scene->getActiveCamera()->getNode()->getWorldMatrix();
-    Vector3 cameraRight, cameraForward;
-    cameraMatrix.getRightVector(&cameraRight);
-    cameraMatrix.getForwardVector(&cameraForward);
+    Vector3 cameraRight = cameraMatrix.getRightVector(); 
+    Vector3 cameraForward = cameraMatrix.getForwardVector();
 
     // Get the current forward vector for the mesh node (negate it since the character was modelled facing +z)
     Vector3 currentHeading(-_characterNode->getForwardVectorWorld());

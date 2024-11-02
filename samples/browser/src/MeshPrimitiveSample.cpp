@@ -8,7 +8,7 @@ ADD_SAMPLE("Graphics", "Mesh Primitives", MeshPrimitiveSample, 2);
 /**
  * Creates a triangle mesh with vertex colors.
  */
-static Mesh* createTriangleMesh()
+static std::shared_ptr<Mesh> createTriangleMesh()
 {
   // Calculate the vertices of the equilateral triangle.
   float a = 0.25f;      // Length of side
@@ -29,7 +29,7 @@ static Mesh* createTriangleMesh()
       VertexFormat::Element(VertexFormat::POSITION, 3),
       VertexFormat::Element(VertexFormat::COLOR, 3)
   };
-  Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+  auto mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
   if (mesh == nullptr)
   {
     GP_ERROR("Failed to create mesh.");
@@ -40,7 +40,7 @@ static Mesh* createTriangleMesh()
   return mesh;
 }
 
-static Mesh* createTriangleStripMesh()
+static std::shared_ptr<Mesh> createTriangleStripMesh()
 {
   float scale = 0.02f;
   unsigned int vertexCount = 20;
@@ -71,7 +71,7 @@ static Mesh* createTriangleStripMesh()
       VertexFormat::Element(VertexFormat::POSITION, 3),
       VertexFormat::Element(VertexFormat::COLOR, 3)
   };
-  Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+  auto mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
   if (mesh == nullptr)
   {
     GP_ERROR("Failed to create mesh.");
@@ -83,7 +83,7 @@ static Mesh* createTriangleStripMesh()
   return mesh;
 }
 
-static Mesh* createLineStripMesh()
+static std::shared_ptr<Mesh> createLineStripMesh()
 {
   float a = 0.1f;
   float vertices[] =
@@ -101,7 +101,7 @@ static Mesh* createLineStripMesh()
       VertexFormat::Element(VertexFormat::POSITION, 3),
       VertexFormat::Element(VertexFormat::COLOR, 3)
   };
-  Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+  auto mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
   if (mesh == nullptr)
   {
     GP_ERROR("Failed to create mesh.");
@@ -112,7 +112,7 @@ static Mesh* createLineStripMesh()
   return mesh;
 }
 
-static Mesh* createLinesMesh()
+static std::shared_ptr<Mesh> createLinesMesh()
 {
   float scale = 0.2f;
   unsigned int vertexCount = 40;
@@ -135,7 +135,7 @@ static Mesh* createLinesMesh()
       VertexFormat::Element(VertexFormat::POSITION, 3),
       VertexFormat::Element(VertexFormat::COLOR, 3)
   };
-  Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+  auto mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
   if (mesh == nullptr)
   {
     GP_ERROR("Failed to create mesh.");
@@ -164,30 +164,30 @@ void MeshPrimitiveSample::initialize()
   _viewProjectionMatrix = Matrix::createOrthographic(width, height, -1.0f, 1.0f);
 
   // Create a model for the triangle mesh. A model is an instance of a Mesh that can be drawn with a specified material.
-  Mesh* triangleMesh = createTriangleMesh();
+  auto triangleMesh = createTriangleMesh();
   _triangles = Model::create(triangleMesh);
-  SAFE_RELEASE(triangleMesh);
+  //SAFE_RELEASE(triangleMesh);
 
   // Create a material from the built-in "colored-unlit" vertex and fragment shaders.
   // This sample doesn't use lighting so the unlit shader is used.
   // This sample uses vertex color so VERTEX_COLOR is defined. Look at the shader source files to see the supported defines.
   _triangles->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "VERTEX_COLOR");
 
-  Mesh* triangleStripMesh = createTriangleStripMesh();
+  auto triangleStripMesh = createTriangleStripMesh();
   _triangleStrip = Model::create(triangleStripMesh);
-  SAFE_RELEASE(triangleStripMesh);
+  //SAFE_RELEASE(triangleStripMesh);
   Material* material = _triangleStrip->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "VERTEX_COLOR");
   material->getStateBlock()->setDepthTest(true);
   material->getStateBlock()->setDepthWrite(true);
 
-  Mesh* lineStripMesh = createLineStripMesh();
+  auto lineStripMesh = createLineStripMesh();
   _lineStrip = Model::create(lineStripMesh);
-  SAFE_RELEASE(lineStripMesh);
+  //SAFE_RELEASE(lineStripMesh);
   _lineStrip->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "VERTEX_COLOR");
 
-  Mesh* lineMesh = createLinesMesh();
+  auto lineMesh = createLinesMesh();
   _lines = Model::create(lineMesh);
-  SAFE_RELEASE(lineMesh);
+  //SAFE_RELEASE(lineMesh);
   _lines->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "VERTEX_COLOR");
 }
 
