@@ -285,7 +285,7 @@ namespace gameplay
       assert(indexCount <= USHRT_MAX);
     }
 
-    MeshPart* part = mesh->addPart(Mesh::TRIANGLE_STRIP, Mesh::INDEX16, indexCount);
+    auto part = mesh->addPart(Mesh::TRIANGLE_STRIP, Mesh::INDEX16, indexCount);
     unsigned short* indices = new unsigned short[indexCount];
     index = 0;
     for (unsigned int z = 0; z < patchHeight - 1; ++z)

@@ -1105,7 +1105,7 @@ namespace gameplay
     }
 
     // Read mesh data from URL
-    Bundle::MeshData* data = Bundle::readMeshData(mesh->getUrl());
+    auto data = Bundle::readMeshData(mesh->getUrl());
     if (data == nullptr)
     {
       GP_ERROR("Failed to load mesh data from url '%s'.", mesh->getUrl());
@@ -1183,7 +1183,6 @@ namespace gameplay
             SAFE_DELETE(meshInterface);
             SAFE_DELETE_ARRAY(shapeMeshData->vertexData);
             SAFE_DELETE(shapeMeshData);
-            SAFE_DELETE(data);
             return nullptr;
           }
 
@@ -1245,7 +1244,8 @@ namespace gameplay
     _shapes.push_back(shape);
 
     // Free the temporary mesh data now that it's stored in physics system.
-    SAFE_DELETE(data);
+    //SAFE_DELETE(data);
+    data.release();
 
     return shape;
   }

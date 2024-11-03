@@ -1066,14 +1066,13 @@ namespace gameplay
 
     if (_listeners)
     {
-      std::map<Control::Listener::EventType, std::list<Control::Listener*>*>::const_iterator itr = _listeners->find(eventType);
-      if (itr != _listeners->end())
-      {
-        std::list<Control::Listener*>* listenerList = itr->second;
-        for (std::list<Control::Listener*>::iterator listenerItr = listenerList->begin(); listenerItr != listenerList->end(); ++listenerItr)
-        {
-          assert(*listenerItr);
-          (*listenerItr)->controlEvent(this, eventType);
+      if (auto itr = _listeners->find(eventType); itr != _listeners->end()) {
+        auto* listenerList = itr->second;
+
+        // Iterate over the listeners in the list and call controlEvent on each
+        for (auto* listener : *listenerList) {
+          assert(listener);
+          listener->controlEvent(this, eventType);
         }
       }
     }

@@ -5,16 +5,21 @@
 namespace gameplay
 {
 
-/**
- * Defines a part of a mesh describing the way the
- * mesh's vertices are connected together.
- */
-class MeshPart
-{
+  /**
+   * Defines a part of a mesh describing the way the
+   * mesh's vertices are connected together.
+   */
+  class MeshPart
+  {
     friend class Mesh;
     friend class Model;
 
-public:
+  public:
+
+    /**
+     * Constructor.
+     */
+    MeshPart();
 
     /**
      * Destructor.
@@ -105,12 +110,7 @@ public:
      */
     bool isDynamic() const;
 
-private:
-
-    /**
-     * Constructor.
-     */
-    MeshPart();
+  private:
 
     /**
      * Constructor.
@@ -127,15 +127,15 @@ private:
      * @param indexCount The number of indices.
      * @param dynamic true if the part if dynamic; false otherwise.
      */
-    static MeshPart* create(Mesh* mesh, unsigned int meshIndex, Mesh::PrimitiveType primitiveType, Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic = false);
+    [[nodiscard]]
+    static std::unique_ptr<MeshPart> create(unsigned int meshIndex, Mesh::PrimitiveType primitiveType, Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic = false);
 
-    Mesh* _mesh;
     unsigned int _meshIndex;
     Mesh::PrimitiveType _primitiveType;
     Mesh::IndexFormat _indexFormat;
     unsigned int _indexCount;
     IndexBufferHandle _indexBuffer;
     bool _dynamic;
-};
+  };
 
 }

@@ -4,8 +4,7 @@
 namespace gameplay
 {
 
-  MeshPart::MeshPart() :
-    _mesh(nullptr), _meshIndex(0), _primitiveType(Mesh::TRIANGLES), _indexCount(0), _indexBuffer(0), _dynamic(false)
+  MeshPart::MeshPart() : _meshIndex(0), _primitiveType(Mesh::TRIANGLES), _indexCount(0), _indexBuffer(0), _dynamic(false)
   {
   }
 
@@ -17,7 +16,7 @@ namespace gameplay
     }
   }
 
-  MeshPart* MeshPart::create(Mesh* mesh, unsigned int meshIndex, Mesh::PrimitiveType primitiveType,
+  std::unique_ptr<MeshPart> MeshPart::create(unsigned int meshIndex, Mesh::PrimitiveType primitiveType,
     Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic)
   {
     // Create a VBO for our index buffer.
@@ -45,8 +44,7 @@ namespace gameplay
 
     GL_ASSERT(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * indexCount, nullptr, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW));
 
-    MeshPart* part = new MeshPart();
-    part->_mesh = mesh;
+    auto part = std::make_unique<MeshPart>();
     part->_meshIndex = meshIndex;
     part->_primitiveType = primitiveType;
     part->_indexFormat = indexFormat;
@@ -54,7 +52,7 @@ namespace gameplay
     part->_indexBuffer = vbo;
     part->_dynamic = dynamic;
 
-    return part;
+    return std::move(part);
   }
 
   unsigned int MeshPart::getMeshIndex() const

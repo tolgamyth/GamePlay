@@ -13,14 +13,7 @@ namespace gameplay
 
   Mesh::~Mesh()
   {
-    if (_parts)
-    {
-      for (unsigned int i = 0; i < _partCount; ++i)
-      {
-        SAFE_DELETE(_parts[i]);
-      }
-      SAFE_DELETE_ARRAY(_parts);
-    }
+    _parts.clear();
 
     if (_vertexBuffer)
     {
@@ -293,25 +286,14 @@ namespace gameplay
 
   MeshPart* Mesh::addPart(PrimitiveType primitiveType, IndexFormat indexFormat, unsigned int indexCount, bool dynamic)
   {
-    MeshPart* part = MeshPart::create(this, _partCount, primitiveType, indexFormat, indexCount, dynamic);
+
+    auto part = MeshPart::create(_parts.size(), primitiveType, indexFormat, indexCount, dynamic);
     if (part)
     {
-      // Increase size of part array and copy old subets into it.
-      MeshPart** oldParts = _parts;
-      _parts = new MeshPart * [_partCount + 1];
-      for (unsigned int i = 0; i < _partCount; ++i)
-      {
-        _parts[i] = oldParts[i];
-      }
-
-      // Add new part to array.
-      _parts[_partCount++] = part;
-
-      // Delete old part array.
-      SAFE_DELETE_ARRAY(oldParts);
+      _partCount++;
+      return _parts.emplace_back(std::move(part)).get();
     }
-
-    return part;
+    return nullptr;
   }
 
   unsigned int Mesh::getPartCount() const
@@ -321,8 +303,7 @@ namespace gameplay
 
   MeshPart* Mesh::getPart(unsigned int index)
   {
-    assert(_parts);
-    return _parts[index];
+    return _parts[index].get();
   }
 
   const BoundingBox& Mesh::getBoundingBox() const

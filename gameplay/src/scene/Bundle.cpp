@@ -1382,7 +1382,7 @@ namespace gameplay
     }
 
     // Read mesh data.
-    MeshData* meshData = readMeshData();
+    auto meshData = readMeshData();
     if (meshData == nullptr)
     {
       GP_ERROR("Failed to load mesh data for mesh '%s'.", id);
@@ -1394,7 +1394,6 @@ namespace gameplay
     if (mesh == nullptr)
     {
       GP_ERROR("Failed to create mesh '%s'.", id);
-      SAFE_DELETE_ARRAY(meshData);
       return nullptr;
     }
 
@@ -1408,22 +1407,18 @@ namespace gameplay
     mesh->_boundingSphere.set(meshData->boundingSphere);
 
     // Create mesh parts.
-    for (unsigned int i = 0; i < meshData->parts.size(); ++i)
+    for (auto& partData :meshData->parts)
     {
-      MeshPartData* partData = meshData->parts[i];
       assert(partData);
 
-      MeshPart* part = mesh->addPart(partData->primitiveType, partData->indexFormat, partData->indexCount, false);
+      auto part = mesh->addPart(partData->primitiveType, partData->indexFormat, partData->indexCount, false);
       if (part == nullptr)
       {
-        GP_ERROR("Failed to create mesh part (with index %d) for mesh '%s'.", i, id);
-        SAFE_DELETE(meshData);
+        GP_ERROR("Failed to create mesh part for mesh '%s'.", id);
         return nullptr;
       }
       part->setIndexData(partData->indexData, 0, partData->indexCount);
     }
-
-    SAFE_DELETE(meshData);
 
     // Restore file pointer.
     if (_stream->seek(position, SEEK_SET) == false)
@@ -1435,7 +1430,7 @@ namespace gameplay
     return mesh;
   }
 
-  Bundle::MeshData* Bundle::readMeshData()
+  std::unique_ptr<Bundle::MeshData> Bundle::readMeshData()
   {
     // Read vertex format/elements.
     unsigned int vertexElementCount;
@@ -1471,7 +1466,7 @@ namespace gameplay
       vertexElements[i].size = vSize;
     }
 
-    MeshData* meshData = new MeshData(VertexFormat(vertexElements, vertexElementCount));
+    auto meshData = std::make_unique<MeshData>(VertexFormat(vertexElements, vertexElementCount));
     SAFE_DELETE_ARRAY(vertexElements);
 
     // Read vertex data.
@@ -1479,13 +1474,15 @@ namespace gameplay
     if (_stream->read(&vertexByteCount, 4, 1) != 1)
     {
       GP_ERROR("Failed to load vertex byte count.");
-      SAFE_DELETE(meshData);
+      //SAFE_DELETE(meshData);
+      meshData.release();
       return nullptr;
     }
     if (vertexByteCount == 0)
     {
       GP_ERROR("Failed to load mesh data; invalid vertex byte count of 0.");
-      SAFE_DELETE(meshData);
+      meshData.release();
+      //SAFE_DELETE(meshData);
       return nullptr;
     }
 
@@ -1495,7 +1492,8 @@ namespace gameplay
     if (_stream->read(meshData->vertexData, 1, vertexByteCount) != vertexByteCount)
     {
       GP_ERROR("Failed to load vertex data.");
-      SAFE_DELETE(meshData);
+      meshData.release();
+      //SAFE_DELETE(meshData);
       return nullptr;
     }
 
@@ -1503,13 +1501,15 @@ namespace gameplay
     if (_stream->read(&meshData->boundingBox.min.x, 4, 3) != 3 || _stream->read(&meshData->boundingBox.max.x, 4, 3) != 3)
     {
       GP_ERROR("Failed to load mesh bounding box.");
-      SAFE_DELETE(meshData);
+      meshData.release();
+      //SAFE_DELETE(meshData);
       return nullptr;
     }
     if (_stream->read(&meshData->boundingSphere.center.x, 4, 3) != 3 || _stream->read(&meshData->boundingSphere.radius, 4, 1) != 1)
     {
       GP_ERROR("Failed to load mesh bounding sphere.");
-      SAFE_DELETE(meshData);
+      meshData.release();
+      //SAFE_DELETE(meshData);
       return nullptr;
     }
 
@@ -1518,7 +1518,8 @@ namespace gameplay
     if (_stream->read(&meshPartCount, 4, 1) != 1)
     {
       GP_ERROR("Failed to load mesh part count.");
-      SAFE_DELETE(meshData);
+      meshData.release();
+      //SAFE_DELETE(meshData);
       return nullptr;
     }
     for (unsigned int i = 0; i < meshPartCount; ++i)
@@ -1528,19 +1529,22 @@ namespace gameplay
       if (_stream->read(&pType, 4, 1) != 1)
       {
         GP_ERROR("Failed to load primitive type for mesh part with index %d.", i);
-        SAFE_DELETE(meshData);
+        meshData.release();
+        //SAFE_DELETE(meshData);
         return nullptr;
       }
       if (_stream->read(&iFormat, 4, 1) != 1)
       {
         GP_ERROR("Failed to load index format for mesh part with index %d.", i);
-        SAFE_DELETE(meshData);
+        meshData.release();
+        //SAFE_DELETE(meshData);
         return nullptr;
       }
       if (_stream->read(&iByteCount, 4, 1) != 1)
       {
         GP_ERROR("Failed to load index byte count for mesh part with index %d.", i);
-        SAFE_DELETE(meshData);
+        meshData.release();
+        //SAFE_DELETE(meshData);
         return nullptr;
       }
 
@@ -1573,7 +1577,8 @@ namespace gameplay
       if (_stream->read(partData->indexData, 1, iByteCount) != iByteCount)
       {
         GP_ERROR("Failed to read index data for mesh part with index %d.", i);
-        SAFE_DELETE(meshData);
+        meshData.release();
+        //SAFE_DELETE(meshData);
         return nullptr;
       }
     }
@@ -1581,7 +1586,7 @@ namespace gameplay
     return meshData;
   }
 
-  Bundle::MeshData* Bundle::readMeshData(const char* url)
+  std::unique_ptr<Bundle::MeshData> Bundle::readMeshData(const char* url)
   {
     assert(url);
 
@@ -1621,7 +1626,7 @@ namespace gameplay
     }
 
     // Read mesh data from current file position.
-    MeshData* meshData = bundle->readMeshData();
+    auto meshData = bundle->readMeshData();
 
     SAFE_RELEASE(bundle);
 

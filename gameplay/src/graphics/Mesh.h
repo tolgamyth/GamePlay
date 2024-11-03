@@ -260,6 +260,7 @@ namespace gameplay
      *
      * @return The newly created/added mesh part.
      */
+    [[nodiscard]]
     MeshPart* addPart(PrimitiveType primitiveType, Mesh::IndexFormat indexFormat, unsigned int indexCount, bool dynamic = false);
 
     /**
@@ -354,7 +355,7 @@ namespace gameplay
     VertexBufferHandle _vertexBuffer;
     PrimitiveType _primitiveType;
     unsigned int _partCount;
-    MeshPart** _parts;
+    std::vector<std::unique_ptr<MeshPart>> _parts;
     bool _dynamic;
     BoundingBox _boundingBox;
     BoundingSphere _boundingSphere;

@@ -31,7 +31,6 @@ namespace gameplay
       }
       SAFE_DELETE_ARRAY(_partMaterials);
     }
-    //SAFE_RELEASE(_mesh);
     SAFE_DELETE(_skin);
   }
 

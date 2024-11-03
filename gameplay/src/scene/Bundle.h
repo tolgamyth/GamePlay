@@ -365,7 +365,7 @@ namespace gameplay
     /**
      * Reads mesh data from the current file position.
      */
-    MeshData* readMeshData();
+    std::unique_ptr<Bundle::MeshData> readMeshData();
 
     /**
      * Reads mesh data for the specified URL.
@@ -378,7 +378,7 @@ namespace gameplay
      *
      * @return The mesh rigid body data.
      */
-    static MeshData* readMeshData(const char* url);
+    static std::unique_ptr<Bundle::MeshData> readMeshData(const char* url);
 
     /**
      * Reads a mesh skin from the current file position.

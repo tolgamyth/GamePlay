@@ -55,7 +55,7 @@ static std::shared_ptr<Mesh> createCubeMesh(float size = 1.0f)
     return nullptr;
   }
   mesh->setVertexData(vertices, 0, vertexCount);
-  MeshPart* meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
+  auto meshPart = mesh->addPart(Mesh::TRIANGLES, Mesh::INDEX16, indexCount, false);
   meshPart->setIndexData(indices, 0, indexCount);
 
   return mesh;
