@@ -308,6 +308,18 @@ namespace gameplay
     } while(0)
 #endif
 
+#if defined(DX_SUPPORT)
+#define GL_ASSERT(dx_code) do \
+    { \
+        HRESULT hr = (dx_code); \
+        if (FAILED(hr)) \
+        { \
+            std::cerr << "DirectX Error: " << std::hex << hr << " in " << #dx_code << std::endl; \
+            assert(SUCCEEDED(hr)); \
+        } \
+    } while(0)
+#endif
+
  /** Global variable to hold GL errors
   * @script{ignore} */
 extern GLenum __gl_error_code;
